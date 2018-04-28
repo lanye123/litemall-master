@@ -34,15 +34,15 @@
         <!--数据库连接信息-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://127.0.0.1:3306/litemall?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false"
-                        userId="litemall"
-                        password="litemall123456" />
+                        userId="root"
+                        password="admin" />
 
 
         <javaModelGenerator targetPackage="org.linlinjava.litemall.db.domain" targetProject="src/main/java" />
         <sqlMapGenerator targetPackage="org.linlinjava.litemall.db.dao" targetProject="src/main/resources" />
         <javaClientGenerator type="XMLMAPPER" targetPackage="org.linlinjava.litemall.db.dao" targetProject="src/main/java" />
         <!--表名-->
-        <table tableName="litemall_ad">
+        <!--<table tableName="litemall_ad">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="start_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="end_time"/>
@@ -170,8 +170,36 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="used_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
+        </table>-->
+
+        <table tableName="article">
+            <generatedKey column="article_id" sqlStatement="MySql" identity="true" />
+            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+            <columnOverride javaType="java.time.LocalDateTime" column="update_date"/>
         </table>
-
-
+        <table tableName="article_category">
+            <generatedKey column="category_id" sqlStatement="MySql" identity="true" />
+            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+        </table>
+        <table tableName="article_notes">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+        </table>
+        <table tableName="praise">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+        </table>
+        <table tableName="checkin">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+        </table>
+        <table tableName="integretion">
+            <generatedKey column="integretion_id" sqlStatement="MySql" identity="true" />
+            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+        </table>
+        <table tableName="integretion_detail">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+        </table>
     </context>
 </generatorConfiguration>
