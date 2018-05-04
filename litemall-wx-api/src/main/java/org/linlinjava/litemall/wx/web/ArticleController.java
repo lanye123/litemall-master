@@ -3,14 +3,16 @@ package org.linlinjava.litemall.wx.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.Article;
+import org.linlinjava.litemall.db.domain.ArticleCollection;
+import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.domain.LitemallAddress;
+import org.linlinjava.litemall.db.service.ArticleCollectionService;
+import org.linlinjava.litemall.db.service.ArticleNotesService;
 import org.linlinjava.litemall.db.service.ArticleService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,25 +25,18 @@ public class ArticleController {
     private final Log logger = LogFactory.getLog(ArticleController.class);
     @Autowired
     private ArticleService articleService;
-    /**
-     * 文章图文列表
-     *
-     * @param userId 用户ID
-     * @return 文章图文列表
-     *   成功则
-     *  {
-     *      errno: 0,
-     *      errmsg: '成功',
-     *      data: xxx
-     *  }
-     *   失败则 { errno: XXX, errmsg: XXX }
-     */
+    @Autowired
+    private ArticleNotesService articleNotesService;
+    @Autowired
+    private ArticleCollectionService articleCollectionService;
+/**
+    *@Author:LeiQiang
+    *@Description:全部图文模块列表接口
+    *@Date:22:46 2018/5/4
+    */
     @GetMapping("list")
-    public Object list(@LoginUser Integer userId,Integer category_id){
-        if(userId == null){
-            return ResponseUtil.unlogin();
-        }
-        List<Article> articleList=articleService.querySelective(category_id);
+    public Object list(Integer category_id,String flag){
+        List<Article> articleList=articleService.querySelective(category_id,flag);
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
         for(Article article : articleList){
             Map<String, Object> articleVo = new HashMap<>();
@@ -62,20 +57,25 @@ public class ArticleController {
         }
         return ResponseUtil.ok(articleVoList);
     }
-
+/**
+    *@Author:LeiQiang
+    *@Description:文章详情接口
+    *@Date:22:54 2018/5/4
+    */
     @GetMapping("detail")
-    public Object detail(@LoginUser Integer userId, Integer artitle_id) {
-        if(userId == null){
+    public Object detail(Integer article_id) {
+        /*if(userId == null){
             return ResponseUtil.unlogin();
-        }
-        if(artitle_id == null){
+        }*/
+        if(article_id == null){
             return ResponseUtil.badArgument();
         }
 
-        Article article=articleService.findById(artitle_id);
+        Article article=articleService.findById(article_id);
         if(article == null){
             return ResponseUtil.badArgumentValue();
         }
+
         Map<String, Object> data = new HashMap<>();
         data.put("photo_url",article.getPhotoUrl());
         data.put("photo_name",article.getPhotoName());
@@ -90,6 +90,50 @@ public class ArticleController {
         data.put("is_view",article.getIsView());
         data.put("reader",article.getReader());
         data.put("update_date",article.getUpdateDate());
+        //目录列表
+        List<ArticleNotes> notesList=articleNotesService.findByArtitleid(article_id);
+        List<Map<String, Object>> notesVoList = new ArrayList<>(notesList.size());
+        for(ArticleNotes notes : notesList) {
+            Map<String, Object> notesVo = new HashMap<>();
+            notesVo.put("id",notes.getId());
+            notesVo.put("no",notes.getNo());
+            notesVo.put("name",notes.getName());
+            notesVo.put("content",notes.getContent());
+            notesVo.put("status",notes.getStatus());
+            notesVo.put("sort_no",notes.getSortNo());
+            notesVoList.add(notesVo);
+        }
+        data.put("notesList",notesVoList);
         return ResponseUtil.ok(data);
+    }
+/**
+    *@Author:LeiQiang
+    *@Description:图文-收藏接口
+    *@Date:23:24 2018/5/4
+    */
+    @PostMapping("collect")
+    public Object collect(Integer article_id,@RequestParam Integer user_id) {
+        /*if(userId == null){
+            return ResponseUtil.unlogin();
+        }*/
+        if(article_id == null){
+            return ResponseUtil.badArgument();
+        }
+        Article article=articleService.findById(article_id);
+        //保存至收藏表
+        ArticleCollection collection=new ArticleCollection();
+        collection.setArticleId(article_id);
+        collection.setUserId(user_id);
+        articleCollectionService.add(collection);
+        //更新文章阅读总数reader
+        Article article1=new Article();
+        if(article.getReader()==null){
+            article1.setReader(1);
+        }else{
+            article1.setReader(article.getReader()+1);
+        }
+        article1.setArticleId(article.getArticleId());
+        articleService.update(article1);
+        return ResponseUtil.ok(article1);
     }
 }

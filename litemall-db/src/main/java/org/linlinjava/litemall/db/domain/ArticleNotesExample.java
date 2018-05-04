@@ -296,62 +296,62 @@ public class ArticleNotesExample {
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdEqualTo(String value) {
+        public Criteria andArtileIdEqualTo(Integer value) {
             addCriterion("artile_id =", value, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdNotEqualTo(String value) {
+        public Criteria andArtileIdNotEqualTo(Integer value) {
             addCriterion("artile_id <>", value, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdGreaterThan(String value) {
+        public Criteria andArtileIdGreaterThan(Integer value) {
             addCriterion("artile_id >", value, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdGreaterThanOrEqualTo(String value) {
+        public Criteria andArtileIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("artile_id >=", value, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdLessThan(String value) {
+        public Criteria andArtileIdLessThan(Integer value) {
             addCriterion("artile_id <", value, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdLessThanOrEqualTo(String value) {
+        public Criteria andArtileIdLessThanOrEqualTo(Integer value) {
             addCriterion("artile_id <=", value, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdLike(String value) {
+        public Criteria andArtileIdLike(Integer value) {
             addCriterion("artile_id like", value, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdNotLike(String value) {
+        public Criteria andArtileIdNotLike(Integer value) {
             addCriterion("artile_id not like", value, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdIn(List<String> values) {
+        public Criteria andArtileIdIn(List<Integer> values) {
             addCriterion("artile_id in", values, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdNotIn(List<String> values) {
+        public Criteria andArtileIdNotIn(List<Integer> values) {
             addCriterion("artile_id not in", values, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdBetween(String value1, String value2) {
+        public Criteria andArtileIdBetween(Integer value1, Integer value2) {
             addCriterion("artile_id between", value1, value2, "artileId");
             return (Criteria) this;
         }
 
-        public Criteria andArtileIdNotBetween(String value1, String value2) {
+        public Criteria andArtileIdNotBetween(Integer value1, Integer value2) {
             addCriterion("artile_id not between", value1, value2, "artileId");
             return (Criteria) this;
         }

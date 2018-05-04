@@ -19,7 +19,7 @@ public class Article {
      *
      * @mbg.generated Sat Apr 28 16:57:49 CST 2018
      */
-    private String categoryId;
+    private Integer categoryId;
 
     /**
      *
@@ -152,7 +152,7 @@ public class Article {
      *
      * @mbg.generated Sat Apr 28 16:57:49 CST 2018
      */
-    public String getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
@@ -164,7 +164,7 @@ public class Article {
      *
      * @mbg.generated Sat Apr 28 16:57:49 CST 2018
      */
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 

@@ -27,8 +27,8 @@
         <plugin type="com.itfsw.mybatis.generator.plugins.ModelColumnPlugin"/>
 
         <commentGenerator>
-            <!--<property name="suppressDate" value="true"/>-->
-            <!--<property name="suppressAllComments" value="true"/>-->
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
         <!--数据库连接信息-->
@@ -172,7 +172,7 @@
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
         </table>-->
 
-        <table tableName="article">
+        <!--<table tableName="article">
             <generatedKey column="article_id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
             <columnOverride javaType="java.time.LocalDateTime" column="update_date"/>
@@ -198,6 +198,10 @@
             <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
         </table>
         <table tableName="integretion_detail">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+        </table>-->
+        <table tableName="article_collection">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
         </table>

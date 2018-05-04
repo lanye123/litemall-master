@@ -19,7 +19,7 @@ public class ArticleNotes {
      *
      * @mbg.generated Sat Apr 28 16:57:49 CST 2018
      */
-    private String artileId;
+    private Integer artileId;
 
     /**
      *
@@ -107,7 +107,7 @@ public class ArticleNotes {
      *
      * @mbg.generated Sat Apr 28 16:57:49 CST 2018
      */
-    public String getArtileId() {
+    public Integer getArtileId() {
         return artileId;
     }
 
@@ -119,7 +119,7 @@ public class ArticleNotes {
      *
      * @mbg.generated Sat Apr 28 16:57:49 CST 2018
      */
-    public void setArtileId(String artileId) {
+    public void setArtileId(Integer artileId) {
         this.artileId = artileId;
     }
 
