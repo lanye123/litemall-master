@@ -1,5 +1,8 @@
 package org.linlinjava.litemall.db.service;
 
+import org.linlinjava.litemall.db.dao.MedalDetailsMapper;
+import org.linlinjava.litemall.db.domain.MedalDetails;
+import org.linlinjava.litemall.db.domain.MedalDetailsExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -23,7 +26,7 @@ public class MedalDetailsService {
         medalDetailsMapper.updateByPrimaryKeySelective(medalDetails);
     }
 
-    public List<MedalDetails> selectList(Integer userId,Integer medalId,Integer articleId,Integer notesId) {
+    public List<MedalDetails> selectList(Integer userId, Integer medalId, Integer articleId, Integer notesId) {
         MedalDetailsExample example = new MedalDetailsExample();
         MedalDetailsExample.Criteria criteria = example.createCriteria();
 

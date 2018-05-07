@@ -1,5 +1,8 @@
 package org.linlinjava.litemall.db.service;
 
+import org.linlinjava.litemall.db.dao.MedalMapper;
+import org.linlinjava.litemall.db.domain.Medal;
+import org.linlinjava.litemall.db.domain.MedalExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
