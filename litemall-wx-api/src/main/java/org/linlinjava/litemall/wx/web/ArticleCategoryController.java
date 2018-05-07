@@ -25,10 +25,10 @@ public class ArticleCategoryController {
     *@Date:22:23 2018/5/4
     */
     @GetMapping("list")
-    public Object list(@LoginUser Integer userId){
-        if(userId == null){
+    public Object list(){
+        /*if(userId == null){
             return ResponseUtil.unlogin();
-        }
+        }*/
         List<ArticleCategory> categoryList=articleCategoryService.queryAllList();
         List<Map<String, Object>> categoryVo = new ArrayList<>(categoryList.size());
         for (ArticleCategory category:categoryList){

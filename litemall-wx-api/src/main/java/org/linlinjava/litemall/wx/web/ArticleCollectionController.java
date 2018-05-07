@@ -95,7 +95,7 @@ public class ArticleCollectionController {
      *@Date:23:24 2018/5/4
      */
     @PostMapping("save")
-    public Object save(@LoginUser Integer userId, @RequestBody ArticleCollection collection) {
+    public Object save(Integer userId, @RequestBody ArticleCollection collection) {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
