@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.linlinjava.litemall.db.domain.Medal;
+import org.linlinjava.litemall.db.domain.MedalDetails;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
@@ -21,7 +23,7 @@ public class MedalController {
      *@Date:16:44 2018/5/7
      */
     @GetMapping("medal")
-    public Object getMedal(/*@LoginUser */Integer userId){
+    public Object getMedal(@LoginUser Integer userId){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
