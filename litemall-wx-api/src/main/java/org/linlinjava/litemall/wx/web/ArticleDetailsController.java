@@ -1,13 +1,9 @@
 package org.linlinjava.litemall.wx.web;
 
 import org.linlinjava.litemall.db.domain.ArticleCategory;
-import org.linlinjava.litemall.db.domain.ArticleCollection;
 import org.linlinjava.litemall.db.domain.ArticleDetails;
-import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.service.ArticleCategoryService;
-import org.linlinjava.litemall.db.service.ArticleCollectionService;
 import org.linlinjava.litemall.db.service.ArticleDetailsService;
-import org.linlinjava.litemall.db.service.ArticleNotesService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
