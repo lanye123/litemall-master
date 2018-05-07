@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.domain.ArticleCollection;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.domain.LitemallAddress;
 import org.linlinjava.litemall.db.service.ArticleCollectionService;
+import org.linlinjava.litemall.db.service.ArticleCommentService;
 import org.linlinjava.litemall.db.service.ArticleNotesService;
 import org.linlinjava.litemall.db.service.ArticleService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
@@ -29,6 +30,8 @@ public class ArticleController {
     private ArticleNotesService articleNotesService;
     @Autowired
     private ArticleCollectionService articleCollectionService;
+    @Autowired
+    private ArticleCommentService articleCommentService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -37,6 +40,7 @@ public class ArticleController {
     @GetMapping("list")
     public Object list(Integer category_id,String flag){
         List<Article> articleList=articleService.querySelective(category_id,flag);
+        //Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
         for(Article article : articleList){
             Map<String, Object> articleVo = new HashMap<>();
@@ -90,6 +94,8 @@ public class ArticleController {
         data.put("is_view",article.getIsView());
         data.put("reader",article.getReader());
         data.put("update_date",article.getUpdateDate());
+        //评论数量
+        Long comentCount=articleCommentService.countSelective(article_id);
         //目录列表
         List<ArticleNotes> notesList=articleNotesService.findByArtitleid(article_id);
         List<Map<String, Object>> notesVoList = new ArrayList<>(notesList.size());
@@ -104,6 +110,7 @@ public class ArticleController {
             notesVoList.add(notesVo);
         }
         data.put("notesList",notesVoList);
+        data.put("comentCount",comentCount);
         return ResponseUtil.ok(data);
     }
 /**
