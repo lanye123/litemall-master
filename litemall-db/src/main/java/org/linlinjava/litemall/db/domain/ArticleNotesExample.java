@@ -401,6 +401,11 @@ public class ArticleNotesExample {
             return (Criteria) this;
         }
 
+        public Criteria andContenLike(String value) {
+            addCriterion("`name` like", value, "name");
+            return (Criteria) this;
+        }
+
         public Criteria andNameNotLike(String value) {
             addCriterion("`name` not like", value, "name");
             return (Criteria) this;
@@ -507,6 +512,11 @@ public class ArticleNotesExample {
         }
 
         public Criteria andCreateDateEqualTo(LocalDateTime value) {
+            addCriterion("create_date =", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentEqualTo(LocalDateTime value) {
             addCriterion("create_date =", value, "createDate");
             return (Criteria) this;
         }

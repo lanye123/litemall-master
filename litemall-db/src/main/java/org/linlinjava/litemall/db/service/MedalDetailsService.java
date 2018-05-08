@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.db.service;
 
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.MedalDetailsMapper;
 import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
@@ -100,6 +101,58 @@ public class MedalDetailsService {
         }
 
         return score;
+    }
+
+    public List<MedalDetails> querySelective(Integer notesId, Integer articleId, Integer userId,Integer medalId, Integer amount, Integer page, Integer size, String sort, String order) {
+        MedalDetailsExample example = new MedalDetailsExample();
+        MedalDetailsExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(userId)){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andArticleIdEqualTo(articleId);
+        }
+        if(!StringUtils.isEmpty(medalId)){
+            criteria.andMedalIdEqualTo(medalId);
+        }
+        if(!StringUtils.isEmpty(notesId)){
+            criteria.andNotesIdEqualTo(notesId);
+        }
+        if(!StringUtils.isEmpty(amount)){
+            criteria.andAmountEqualTo(amount);
+        }
+        criteria.example().setOrderByClause("create_date desc");
+
+        PageHelper.startPage(page, size);
+        return medalDetailsMapper.selectByExample(example);
+    }
+
+    public int countSeletive(Integer notesId, Integer articleId, Integer userId,Integer medalId, Integer amount, Integer page, Integer size, String sort, String order) {
+        MedalDetailsExample example = new MedalDetailsExample();
+        MedalDetailsExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(userId)){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andArticleIdEqualTo(articleId);
+        }
+        if(!StringUtils.isEmpty(medalId)){
+            criteria.andMedalIdEqualTo(medalId);
+        }
+        if(!StringUtils.isEmpty(notesId)){
+            criteria.andNotesIdEqualTo(notesId);
+        }
+        if(!StringUtils.isEmpty(amount)){
+            criteria.andAmountEqualTo(amount);
+        }
+
+        return (int) medalDetailsMapper.countByExample(example);
+    }
+
+    public void deleteById(Integer id) {
+        medalDetailsMapper.deleteByPrimaryKey(id);
     }
 
 }

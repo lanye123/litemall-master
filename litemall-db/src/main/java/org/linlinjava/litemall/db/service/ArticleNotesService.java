@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.db.service;
 
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleNotesMapper;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.domain.ArticleNotesExample;
@@ -21,5 +22,67 @@ public class ArticleNotesService {
         if (artitle_id!=null)
             criteria.andArtileIdEqualTo(artitle_id);
         return articleNotesMapper.selectByExample(example);
+    }
+
+    public List<ArticleNotes> querySelective(Integer artileId, String name,String no,String content,Integer sortNo,Integer page, Integer size, String sort, String order) {
+        ArticleNotesExample example = new ArticleNotesExample();
+        ArticleNotesExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(name)){
+            criteria.andNameLike("%"+name+"%");
+        }
+        if(!StringUtils.isEmpty(artileId)){
+            criteria.andArtileIdEqualTo(artileId);
+        }
+        if(!StringUtils.isEmpty(no)){
+            criteria.andNoLike("%" + no + "%");
+        }
+        if(!StringUtils.isEmpty(sortNo)){
+            criteria.andSortNoEqualTo(sortNo);
+        }
+        if(!StringUtils.isEmpty(content)){
+            criteria.andContenLike("%" + content + "%");
+        }
+        if(!StringUtils.isEmpty(order)){
+            criteria.example().setOrderByClause(order+" desc");
+        }
+
+        PageHelper.startPage(page, size);
+        return articleNotesMapper.selectByExample(example);
+    }
+
+    public int countSelective(Integer artileId, String name,String no,String content,Integer sortNo,Integer page, Integer size, String sort, String order) {
+        ArticleNotesExample example = new ArticleNotesExample();
+        ArticleNotesExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(name)){
+            criteria.andNameLike("%"+name+"%");
+        }
+        if(!StringUtils.isEmpty(artileId)){
+            criteria.andArtileIdEqualTo(artileId);
+        }
+        if(!StringUtils.isEmpty(no)){
+            criteria.andNoLike("%" + no + "%");
+        }
+        if(!StringUtils.isEmpty(sortNo)){
+            criteria.andSortNoEqualTo(sortNo);
+        }
+        if(!StringUtils.isEmpty(content)){
+            criteria.andContenLike("%" + content + "%");
+        }
+
+        return (int) articleNotesMapper.countByExample(example);
+    }
+
+    public void deleteById(Integer id) {
+        articleNotesMapper.deleteByPrimaryKey(id);
+    }
+
+    public void update(ArticleNotes articleNotes) {
+        articleNotesMapper.updateByPrimaryKeySelective(articleNotes);
+    }
+
+    public void add(ArticleNotes articleNotes) {
+        articleNotesMapper.insertSelective(articleNotes);
     }
 }

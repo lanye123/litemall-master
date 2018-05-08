@@ -1,9 +1,11 @@
 package org.linlinjava.litemall.db.service;
 
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleCommentMapper;
 import org.linlinjava.litemall.db.domain.ArticleComment;
 import org.linlinjava.litemall.db.domain.ArticleCommentExample;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -46,4 +48,63 @@ public class ArticleCommentService {
     public void add(ArticleComment comment) {
         articleCommentMapper.insertSelective(comment);
     }
+
+    public List<ArticleComment> query(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,Integer page, Integer size, String sort, String order) {
+        ArticleCommentExample example = new ArticleCommentExample();
+        ArticleCommentExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(fromUserid)){
+            criteria.andFromUseridEqualTo(fromUserid);
+        }
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andArticleIdEqualTo(articleId);
+        }
+        if(!StringUtils.isEmpty(categoryName)){
+            criteria.andCategoryNameEqualTo(categoryName);
+        }
+        if(!StringUtils.isEmpty(categoryId)){
+            criteria.andCategoryIdEqualTo(categoryId);
+        }
+        if(!StringUtils.isEmpty(content)){
+            criteria.andContentLike("%" + content + "%");
+        }
+        if(!StringUtils.isEmpty(order)){
+            criteria.example().setOrderByClause(order);
+        }
+
+        PageHelper.startPage(page, size);
+        return articleCommentMapper.selectByExample(example);
+    }
+
+    public int count(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,Integer page, Integer size, String sort, String order) {
+        ArticleCommentExample example = new ArticleCommentExample();
+        ArticleCommentExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(fromUserid)){
+            criteria.andFromUseridEqualTo(fromUserid);
+        }
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andArticleIdEqualTo(articleId);
+        }
+        if(!StringUtils.isEmpty(categoryName)){
+            criteria.andCategoryNameEqualTo(categoryName);
+        }
+        if(!StringUtils.isEmpty(categoryId)){
+            criteria.andCategoryIdEqualTo(categoryId);
+        }
+        if(!StringUtils.isEmpty(content)){
+            criteria.andContentLike("%" + content + "%");
+        }
+
+        return (int) articleCommentMapper.countByExample(example);
+    }
+
+    public void deleteById(Integer id) {
+        articleCommentMapper.deleteByPrimaryKey(id);
+    }
+
+    public void update(ArticleComment articleComment) {
+        articleCommentMapper.updateByPrimaryKeySelective(articleComment);
+    }
+
 }

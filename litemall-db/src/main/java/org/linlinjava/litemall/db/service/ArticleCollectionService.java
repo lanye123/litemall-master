@@ -2,7 +2,6 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleCollectionMapper;
-import org.linlinjava.litemall.db.dao.ArticleDetailsMapper;
 import org.linlinjava.litemall.db.domain.ArticleCollection;
 import org.linlinjava.litemall.db.domain.ArticleCollectionExample;
 import org.springframework.stereotype.Service;
@@ -38,5 +37,48 @@ public class ArticleCollectionService {
         criteria.example().setOrderByClause("create_date");
 
         return articleCollectionMapper.selectByExample(example);
+    }
+
+    public List<ArticleCollection> querySelective(Integer articleId, Integer userId,Integer page, Integer size, String sort, String order) {
+        ArticleCollectionExample example = new ArticleCollectionExample();
+        ArticleCollectionExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(userId)){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andArticleIdEqualTo(articleId);
+        }
+        criteria.example().setOrderByClause("create_date desc");
+
+        PageHelper.startPage(page, size);
+        return articleCollectionMapper.selectByExample(example);
+    }
+
+    public int countSeletive(Integer articleId, Integer userId,Integer page, Integer size, String sort, String order) {
+        ArticleCollectionExample example = new ArticleCollectionExample();
+        ArticleCollectionExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(userId)){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andArticleIdEqualTo(articleId);
+        }
+
+        return (int) articleCollectionMapper.countByExample(example);
+    }
+
+    public void hidden(Integer id) {
+        ArticleCollection articleCollection = articleCollectionMapper.selectByPrimaryKey(id);
+        if(articleCollection == null){
+            return;
+        }
+        articleCollection.setIsView(false);
+        articleCollectionMapper.updateByPrimaryKey(articleCollection);
+    }
+
+    public void deleteById(Integer id) {
+        articleCollectionMapper.deleteByPrimaryKey(id);
     }
 }

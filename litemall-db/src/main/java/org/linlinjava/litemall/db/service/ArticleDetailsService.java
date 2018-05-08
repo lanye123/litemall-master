@@ -1,9 +1,7 @@
 package org.linlinjava.litemall.db.service;
 
-import org.linlinjava.litemall.db.dao.ArticleCollectionMapper;
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleDetailsMapper;
-import org.linlinjava.litemall.db.domain.ArticleCollection;
-import org.linlinjava.litemall.db.domain.ArticleCollectionExample;
 import org.linlinjava.litemall.db.domain.ArticleDetails;
 import org.linlinjava.litemall.db.domain.ArticleDetailsExample;
 import org.springframework.stereotype.Service;
@@ -50,6 +48,28 @@ public class ArticleDetailsService {
         return articleDetailsMapper.selectByExample(example);
     }
 
+    public List<ArticleDetails> querySelective(Integer categoryId,Integer articleId,Integer notesId, Integer userId,Integer page, Integer size, String sort, String order) {
+        ArticleDetailsExample example = new ArticleDetailsExample();
+        ArticleDetailsExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(userId)){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andArticleIdEqualTo(articleId);
+        }
+        if(!StringUtils.isEmpty(categoryId)){
+            criteria.andCategoryIdEqualTo(categoryId);
+        }
+        if(!StringUtils.isEmpty(notesId)){
+            criteria.andNotesIdEqualTo(notesId);
+        }
+        criteria.example().setOrderByClause("create_date desc");
+
+        PageHelper.startPage(page, size);
+        return articleDetailsMapper.selectByExample(example);
+    }
+
     public int countSeletive(Integer userId, Integer categoryId, Integer articleId, Integer notesId) {
         ArticleDetailsExample example = new ArticleDetailsExample();
         ArticleDetailsExample.Criteria criteria = example.createCriteria();
@@ -68,5 +88,9 @@ public class ArticleDetailsService {
         }
 
         return (int) articleDetailsMapper.countByExample(example);
+    }
+
+    public void deleteById(Integer id) {
+        articleDetailsMapper.deleteByPrimaryKey(id);
     }
 }
