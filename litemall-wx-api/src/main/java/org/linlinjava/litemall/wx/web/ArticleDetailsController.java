@@ -9,7 +9,6 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,22 +64,21 @@ public class ArticleDetailsController {
             return ResponseUtil.unlogin();
         }
         Map<String,Object> data = new HashMap<>();
-        Map<String, Object> dataItem;
-        List<Map<String,Object>> returnCounts = new ArrayList<>();
         List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,null,null,null);
         if(articleDetailsList.size() == 0){
             data.put("count",0);
             return ResponseUtil.ok(data);
         }
         List<ArticleCategory> articleCategoryList = articleCategoryService.queryAllList();
-        for(ArticleCategory articleCategory:articleCategoryList){
-            dataItem = new HashMap<>();
-            dataItem.put("categoryId",articleCategory.getCategoryId());
-            dataItem.put("categoryName",articleCategory.getName());
-            dataItem.put("readCount",articleDetailsService.selectList(userId,articleCategory.getCategoryId(),null,null).size());
-            returnCounts.add(dataItem);
+        String[] categoryNameArray = new String[articleCategoryList.size()];
+        int[] readCountArray = new int[articleCategoryList.size()];
+        for(int i = 0;i<articleCategoryList.size();i++){
+            categoryNameArray[i] = articleCategoryList.get(i).getName();
+            readCountArray[i] = articleDetailsService.selectList(userId,articleCategoryList.get(i).getCategoryId(),null,null).size();
         }
-        data.put("returnCounts",returnCounts);
+
+        data.put("categoryNameArray",categoryNameArray);
+        data.put("readCountArray",readCountArray);
 
         return ResponseUtil.ok(data);
     }

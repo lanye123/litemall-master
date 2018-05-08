@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.wx.web;
 
-import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
@@ -8,13 +7,10 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/wx/medal")
 public class MedalController {
-    @Autowired
-    private MedalService medalService;
     @Autowired
     private MedalDetailsService medalDetailsService;
     /**
@@ -27,25 +23,8 @@ public class MedalController {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
-        int score = 0;
-        List<MedalDetails> medalDetailsList = medalDetailsService.selectList(userId,null,null,null);
-        for(MedalDetails medalDetails:medalDetailsList){
-            score+=medalDetails.getAmount();
-        }
-        List<Medal> medals = medalService.getMedal(null);
-        int min;
-        for(int i = medals.size();i>0;i--){
-            if(medals.get(i-1).getMin() == null){
-                min = 0;
-            }else{
-                min = medals.get(i-1).getMin();
-            }
-            if(score>=min){
-                return ResponseUtil.ok(medals.get(i-1));
-            }
-        }
 
-        return ResponseUtil.ok(medals.get(0));
+        return ResponseUtil.ok(medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null)));
     }
 
     /**
