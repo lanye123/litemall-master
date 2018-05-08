@@ -129,4 +129,6 @@ public interface LitemallUserMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     LitemallUser selectOneByExampleSelective(@Param("example") LitemallUserExample example, @Param("selective") LitemallUser.Column ... selective);
+
+
 }

@@ -2,6 +2,7 @@ package org.linlinjava.litemall.db.service;
 
 import org.linlinjava.litemall.db.dao.ArticleMapper;
 import org.linlinjava.litemall.db.domain.Article;
+import org.linlinjava.litemall.db.domain.ArticleCategory;
 import org.linlinjava.litemall.db.domain.ArticleExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -36,6 +37,7 @@ public class ArticleService {
         return articleMapper.selectByExample(example);
     }
 
+
     public Article findById(Integer article_id) {
 
         return articleMapper.selectByPrimaryKey(article_id);
@@ -45,7 +47,39 @@ public class ArticleService {
     *@Description:图文-用户收藏后阅读数量+1
     *@Date:23:34 2018/5/4
     */
-    public void update(Article article1) {
-        articleMapper.updateByPrimaryKeySelective(article1);
+    public void update(Article article) {
+        articleMapper.updateByPrimaryKeySelective(article);
+    }
+
+    public List<Article> queryBySelective(String title,String author, Integer page, Integer limit, String sort, String order) {
+        ArticleExample example=new ArticleExample();
+        ArticleExample.Criteria criteria=example.createCriteria();
+        if(!StringUtils.isEmpty(title))
+            criteria.andTitleLike("%" + title + "%");
+        if(!StringUtils.isEmpty(author))
+            criteria.andTitleLike("%" + author + "%");
+        return articleMapper.selectByExample(example);
+    }
+
+    public int countSelective(String title, String author, Integer page, Integer limit, String sort, String order) {
+        ArticleExample example=new ArticleExample();
+        ArticleExample.Criteria criteria=example.createCriteria();
+        if(!StringUtils.isEmpty(title))
+            criteria.andTitleLike("%" + title + "%");
+        if(!StringUtils.isEmpty(author))
+            criteria.andTitleLike("%" + author + "%");
+        return (int) articleMapper.countByExample(example);
+    }
+
+    public void add(Article article) {
+        articleMapper.insertSelective(article);
+    }
+
+    public void deleteById(Integer articleId) {
+        articleMapper.deleteByPrimaryKey(articleId);
+    }
+
+    public void updateById(Article article) {
+        articleMapper.updateByPrimaryKeySelective(article);
     }
 }
