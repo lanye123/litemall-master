@@ -15,7 +15,7 @@ public class ArticleReplyService {
     @Resource
     private ArticleReplyMapper articleReplyMapper;
 
-    public List<ArticleReply> querySelective(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid,Integer toUserid, Integer page, Integer size, String sort, String order) {
+    public List<ArticleReply> querySelective(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid, Integer toUserid, Integer page, Integer size, String sort, String order) {
         ArticleReplyExample example = new ArticleReplyExample();
         ArticleReplyExample.Criteria criteria = example.createCriteria();
 

@@ -41,7 +41,7 @@ public class ArticleNotesService {
             criteria.andSortNoEqualTo(sortNo);
         }
         if(!StringUtils.isEmpty(content)){
-            criteria.andContenLike("%" + content + "%");
+            criteria.andContentLike("%" + content + "%");
         }
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order+" desc");
@@ -68,7 +68,7 @@ public class ArticleNotesService {
             criteria.andSortNoEqualTo(sortNo);
         }
         if(!StringUtils.isEmpty(content)){
-            criteria.andContenLike("%" + content + "%");
+            criteria.andContentLike("%" + content + "%");
         }
 
         return (int) articleNotesMapper.countByExample(example);
@@ -84,5 +84,9 @@ public class ArticleNotesService {
 
     public void add(ArticleNotes articleNotes) {
         articleNotesMapper.insertSelective(articleNotes);
+    }
+
+    public ArticleNotes findByID(Integer id) {
+       return articleNotesMapper.selectByPrimaryKey(id);
     }
 }

@@ -49,7 +49,7 @@ public class ArticleCommentService {
         articleCommentMapper.insertSelective(comment);
     }
 
-    public List<ArticleComment> query(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,Integer page, Integer size, String sort, String order) {
+    public List<ArticleComment> query(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, Integer page, Integer size, String sort, String order) {
         ArticleCommentExample example = new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria = example.createCriteria();
 

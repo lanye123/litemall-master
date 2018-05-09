@@ -19,11 +19,11 @@ public class ArticleService {
     *@Description:全部图文模块列表接口实现
     *@Date:22:45 2018/5/4
     */
-    public List<Article> querySelective(Integer category_id,String flag) {
+    public List<Article> querySelective(String categoryIds,String flag) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
-        if(category_id!=null)
-            criteria.andCategoryIdEqualTo(category_id);
+        if(categoryIds!=null)
+            criteria.andCategoryIdsContainsTo(categoryIds);
         //criteria.andStatusNotEqualTo(1);//0启用1禁用
         //人气排序
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader"))

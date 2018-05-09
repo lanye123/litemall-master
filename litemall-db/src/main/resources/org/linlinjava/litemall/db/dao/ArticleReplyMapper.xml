@@ -10,6 +10,7 @@
     <result column="from_userid" jdbcType="INTEGER" property="fromUserid" />
     <result column="to_userid" jdbcType="INTEGER" property="toUserid" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,7 +71,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, comment_id, reply_id, reply_type, content, from_userid, to_userid, `status`
+    id, comment_id, reply_id, reply_type, content, from_userid, to_userid, `status`, 
+    create_date
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleReplyExample" resultMap="BaseResultMap">
     select
@@ -142,10 +144,10 @@
     </selectKey>
     insert into article_reply (comment_id, reply_id, reply_type, 
       content, from_userid, to_userid, 
-      `status`)
+      `status`, create_date)
     values (#{commentId,jdbcType=INTEGER}, #{replyId,jdbcType=INTEGER}, #{replyType,jdbcType=VARCHAR}, 
       #{content,jdbcType=VARCHAR}, #{fromUserid,jdbcType=INTEGER}, #{toUserid,jdbcType=INTEGER}, 
-      #{status,jdbcType=INTEGER})
+      #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.ArticleReply">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -174,6 +176,9 @@
       <if test="status != null">
         `status`,
       </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="commentId != null">
@@ -196,6 +201,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -232,6 +240,9 @@
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -246,7 +257,8 @@
       content = #{record.content,jdbcType=VARCHAR},
       from_userid = #{record.fromUserid,jdbcType=INTEGER},
       to_userid = #{record.toUserid,jdbcType=INTEGER},
-      `status` = #{record.status,jdbcType=INTEGER}
+      `status` = #{record.status,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -275,6 +287,9 @@
       <if test="status != null">
         `status` = #{status,jdbcType=INTEGER},
       </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -286,7 +301,8 @@
       content = #{content,jdbcType=VARCHAR},
       from_userid = #{fromUserid,jdbcType=INTEGER},
       to_userid = #{toUserid,jdbcType=INTEGER},
-      `status` = #{status,jdbcType=INTEGER}
+      `status` = #{status,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleReplyExample" resultMap="BaseResultMap">
