@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/sunlands/articleCollection")
+@RequestMapping("/admin/sunlands/articleDetails")
 public class ArticleDetailsController {
     private final Log logger = LogFactory.getLog(ArticleDetailsController.class);
 
