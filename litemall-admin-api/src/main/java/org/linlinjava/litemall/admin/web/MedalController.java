@@ -30,7 +30,7 @@ public class MedalController {
         int total = medalService.countSeletive(name, max, min,page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("medals", medalList);
+        data.put("items", medalList);
 
         return ResponseUtil.ok(data);
     }

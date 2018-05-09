@@ -30,7 +30,7 @@ public class ArticleReplyController {
         int total = articleReplyService.countSelective(commentId, replyId,replyType,content,fromUserid, toUserid, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("articleNotesList", articleNotesList);
+        data.put("items", articleNotesList);
 
         return ResponseUtil.ok(data);
     }

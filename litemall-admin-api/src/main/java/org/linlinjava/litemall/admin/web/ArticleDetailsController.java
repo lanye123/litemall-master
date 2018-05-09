@@ -30,7 +30,7 @@ public class ArticleDetailsController {
         int total = articleDetailsService.countSeletive(categoryId,articleId,notesId, userId);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("articleDetailsList", articleDetailsList);
+        data.put("items", articleDetailsList);
 
         return ResponseUtil.ok(data);
     }

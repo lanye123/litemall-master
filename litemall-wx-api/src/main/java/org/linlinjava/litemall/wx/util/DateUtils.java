@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * @Description TODO
+ * @Description 获取时间日期工具类
  * @Author lanye
  * @Date 2018/5/9 10:58
  **/
@@ -16,7 +16,8 @@ public class DateUtils {
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void main(String args[]){
-        System.out.println(getCurrentMondayDate());
+        System.out.println(getCurrentMonday(dateFormat));
+        System.out.println(getPreviousSunday(dateFormat));
         System.out.println(getMinMonthDate("2017-04-17"));
         System.out.println(getMaxMonthDate("2017-04-17"));
     }
@@ -40,7 +41,7 @@ public class DateUtils {
 
     /**
       * @author lanye
-      * @Description TODO
+      * @Description 获得当前周- 周一的日期
       * @Date 2018/5/9 11:30
       * @Param [simpleDateFormat]
       * @return java.lang.String

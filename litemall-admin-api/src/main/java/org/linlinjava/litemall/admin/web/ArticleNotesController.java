@@ -30,7 +30,7 @@ public class ArticleNotesController {
         int total = articleNotesService.countSelective(artileId, name,no,content,sortNo, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("articleNotesList", articleNotesList);
+        data.put("items", articleNotesList);
 
         return ResponseUtil.ok(data);
     }

@@ -30,7 +30,7 @@ public class ArticleCommentController {
         int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("articleCollectionList", articleCollectionList);
+        data.put("items", articleCollectionList);
 
         return ResponseUtil.ok(data);
     }
