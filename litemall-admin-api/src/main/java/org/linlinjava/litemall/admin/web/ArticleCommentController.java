@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/sunlands/articleComment")
+@RequestMapping("/admin/sunlands/comment")
 public class ArticleCommentController {
     private final Log logger = LogFactory.getLog(ArticleCommentController.class);
 
@@ -26,11 +26,11 @@ public class ArticleCommentController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
-        List<ArticleComment> articleCollectionList = articleCommentService.query(articleId, categoryName,categoryId,content,fromUserid, page, limit, sort, order);
+        List<ArticleComment> articleCommentList = articleCommentService.query(articleId, categoryName,categoryId,content,fromUserid, page, limit, sort, order);
         int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", articleCollectionList);
+        data.put("articleCommentList", articleCommentList);
 
         return ResponseUtil.ok(data);
     }

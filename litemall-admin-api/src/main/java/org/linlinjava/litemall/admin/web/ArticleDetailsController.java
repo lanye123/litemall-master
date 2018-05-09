@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/admin/sunlands/articleDetails")
+@RequestMapping("/admin/sunlands/details")
 public class ArticleDetailsController {
     private final Log logger = LogFactory.getLog(ArticleDetailsController.class);
 
@@ -30,7 +30,7 @@ public class ArticleDetailsController {
         int total = articleDetailsService.countSeletive(categoryId,articleId,notesId, userId);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", articleDetailsList);
+        data.put("articleDetailsList", articleDetailsList);
 
         return ResponseUtil.ok(data);
     }
