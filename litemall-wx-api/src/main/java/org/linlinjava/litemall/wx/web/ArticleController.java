@@ -38,8 +38,8 @@ public class ArticleController {
     *@Date:22:46 2018/5/4
     */
     @GetMapping("list")
-    public Object list(Integer category_id,String flag){
-        List<Article> articleList=articleService.querySelective(category_id,flag);
+    public Object list(String categoryIds,String flag){
+        List<Article> articleList=articleService.querySelective(categoryIds,flag);
         //Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
         for(Article article : articleList){
@@ -61,6 +61,7 @@ public class ArticleController {
         }
         return ResponseUtil.ok(articleVoList);
     }
+
 /**
     *@Author:LeiQiang
     *@Description:文章详情接口
@@ -119,7 +120,7 @@ public class ArticleController {
     *@Date:23:24 2018/5/4
     */
     @PostMapping("collect")
-    public Object collect(Integer article_id,@RequestParam Integer user_id) {
+    public Object collect(Integer article_id,String status,@RequestParam Integer user_id) {
         /*if(userId == null){
             return ResponseUtil.unlogin();
         }*/
