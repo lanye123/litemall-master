@@ -63,4 +63,6 @@ public interface ArticleReplyMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     ArticleReply selectOneByExampleSelective(@Param("example") ArticleReplyExample example, @Param("selective") ArticleReply.Column ... selective);
+
+    List<ArticleReply> queryByCommentId(ArticleReply reply);
 }

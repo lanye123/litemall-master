@@ -107,4 +107,7 @@ public class ArticleCommentService {
         articleCommentMapper.updateByPrimaryKeySelective(articleComment);
     }
 
+    public ArticleComment queryById(Integer id) {
+        return articleCommentMapper.selectByPrimaryKey(id);
+    }
 }

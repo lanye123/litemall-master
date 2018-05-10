@@ -221,11 +221,7 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
         </table>-->
-        <table tableName="article_comment">
-            <generatedKey column="id" sqlStatement="MySql" identity="true" />
-            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
-        </table>
-        <table tableName="article_reply">
+        <table tableName="praise_comment">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
         </table>

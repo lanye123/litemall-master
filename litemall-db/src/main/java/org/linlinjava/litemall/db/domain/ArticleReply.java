@@ -19,6 +19,52 @@ public class ArticleReply {
 
     private Integer status;
 
+    private Integer amount;
+    private String from_nickname;
+    private String from_avatar;
+    private String to_nickname;
+    private String to_avatar;
+
+    public String getTo_nickname() {
+        return to_nickname;
+    }
+
+    public void setTo_nickname(String to_nickname) {
+        this.to_nickname = to_nickname;
+    }
+
+    public String getTo_avatar() {
+        return to_avatar;
+    }
+
+    public void setTo_avatar(String to_avatar) {
+        this.to_avatar = to_avatar;
+    }
+
+    public String getFrom_avatar() {
+        return from_avatar;
+    }
+
+    public void setFrom_avatar(String from_avatar) {
+        this.from_avatar = from_avatar;
+    }
+
+    public String getFrom_nickname() {
+        return from_nickname;
+    }
+
+    public void setFrom_nickname(String from_nickname) {
+        this.from_nickname = from_nickname;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
     private LocalDateTime createDate;
 
     public Integer getId() {

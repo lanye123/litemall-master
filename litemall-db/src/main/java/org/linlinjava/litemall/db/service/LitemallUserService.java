@@ -90,4 +90,8 @@ public class LitemallUserService {
         user.setDeleted(true);
         userMapper.updateByPrimaryKey(user);
     }
+
+    public LitemallUser queryById(Integer fromUserid) {
+        return userMapper.selectByPrimaryKey(fromUserid);
+    }
 }

@@ -2,8 +2,10 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleReplyMapper;
+import org.linlinjava.litemall.db.domain.ArticleComment;
 import org.linlinjava.litemall.db.domain.ArticleReply;
 import org.linlinjava.litemall.db.domain.ArticleReplyExample;
+import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -79,7 +81,30 @@ public class ArticleReplyService {
         articleReplyMapper.updateByPrimaryKeySelective(articleReply);
     }
 
-    public void add(ArticleReply articleNotes) {
-        articleReplyMapper.insertSelective(articleNotes);
+    public void add(ArticleReply reply) {
+        articleReplyMapper.insertSelective(reply);
+    }
+
+    public Integer countReply(Integer id) {
+        ArticleReplyExample example = new ArticleReplyExample();
+        ArticleReplyExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(id)){
+            criteria.andCommentIdEqualTo(id);
+        }
+        return (int)articleReplyMapper.countByExample(example);
+    }
+
+    public List<ArticleReply> queryByCommentId(Integer id) {
+        ArticleReplyExample example = new ArticleReplyExample();
+        ArticleReplyExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(id)){
+            criteria.andCommentIdEqualTo(id);
+        }
+        return articleReplyMapper.selectByExample(example);
+    }
+    //自定义sql试图查询示例
+    public List<ArticleReply> queryByList(ArticleReply reply){
+
+        return  articleReplyMapper.queryByCommentId(reply);
     }
 }
