@@ -18,6 +18,8 @@ import java.util.Map;
 public class MedalController {
     @Autowired
     private MedalDetailsService medalDetailsService;
+    @Autowired
+    private MedalService medalService;
     /**
      *@Author:lanye
      *@Description:获取用户勋章等级接口
@@ -30,7 +32,14 @@ public class MedalController {
         }
 
         Map<String,Object> data = new HashMap<>();
-        data.put("medals",medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null)));
+        List<Medal> medals = medalService.getMedal(null);
+        Medal medalDb = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null));
+        for(Medal medal:medals){
+            if(medal.getId().equals(medalDb.getId())){
+                medal.setStatus((byte)9);
+            }
+        }
+        data.put("medals",medals);
         data.put("score",medalDetailsService.getScoreByUserId(userId,null,null));
 
         return ResponseUtil.ok(data);
