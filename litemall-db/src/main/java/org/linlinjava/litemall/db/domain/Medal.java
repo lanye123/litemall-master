@@ -9,6 +9,8 @@ public class Medal {
 
     private String imgName;
 
+    private String imgUrl2;
+
     private String imgUrl;
 
     private String comment;
@@ -45,6 +47,14 @@ public class Medal {
 
     public void setImgName(String imgName) {
         this.imgName = imgName;
+    }
+
+    public String getImgUrl2() {
+        return imgUrl2;
+    }
+
+    public void setImgUrl2(String imgUrl2) {
+        this.imgUrl2 = imgUrl2;
     }
 
     public String getImgUrl() {
@@ -112,6 +122,7 @@ public class Medal {
         sb.append(", id=").append(id);
         sb.append(", name=").append(name);
         sb.append(", imgName=").append(imgName);
+        sb.append(", imgUrl2=").append(imgUrl2);
         sb.append(", imgUrl=").append(imgUrl);
         sb.append(", comment=").append(comment);
         sb.append(", createDate=").append(createDate);
@@ -138,6 +149,7 @@ public class Medal {
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
             && (this.getImgName() == null ? other.getImgName() == null : this.getImgName().equals(other.getImgName()))
+            && (this.getImgUrl2() == null ? other.getImgUrl2() == null : this.getImgUrl2().equals(other.getImgUrl2()))
             && (this.getImgUrl() == null ? other.getImgUrl() == null : this.getImgUrl().equals(other.getImgUrl()))
             && (this.getComment() == null ? other.getComment() == null : this.getComment().equals(other.getComment()))
             && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()))
@@ -154,6 +166,7 @@ public class Medal {
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getImgName() == null) ? 0 : getImgName().hashCode());
+        result = prime * result + ((getImgUrl2() == null) ? 0 : getImgUrl2().hashCode());
         result = prime * result + ((getImgUrl() == null) ? 0 : getImgUrl().hashCode());
         result = prime * result + ((getComment() == null) ? 0 : getComment().hashCode());
         result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
@@ -175,6 +188,7 @@ public class Medal {
         id("id"),
         name("name"),
         imgName("img_name"),
+        imgUrl2("img_url2"),
         imgUrl("img_url"),
         comment("comment"),
         createDate("create_date"),
