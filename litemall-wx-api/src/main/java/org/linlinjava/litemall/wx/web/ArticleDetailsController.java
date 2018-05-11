@@ -64,11 +64,11 @@ public class ArticleDetailsController {
             return ResponseUtil.unlogin();
         }
         Map<String,Object> data = new HashMap<>();
-        List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,null,null,null);
+       /* List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,null,null,null);
         if(articleDetailsList.size() == 0){
             data.put("count",0);
             return ResponseUtil.ok(data);
-        }
+        }*/
         List<ArticleCategory> articleCategoryList = articleCategoryService.queryAllList();
         String[] categoryNameArray = new String[articleCategoryList.size()];
         int[] readCountArray = new int[articleCategoryList.size()];
@@ -83,6 +83,9 @@ public class ArticleDetailsController {
 
         data.put("categoryNameArray",categoryNameArray);
         data.put("readCountArray",readCountArray);
+        if(max == 0){
+            max = 1;
+        }
         data.put("max",max);
 
         return ResponseUtil.ok(data);

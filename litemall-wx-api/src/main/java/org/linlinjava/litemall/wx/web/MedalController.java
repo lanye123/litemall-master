@@ -37,6 +37,13 @@ public class MedalController {
         for(Medal medal:medals){
             if(medal.getId().equals(medalDb.getId())){
                 medal.setStatus((byte)9);
+                medal.setImgUrl(medal.getImgUrl2());
+            }
+            //该用户所属勋章等级之前的勋章也需点亮
+            if(medal.getMin()<=medalDetailsService.getScoreByUserId(userId,null,null)){
+                //前端要求只传一个有效图片地址
+                medal.setStatus((byte)9);
+                medal.setImgUrl(medal.getImgUrl2());
             }
         }
         data.put("medals",medals);

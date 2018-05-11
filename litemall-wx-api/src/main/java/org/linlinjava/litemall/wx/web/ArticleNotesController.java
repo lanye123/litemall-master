@@ -3,7 +3,9 @@ package org.linlinjava.litemall.wx.web;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.service.ArticleNotesService;
+import org.linlinjava.litemall.db.service.MedalDetailsService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,10 +21,18 @@ import java.util.Map;
 public class ArticleNotesController {
     @Autowired
     private ArticleNotesService articleNotesService;
+    @Autowired
+    private MedalDetailsService medalDetailsService;
 
     @RequestMapping("detail")
-    public Object detail(@RequestParam Integer id){
-        ArticleNotes notes=articleNotesService.findByID(id);
+    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@LoginUser Integer userId){
+        ArticleNotes notes=articleNotesService.findByID(notesId);
+        if(articleId == null){
+            ResponseUtil.badArgument();
+        }
+        if(userId == null){
+            ResponseUtil.badArgument();
+        }
         Map<String, Object> data = new HashMap<>();
             data.put("id",notes.getId());
             data.put("articleId",notes.getArtileId());
@@ -36,6 +46,7 @@ public class ArticleNotesController {
             data.put("author",notes.getAuthor());
             data.put("photoName",notes.getPhotoName());
             data.put("render",notes.getRender());
+            data.put("flag", medalDetailsService.countSeletive(notesId,articleId,userId,null,null,null,null,"",""));
             return ResponseUtil.ok(data);
     }
 }
