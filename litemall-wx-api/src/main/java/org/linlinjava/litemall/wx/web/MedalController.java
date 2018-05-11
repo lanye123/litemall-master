@@ -1,11 +1,16 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -24,7 +29,11 @@ public class MedalController {
             return ResponseUtil.unlogin();
         }
 
-        return ResponseUtil.ok(medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null)));
+        Map<String,Object> data = new HashMap<>();
+        data.put("medals",medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null)));
+        data.put("score",medalDetailsService.getScoreByUserId(userId,null,null));
+
+        return ResponseUtil.ok(data);
     }
 
     /**

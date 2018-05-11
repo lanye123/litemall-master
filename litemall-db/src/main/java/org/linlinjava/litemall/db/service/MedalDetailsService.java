@@ -61,7 +61,7 @@ public class MedalDetailsService {
      *@Description:返回用户的勋章
      *@Date:9:50 2018/5/8
      */
-    public Medal getMedalByScore(int score) {
+    public List<Medal> getMedalByScore(int score) {
         List<Medal> medals = medalService.getMedal(null);
         int min;
         for(int i = medals.size();i>0;i--){
@@ -71,11 +71,13 @@ public class MedalDetailsService {
                 min = medals.get(i-1).getMin();
             }
             if(score>=min){
-                return medals.get(i-1);
+                medals.get(i-1).setStatus((byte)9);
+                return medals;
             }
         }
-
-        return medals.get(0);
+        medals.get(0).setStatus((byte)9);
+        return medals;
+        //return medals.get(0);
     }
 
     /**
