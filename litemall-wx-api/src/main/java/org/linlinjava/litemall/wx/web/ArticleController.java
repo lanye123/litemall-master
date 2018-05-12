@@ -2,14 +2,8 @@ package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.db.domain.Article;
-import org.linlinjava.litemall.db.domain.ArticleCollection;
-import org.linlinjava.litemall.db.domain.ArticleNotes;
-import org.linlinjava.litemall.db.domain.LitemallAddress;
-import org.linlinjava.litemall.db.service.ArticleCollectionService;
-import org.linlinjava.litemall.db.service.ArticleCommentService;
-import org.linlinjava.litemall.db.service.ArticleNotesService;
-import org.linlinjava.litemall.db.service.ArticleService;
+import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +26,8 @@ public class ArticleController {
     private ArticleCollectionService articleCollectionService;
     @Autowired
     private ArticleCommentService articleCommentService;
+    @Autowired
+    private ArticleCategoryService articleCategoryService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -85,6 +81,8 @@ public class ArticleController {
         data.put("photo_url",article.getPhotoUrl());
         data.put("photo_name",article.getPhotoName());
         data.put("article_id",article.getArticleId());
+        ArticleCategory category=articleCategoryService.findById(article.getArticleId());
+        data.put("category_name",category.getName());
         data.put("category_id",article.getCategoryId());
         data.put("title",article.getTitle());
         data.put("brief",article.getBrief());

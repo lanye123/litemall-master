@@ -54,6 +54,7 @@ public class ArticleCommentController {
             articleCommentVo.put("status",comment.getStatus());
             articleCommentVo.put("createDate",comment.getCreateDate());
             articleCommentVo.put("countReply",countReply);
+            articleCommentVo.put("countPraise",countPraise);
             LitemallUser user=litemallUserService.queryById(comment.getFromUserid());
             articleCommentVo.put("nickname",user.getNickname());
             articleCommentVo.put("avatar",user.getAvatar());
