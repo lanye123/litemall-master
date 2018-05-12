@@ -45,6 +45,7 @@ public class ArticleNotesController {
             data.put("daodu",notes.getDaodu());
             data.put("author",notes.getAuthor());
             data.put("photoName",notes.getPhotoName());
+            data.put("photoUrl",notes.getPhotoUrl());
             data.put("render",notes.getRender());
             data.put("flag", medalDetailsService.countSeletive(notesId,articleId,userId,null,null,null,null,"",""));
             return ResponseUtil.ok(data);
