@@ -26,7 +26,7 @@ public class ArticleDetailsController {
      *@Date:13:44 2018/5/7
      */
     @PostMapping("add")
-    public Object list(@LoginUser Integer userId,@RequestBody ArticleDetails articleDetails){
+    public Object list(@RequestParam Integer userId,@RequestBody ArticleDetails articleDetails){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -59,7 +59,7 @@ public class ArticleDetailsController {
      *@Date:14:50 2018/5/7
      */
     @GetMapping("list")
-    public Object list(@LoginUser Integer userId){
+    public Object list(@RequestParam Integer userId){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -97,7 +97,7 @@ public class ArticleDetailsController {
      *@Date:15:20 2018/5/7
      */
     @PostMapping("update")
-    public Object save(@LoginUser Integer userId, @RequestBody ArticleDetails articleDetails) {
+    public Object save(@RequestParam Integer userId, @RequestBody ArticleDetails articleDetails) {
         if(userId == null){
             return ResponseUtil.unlogin();
         }

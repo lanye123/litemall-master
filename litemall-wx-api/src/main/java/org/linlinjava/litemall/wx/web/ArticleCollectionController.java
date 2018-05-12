@@ -33,7 +33,7 @@ public class ArticleCollectionController {
      *@Date:13:44 2018/5/7
      */
     @GetMapping("list")
-    public Object list(@LoginUser Integer userId){
+    public Object list(@RequestParam Integer userId){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -77,7 +77,7 @@ public class ArticleCollectionController {
      *@Date:14:20 2018/5/7
      */
     @GetMapping("view")
-    public Object view(@LoginUser Integer userId,Integer artile_id){
+    public Object view(@RequestParam Integer userId,Integer artile_id){
         if(userId == null){
             return ResponseUtil.unlogin();
         }

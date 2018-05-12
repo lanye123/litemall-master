@@ -26,7 +26,7 @@ public class MedalController {
      *@Date:16:44 2018/5/7
      */
     @GetMapping("medal")
-    public Object getMedal(@LoginUser Integer userId){
+    public Object getMedal(@RequestParam Integer userId){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -58,7 +58,7 @@ public class MedalController {
      *@Date:16:20 2018/5/7
      */
     @PostMapping("add")
-    public Object add(@LoginUser Integer userId, @RequestBody MedalDetails medalDetails){
+    public Object add(@RequestParam Integer userId, @RequestBody MedalDetails medalDetails){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
