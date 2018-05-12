@@ -25,7 +25,7 @@ public class ArticleNotesController {
     private MedalDetailsService medalDetailsService;
 
     @RequestMapping("detail")
-    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@LoginUser Integer userId){
+    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@RequestParam Integer userId){
         ArticleNotes notes=articleNotesService.findByID(notesId);
         if(articleId == null){
             ResponseUtil.badArgument();
