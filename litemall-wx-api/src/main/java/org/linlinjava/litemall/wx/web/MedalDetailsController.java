@@ -10,6 +10,7 @@ import org.linlinjava.litemall.wx.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
@@ -31,7 +32,7 @@ public class MedalDetailsController {
      *@Date:16:44 2018/5/8
      */
     @GetMapping("totalList")
-    public Object getTotalList(@LoginUser Integer userId){
+    public Object getTotalList(@RequestParam Integer userId){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -76,7 +77,7 @@ public class MedalDetailsController {
      *@Date:10:30 2018/5/9
      */
     @GetMapping("weekList")
-    public Object getWeekList(@LoginUser Integer userId){
+    public Object getWeekList(@RequestParam Integer userId){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
