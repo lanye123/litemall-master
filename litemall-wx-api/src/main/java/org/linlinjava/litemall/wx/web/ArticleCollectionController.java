@@ -64,6 +64,7 @@ public class ArticleCollectionController {
             dataItem.put("photoUrl",article.getPhotoUrl());
             dataItem.put("daodu",article.getDaodu());
             dataItem.put("author",article.getAuthor());
+            dataItem.put("articleId",article.getArticleId());
             returnArticles.add(dataItem);
         }
         data.put("returnArticles", returnArticles);

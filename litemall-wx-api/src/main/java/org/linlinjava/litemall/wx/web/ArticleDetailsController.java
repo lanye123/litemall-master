@@ -26,8 +26,8 @@ public class ArticleDetailsController {
      *@Date:13:44 2018/5/7
      */
     @PostMapping("add")
-    public Object list(@RequestParam Integer userId,@RequestBody ArticleDetails articleDetails){
-        if(userId == null){
+    public Object list(@RequestBody ArticleDetails articleDetails){
+        if(articleDetails.getUserId() == null){
             return ResponseUtil.unlogin();
         }
         if(articleDetails == null){
@@ -43,8 +43,7 @@ public class ArticleDetailsController {
             return ResponseUtil.badArgument();
         }
 
-        articleDetails.setUserId(userId);
-        List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,articleDetails.getCategoryId(),articleDetails.getArticleId(),articleDetails.getNotesId());
+        List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(articleDetails.getUserId(),articleDetails.getCategoryId(),articleDetails.getArticleId(),articleDetails.getNotesId());
         if(articleDetailsList!=null && articleDetailsList.size()>0){
             return ResponseUtil.ok(articleDetails);
         }
