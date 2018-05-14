@@ -52,7 +52,6 @@ public class ArticleController {
             articleVo.put("category_id",article.getCategoryId());
             articleVo.put("title",article.getTitle());
             articleVo.put("brief",article.getBrief());
-            ZonedDateTime zdt2 = article.getCreateDate().atZone(zoneId);
             articleVo.put("create_date",dateFormat.format(Date.from(article.getCreateDate().atZone(zoneId).toInstant())));
             articleVo.put("daodu",article.getDaodu());
             articleVo.put("author",article.getAuthor());

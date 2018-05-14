@@ -44,12 +44,16 @@ public class MedalController {
                 //前端要求只传一个有效图片地址
                 medal.setStatus((byte)9);
                 medal.setImgUrl(medal.getImgUrl2());
+
             }
         }
         data.put("medals",medals);
         data.put("score",medalDetailsService.getScoreByUserId(userId,null,null));
         data.put("comment",medalDb.getComment());
         data.put("img_url3",medalDb.getImgUrl3());
+        data.put("img_url2",medalDb.getImgUrl2());
+        data.put("name",medalDb.getName());
+        data.put("imgName",medalDb.getImgName());
 
         return ResponseUtil.ok(data);
     }
