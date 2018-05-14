@@ -11,10 +11,7 @@ import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/wx/articleComment")
@@ -35,9 +32,9 @@ public class ArticleCommentController {
      * @return
      */
     @GetMapping("list")
-    public Object list(Integer article_id){
+    public Object list(Integer article_id,String flag){
         //文章评论列表
-        List<ArticleComment> articleCommentList=articleCommentService.querySelective(article_id);
+        List<ArticleComment> articleCommentList=articleCommentService.querySelective(article_id,flag);
         //文章评论数
         Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleCommentVoList = new ArrayList<>(articleCommentList.size());
@@ -57,8 +54,17 @@ public class ArticleCommentController {
             LitemallUser user=litemallUserService.queryById(comment.getFromUserid());
             articleCommentVo.put("nickname",user.getNickname());
             articleCommentVo.put("avatar",user.getAvatar());
+            articleCommentVo.put("countPraise",countPraise);
             articleCommentVoList.add(articleCommentVo);
-
+        }
+        if("1".equals(flag)){
+            Collections.sort(articleCommentVoList, (s1, s2) ->{
+                if(s1 == null)
+                    return -1;
+                if(s2 == null)
+                    return 1;
+                return (int)s2.get("countPraise") - (int)s1.get("countPraise");
+            });
         }
         return ResponseUtil.ok(articleCommentVoList);
     }

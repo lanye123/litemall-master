@@ -6,19 +6,17 @@ import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleCollection;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.domain.LitemallAddress;
-import org.linlinjava.litemall.db.service.ArticleCollectionService;
-import org.linlinjava.litemall.db.service.ArticleCommentService;
-import org.linlinjava.litemall.db.service.ArticleNotesService;
-import org.linlinjava.litemall.db.service.ArticleService;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 @RestController
 @RequestMapping("/wx/article")
@@ -32,6 +30,8 @@ public class ArticleController {
     private ArticleCollectionService articleCollectionService;
     @Autowired
     private ArticleCommentService articleCommentService;
+    @Autowired
+    private MedalDetailsService medalDetailsService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -42,6 +42,8 @@ public class ArticleController {
         List<Article> articleList=articleService.querySelective(categoryIds,flag);
         //Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ZoneId zoneId = ZoneId.systemDefault();
         for(Article article : articleList){
             Map<String, Object> articleVo = new HashMap<>();
             articleVo.put("photo_url",article.getPhotoUrl());
@@ -50,13 +52,15 @@ public class ArticleController {
             articleVo.put("category_id",article.getCategoryId());
             articleVo.put("title",article.getTitle());
             articleVo.put("brief",article.getBrief());
-            articleVo.put("create_date",article.getCreateDate());
+            ZonedDateTime zdt2 = article.getCreateDate().atZone(zoneId);
+            articleVo.put("create_date",dateFormat.format(Date.from(article.getCreateDate().atZone(zoneId).toInstant())));
             articleVo.put("daodu",article.getDaodu());
             articleVo.put("author",article.getAuthor());
             articleVo.put("status",article.getStatus());
             articleVo.put("is_view",article.getIsView());
             articleVo.put("reader",article.getReader());
             articleVo.put("update_date",article.getUpdateDate());
+            articleVo.put("readCount",article.getReadCount());
             articleVoList.add(articleVo);
         }
         return ResponseUtil.ok(articleVoList);
@@ -68,11 +72,14 @@ public class ArticleController {
     *@Date:22:54 2018/5/4
     */
     @GetMapping("detail")
-    public Object detail(Integer article_id) {
+    public Object detail(Integer article_id, Integer userId) {
         /*if(userId == null){
             return ResponseUtil.unlogin();
         }*/
         if(article_id == null){
+            return ResponseUtil.badArgument();
+        }
+        if(userId == null){
             return ResponseUtil.badArgument();
         }
 
@@ -115,6 +122,7 @@ public class ArticleController {
         }
         data.put("notesList",notesVoList);
         data.put("comentCount",comentCount);
+        data.put("flag", medalDetailsService.countSeletive(0000,article_id,userId,null,null,null,null,"",""));
         return ResponseUtil.ok(data);
     }
 /**
@@ -123,7 +131,7 @@ public class ArticleController {
     *@Date:23:24 2018/5/4
     */
     @PostMapping("collect")
-    public Object collect(Integer article_id,String status,@RequestParam Integer user_id) {
+    public Object collect(@RequestParam Integer article_id,@RequestParam String status,@RequestParam Integer user_id) {
         /*if(userId == null){
             return ResponseUtil.unlogin();
         }*/

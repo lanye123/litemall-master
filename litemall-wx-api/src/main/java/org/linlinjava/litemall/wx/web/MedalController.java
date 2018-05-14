@@ -48,6 +48,8 @@ public class MedalController {
         }
         data.put("medals",medals);
         data.put("score",medalDetailsService.getScoreByUserId(userId,null,null));
+        data.put("comment",medalDb.getComment());
+        data.put("img_url3",medalDb.getImgUrl3());
 
         return ResponseUtil.ok(data);
     }
