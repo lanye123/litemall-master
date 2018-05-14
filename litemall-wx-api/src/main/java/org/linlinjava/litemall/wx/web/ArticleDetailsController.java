@@ -27,11 +27,11 @@ public class ArticleDetailsController {
      */
     @PostMapping("add")
     public Object list(@RequestBody ArticleDetails articleDetails){
-        if(articleDetails.getUserId() == null){
-            return ResponseUtil.unlogin();
-        }
         if(articleDetails == null){
             return ResponseUtil.badArgument();
+        }
+        if(articleDetails.getUserId() == null){
+            return ResponseUtil.unlogin();
         }
         if(articleDetails.getCategoryId() == null){
             return ResponseUtil.badArgument();

@@ -77,6 +77,8 @@ public class ArticleController {
         }
 
         Article article=articleService.findById(article_id);
+        article.setReadCount(article.getReadCount()+1);
+        articleService.updateById(article);
         if(article == null){
             return ResponseUtil.badArgumentValue();
         }
@@ -95,6 +97,7 @@ public class ArticleController {
         data.put("is_view",article.getIsView());
         data.put("reader",article.getReader());
         data.put("update_date",article.getUpdateDate());
+        data.put("readCount",article.getReadCount());
         //评论数量
         Long comentCount=articleCommentService.countSelective(article_id);
         //目录列表

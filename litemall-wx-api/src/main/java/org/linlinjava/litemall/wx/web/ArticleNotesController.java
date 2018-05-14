@@ -27,6 +27,8 @@ public class ArticleNotesController {
     @RequestMapping("detail")
     public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@RequestParam Integer userId){
         ArticleNotes notes=articleNotesService.findByID(notesId);
+        notes.setReadCount(notes.getReadCount()+1);
+        articleNotesService.update(notes);
         if(articleId == null){
             ResponseUtil.badArgument();
         }
@@ -48,6 +50,7 @@ public class ArticleNotesController {
             data.put("photoUrl",notes.getPhotoUrl());
             data.put("render",notes.getRender());
             data.put("flag", medalDetailsService.countSeletive(notesId,articleId,userId,null,null,null,null,"",""));
+            data.put("readCount",notes.getReadCount());
             return ResponseUtil.ok(data);
     }
 }
