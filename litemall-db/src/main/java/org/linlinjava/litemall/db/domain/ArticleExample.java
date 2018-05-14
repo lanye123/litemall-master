@@ -207,11 +207,6 @@ public class ArticleExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIdsContainsTo(String value) {
-            addCriterion("JSON_CONTAINS(category_ids, '"+value+"')");
-            return (Criteria) this;
-        }
-
         public Criteria andCategoryIdsEqualTo(String value) {
             addCriterion("category_ids =", value, "categoryIds");
             return (Criteria) this;
@@ -1049,6 +1044,76 @@ public class ArticleExample {
 
         public Criteria andUpdateDateNotBetween(Date value1, Date value2) {
             addCriterion("update_date not between", value1, value2, "updateDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlIsNull() {
+            addCriterion("head_url is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlIsNotNull() {
+            addCriterion("head_url is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlEqualTo(String value) {
+            addCriterion("head_url =", value, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlNotEqualTo(String value) {
+            addCriterion("head_url <>", value, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlGreaterThan(String value) {
+            addCriterion("head_url >", value, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlGreaterThanOrEqualTo(String value) {
+            addCriterion("head_url >=", value, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlLessThan(String value) {
+            addCriterion("head_url <", value, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlLessThanOrEqualTo(String value) {
+            addCriterion("head_url <=", value, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlLike(String value) {
+            addCriterion("head_url like", value, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlNotLike(String value) {
+            addCriterion("head_url not like", value, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlIn(List<String> values) {
+            addCriterion("head_url in", values, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlNotIn(List<String> values) {
+            addCriterion("head_url not in", values, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlBetween(String value1, String value2) {
+            addCriterion("head_url between", value1, value2, "headUrl");
+            return (Criteria) this;
+        }
+
+        public Criteria andHeadUrlNotBetween(String value1, String value2) {
+            addCriterion("head_url not between", value1, value2, "headUrl");
             return (Criteria) this;
         }
     }
