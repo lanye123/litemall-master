@@ -41,7 +41,7 @@ public class UploadController {
      * web:
      * upload-path: （jar包所在目录）/resources/static/
      */
-    //@Value("${web.upload-path}")
+    @Value("${web.upload-path}")
     private String webUploadPath;
      /** 文章管理模块图片上传
      * @param file 图片
