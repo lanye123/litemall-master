@@ -17,6 +17,7 @@
     <result column="reader" jdbcType="INTEGER" property="reader" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="read_count" jdbcType="VARCHAR" property="readCount" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -78,7 +79,7 @@
   </sql>
   <sql id="Base_Column_List">
     article_id, category_ids, category_id, title, brief, create_date, daodu, author, 
-    photo_name, photo_url, `status`, is_view, reader, update_date, head_url
+    photo_name, photo_url, `status`, is_view, reader, update_date, head_url, read_count
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleExample" resultMap="BaseResultMap">
     select
@@ -149,13 +150,13 @@
       title, brief, create_date, 
       daodu, author, photo_name, 
       photo_url, `status`, is_view, 
-      reader, update_date, head_url
+      reader, update_date, head_url, read_count
       )
     values (#{articleId,jdbcType=INTEGER}, #{categoryIds,jdbcType=CHAR}, #{categoryId,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{daodu,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{photoName,jdbcType=VARCHAR}, 
       #{photoUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{isView,jdbcType=INTEGER}, 
-      #{reader,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{headUrl,jdbcType=VARCHAR}
+      #{reader,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{headUrl,jdbcType=VARCHAR}, #{readCount,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.Article">
@@ -206,6 +207,9 @@
       <if test="headUrl != null">
         head_url,
       </if>
+      <if test="readCount != null">
+        read_count,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="articleId != null">
@@ -252,6 +256,9 @@
       </if>
       <if test="headUrl != null">
         #{headUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="readCount != null">
+        #{readCount,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -309,6 +316,9 @@
       <if test="record.headUrl != null">
         head_url = #{record.headUrl,jdbcType=VARCHAR},
       </if>
+      <if test="record.readCount != null">
+          read_count = #{record.readCount,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -330,7 +340,8 @@
       is_view = #{record.isView,jdbcType=INTEGER},
       reader = #{record.reader,jdbcType=INTEGER},
       update_date = #{record.updateDate,jdbcType=TIMESTAMP},
-      head_url = #{record.headUrl,jdbcType=VARCHAR}
+      head_url = #{record.headUrl,jdbcType=VARCHAR},
+      read_count = #{record.readCount,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -380,6 +391,9 @@
       <if test="headUrl != null">
         head_url = #{headUrl,jdbcType=VARCHAR},
       </if>
+      <if test="readCount != null">
+          read_count = #{readCount,jdbcType=VARCHAR},
+      </if>
     </set>
     where article_id = #{articleId,jdbcType=INTEGER}
   </update>
@@ -398,7 +412,8 @@
       is_view = #{isView,jdbcType=INTEGER},
       reader = #{reader,jdbcType=INTEGER},
       update_date = #{updateDate,jdbcType=TIMESTAMP},
-      head_url = #{headUrl,jdbcType=VARCHAR}
+      head_url = #{headUrl,jdbcType=VARCHAR},
+      read_count = #{readCount,jdbcType=INTEGER}
     where article_id = #{articleId,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleExample" resultMap="BaseResultMap">

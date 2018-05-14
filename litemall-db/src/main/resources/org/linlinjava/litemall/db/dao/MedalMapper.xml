@@ -13,6 +13,7 @@
     <result column="max" jdbcType="INTEGER" property="max" />
     <result column="min" jdbcType="INTEGER" property="min" />
     <result column="is_view" jdbcType="TINYINT" property="isView" />
+    <result column="img_url3" jdbcType="VARCHAR" property="imgUrl3" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `name`, img_name, img_url2, img_url, `comment`, create_date, `status`, `max`,
-    `min`, is_view
+    id, `name`, img_name, img_url2, img_url, `comment`, create_date, `status`, `max`, 
+    `min`, is_view, img_url3
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.MedalExample" resultMap="BaseResultMap">
     select
@@ -112,7 +113,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from medal
     where id = #{id,jdbcType=INTEGER}
@@ -144,14 +145,14 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into medal (`name`, img_name, img_url2,
-    img_url, `comment`, create_date,
-    `status`, `max`, `min`, is_view
-    )
-    values (#{name,jdbcType=VARCHAR}, #{imgName,jdbcType=VARCHAR}, #{imgUrl2,jdbcType=VARCHAR},
-    #{imgUrl,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP},
-    #{status,jdbcType=TINYINT}, #{max,jdbcType=INTEGER}, #{min,jdbcType=INTEGER}, #{isView,jdbcType=TINYINT}
-    )
+    insert into medal (`name`, img_name, img_url2, 
+      img_url, `comment`, create_date, 
+      `status`, `max`, `min`, is_view, 
+      img_url3)
+    values (#{name,jdbcType=VARCHAR}, #{imgName,jdbcType=VARCHAR}, #{imgUrl2,jdbcType=VARCHAR}, 
+      #{imgUrl,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=TINYINT}, #{max,jdbcType=INTEGER}, #{min,jdbcType=INTEGER}, #{isView,jdbcType=TINYINT}, 
+      #{imgUrl3,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.Medal">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -189,6 +190,9 @@
       <if test="isView != null">
         is_view,
       </if>
+      <if test="imgUrl3 != null">
+        img_url3,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="name != null">
@@ -220,6 +224,9 @@
       </if>
       <if test="isView != null">
         #{isView,jdbcType=TINYINT},
+      </if>
+      <if test="imgUrl3 != null">
+        #{imgUrl3,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -265,6 +272,9 @@
       <if test="record.isView != null">
         is_view = #{record.isView,jdbcType=TINYINT},
       </if>
+      <if test="record.imgUrl3 != null">
+        img_url3 = #{record.imgUrl3,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -273,16 +283,17 @@
   <update id="updateByExample" parameterType="map">
     update medal
     set id = #{record.id,jdbcType=INTEGER},
-    `name` = #{record.name,jdbcType=VARCHAR},
-    img_name = #{record.imgName,jdbcType=VARCHAR},
-    img_url2 = #{record.imgUrl2,jdbcType=VARCHAR},
-    img_url = #{record.imgUrl,jdbcType=VARCHAR},
-    `comment` = #{record.comment,jdbcType=VARCHAR},
-    create_date = #{record.createDate,jdbcType=TIMESTAMP},
-    `status` = #{record.status,jdbcType=TINYINT},
-    `max` = #{record.max,jdbcType=INTEGER},
-    `min` = #{record.min,jdbcType=INTEGER},
-    is_view = #{record.isView,jdbcType=TINYINT}
+      `name` = #{record.name,jdbcType=VARCHAR},
+      img_name = #{record.imgName,jdbcType=VARCHAR},
+      img_url2 = #{record.imgUrl2,jdbcType=VARCHAR},
+      img_url = #{record.imgUrl,jdbcType=VARCHAR},
+      `comment` = #{record.comment,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      `status` = #{record.status,jdbcType=TINYINT},
+      `max` = #{record.max,jdbcType=INTEGER},
+      `min` = #{record.min,jdbcType=INTEGER},
+      is_view = #{record.isView,jdbcType=TINYINT},
+      img_url3 = #{record.imgUrl3,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -320,6 +331,9 @@
       <if test="isView != null">
         is_view = #{isView,jdbcType=TINYINT},
       </if>
+      <if test="imgUrl3 != null">
+        img_url3 = #{imgUrl3,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -334,7 +348,8 @@
       `status` = #{status,jdbcType=TINYINT},
       `max` = #{max,jdbcType=INTEGER},
       `min` = #{min,jdbcType=INTEGER},
-      is_view = #{isView,jdbcType=TINYINT}
+      is_view = #{isView,jdbcType=TINYINT},
+      img_url3 = #{imgUrl3,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.MedalExample" resultMap="BaseResultMap">
