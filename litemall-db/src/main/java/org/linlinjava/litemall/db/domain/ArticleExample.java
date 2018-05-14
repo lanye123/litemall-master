@@ -197,6 +197,11 @@ public class ArticleExample {
             return (Criteria) this;
         }
 
+        public Criteria andCategoryIdsContainsTo(String value) {
+            addCriterion("JSON_CONTAINS(category_ids, '"+value+"')");
+            return (Criteria) this;
+        }
+
         public Criteria andCategoryIdsIsNull() {
             addCriterion("category_ids is null");
             return (Criteria) this;
