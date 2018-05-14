@@ -129,29 +129,30 @@ public class ArticleController {
     *@Description:图文-收藏接口
     *@Date:23:24 2018/5/4
     */
-    @PostMapping("collect")
-    public Object collect(@RequestParam Integer article_id,@RequestParam String status,@RequestParam Integer user_id) {
+@PostMapping("collect")
+public Object collect(@RequestBody Article model) {
         /*if(userId == null){
             return ResponseUtil.unlogin();
         }*/
-        if(article_id == null){
-            return ResponseUtil.badArgument();
-        }
-        Article article=articleService.findById(article_id);
-        //保存至收藏表
-        ArticleCollection collection=new ArticleCollection();
-        collection.setArticleId(article_id);
-        collection.setUserId(user_id);
-        articleCollectionService.add(collection);
-        //更新文章阅读总数reader
-        Article article1=new Article();
-        if(article.getReader()==null){
-            article1.setReader(1);
-        }else{
-            article1.setReader(article.getReader()+1);
-        }
-        article1.setArticleId(article.getArticleId());
-        articleService.update(article1);
-        return ResponseUtil.ok(article1);
+    if(model.getArticleId() == null){
+        return ResponseUtil.badArgument();
     }
+    Article article=articleService.findById(model.getArticleId());
+    //保存至收藏表
+    ArticleCollection collection=new ArticleCollection();
+    collection.setArticleId(article.getArticleId());
+    collection.setUserId(model.getUser_id());
+    collection.setStatus(model.getStatus());
+    articleCollectionService.add(collection);
+    //更新文章阅读总数reader
+    Article article1=new Article();
+    if(article.getReader()==null){
+        article1.setReader(1);
+    }else{
+        article1.setReader(article.getReader()+1);
+    }
+    article1.setArticleId(article.getArticleId());
+    articleService.update(article1);
+    return ResponseUtil.ok(article1);
+}
 }
