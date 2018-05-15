@@ -26,8 +26,8 @@ public class ArticleCollectionController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
-        List<ArticleCollection> articleCollectionList = articleCollectionService.querySelective(articleId, userId, page, limit, sort, order);
-        int total = articleCollectionService.countSeletive(articleId, userId, page, limit, sort, order);
+        List<ArticleCollection> articleCollectionList = articleCollectionService.querySelective(articleId, userId,null, page, limit, sort, order);
+        int total = articleCollectionService.countSeletive(articleId, userId, null,page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", articleCollectionList);

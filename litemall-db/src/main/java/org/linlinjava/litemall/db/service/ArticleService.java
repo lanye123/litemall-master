@@ -22,7 +22,7 @@ public class ArticleService {
     public List<Article> querySelective(String categoryIds,String flag) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
-        if(categoryIds!=null)
+        if(!StringUtils.isEmpty(categoryIds))
             criteria.andCategoryIdsContainsTo(categoryIds);
         //criteria.andStatusNotEqualTo(1);//0启用1禁用
         //人气排序

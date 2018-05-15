@@ -31,18 +31,18 @@ public class ArticleController {
     private MedalDetailsService medalDetailsService;
     @Autowired
     private ArticleDetailsService articleDetailsService;
+    @Autowired
+    private ArticleCategoryService articleCategoryService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
     *@Date:22:46 2018/5/4
     */
     @GetMapping("list")
-    public Object list(String categoryIds,String flag){
+    public Object list(String categoryIds,String flag,Integer userId){
         List<Article> articleList=articleService.querySelective(categoryIds,flag);
         //Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        ZoneId zoneId = ZoneId.systemDefault();
         for(Article article : articleList){
             Map<String, Object> articleVo = new HashMap<>();
             articleVo.put("photo_url",article.getPhotoUrl());
@@ -59,6 +59,8 @@ public class ArticleController {
             articleVo.put("reader",article.getReader());
             articleVo.put("update_date",article.getUpdateDate());
             articleVo.put("readCount",article.getReadCount());
+            //查当前用户是否收藏了这本书
+            articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
             articleVoList.add(articleVo);
         }
         return ResponseUtil.ok(articleVoList);
@@ -89,10 +91,17 @@ public class ArticleController {
         }
 
         Map<String, Object> data = new HashMap<>();
+        String categoryIds = article.getCategoryIds();
+        String categoryName = "";
+       /* for(String categoryId:categoryIds.split(",")){
+            categoryName += articleCategoryService.findById(Integer.parseInt(categoryId)).getName()+",";
+        }*/
         data.put("photo_url",article.getPhotoUrl());
         data.put("photo_name",article.getPhotoName());
         data.put("article_id",article.getArticleId());
         data.put("category_id",article.getCategoryId());
+        data.put("categoryIds",article.getCategoryIds());
+        data.put("categoryName",categoryName);
         data.put("title",article.getTitle());
         data.put("brief",article.getBrief());
         data.put("create_date",article.getCreateDate());
@@ -127,6 +136,7 @@ public class ArticleController {
         data.put("notesList",notesVoList);
         data.put("comentCount",comentCount);
         data.put("flag", medalDetailsService.countSeletive(0000,article_id,userId,null,null,null,null,"",""));
+        data.put("collectStatus", articleCollectionService.countSeletive(article_id,userId,1,null,null,"",""));
         return ResponseUtil.ok(data);
     }
 /**
@@ -136,28 +146,40 @@ public class ArticleController {
     */
 @PostMapping("collect")
 public Object collect(@RequestBody Article model) {
-        /*if(userId == null){
-            return ResponseUtil.unlogin();
-        }*/
     if(model.getArticleId() == null){
         return ResponseUtil.badArgument();
     }
+    if(model.getUser_id() == null){
+        return ResponseUtil.badArgument();
+    }
     Article article=articleService.findById(model.getArticleId());
-    //保存至收藏表
-    ArticleCollection collection=new ArticleCollection();
-    collection.setArticleId(article.getArticleId());
-    collection.setUserId(model.getUser_id());
-    collection.setStatus(model.getStatus());
-    articleCollectionService.add(collection);
     //更新文章阅读总数reader
     Article article1=new Article();
-    if(article.getReader()==null){
-        article1.setReader(1);
-    }else{
-        article1.setReader(article.getReader()+1);
+    if(articleCollectionService.countSeletive(model.getArticleId(),model.getUser_id(),null,null,null,"","") == 0){
+        if(article.getReader()==null){
+            article1.setReader(1);
+        }else{
+            article1.setReader(article.getReader()+1);
+        }
+        article1.setArticleId(article.getArticleId());
+        articleService.update(article1);
     }
-    article1.setArticleId(article.getArticleId());
-    articleService.update(article1);
+    //保存至收藏表
+    if(model.getStatus() == 0){
+        //用户取消收藏
+        List<ArticleCollection> articleCollectionList = articleCollectionService.querySelective(model.getArticleId(),model.getUser_id(),1,null,null,"","");
+        for(ArticleCollection articleCollection:articleCollectionList){
+            articleCollection.setStatus(0);
+            articleCollectionService.update(articleCollection);
+        }
+    }else if(model.getStatus() == 1){
+        //用户收藏
+        ArticleCollection collection = new ArticleCollection();
+        collection.setArticleId(article.getArticleId());
+        collection.setUserId(model.getUser_id());
+        collection.setStatus(model.getStatus());
+        articleCollectionService.add(collection);
+    }
     return ResponseUtil.ok(article1);
 }
 }

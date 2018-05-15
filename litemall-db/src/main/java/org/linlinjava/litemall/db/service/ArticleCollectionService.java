@@ -39,7 +39,7 @@ public class ArticleCollectionService {
         return articleCollectionMapper.selectByExample(example);
     }
 
-    public List<ArticleCollection> querySelective(Integer articleId, Integer userId,Integer page, Integer size, String sort, String order) {
+    public List<ArticleCollection> querySelective(Integer articleId, Integer userId, Integer status, Integer page, Integer size, String sort, String order) {
         ArticleCollectionExample example = new ArticleCollectionExample();
         ArticleCollectionExample.Criteria criteria = example.createCriteria();
 
@@ -48,6 +48,9 @@ public class ArticleCollectionService {
         }
         if(!StringUtils.isEmpty(articleId)){
             criteria.andArticleIdEqualTo(articleId);
+        }
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status);
         }
         criteria.example().setOrderByClause("create_date desc");
 
@@ -55,7 +58,7 @@ public class ArticleCollectionService {
         return articleCollectionMapper.selectByExample(example);
     }
 
-    public int countSeletive(Integer articleId, Integer userId,Integer page, Integer size, String sort, String order) {
+    public int countSeletive(Integer articleId, Integer userId, Integer status, Integer page, Integer size, String sort, String order) {
         ArticleCollectionExample example = new ArticleCollectionExample();
         ArticleCollectionExample.Criteria criteria = example.createCriteria();
 
@@ -64,6 +67,9 @@ public class ArticleCollectionService {
         }
         if(!StringUtils.isEmpty(articleId)){
             criteria.andArticleIdEqualTo(articleId);
+        }
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status);
         }
 
         return (int) articleCollectionMapper.countByExample(example);
