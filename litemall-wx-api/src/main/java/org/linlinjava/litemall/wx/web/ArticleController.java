@@ -2,10 +2,7 @@ package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.db.domain.Article;
-import org.linlinjava.litemall.db.domain.ArticleCollection;
-import org.linlinjava.litemall.db.domain.ArticleNotes;
-import org.linlinjava.litemall.db.domain.LitemallAddress;
+import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
@@ -32,6 +29,8 @@ public class ArticleController {
     private ArticleCommentService articleCommentService;
     @Autowired
     private MedalDetailsService medalDetailsService;
+    @Autowired
+    private ArticleDetailsService articleDetailsService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -52,7 +51,7 @@ public class ArticleController {
             articleVo.put("category_id",article.getCategoryId());
             articleVo.put("title",article.getTitle());
             articleVo.put("brief",article.getBrief());
-            articleVo.put("create_date",dateFormat.format(Date.from(article.getCreateDate().atZone(zoneId).toInstant())));
+            articleVo.put("create_date",article.getCreateDate());
             articleVo.put("daodu",article.getDaodu());
             articleVo.put("author",article.getAuthor());
             articleVo.put("status",article.getStatus());
@@ -109,8 +108,14 @@ public class ArticleController {
         //目录列表
         List<ArticleNotes> notesList=articleNotesService.findByArtitleid(article_id);
         List<Map<String, Object>> notesVoList = new ArrayList<>(notesList.size());
+        List<ArticleDetails> articleDetailsList;
         for(ArticleNotes notes : notesList) {
             Map<String, Object> notesVo = new HashMap<>();
+            notesVo.put("read","no");
+            articleDetailsList = articleDetailsService.selectList(userId,null,article_id,notes.getId());
+            if(articleDetailsList!=null && articleDetailsList.size()>0){
+                notesVo.put("read","yes");
+            }
             notesVo.put("id",notes.getId());
             notesVo.put("no",notes.getNo());
             notesVo.put("name",notes.getName());

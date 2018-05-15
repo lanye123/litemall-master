@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.db.domain;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class MedalDetails {
     private Integer id;
@@ -15,7 +16,7 @@ public class MedalDetails {
 
     private Byte status;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private Byte type;
 
@@ -69,11 +70,11 @@ public class MedalDetails {
         this.status = status;
     }
 
-    public LocalDateTime getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -82,14 +83,11 @@ public class MedalDetailsController {
             return ResponseUtil.unlogin();
         }
         //拼装时间参数
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = DateUtils.getCurrentMondayDate();
-        Instant instant = date.toInstant();
-        ZoneId zoneId = ZoneId.systemDefault();
-        LocalDateTime time1 = instant.atZone(zoneId).toLocalDateTime();
+        String time1 = dateFormat.format(date);
         date = DateUtils.getPreviousSundayDate();
-        instant = date.toInstant();
-        zoneId = ZoneId.systemDefault();
-        LocalDateTime time2 = instant.atZone(zoneId).toLocalDateTime();
+        String time2 = dateFormat.format(date);
 
         Map<String,Object> data = new HashMap<>();
         Map<String,Object> dataItem;

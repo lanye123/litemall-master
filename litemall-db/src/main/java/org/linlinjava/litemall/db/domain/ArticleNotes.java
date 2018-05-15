@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.db.domain;
 
-import java.time.LocalDateTime;
 
 public class ArticleNotes {
     private Integer id;
@@ -11,7 +10,7 @@ public class ArticleNotes {
 
     private String no;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private Integer sortNo;
 
@@ -75,11 +74,11 @@ public class ArticleNotes {
         this.no = no;
     }
 
-    public LocalDateTime getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

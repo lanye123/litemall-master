@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.db.domain;
 
-import java.time.LocalDateTime;
 
 public class PraiseComment {
     private Integer id;
@@ -11,7 +10,7 @@ public class PraiseComment {
 
     private Integer amount;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private Byte status;
 
@@ -47,11 +46,11 @@ public class PraiseComment {
         this.amount = amount;
     }
 
-    public LocalDateTime getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

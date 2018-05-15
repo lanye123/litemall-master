@@ -14,7 +14,7 @@ public class Article {
 
     private String brief;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private String daodu;
 
@@ -30,7 +30,7 @@ public class Article {
 
     private Integer reader;
 
-    private Date updateDate;
+    private String updateDate;
 
     private String headUrl;
 
@@ -94,11 +94,11 @@ public class Article {
         this.brief = brief;
     }
 
-    public LocalDateTime getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
@@ -158,11 +158,11 @@ public class Article {
         this.reader = reader;
     }
 
-    public Date getUpdateDate() {
+    public String getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
 

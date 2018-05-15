@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.db.domain;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -586,52 +585,52 @@ public class ArticleCommentExample {
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateEqualTo(LocalDateTime value) {
+        public Criteria andCreateDateEqualTo(String value) {
             addCriterion("create_date =", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateNotEqualTo(LocalDateTime value) {
+        public Criteria andCreateDateNotEqualTo(String value) {
             addCriterion("create_date <>", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateGreaterThan(LocalDateTime value) {
+        public Criteria andCreateDateGreaterThan(String value) {
             addCriterion("create_date >", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateGreaterThanOrEqualTo(LocalDateTime value) {
+        public Criteria andCreateDateGreaterThanOrEqualTo(String value) {
             addCriterion("create_date >=", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateLessThan(LocalDateTime value) {
+        public Criteria andCreateDateLessThan(String value) {
             addCriterion("create_date <", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateLessThanOrEqualTo(LocalDateTime value) {
+        public Criteria andCreateDateLessThanOrEqualTo(String value) {
             addCriterion("create_date <=", value, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateIn(List<LocalDateTime> values) {
+        public Criteria andCreateDateIn(List<String> values) {
             addCriterion("create_date in", values, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateNotIn(List<LocalDateTime> values) {
+        public Criteria andCreateDateNotIn(List<String> values) {
             addCriterion("create_date not in", values, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateBetween(LocalDateTime value1, LocalDateTime value2) {
+        public Criteria andCreateDateBetween(String value1, String value2) {
             addCriterion("create_date between", value1, value2, "createDate");
             return (Criteria) this;
         }
 
-        public Criteria andCreateDateNotBetween(LocalDateTime value1, LocalDateTime value2) {
+        public Criteria andCreateDateNotBetween(String value1, String value2) {
             addCriterion("create_date not between", value1, value2, "createDate");
             return (Criteria) this;
         }

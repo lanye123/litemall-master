@@ -69,6 +69,7 @@ public class DateUtils {
         currentDate.set(Calendar.HOUR_OF_DAY,0);
         currentDate.set(Calendar.MINUTE,0);
         currentDate.set(Calendar.SECOND,0);
+        currentDate.set(Calendar.MILLISECOND, 0);
         Date monday = currentDate.getTime();
         return monday;
     }
@@ -100,9 +101,10 @@ public class DateUtils {
         int mondayPlus = getMondayPlus();
         GregorianCalendar currentDate = new GregorianCalendar();
         currentDate.add(GregorianCalendar.DATE, mondayPlus +6);
-        currentDate.set(Calendar.HOUR_OF_DAY,0);
-        currentDate.set(Calendar.MINUTE,0);
-        currentDate.set(Calendar.SECOND,0);
+        currentDate.set(Calendar.HOUR_OF_DAY, 23);
+        currentDate.set(Calendar.MINUTE, 59);
+        currentDate.set(Calendar.SECOND, 59);
+        currentDate.set(Calendar.MILLISECOND, 999);
         Date monday = currentDate.getTime();
         return monday;
     }

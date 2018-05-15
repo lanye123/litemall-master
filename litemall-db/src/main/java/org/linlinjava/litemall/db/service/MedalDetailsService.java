@@ -31,7 +31,7 @@ public class MedalDetailsService {
         medalDetailsMapper.updateByPrimaryKeySelective(medalDetails);
     }
 
-    public List<MedalDetails> selectList(Integer userId, Integer medalId, Integer articleId, Integer notesId,LocalDateTime time1,LocalDateTime time2) {
+    public List<MedalDetails> selectList(Integer userId, Integer medalId, Integer articleId, Integer notesId,String time1,String time2) {
         MedalDetailsExample example = new MedalDetailsExample();
         MedalDetailsExample.Criteria criteria = example.createCriteria();
 
@@ -83,7 +83,7 @@ public class MedalDetailsService {
      *@Description:返回用户的成长值
      *@Date:9:50 2018/5/8
      */
-    public int getScoreByUserId(Integer userId, LocalDateTime time1,LocalDateTime time2) {
+    public int getScoreByUserId(Integer userId, String time1,String time2) {
         MedalDetailsExample example = new MedalDetailsExample();
         MedalDetailsExample.Criteria criteria = example.createCriteria();
 

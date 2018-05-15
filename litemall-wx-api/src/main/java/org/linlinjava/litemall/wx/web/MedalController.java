@@ -64,8 +64,11 @@ public class MedalController {
      *@Date:16:20 2018/5/7
      */
     @PostMapping("add")
-    public Object add(@RequestParam Integer userId, @RequestBody MedalDetails medalDetails){
-        if(userId == null){
+    public Object add(@RequestBody MedalDetails medalDetails){
+        if(medalDetails == null){
+            return ResponseUtil.badArgument();
+        }
+        if(medalDetails.getUserId() == null){
             return ResponseUtil.unlogin();
         }
         medalDetailsService.add(medalDetails);

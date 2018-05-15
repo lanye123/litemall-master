@@ -111,7 +111,7 @@ public class ArticleCollectionController {
             articleCollectionService.add(collection);
         } else {
             collection.setUserId(userId);
-            collection.setStatus(false);
+            collection.setStatus(1);
             articleCollectionService.update(collection);
         }
         return ResponseUtil.ok();
