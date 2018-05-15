@@ -1,5 +1,8 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
@@ -91,11 +94,11 @@ public class ArticleController {
         }
 
         Map<String, Object> data = new HashMap<>();
-        String categoryIds = article.getCategoryIds();
+        JSONArray categoryIds = JSON.parseArray(article.getCategoryIds());
         String categoryName = "";
-       /* for(String categoryId:categoryIds.split(",")){
-            categoryName += articleCategoryService.findById(Integer.parseInt(categoryId)).getName()+",";
-        }*/
+        for(Object categoryId:categoryIds){
+            categoryName += articleCategoryService.findById((Integer) categoryId).getName()+",";
+        }
         data.put("photo_url",article.getPhotoUrl());
         data.put("photo_name",article.getPhotoName());
         data.put("article_id",article.getArticleId());
