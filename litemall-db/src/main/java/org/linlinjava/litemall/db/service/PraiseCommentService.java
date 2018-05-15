@@ -21,4 +21,20 @@ public class PraiseCommentService {
         }
         return (int)praiseCommentMapper.countByExample(example);
     }
+
+    public void add(PraiseComment comment) {
+        praiseCommentMapper.insertSelective(comment);
+    }
+
+    public PraiseComment querySelective(Integer comment_id) {
+        PraiseCommentExample example=new PraiseCommentExample();
+        PraiseCommentExample.Criteria criteria=example.createCriteria();
+        criteria.andCommentIdEqualTo(comment_id);
+        return (PraiseComment) praiseCommentMapper.selectByExample(example);
+
+    }
+
+    public void update(PraiseComment comment1) {
+        praiseCommentMapper.updateByPrimaryKey(comment1);
+    }
 }
