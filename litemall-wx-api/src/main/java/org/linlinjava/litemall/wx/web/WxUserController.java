@@ -18,11 +18,12 @@ public class WxUserController {
     private LitemallUserService litemallUserService;
 
     @PostMapping("/create")
-    public Object create(@LoginUser Integer userId, @RequestBody LitemallUser user){
-        if(userId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create(@RequestBody LitemallUser user){
         logger.debug(user);
+
+        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),null,null,"","")>0){
+            return ResponseUtil.fail(501,"openId已存在");
+        }
 
         litemallUserService.add(user);
         return ResponseUtil.ok(user);

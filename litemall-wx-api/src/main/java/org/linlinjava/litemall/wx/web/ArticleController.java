@@ -2,20 +2,14 @@ package org.linlinjava.litemall.wx.web;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
-import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 @RestController
@@ -156,9 +150,17 @@ public Object collect(@RequestBody Article model) {
         return ResponseUtil.badArgument();
     }
     Article article=articleService.findById(model.getArticleId());
+
     //更新文章阅读总数reader
     Article article1=new Article();
     if(articleCollectionService.countSeletive(model.getArticleId(),model.getUser_id(),null,null,null,"","") == 0){
+        //加成长值
+        MedalDetails medalDetails = new MedalDetails();
+        medalDetails.setUserId(model.getUser_id());
+        medalDetails.setArticleId(model.getArticleId());
+        medalDetails.setAmount(10);
+        medalDetails.setNotesId(0);
+        medalDetailsService.add(medalDetails);
         if(article.getReader()==null){
             article1.setReader(1);
         }else{

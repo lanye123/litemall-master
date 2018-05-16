@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.wx.util;
+package org.linlinjava.litemall.db.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,6 +14,8 @@ import java.util.GregorianCalendar;
 public class DateUtils {
 
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static void main(String args[]){
         System.out.println(getCurrentMonday(dateFormat));
@@ -72,6 +74,40 @@ public class DateUtils {
         currentDate.set(Calendar.MILLISECOND, 0);
         Date monday = currentDate.getTime();
         return monday;
+    }
+
+    /**
+      * @author lanye
+      * @Description 获得当天的开始时间
+      * @Date 2018/5/16 14:33
+      * @Param []
+      * @return java.lang.String
+      **/
+    public static String getDayStartString() {
+        Calendar todayStart = Calendar.getInstance();
+        todayStart.set(Calendar.HOUR_OF_DAY, 0);
+        todayStart.set(Calendar.MINUTE, 0);
+        todayStart.set(Calendar.SECOND, 0);
+        todayStart.set(Calendar.MILLISECOND, 0);
+        String dayStart = dateFormat2.format(todayStart.getTime());
+        return dayStart;
+    }
+
+    /**
+      * @author lanye
+      * @Description 获得当天的结束时间
+      * @Date 2018/5/16 14:33
+      * @Param []
+      * @return java.lang.String
+      **/
+    public static String getDayEndString() {
+        Calendar todayEnd = Calendar.getInstance();
+        todayEnd.set(Calendar.HOUR_OF_DAY, 23);
+        todayEnd.set(Calendar.MINUTE, 59);
+        todayEnd.set(Calendar.SECOND, 59);
+        todayEnd.set(Calendar.MILLISECOND, 999);
+        String dayEnd = dateFormat2.format(todayEnd.getTime());
+        return dayEnd;
     }
 
     /**

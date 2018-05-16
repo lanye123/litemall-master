@@ -5,6 +5,7 @@ import org.linlinjava.litemall.db.dao.MedalDetailsMapper;
 import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
 import org.linlinjava.litemall.db.domain.MedalDetailsExample;
+import org.linlinjava.litemall.db.util.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,7 +25,10 @@ public class MedalDetailsService {
      *@Date:23:24 2018/5/7
      */
     public void add(MedalDetails medalDetails) {
-        medalDetailsMapper.insertSelective(medalDetails);
+        if(this.getScoreByUserId(medalDetails.getUserId(),DateUtils.getDayStartString(),DateUtils.getDayEndString())<300){
+            this.getScoreByUserId(medalDetails.getUserId(),DateUtils.getDayStartString(),DateUtils.getDayEndString());
+        }
+        //medalDetailsMapper.insertSelective(medalDetails);
     }
 
     public void update(MedalDetails medalDetails) {

@@ -359,5 +359,8 @@
     <if test="replyId != null">
       and reply_id = #{replyId,jdbcType=INTEGER}
     </if>
+    <if test="content != null">
+      order by ${content}
+    </if>
   </select>
 </mapper>

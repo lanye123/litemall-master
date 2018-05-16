@@ -54,7 +54,9 @@ public class ArticleCollectionService {
         }
         criteria.example().setOrderByClause("create_date desc");
 
-        PageHelper.startPage(page, size);
+        if(page!=null && size!=null){
+            PageHelper.startPage(page, size);
+        }
         return articleCollectionMapper.selectByExample(example);
     }
 

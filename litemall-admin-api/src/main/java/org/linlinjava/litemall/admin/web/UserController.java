@@ -31,8 +31,8 @@ public class UserController {
         if(adminId == null){
             return ResponseUtil.fail401();
         }
-        List<LitemallUser> userList = userService.querySelective(username, mobile, page, limit, sort, order);
-        int total = userService.countSeletive(username, mobile, page, limit, sort, order);
+        List<LitemallUser> userList = userService.querySelective(username, mobile, "",page, limit, sort, order);
+        int total = userService.countSeletive(username, mobile,"", page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", userList);
@@ -46,7 +46,7 @@ public class UserController {
             return ResponseUtil.fail402();
         }
 
-        int total = userService.countSeletive(username, null, null, null, null, null);
+        int total = userService.countSeletive(username, "","" ,null, null, null, null);
         if(total == 0){
             return ResponseUtil.ok("不存在");
         }

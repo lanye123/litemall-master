@@ -32,7 +32,7 @@ public class LitemallUserService {
         userMapper.updateByPrimaryKeySelective(user);
     }
 
-    public List<LitemallUser> querySelective(String username, String mobile, Integer page, Integer size, String sort, String order) {
+    public List<LitemallUser> querySelective(String username, String mobile, String weixinOpenid,  Integer page, Integer size, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
 
@@ -41,6 +41,9 @@ public class LitemallUserService {
         }
         if(!StringUtils.isEmpty(mobile)){
             criteria.andMobileEqualTo(mobile);
+        }
+        if(!StringUtils.isEmpty(weixinOpenid)){
+            criteria.andWeixinOpenidEqualTo(weixinOpenid);
         }
         criteria.andDeletedEqualTo(false);
 
@@ -48,7 +51,7 @@ public class LitemallUserService {
         return userMapper.selectByExample(example);
     }
 
-    public int countSeletive(String username, String mobile, Integer page, Integer size, String sort, String order) {
+    public int countSeletive(String username, String mobile, String weixinOpenid, Integer page, Integer size, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
 
@@ -57,6 +60,9 @@ public class LitemallUserService {
         }
         if(!StringUtils.isEmpty(mobile)){
             criteria.andMobileEqualTo(mobile);
+        }
+        if(!StringUtils.isEmpty(weixinOpenid)){
+            criteria.andWeixinOpenidEqualTo(weixinOpenid);
         }
         criteria.andDeletedEqualTo(false);
 

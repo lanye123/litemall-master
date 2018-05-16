@@ -84,7 +84,7 @@ public class ArticleCommentController {
      */
 
     @GetMapping("detail")
-    public Object detail(Integer id){
+    public Object detail(Integer id,Integer status){
         if(id == null){
             return ResponseUtil.badArgument();
         }
@@ -98,6 +98,11 @@ public class ArticleCommentController {
         ArticleReply reply=new ArticleReply();
         reply.setCommentId(id);
         //获取评论详情信息、回复信息、回复人，回复人图像，回复点赞数
+        if(status == 0){
+            reply.setContent("create_date desc");
+        }else if(status == 1){
+            reply.setContent("amount desc");
+        }
         List<ArticleReply> replyList=articleReplyService.queryByList(reply);
         data.put("replyList",replyList);
         return ResponseUtil.ok(data);
