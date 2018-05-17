@@ -47,7 +47,9 @@ public class LitemallUserService {
         }
         criteria.andDeletedEqualTo(false);
 
-        PageHelper.startPage(page, size);
+        if(page!=null && size!=null){
+            PageHelper.startPage(page, size);
+        }
         return userMapper.selectByExample(example);
     }
 

@@ -51,23 +51,27 @@ public class ArticleService {
         articleMapper.updateByPrimaryKeySelective(article);
     }
 
-    public List<Article> queryBySelective(String title,String author, Integer page, Integer limit, String sort, String order) {
+    public List<Article> queryBySelective(String title,String author,Integer articleId, Integer page, Integer limit, String sort, String order) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(title))
             criteria.andTitleLike("%" + title + "%");
         if(!StringUtils.isEmpty(author))
             criteria.andTitleLike("%" + author + "%");
+        if(!StringUtils.isEmpty(articleId))
+            criteria.andArticleIdEqualTo(articleId);
         return articleMapper.selectByExample(example);
     }
 
-    public int countSelective(String title, String author, Integer page, Integer limit, String sort, String order) {
+    public int countSelective(String title, String author, Integer articleId,Integer page, Integer limit, String sort, String order) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(title))
             criteria.andTitleLike("%" + title + "%");
         if(!StringUtils.isEmpty(author))
             criteria.andTitleLike("%" + author + "%");
+        if(!StringUtils.isEmpty(articleId))
+            criteria.andArticleIdEqualTo(articleId);
         return (int) articleMapper.countByExample(example);
     }
 

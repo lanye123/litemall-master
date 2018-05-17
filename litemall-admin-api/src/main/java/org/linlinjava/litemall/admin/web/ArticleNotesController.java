@@ -26,6 +26,7 @@ public class ArticleNotesController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
+        order = "create_date";
         List<ArticleNotes> articleNotesList = articleNotesService.querySelective(artileId, name,no,content,sortNo, page, limit, sort, order);
         int total = articleNotesService.countSelective(artileId, name,no,content,sortNo, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();

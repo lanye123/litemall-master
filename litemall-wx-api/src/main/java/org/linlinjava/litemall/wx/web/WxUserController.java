@@ -9,6 +9,8 @@ import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/wx/user")
 public class WxUserController {
@@ -22,7 +24,7 @@ public class WxUserController {
         logger.debug(user);
 
         if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),null,null,"","")>0){
-            return ResponseUtil.fail(501,"openId已存在");
+            return ResponseUtil.ok(litemallUserService.querySelective("","",user.getWeixinOpenid(),null,null,"","").get(0));
         }
 
         litemallUserService.add(user);

@@ -17,13 +17,13 @@ public class ArticleController {
     private ArticleService articleService;
 
     @GetMapping("/list")
-    public Object list(String title,String author,
+    public Object list(String title,String author,Integer articleId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
-        List<Article> articleList = articleService.queryBySelective(title,author, page, limit, sort, order);
-        int total = articleService.countSelective(title,author, page, limit, sort, order);
+        List<Article> articleList = articleService.queryBySelective(title,author,articleId, page, limit, sort, order);
+        int total = articleService.countSelective(title,author,articleId, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", articleList);
