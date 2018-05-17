@@ -128,6 +128,15 @@ public class ArticleController {
             notesVo.put("content",notes.getContent());
             notesVo.put("status",notes.getStatus());
             notesVo.put("sort_no",notes.getSortNo());
+            notesVo.put("brief",notes.getBrief());
+            notesVo.put("create_date",notes.getCreateDate());
+            notesVo.put("daodu",notes.getDaodu());
+            notesVo.put("author",notes.getAuthor());
+            notesVo.put("status",notes.getStatus());
+            notesVo.put("reader",notes.getRender());
+            notesVo.put("photo_url",notes.getPhotoUrl());
+            notesVo.put("photo_name",notes.getPhotoName());
+            notesVo.put("article_id",notes.getArtileId());
             notesVoList.add(notesVo);
         }
         data.put("notesList",notesVoList);
