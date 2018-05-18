@@ -26,9 +26,8 @@ public class MedalDetailsService {
      */
     public void add(MedalDetails medalDetails) {
         if(this.getScoreByUserId(medalDetails.getUserId(),DateUtils.getDayStartString(),DateUtils.getDayEndString())<300){
-            this.getScoreByUserId(medalDetails.getUserId(),DateUtils.getDayStartString(),DateUtils.getDayEndString());
+            medalDetailsMapper.insertSelective(medalDetails);
         }
-        //medalDetailsMapper.insertSelective(medalDetails);
     }
 
     public void update(MedalDetails medalDetails) {
