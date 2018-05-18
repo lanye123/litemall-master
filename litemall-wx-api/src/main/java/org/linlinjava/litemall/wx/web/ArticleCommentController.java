@@ -52,8 +52,10 @@ public class ArticleCommentController {
             articleCommentVo.put("createDate",comment.getCreateDate());
             articleCommentVo.put("countReply",countReply);
             LitemallUser user=litemallUserService.queryById(comment.getFromUserid());
-            articleCommentVo.put("nickname",user.getNickname());
-            articleCommentVo.put("avatar",user.getAvatar());
+            if(user!=null){
+                articleCommentVo.put("nickname",user.getNickname());
+                articleCommentVo.put("avatar",user.getAvatar());
+            }
             articleCommentVo.put("countPraise",countPraise);
             articleCommentVoList.add(articleCommentVo);
         }

@@ -33,9 +33,9 @@ public class ArticleDetailsController {
         if(articleDetails.getUserId() == null){
             return ResponseUtil.unlogin();
         }
-        if(articleDetails.getCategoryId() == null){
+        /*if(articleDetails.getCategoryId() == null){
             return ResponseUtil.badArgument();
-        }
+        }*/
         if(articleDetails.getArticleId() == null){
             return ResponseUtil.badArgument();
         }
