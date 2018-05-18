@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class PraiseCommentService {
@@ -26,11 +27,11 @@ public class PraiseCommentService {
         praiseCommentMapper.insertSelective(comment);
     }
 
-    public PraiseComment querySelective(Integer comment_id) {
+    public List<PraiseComment> querySelective(Integer comment_id) {
         PraiseCommentExample example=new PraiseCommentExample();
         PraiseCommentExample.Criteria criteria=example.createCriteria();
         criteria.andCommentIdEqualTo(comment_id);
-        return (PraiseComment) praiseCommentMapper.selectByExample(example);
+        return praiseCommentMapper.selectByExample(example);
 
     }
 

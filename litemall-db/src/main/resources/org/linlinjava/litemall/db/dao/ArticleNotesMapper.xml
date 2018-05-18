@@ -17,6 +17,7 @@
     <result column="photo_name" jdbcType="VARCHAR" property="photoName" />
     <result column="render" jdbcType="INTEGER" property="render" />
     <result column="read_count" jdbcType="INTEGER" property="readCount" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.linlinjava.litemall.db.domain.ArticleNotes">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
@@ -81,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, artile_id, `name`, `no`, create_date, sort_no, `status`, brief, article_name, 
-    daodu, author, photo_url, photo_name, render, read_count
+    daodu, author, photo_url, photo_name, render, read_count,content
   </sql>
   <sql id="Blob_Column_List">
     content
