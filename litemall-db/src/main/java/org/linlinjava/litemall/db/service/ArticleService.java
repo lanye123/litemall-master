@@ -60,6 +60,8 @@ public class ArticleService {
             criteria.andTitleLike("%" + author + "%");
         if(!StringUtils.isEmpty(articleId))
             criteria.andArticleIdEqualTo(articleId);
+        if(!StringUtils.isEmpty(order))
+            criteria.example().setOrderByClause(order);
         return articleMapper.selectByExample(example);
     }
 
