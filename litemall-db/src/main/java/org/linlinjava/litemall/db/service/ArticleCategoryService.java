@@ -61,4 +61,8 @@ public class ArticleCategoryService {
     public void deleteById(Integer categoryId) {
         ArticleCategoryMapper.deleteByPrimaryKey(categoryId);
     }
+
+    public List<ArticleCategory> queryByList(Integer userId){
+      return  ArticleCategoryMapper.queryByList(userId);
+    }
 }

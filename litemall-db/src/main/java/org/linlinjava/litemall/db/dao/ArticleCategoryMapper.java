@@ -129,4 +129,6 @@ public interface ArticleCategoryMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     ArticleCategory selectOneByExampleSelective(@Param("example") ArticleCategoryExample example, @Param("selective") ArticleCategory.Column ... selective);
+
+    List<ArticleCategory> queryByList(Integer userId);
 }

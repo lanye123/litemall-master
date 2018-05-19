@@ -82,12 +82,11 @@ public class ArticleCommentController {
 
     /**
      *
-     * @param id
      * @return
      */
 
     @GetMapping("detail")
-    public Object detail(Integer id,Integer status){
+    public Object detail(Integer id,Integer status,Integer userId){
         if(id == null){
             return ResponseUtil.badArgument();
         }
@@ -120,19 +119,24 @@ public class ArticleCommentController {
             articleReplyVo.put("content",articleReply.getContent());
             articleReplyVo.put("replyId",articleReply.getReplyId());
             articleReplyVo.put("fromUserid",articleReply.getFromUserid());
+            articleReplyVo.put("fromAvatar",articleReply.getFrom_avatar());
+            articleReplyVo.put("fromNickname",articleReply.getFrom_nickname());
             articleReplyVo.put("status",articleReply.getStatus());
             articleReplyVo.put("replyType",articleReply.getReplyType());
-            articleReplyVo.put("toUserid",articleReply.getToUserid());
             articleReplyVo.put("createDate",articleReply.getCreateDate());
-            LitemallUser user=litemallUserService.queryById(comment.getFromUserid());
+            articleReplyVo.put("amount",articleReply.getAmount());
+            articleReplyVo.put("toUserid",articleReply.getToUserid());
+            articleReplyVo.put("toNickname",articleReply.getTo_nickname());
+            articleReplyVo.put("toAvatar",articleReply.getTo_avatar());
+            /*LitemallUser user=litemallUserService.queryById(comment.getFromUserid());
             if(user!=null){
                 articleReplyVo.put("nickname",user.getNickname());
                 articleReplyVo.put("avatar",user.getAvatar());
-            }
-            articleReplyVo.put("praiseStatus",praiseCommentService.countComment(null,comment.getFromUserid(),articleReply.getId()));
+            }*/
+            articleReplyVo.put("praiseStatus",praiseCommentService.countComment(null,userId,articleReply.getId()));
             articleReplyVoList.add(articleReplyVo);
         }
-        articleReplyVoList.add(data);
+        //articleReplyVoList.add(data);
         return ResponseUtil.ok(articleReplyVoList);
     }
 }
