@@ -27,7 +27,7 @@ public class ArticleDetailsService {
         articleDetailsMapper.updateByPrimaryKeySelective(articleDetails);
     }
 
-    public List<ArticleDetails> selectList(Integer userId,Integer categoryId,Integer articleId,Integer notesId) {
+    public List<ArticleDetails> selectList(Integer userId,Integer categoryId,Integer articleId,Integer notesId,String categoryIds) {
         ArticleDetailsExample example = new ArticleDetailsExample();
         ArticleDetailsExample.Criteria criteria = example.createCriteria();
 
@@ -42,13 +42,16 @@ public class ArticleDetailsService {
         }
         if(!StringUtils.isEmpty(notesId)){
             criteria.andNotesIdEqualTo(notesId);
+        }
+        if(!StringUtils.isEmpty(categoryIds)){
+            criteria.andCategoryIdsContainsTo(categoryIds);
         }
         criteria.example().setOrderByClause("create_date desc");
 
         return articleDetailsMapper.selectByExample(example);
     }
 
-    public List<ArticleDetails> querySelective(Integer categoryId,Integer articleId,Integer notesId, Integer userId,Integer page, Integer size, String sort, String order) {
+    public List<ArticleDetails> querySelective(Integer categoryId,Integer articleId,Integer notesId, Integer userId,String categoryIds,Integer page, Integer size, String sort, String order) {
         ArticleDetailsExample example = new ArticleDetailsExample();
         ArticleDetailsExample.Criteria criteria = example.createCriteria();
 
@@ -63,6 +66,9 @@ public class ArticleDetailsService {
         }
         if(!StringUtils.isEmpty(notesId)){
             criteria.andNotesIdEqualTo(notesId);
+        }
+        if(!StringUtils.isEmpty(categoryIds)){
+            criteria.andCategoryIdsContainsTo(categoryIds);
         }
         criteria.example().setOrderByClause("create_date desc");
 
@@ -70,7 +76,7 @@ public class ArticleDetailsService {
         return articleDetailsMapper.selectByExample(example);
     }
 
-    public int countSeletive(Integer userId, Integer categoryId, Integer articleId, Integer notesId) {
+    public int countSeletive(Integer userId, Integer categoryId, Integer articleId, Integer notesId,String categoryIds) {
         ArticleDetailsExample example = new ArticleDetailsExample();
         ArticleDetailsExample.Criteria criteria = example.createCriteria();
 
@@ -85,6 +91,9 @@ public class ArticleDetailsService {
         }
         if(!StringUtils.isEmpty(notesId)){
             criteria.andNotesIdEqualTo(notesId);
+        }
+        if(!StringUtils.isEmpty(categoryIds)){
+            criteria.andCategoryIdsContainsTo(categoryIds);
         }
 
         return (int) articleDetailsMapper.countByExample(example);
