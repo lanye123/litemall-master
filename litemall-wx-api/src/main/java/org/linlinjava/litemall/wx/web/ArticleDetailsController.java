@@ -75,15 +75,13 @@ public class ArticleDetailsController {
             data.put("count",0);
             return ResponseUtil.ok(data);
         }*/
-        List<ArticleCategory> articleCategoryList = articleCategoryService.queryAllList();
+        List<ArticleCategory> articleCategoryList = articleCategoryService.queryByList(userId);
         String[] categoryNameArray = new String[articleCategoryList.size()];
         int[] readCountArray = new int[articleCategoryList.size()];
         int max = 0;
         for(int i = 0;i<articleCategoryList.size();i++){
             categoryNameArray[i] = articleCategoryList.get(i).getName();
-            Integer CategoryId = articleCategoryList.get(i).getCategoryId();
-            String CategoryIds = articleCategoryList.get(i).getCategoryId()+"";
-            readCountArray[i] = articleDetailsService.selectList(userId,articleCategoryList.get(i).getCategoryId(),null,null,JSONObject.toJSONString(articleCategoryList.get(i).getCategoryId())).size();
+            readCountArray[i] = articleCategoryList.get(i).getAmount();//articleDetailsService.selectList(userId,articleCategoryList.get(i).getCategoryId(),null,null).size();
             if(readCountArray[i]>max){
                 max = readCountArray[i];
             }
