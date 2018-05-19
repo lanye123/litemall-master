@@ -52,9 +52,9 @@ public class ArticleReplyController {
     }
 
     @PostMapping("/delete")
-    public Object delete(Integer id){
+    public Object delete(@RequestBody ArticleReply articleReply){
 
-        articleReplyService.deleteById(id);
-        return ResponseUtil.ok(id);
+        articleReplyService.deleteById(articleReply.getId());
+        return ResponseUtil.ok(articleReply);
     }
 }

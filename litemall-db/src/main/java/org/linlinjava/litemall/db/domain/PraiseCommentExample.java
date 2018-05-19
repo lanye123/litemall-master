@@ -150,6 +150,11 @@ public class PraiseCommentExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "user_id");
+            return (Criteria) this;
+        }
+
         public Criteria andIdNotEqualTo(Integer value) {
             addCriterion("id <>", value, "id");
             return (Criteria) this;

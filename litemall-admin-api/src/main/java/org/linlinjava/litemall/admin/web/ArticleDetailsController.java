@@ -53,9 +53,9 @@ public class ArticleDetailsController {
 
 
     @PostMapping("/delete")
-    public Object delete(Integer id){
+    public Object delete(@RequestBody ArticleDetails articleDetails){
 
-        articleDetailsService.deleteById(id);
-        return ResponseUtil.ok(id);
+        articleDetailsService.deleteById(articleDetails.getId());
+        return ResponseUtil.ok(articleDetails);
     }
 }

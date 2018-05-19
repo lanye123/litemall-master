@@ -27,15 +27,30 @@ public class PraiseCommentService {
         praiseCommentMapper.insertSelective(comment);
     }
 
-    public List<PraiseComment> querySelective(Integer comment_id) {
+    public List<PraiseComment> querySelective(Integer reply_id,Integer comment_id,Integer user_id) {
         PraiseCommentExample example=new PraiseCommentExample();
         PraiseCommentExample.Criteria criteria=example.createCriteria();
+        if(!StringUtils.isEmpty(comment_id))
         criteria.andCommentIdEqualTo(comment_id);
+        if(!StringUtils.isEmpty(reply_id))
+            criteria.andReplyIdEqualTo(reply_id);
+        if(!StringUtils.isEmpty(user_id))
+            criteria.andUserIdEqualTo(user_id);
         return praiseCommentMapper.selectByExample(example);
 
     }
 
     public void update(PraiseComment comment1) {
         praiseCommentMapper.updateByPrimaryKey(comment1);
+    }
+
+    public Integer countComment(Integer id, Integer fromUserid) {
+        PraiseCommentExample example=new PraiseCommentExample();
+        PraiseCommentExample.Criteria criteria=example.createCriteria();
+        if(id!=null)
+            criteria.andCommentIdEqualTo(id);
+        if(fromUserid!=null)
+            criteria.andUserIdEqualTo(fromUserid);
+        return (int)praiseCommentMapper.countByExample(example);
     }
 }

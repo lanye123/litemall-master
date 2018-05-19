@@ -57,6 +57,7 @@ public class ArticleCommentController {
                 articleCommentVo.put("avatar",user.getAvatar());
             }
             articleCommentVo.put("countPraise",countPraise);
+            articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),comment.getFromUserid()));
             articleCommentVoList.add(articleCommentVo);
         }
         if("1".equals(flag)){
@@ -106,6 +107,7 @@ public class ArticleCommentController {
             reply.setContent("amount desc");
         }
         List<ArticleReply> replyList=articleReplyService.queryByList(reply);
+
         data.put("replyList",replyList);
         return ResponseUtil.ok(data);
     }

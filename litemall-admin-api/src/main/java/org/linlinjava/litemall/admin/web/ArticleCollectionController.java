@@ -59,9 +59,9 @@ public class ArticleCollectionController {
     }
 
     @PostMapping("/delete")
-    public Object delete(Integer id){
+    public Object delete(@RequestBody ArticleCollection articleCollection){
 
-        articleCollectionService.deleteById(id);
-        return ResponseUtil.ok(id);
+        articleCollectionService.deleteById(articleCollection.getId());
+        return ResponseUtil.ok(articleCollection);
     }
 }

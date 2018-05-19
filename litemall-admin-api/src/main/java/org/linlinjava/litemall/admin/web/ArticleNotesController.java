@@ -21,14 +21,14 @@ public class ArticleNotesController {
     private ArticleNotesService articleNotesService;
 
     @GetMapping("/list")
-    public Object list(Integer artileId, String name,String no,String content,Integer sortNo,
+    public Object list(String artileName, String name,String no,String content,Integer sortNo,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
         order = "create_date";
-        List<ArticleNotes> articleNotesList = articleNotesService.querySelective(artileId, name,no,content,sortNo, page, limit, sort, order);
-        int total = articleNotesService.countSelective(artileId, name,no,content,sortNo, page, limit, sort, order);
+        List<ArticleNotes> articleNotesList = articleNotesService.querySelective(artileName, name,no,content,sortNo, page, limit, sort, order);
+        int total = articleNotesService.countSelective(artileName, name,no,content,sortNo, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", articleNotesList);

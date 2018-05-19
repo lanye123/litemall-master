@@ -24,15 +24,15 @@ public class ArticleNotesService {
         return articleNotesMapper.selectByExample(example);
     }
 
-    public List<ArticleNotes> querySelective(Integer artileId, String name,String no,String content,Integer sortNo,Integer page, Integer size, String sort, String order) {
+    public List<ArticleNotes> querySelective(String artileName, String name,String no,String content,Integer sortNo,Integer page, Integer size, String sort, String order) {
         ArticleNotesExample example = new ArticleNotesExample();
         ArticleNotesExample.Criteria criteria = example.createCriteria();
 
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%"+name+"%");
         }
-        if(!StringUtils.isEmpty(artileId)){
-            criteria.andArtileIdEqualTo(artileId);
+        if(!StringUtils.isEmpty(artileName)){
+            criteria.andArticleNameLike(artileName);
         }
         if(!StringUtils.isEmpty(no)){
             criteria.andNoLike("%" + no + "%");
@@ -51,15 +51,15 @@ public class ArticleNotesService {
         return articleNotesMapper.selectByExample(example);
     }
 
-    public int countSelective(Integer artileId, String name,String no,String content,Integer sortNo,Integer page, Integer size, String sort, String order) {
+    public int countSelective(String artileName, String name,String no,String content,Integer sortNo,Integer page, Integer size, String sort, String order) {
         ArticleNotesExample example = new ArticleNotesExample();
         ArticleNotesExample.Criteria criteria = example.createCriteria();
 
         if(!StringUtils.isEmpty(name)){
             criteria.andNameLike("%"+name+"%");
         }
-        if(!StringUtils.isEmpty(artileId)){
-            criteria.andArtileIdEqualTo(artileId);
+        if(!StringUtils.isEmpty(artileName)){
+            criteria.andArticleNameLike(artileName);
         }
         if(!StringUtils.isEmpty(no)){
             criteria.andNoLike("%" + no + "%");

@@ -52,9 +52,9 @@ public class ArticleCommentController {
     }
 
     @PostMapping("/delete")
-    public Object delete(Integer id){
+    public Object delete(@RequestBody ArticleComment articleComment){
 
-        articleCommentService.deleteById(id);
-        return ResponseUtil.ok(id);
+        articleCommentService.deleteById(articleComment.getId());
+        return ResponseUtil.ok(articleComment);
     }
 }

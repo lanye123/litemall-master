@@ -14,6 +14,16 @@ public class PraiseComment {
 
     private Byte status;
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    private Integer userId;
+
     public Integer getId() {
         return id;
     }
