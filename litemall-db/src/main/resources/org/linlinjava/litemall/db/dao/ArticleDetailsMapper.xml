@@ -9,6 +9,7 @@
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="category_ids" jdbcType="VARCHAR" property="categoryIds" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -140,10 +141,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into article_details (category_id, article_id, notes_id, 
-      user_id, `status`, create_date
+      user_id, `status`, create_date,category_ids
       )
     values (#{categoryId,jdbcType=INTEGER}, #{articleId,jdbcType=INTEGER}, #{notesId,jdbcType=INTEGER}, 
-      #{userId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}
+      #{userId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP},#{categoryIds,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.ArticleDetails">
@@ -154,6 +155,9 @@
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="categoryId != null">
         category_id,
+      </if>
+      <if test="categoryIds != null">
+        category_ids,
       </if>
       <if test="articleId != null">
         article_id,
@@ -173,7 +177,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="categoryId != null">
-        #{categoryId,jdbcType=INTEGER},
+        #{categoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryIds != null">
+        #{categoryIds,jdbcType=INTEGER},
       </if>
       <if test="articleId != null">
         #{articleId,jdbcType=INTEGER},
@@ -207,6 +214,9 @@
       <if test="record.categoryId != null">
         category_id = #{record.categoryId,jdbcType=INTEGER},
       </if>
+      <if test="record.categoryIds != null">
+          category_ids = #{record.categoryIds,jdbcType=VARCHAR},
+      </if>
       <if test="record.articleId != null">
         article_id = #{record.articleId,jdbcType=INTEGER},
       </if>
@@ -231,6 +241,7 @@
     update article_details
     set id = #{record.id,jdbcType=INTEGER},
       category_id = #{record.categoryId,jdbcType=INTEGER},
+      category_idS = #{record.categoryIdS,jdbcType=VARCHAR},
       article_id = #{record.articleId,jdbcType=INTEGER},
       notes_id = #{record.notesId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
@@ -245,6 +256,9 @@
     <set>
       <if test="categoryId != null">
         category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryIds != null">
+        category_ids = #{categoryIds,jdbcType=VARCHAR},
       </if>
       <if test="articleId != null">
         article_id = #{articleId,jdbcType=INTEGER},
@@ -267,6 +281,7 @@
   <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.ArticleDetails">
     update article_details
     set category_id = #{categoryId,jdbcType=INTEGER},
+      category_ids = #{categoryIds,jdbcType=VARCHAR},
       article_id = #{articleId,jdbcType=INTEGER},
       notes_id = #{notesId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},

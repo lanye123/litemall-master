@@ -1,11 +1,13 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.alibaba.fastjson.JSONObject;
+import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleCategory;
 import org.linlinjava.litemall.db.domain.ArticleDetails;
 import org.linlinjava.litemall.db.service.ArticleCategoryService;
 import org.linlinjava.litemall.db.service.ArticleDetailsService;
+import org.linlinjava.litemall.db.service.ArticleService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
-import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,8 @@ public class ArticleDetailsController {
     private ArticleDetailsService articleDetailsService;
     @Autowired
     private ArticleCategoryService articleCategoryService;
+    @Autowired
+    private ArticleService articleService;
     /**
      *@Author:lanye
      *@Description:添加用户浏览记录接口
@@ -42,8 +46,11 @@ public class ArticleDetailsController {
         if(articleDetails.getNotesId() == null){
             return ResponseUtil.badArgument();
         }
+        Article article = articleService.findById(articleDetails.getArticleId());
+        articleDetails.setCategoryId(article.getCategoryId());
+        articleDetails.setCategoryIds(article.getCategoryIds());
 
-        List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(articleDetails.getUserId(),articleDetails.getCategoryId(),articleDetails.getArticleId(),articleDetails.getNotesId());
+        List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(articleDetails.getUserId(),articleDetails.getCategoryId(),articleDetails.getArticleId(),articleDetails.getNotesId(),article.getCategoryIds());
         if(articleDetailsList!=null && articleDetailsList.size()>0){
             return ResponseUtil.ok(articleDetails);
         }
@@ -74,7 +81,9 @@ public class ArticleDetailsController {
         int max = 0;
         for(int i = 0;i<articleCategoryList.size();i++){
             categoryNameArray[i] = articleCategoryList.get(i).getName();
-            readCountArray[i] = articleDetailsService.selectList(userId,articleCategoryList.get(i).getCategoryId(),null,null).size();
+            Integer CategoryId = articleCategoryList.get(i).getCategoryId();
+            String CategoryIds = articleCategoryList.get(i).getCategoryId()+"";
+            readCountArray[i] = articleDetailsService.selectList(userId,articleCategoryList.get(i).getCategoryId(),null,null,JSONObject.toJSONString(articleCategoryList.get(i).getCategoryId())).size();
             if(readCountArray[i]>max){
                 max = readCountArray[i];
             }

@@ -1,12 +1,14 @@
 package org.linlinjava.litemall.wx.web;
 
-import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.domain.Article;
+import org.linlinjava.litemall.db.domain.ArticleCollection;
+import org.linlinjava.litemall.db.domain.ArticleDetails;
+import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.service.ArticleCollectionService;
 import org.linlinjava.litemall.db.service.ArticleDetailsService;
 import org.linlinjava.litemall.db.service.ArticleNotesService;
 import org.linlinjava.litemall.db.service.ArticleService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
-import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,7 +54,7 @@ public class ArticleCollectionController {
                 continue;
             }
             article = articleService.findById(articleCollection.getArticleId());
-            readCount = articleDetailsService.selectList(userId,null,articleCollection.getArticleId(),null).size();
+            readCount = articleDetailsService.selectList(userId,null,articleCollection.getArticleId(),null,"").size();
             BigDecimal bd = new BigDecimal(readCount);
             bd = bd.divide(new BigDecimal(allCount),2,BigDecimal.ROUND_HALF_UP);
             dataItem.put("percentage",bd.toString());
@@ -85,7 +87,7 @@ public class ArticleCollectionController {
         }
         Map<String,Object> data = new HashMap<>();
         List<ArticleNotes> articleNotes = articleNotesService.findByArtitleid(artile_id);
-        List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,null,artile_id,null);
+        List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,null,artile_id,null,"");
         data.put("articleNotes",articleNotes);
         data.put("readNo",articleDetailsList.size());
         return ResponseUtil.ok(data);

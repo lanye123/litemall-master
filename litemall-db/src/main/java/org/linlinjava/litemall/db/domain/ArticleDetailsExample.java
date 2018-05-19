@@ -220,6 +220,11 @@ public class ArticleDetailsExample {
             return (Criteria) this;
         }
 
+        public Criteria andCategoryIdsContainsTo(String value) {
+            addCriterion("JSON_CONTAINS(category_ids, '"+value+"')");
+            return (Criteria) this;
+        }
+
         public Criteria andCategoryIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("category_id >=", value, "categoryId");
             return (Criteria) this;

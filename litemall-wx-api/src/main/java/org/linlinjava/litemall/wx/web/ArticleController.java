@@ -118,7 +118,7 @@ public class ArticleController {
         for(ArticleNotes notes : notesList) {
             Map<String, Object> notesVo = new HashMap<>();
             notesVo.put("read","no");
-            articleDetailsList = articleDetailsService.selectList(userId,null,article_id,notes.getId());
+            articleDetailsList = articleDetailsService.selectList(userId,null,article_id,notes.getId(),"");
             if(articleDetailsList!=null && articleDetailsList.size()>0){
                 notesVo.put("read","yes");
             }
