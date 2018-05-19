@@ -57,7 +57,7 @@ public class ArticleCommentController {
                 articleCommentVo.put("avatar",user.getAvatar());
             }
             articleCommentVo.put("countPraise",countPraise);
-            articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),comment.getFromUserid()));
+            articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),comment.getFromUserid(),null));
             articleCommentVoList.add(articleCommentVo);
         }
         if("1".equals(flag)){
@@ -108,7 +108,31 @@ public class ArticleCommentController {
         }
         List<ArticleReply> replyList=articleReplyService.queryByList(reply);
 
+        List<Map<String, Object>> articleReplyVoList = new ArrayList<>(replyList.size());
+        for (ArticleReply articleReply:replyList){
+            //统计文章回复数量
+//            Integer countReply=articleReplyService.countReply(comment.getId());
+            //统计点赞数量
+//            Integer countPraise=praiseCommentService.count(comment.getId());
+            Map<String, Object> articleReplyVo = new HashMap<>();
+            articleReplyVo.put("id",articleReply.getId());
+            articleReplyVo.put("commentId",articleReply.getCommentId());
+            articleReplyVo.put("content",articleReply.getContent());
+            articleReplyVo.put("replyId",articleReply.getReplyId());
+            articleReplyVo.put("fromUserid",articleReply.getFromUserid());
+            articleReplyVo.put("status",articleReply.getStatus());
+            articleReplyVo.put("replyType",articleReply.getReplyType());
+            articleReplyVo.put("toUserid",articleReply.getToUserid());
+            articleReplyVo.put("createDate",articleReply.getCreateDate());
+            LitemallUser user=litemallUserService.queryById(comment.getFromUserid());
+            if(user!=null){
+                articleReplyVo.put("nickname",user.getNickname());
+                articleReplyVo.put("avatar",user.getAvatar());
+            }
+            articleReplyVo.put("praiseStatus",praiseCommentService.countComment(null,comment.getFromUserid(),articleReply.getId()));
+            articleReplyVoList.add(articleReplyVo);
+        }
         data.put("replyList",replyList);
-        return ResponseUtil.ok(data);
+        return ResponseUtil.ok(articleReplyVoList);
     }
 }
