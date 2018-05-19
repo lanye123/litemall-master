@@ -107,7 +107,7 @@ public class ArticleCommentController {
             reply.setContent("amount desc");
         }
         List<ArticleReply> replyList=articleReplyService.queryByList(reply);
-
+            data.put("replyList",replyList);
         List<Map<String, Object>> articleReplyVoList = new ArrayList<>(replyList.size());
         for (ArticleReply articleReply:replyList){
             //统计文章回复数量
@@ -132,7 +132,7 @@ public class ArticleCommentController {
             articleReplyVo.put("praiseStatus",praiseCommentService.countComment(null,comment.getFromUserid(),articleReply.getId()));
             articleReplyVoList.add(articleReplyVo);
         }
-        data.put("replyList",replyList);
+        articleReplyVoList.add(data);
         return ResponseUtil.ok(articleReplyVoList);
     }
 }
