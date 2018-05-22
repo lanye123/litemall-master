@@ -48,6 +48,9 @@ public class ArticleController {
             articleVo.put("category_id",article.getCategoryId());
             articleVo.put("title",article.getTitle());
             articleVo.put("brief",article.getBrief());
+            if(article.getCreateDate().contains(".0")){
+                article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
+            }
             articleVo.put("create_date",article.getCreateDate());
             articleVo.put("daodu",article.getDaodu());
             articleVo.put("author",article.getAuthor());
@@ -102,6 +105,9 @@ public class ArticleController {
         data.put("categoryName",categoryName);
         data.put("title",article.getTitle());
         data.put("brief",article.getBrief());
+        if(article.getCreateDate().contains(".0")){
+            article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
+        }
         data.put("create_date",article.getCreateDate());
         data.put("daodu",article.getDaodu());
         data.put("author",article.getAuthor());
@@ -130,6 +136,9 @@ public class ArticleController {
             notesVo.put("status",notes.getStatus());
             notesVo.put("sort_no",notes.getSortNo());
             notesVo.put("brief",notes.getBrief());
+            if(notes.getCreateDate().contains(".0")){
+                notes.setCreateDate(notes.getCreateDate().substring(0,notes.getCreateDate().length()-2));
+            }
             notesVo.put("create_date",notes.getCreateDate());
             notesVo.put("daodu",notes.getDaodu());
             notesVo.put("author",notes.getAuthor());
