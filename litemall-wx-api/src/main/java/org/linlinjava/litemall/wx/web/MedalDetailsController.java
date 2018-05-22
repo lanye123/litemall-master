@@ -124,7 +124,7 @@ public class MedalDetailsController {
       * @Param [medalDetailsList]
       * @return java.util.List<org.linlinjava.litemall.db.domain.MedalDetails>
       **/
-    private List<MedalDetails> sort(List<MedalDetails> medalDetailsList){
+    public List<MedalDetails> sort(List<MedalDetails> medalDetailsList){
         Collections.sort(medalDetailsList, (s1, s2) ->{
             if(s1 == null)
                 return -1;
@@ -141,7 +141,7 @@ public class MedalDetailsController {
      */
 
     @PostMapping("create")
-    private Object create(@RequestBody MedalDetails details){
+    public Object create(@RequestBody MedalDetails details){
        //统计文章点亮的数量
         Integer mds1=medalDetailsService.countSeletive(0,details.getArticleId(),details.getUserId(),null,null,null,null,"","");
         Integer mds2=medalDetailsService.countSeletive(details.getNotesId(),details.getArticleId(),details.getUserId(),null,null,null,null,"","");
