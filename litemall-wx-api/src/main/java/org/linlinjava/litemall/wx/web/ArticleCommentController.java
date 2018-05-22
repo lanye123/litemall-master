@@ -32,7 +32,7 @@ public class ArticleCommentController {
      * @return
      */
     @GetMapping("list")
-    public Object list(Integer article_id,String flag){
+    public Object list(Integer article_id,String flag,Integer user_id){
         //文章评论列表
         List<ArticleComment> articleCommentList=articleCommentService.querySelective(article_id,flag);
         //文章评论数
@@ -57,7 +57,7 @@ public class ArticleCommentController {
                 articleCommentVo.put("avatar",user.getAvatar());
             }
             articleCommentVo.put("countPraise",countPraise);
-            articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),comment.getFromUserid(),null));
+            articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),user_id,null));
             articleCommentVoList.add(articleCommentVo);
         }
         if("1".equals(flag)){
