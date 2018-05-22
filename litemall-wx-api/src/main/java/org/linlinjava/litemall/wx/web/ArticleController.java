@@ -138,6 +138,7 @@ public class ArticleController {
             notesVo.put("photo_url",notes.getPhotoUrl());
             notesVo.put("photo_name",notes.getPhotoName());
             notesVo.put("article_id",notes.getArtileId());
+            notesVo.put("flag", medalDetailsService.countSeletive(notes.getId(),article_id,userId,null,null,null,null,"",""));
             notesVoList.add(notesVo);
         }
         data.put("notesList",notesVoList);
