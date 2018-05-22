@@ -36,8 +36,8 @@ public class ArticleController {
     *@Date:22:46 2018/5/4
     */
     @GetMapping("list")
-    public Object list(String categoryIds,String flag,Integer userId){
-        List<Article> articleList=articleService.querySelective(categoryIds,flag);
+    private Object list(String categoryIds,String flag,Integer userId){
+        List<Article> articleList=articleService.querySelective2(categoryIds,flag);
         //Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
         for(Article article : articleList){
