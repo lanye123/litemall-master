@@ -58,6 +58,7 @@ public class ArticleController {
             articleVo.put("readCount",article.getReadCount());
             //查当前用户是否收藏了这本书
             articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
+            articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
             articleVoList.add(articleVo);
         }
         return ResponseUtil.ok(articleVoList);
@@ -141,7 +142,7 @@ public class ArticleController {
         }
         data.put("notesList",notesVoList);
         data.put("comentCount",comentCount);
-        data.put("flag", medalDetailsService.countSeletive(0000,article_id,userId,null,null,null,null,"",""));
+        data.put("flag", medalDetailsService.countSeletive(0,article_id,userId,null,null,null,null,"",""));
         data.put("collectStatus", articleCollectionService.countSeletive(article_id,userId,1,null,null,"",""));
         return ResponseUtil.ok(data);
     }
@@ -159,25 +160,6 @@ public Object collect(@RequestBody Article model) {
         return ResponseUtil.badArgument();
     }
     Article article=articleService.findById(model.getArticleId());
-
-    //更新文章阅读总数reader
-    Article article1=new Article();
-    if(articleCollectionService.countSeletive(model.getArticleId(),model.getUser_id(),null,null,null,"","") == 0){
-        //加成长值
-        MedalDetails medalDetails = new MedalDetails();
-        medalDetails.setUserId(model.getUser_id());
-        medalDetails.setArticleId(model.getArticleId());
-        medalDetails.setAmount(10);
-        medalDetails.setNotesId(0);
-        medalDetailsService.add(medalDetails);
-        if(article.getReader()==null){
-            article1.setReader(1);
-        }else{
-            article1.setReader(article.getReader()+1);
-        }
-        article1.setArticleId(article.getArticleId());
-        articleService.update(article1);
-    }
     //保存至收藏表
     if(model.getStatus() == 0){
         //用户取消收藏
@@ -188,12 +170,15 @@ public Object collect(@RequestBody Article model) {
         }
     }else if(model.getStatus() == 1){
         //用户收藏
-        ArticleCollection collection = new ArticleCollection();
-        collection.setArticleId(article.getArticleId());
-        collection.setUserId(model.getUser_id());
-        collection.setStatus(model.getStatus());
-        articleCollectionService.add(collection);
+        List<ArticleCollection> articleCollectionList = articleCollectionService.querySelective(model.getArticleId(),model.getUser_id(),null,null,null,"","");
+        if(articleCollectionList.size()==0&&articleCollectionList==null){
+            ArticleCollection collection = new ArticleCollection();
+            collection.setArticleId(model.getArticleId());
+            collection.setUserId(model.getUser_id());
+            collection.setStatus(model.getStatus());
+            articleCollectionService.add(collection);
+        }
     }
-    return ResponseUtil.ok(article1);
+    return ResponseUtil.ok();
 }
 }
