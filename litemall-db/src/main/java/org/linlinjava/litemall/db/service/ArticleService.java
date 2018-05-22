@@ -84,7 +84,10 @@ public class ArticleService {
             @Override
             public int compare(Article o1, Article o2) {
                 //字符串,则按照asicc码升序排列
-                return o1.getArticleId().compareTo(o2.getArticleId());
+                if(o1!=null && o2!=null){
+                    return o1.getArticleId().compareTo(o2.getArticleId());
+                }
+                return 0;
             }
         });
         set.addAll(articles);
