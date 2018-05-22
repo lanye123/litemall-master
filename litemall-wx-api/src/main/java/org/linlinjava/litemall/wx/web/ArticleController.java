@@ -171,12 +171,18 @@ public Object collect(@RequestBody Article model) {
     }else if(model.getStatus() == 1){
         //用户收藏
         List<ArticleCollection> articleCollectionList = articleCollectionService.querySelective(model.getArticleId(),model.getUser_id(),null,null,null,"","");
-        if(articleCollectionList.size()==0&&articleCollectionList==null){
+        if(articleCollectionList.size()==0){
             ArticleCollection collection = new ArticleCollection();
             collection.setArticleId(model.getArticleId());
             collection.setUserId(model.getUser_id());
             collection.setStatus(model.getStatus());
             articleCollectionService.add(collection);
+        }else
+        {
+            for(ArticleCollection articleCollection:articleCollectionList){
+                articleCollection.setStatus(1);
+                articleCollectionService.update(articleCollection);
+            }
         }
     }
     return ResponseUtil.ok();
