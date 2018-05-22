@@ -146,7 +146,10 @@
     </if>
   </delete>
   <insert id="insert" parameterType="org.linlinjava.litemall.db.domain.Article">
-    insert into article (article_id, category_ids, category_id, 
+    <selectKey keyProperty="articleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into article (category_ids, category_id,
       title, brief, create_date, 
       daodu, author, photo_name, 
       photo_url, `status`, is_view, 
@@ -160,11 +163,11 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.Article">
+    <selectKey keyProperty="articleId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into article
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="articleId != null">
-        article_id,
-      </if>
       <if test="categoryIds != null">
         category_ids,
       </if>

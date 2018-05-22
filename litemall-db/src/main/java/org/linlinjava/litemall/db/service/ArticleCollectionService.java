@@ -34,6 +34,7 @@ public class ArticleCollectionService {
         if(!StringUtils.isEmpty(userId)){
             criteria.andUserIdEqualTo(userId);
         }
+        criteria.andStatusEqualTo(1);
         criteria.example().setOrderByClause("create_date");
 
         return articleCollectionMapper.selectByExample(example);

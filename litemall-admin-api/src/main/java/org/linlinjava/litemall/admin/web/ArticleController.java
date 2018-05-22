@@ -58,4 +58,9 @@ public class ArticleController {
         articleService.deleteById(article.getArticleId());
         return ResponseUtil.ok();
     }
+    @PostMapping("/test")
+    public Object test(@RequestBody Article article){
+        articleService.add(article);
+        return ResponseUtil.ok(article.getArticleId());
+    }
 }

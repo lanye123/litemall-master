@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.log4j.Logger;
 import org.linlinjava.litemall.db.domain.ArticleCategory;
 import org.linlinjava.litemall.db.service.ArticleCategoryService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/wx/category")
 public class ArticleCategoryController {
+    private Logger logger = Logger.getLogger(ArticleCategoryController.class);
     @Autowired
     private ArticleCategoryService articleCategoryService;
     /**

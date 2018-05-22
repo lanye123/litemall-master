@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.log4j.Logger;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleCategory;
 import org.linlinjava.litemall.db.domain.ArticleDetails;
@@ -18,6 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/wx/articleDetails")
 public class ArticleDetailsController {
+    private Logger logger = Logger.getLogger(ArticleDetailsController.class);
     @Autowired
     private ArticleDetailsService articleDetailsService;
     @Autowired
