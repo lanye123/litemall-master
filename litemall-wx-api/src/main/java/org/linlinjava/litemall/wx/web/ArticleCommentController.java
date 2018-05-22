@@ -49,6 +49,9 @@ public class ArticleCommentController {
             articleCommentVo.put("comment",comment.getContent());
             articleCommentVo.put("fromUserid",comment.getFromUserid());
             articleCommentVo.put("status",comment.getStatus());
+            if(comment.getCreateDate().contains(".0")){
+                comment.setCreateDate(comment.getCreateDate().substring(0,comment.getCreateDate().length()-2));
+            }
             articleCommentVo.put("createDate",comment.getCreateDate());
             articleCommentVo.put("countReply",countReply);
             LitemallUser user=litemallUserService.queryById(comment.getFromUserid());
@@ -100,13 +103,15 @@ public class ArticleCommentController {
         ArticleReply reply=new ArticleReply();
         reply.setCommentId(id);
         //获取评论详情信息、回复信息、回复人，回复人图像，回复点赞数
-        if(status == 0){
-            reply.setContent("create_date desc");
-        }else if(status == 1){
-            reply.setContent("amount desc");
+        if(status!=null){
+            if(status == 0){
+                reply.setContent("create_date desc");
+            }else if(status == 1){
+                reply.setContent("amount desc");
+            }
         }
         List<ArticleReply> replyList=articleReplyService.queryByList(reply);
-            data.put("replyList",replyList);
+        data.put("replyList",replyList);
         List<Map<String, Object>> articleReplyVoList = new ArrayList<>(replyList.size());
         for (ArticleReply articleReply:replyList){
             //统计文章回复数量
@@ -123,6 +128,9 @@ public class ArticleCommentController {
             articleReplyVo.put("fromNickname",articleReply.getFrom_nickname());
             articleReplyVo.put("status",articleReply.getStatus());
             articleReplyVo.put("replyType",articleReply.getReplyType());
+            if(articleReply.getCreateDate().contains(".0")){
+                articleReply.setCreateDate(articleReply.getCreateDate().substring(0,articleReply.getCreateDate().length()-2));
+            }
             articleReplyVo.put("createDate",articleReply.getCreateDate());
             articleReplyVo.put("amount",articleReply.getAmount());
             articleReplyVo.put("toUserid",articleReply.getToUserid());
