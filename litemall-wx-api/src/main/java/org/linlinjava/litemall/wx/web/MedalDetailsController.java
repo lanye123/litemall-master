@@ -7,10 +7,7 @@ import org.linlinjava.litemall.db.service.MedalDetailsService;
 import org.linlinjava.litemall.db.util.DateUtils;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -136,6 +133,33 @@ public class MedalDetailsController {
             return s2.getAmount()-s1.getAmount();
         });
         return medalDetailsList;
+    }
+
+    /**
+     * @author leiqiang
+     * 文章点赞接口
+     */
+
+    @PostMapping("create")
+    private Object create(@RequestBody MedalDetails details){
+       //统计文章点亮的数量
+        Integer mds1=medalDetailsService.countSeletive(0,details.getArticleId(),details.getUserId(),null,null,null,null,"","");
+        Integer mds2=medalDetailsService.countSeletive(details.getNotesId(),details.getArticleId(),details.getUserId(),null,null,null,null,"","");
+        //加成长值
+            MedalDetails medalDetails = new MedalDetails();
+            medalDetails.setUserId(details.getUserId());
+            medalDetails.setArticleId(details.getArticleId());
+            medalDetails.setAmount(10);
+            //当章节ID为空的时候则点亮文章
+            if(details.getNotesId()==0){
+                medalDetails.setNotesId(0);
+            }else{
+                //当章节ID不为空的时候则点亮章节
+                medalDetails.setNotesId(details.getNotesId());
+            }
+            if(mds1==0||mds2==0)
+            medalDetailsService.add(medalDetails);
+        return ResponseUtil.ok();
     }
 
 }

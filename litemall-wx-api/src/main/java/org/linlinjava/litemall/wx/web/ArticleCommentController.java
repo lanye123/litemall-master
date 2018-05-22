@@ -38,7 +38,7 @@ public class ArticleCommentController {
         //文章评论数
         Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleCommentVoList = new ArrayList<>(articleCommentList.size());
-        for (ArticleComment comment:articleCommentList){
+            for (ArticleComment comment:articleCommentList){
             //统计文章回复数量
             Integer countReply=articleReplyService.countReply(comment.getId());
             //统计点赞数量
