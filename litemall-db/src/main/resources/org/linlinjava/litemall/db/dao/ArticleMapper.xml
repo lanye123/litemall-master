@@ -160,6 +160,9 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.Article">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="articleId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into article
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="articleId != null">

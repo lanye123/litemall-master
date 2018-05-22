@@ -64,7 +64,11 @@ public class ArticleService {
         if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
             article.setUpdateDate("create_date asc");
         }
-        if(caIds.length>1){
+        if(StringUtils.isEmpty(categoryIds)){
+            articleListReturn.addAll(articleMapper.selectByExample2(article));
+            return removeDuplicateArticle(articleListReturn);
+        }
+        if(caIds.length>=1){
             for(String categoryId:caIds){
                 article.setCategoryId(Integer.parseInt(categoryId));
                 articleListReturn.addAll(articleMapper.selectByExample2(article));
@@ -144,10 +148,28 @@ public class ArticleService {
 
     public void sycArticle(Integer articleId) {
         Article article = this.findById(articleId);
+        boolean isUpdate = false;
         if(article!=null){
             JSONArray categoryIdArray = JSON.parseArray(article.getCategoryIds());
             List<ArticleCategoryStat> articleCategoryStatList = articleCategoryStatService.queryBySelective(null,articleId,null,null,"","");
             if(categoryIdArray.size() != articleCategoryStatList.size()){
+                isUpdate = true;
+            }else{
+                //判断分类数据是否更改
+                if(articleCategoryStatList.size()>0){
+                    if(categoryIdArray.size()>0) {
+                        for (int i = 0; i < categoryIdArray.size(); i++) {
+                            for(ArticleCategoryStat articleCategoryStat:articleCategoryStatList){
+                                if(!articleCategoryStat.getCategoryId().equals(categoryIdArray.get(i))){
+                                    isUpdate = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(isUpdate){
                 //先删除 然后执行重新创建关联关系
                 articleCategoryStatService.deleteByExample(articleId);
                 if(categoryIdArray.size()>0) {
