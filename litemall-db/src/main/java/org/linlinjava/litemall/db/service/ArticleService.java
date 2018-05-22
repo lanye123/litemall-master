@@ -52,23 +52,25 @@ public class ArticleService {
         Article article = new Article();
         List<Article> articleListReturn = new ArrayList<>();
         String[] caIds = categoryIds.split(",");
-        if(caIds.length>0){
-            //人气排序
-            if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
-                article.setUpdateDate("reader desc");
-            }
-            //时间排序倒序
-            if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
-                article.setUpdateDate("create_date desc");
-            }
-            //时间排序正序
-            if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
-                article.setUpdateDate("create_date asc");
-            }
+        //人气排序
+        if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
+            article.setUpdateDate("reader desc");
+        }
+        //时间排序倒序
+        if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
+            article.setUpdateDate("create_date desc");
+        }
+        //时间排序正序
+        if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
+            article.setUpdateDate("create_date asc");
+        }
+        if(caIds.length>1){
             for(String categoryId:caIds){
                 article.setCategoryId(Integer.parseInt(categoryId));
                 articleListReturn.addAll(articleMapper.selectByExample2(article));
             }
+        }else{
+            articleListReturn.addAll(articleMapper.selectByExample2(article));
         }
         return removeDuplicateArticle(articleListReturn);
     }
