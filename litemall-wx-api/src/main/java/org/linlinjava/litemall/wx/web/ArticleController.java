@@ -40,29 +40,62 @@ public class ArticleController {
         List<Article> articleList=articleService.querySelective2(categoryIds,flag);
         //Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
-        for(Article article : articleList){
-            Map<String, Object> articleVo = new HashMap<>();
-            articleVo.put("photo_url",article.getPhotoUrl());
-            articleVo.put("photo_name",article.getPhotoName());
-            articleVo.put("article_id",article.getArticleId());
-            articleVo.put("category_id",article.getCategoryId());
-            articleVo.put("title",article.getTitle());
-            articleVo.put("brief",article.getBrief());
-            if(article.getCreateDate().contains(".0")){
-                article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
+        if(articleList!=null && articleList.size()>0){
+            for(Article article : articleList){
+                if(article==null){
+                    return ResponseUtil.ok(articleVoList);
+                }
+                Map<String, Object> articleVo = new HashMap<>();
+                if(article.getPhotoUrl()!=null){
+                    articleVo.put("photo_url",article.getPhotoUrl());
+                }
+                if(article.getPhotoName()!=null){
+                    articleVo.put("photo_name",article.getPhotoName());
+                }
+                if(article.getArticleId()!=null){
+                    articleVo.put("article_id",article.getArticleId());
+                }
+                if(article.getCategoryId()!=null){
+                    articleVo.put("category_id",article.getCategoryId());
+                }
+                if(article.getTitle()!=null){
+                    articleVo.put("title",article.getTitle());
+                }
+                if(article.getBrief()!=null){
+                    articleVo.put("brief",article.getBrief());
+                }
+                if(article.getCreateDate().contains(".0")){
+                    article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
+                }
+                if(article.getCreateDate()!=null){
+                    articleVo.put("create_date",article.getCreateDate());
+                }
+                if(article.getDaodu()!=null){
+                    articleVo.put("daodu",article.getDaodu());
+                }
+                if(article.getAuthor()!=null){
+                    articleVo.put("author",article.getAuthor());
+                }
+                if(article.getStatus()!=null){
+                    articleVo.put("status",article.getStatus());
+                }
+                if(article.getIsView()!=null){
+                    articleVo.put("is_view",article.getIsView());
+                }
+                if(article.getReader()!=null){
+                    articleVo.put("reader",article.getReader());
+                }
+                if(article.getReadCount()!=null){
+                    articleVo.put("readCount",article.getReadCount());
+                }
+                if(article.getUpdateDate()!=null){
+                    articleVo.put("update_date",article.getUpdateDate());
+                }
+                //查当前用户是否收藏了这本书
+                articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
+                articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
+                articleVoList.add(articleVo);
             }
-            articleVo.put("create_date",article.getCreateDate());
-            articleVo.put("daodu",article.getDaodu());
-            articleVo.put("author",article.getAuthor());
-            articleVo.put("status",article.getStatus());
-            articleVo.put("is_view",article.getIsView());
-            articleVo.put("reader",article.getReader());
-            articleVo.put("update_date",article.getUpdateDate());
-            articleVo.put("readCount",article.getReadCount());
-            //查当前用户是否收藏了这本书
-            articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
-            articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
-            articleVoList.add(articleVo);
         }
         return ResponseUtil.ok(articleVoList);
     }
