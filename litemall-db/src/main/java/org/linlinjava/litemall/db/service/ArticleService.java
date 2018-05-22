@@ -1,19 +1,23 @@
 package org.linlinjava.litemall.db.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import org.linlinjava.litemall.db.dao.ArticleMapper;
 import org.linlinjava.litemall.db.domain.Article;
-import org.linlinjava.litemall.db.domain.ArticleCategory;
+import org.linlinjava.litemall.db.domain.ArticleCategoryStat;
 import org.linlinjava.litemall.db.domain.ArticleExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ArticleService {
     @Resource
     private ArticleMapper articleMapper;
+    @Resource
+    private ArticleCategoryStatService articleCategoryStatService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口实现
@@ -37,6 +41,49 @@ public class ArticleService {
         return articleMapper.selectByExample(example);
     }
 
+    /**
+      * @author lanye
+      * @Description 首页导航(后台改版)
+      * @Date 2018/5/21 11:44
+      * @Param [categoryIds, flag]
+      * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
+      **/
+    public List<Article> querySelective2(String categoryIds,String flag) {
+        Article article = new Article();
+        List<Article> articleListReturn = new ArrayList<>();
+        String[] caIds = categoryIds.split(",");
+        if(caIds.length>0){
+            //人气排序
+            if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
+                article.setUpdateDate("reader desc");
+            }
+            //时间排序倒序
+            if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
+                article.setUpdateDate("create_date desc");
+            }
+            //时间排序正序
+            if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
+                article.setUpdateDate("create_date asc");
+            }
+            for(String categoryId:caIds){
+                article.setCategoryId(Integer.parseInt(categoryId));
+                articleListReturn.addAll(articleMapper.selectByExample2(article));
+            }
+        }
+        return removeDuplicateArticle(articleListReturn);
+    }
+
+    private static ArrayList<Article> removeDuplicateArticle(List<Article> articles) {
+        Set<Article> set = new TreeSet<Article>(new Comparator<Article>() {
+            @Override
+            public int compare(Article o1, Article o2) {
+                //字符串,则按照asicc码升序排列
+                return o1.getArticleId().compareTo(o2.getArticleId());
+            }
+        });
+        set.addAll(articles);
+        return new ArrayList<Article>(set);
+    }
 
     public Article findById(Integer article_id) {
 
@@ -49,6 +96,7 @@ public class ArticleService {
     */
     public void update(Article article) {
         articleMapper.updateByPrimaryKeySelective(article);
+        this.sycArticle(article.getArticleId());
     }
 
     public List<Article> queryBySelective(String title,String author,Integer articleId, Integer page, Integer limit, String sort, String order) {
@@ -79,13 +127,39 @@ public class ArticleService {
 
     public void add(Article article) {
         articleMapper.insertSelective(article);
+        this.sycArticle(article.getArticleId());
     }
 
     public void deleteById(Integer articleId) {
         articleMapper.deleteByPrimaryKey(articleId);
+        this.sycArticle(articleId);
     }
 
     public void updateById(Article article) {
         articleMapper.updateByPrimaryKeySelective(article);
+        this.sycArticle(article.getArticleId());
+    }
+
+    public void sycArticle(Integer articleId) {
+        Article article = this.findById(articleId);
+        if(article!=null){
+            JSONArray categoryIdArray = JSON.parseArray(article.getCategoryIds());
+            List<ArticleCategoryStat> articleCategoryStatList = articleCategoryStatService.queryBySelective(null,articleId,null,null,"","");
+            if(categoryIdArray.size() != articleCategoryStatList.size()){
+                //先删除 然后执行重新创建关联关系
+                articleCategoryStatService.deleteByExample(articleId);
+                if(categoryIdArray.size()>0) {
+                    ArticleCategoryStat articleCategoryStat;
+                    for (int i = 0; i < categoryIdArray.size(); i++) {
+                        articleCategoryStat = new ArticleCategoryStat();
+                        articleCategoryStat.setArticleId(articleId);
+                        articleCategoryStat.setCategoryId((Integer) categoryIdArray.get(i));
+                        articleCategoryStatService.add(articleCategoryStat);
+                    }
+                }
+            }
+        }else{
+            articleCategoryStatService.deleteByExample(articleId);
+        }
     }
 }
