@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -18,6 +20,7 @@ public class ArticleService {
     private ArticleMapper articleMapper;
     @Resource
     private ArticleCategoryStatService articleCategoryStatService;
+    private static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口实现
@@ -54,15 +57,15 @@ public class ArticleService {
         String[] caIds = categoryIds.split(",");
         //人气排序
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
-            article.setUpdateDate("reader desc");
+            article.setTitle("reader desc");
         }
         //时间排序倒序
         if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
-            article.setUpdateDate("create_date desc");
+            article.setTitle("b.create_date desc");
         }
         //时间排序正序
         if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
-            article.setUpdateDate("create_date asc");
+            article.setTitle("b.create_date asc");
         }
         if(StringUtils.isEmpty(categoryIds)){
             articleListReturn.addAll(articleMapper.selectByExample2(article));
@@ -76,7 +79,105 @@ public class ArticleService {
         }else{
             articleListReturn.addAll(articleMapper.selectByExample2(article));
         }
+        if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
+            return sortDesc(removeDuplicateArticle(articleListReturn));
+        }
+        if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
+            return sortAsc(removeDuplicateArticle(articleListReturn));
+        }
+        //人气排序
+        if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
+            return sortReader(removeDuplicateArticle(articleListReturn));
+        }
         return removeDuplicateArticle(articleListReturn);
+    }
+
+    /**
+      * @author lanye
+      * @Description 热度倒序
+      * @Date 2018/5/23 18:59
+      * @Param [articleList]
+      * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
+      **/
+    public List<Article> sortReader(List<Article> articleList){
+        Collections.sort(articleList, (s1, s2) ->{
+            if(s1 == null)
+                return -1;
+            if(s2 == null)
+                return 1;
+            return s2.getReader()-s1.getReader();
+        });
+        return articleList;
+    }
+
+    /**
+      * @author lanye
+      * @Description 时间倒序
+      * @Date 2018/5/23 18:55
+      * @Param [articleList]
+      * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
+      **/
+    public List<Article> sortDesc(List<Article> articleList){
+        Collections.sort(articleList, (s1, s2) ->{
+            if(s1 == null)
+                return -1;
+            if(s2 == null)
+                return 1;
+            if(s1.getCreateDate().contains(".0")){
+                s1.setCreateDate(s1.getCreateDate().substring(0,s1.getCreateDate().length()-2));
+            }
+            if(s2.getCreateDate().contains(".0")){
+                s2.setCreateDate(s2.getCreateDate().substring(0,s2.getCreateDate().length()-2));
+            }
+            Calendar c = Calendar.getInstance();
+            try{
+                dateFormat2.parse(s1.getCreateDate());
+                c.setTime(dateFormat2.parse(s2.getCreateDate()));
+                long a = c.getTimeInMillis();
+                dateFormat2.parse(s1.getCreateDate());
+                c.setTime(dateFormat2.parse(s1.getCreateDate()));
+                long b = c.getTimeInMillis();
+                return (int)a-(int)b;
+            }catch (ParseException e){
+                return 0;
+            }
+        });
+        return articleList;
+    }
+
+    /**
+      * @author lanye
+      * @Description 时间升序
+      * @Date 2018/5/23 18:56
+      * @Param [articleList]
+      * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
+      **/
+    public List<Article> sortAsc(List<Article> articleList){
+        Collections.sort(articleList, (s1, s2) ->{
+            if(s1 == null)
+                return 1;
+            if(s2 == null)
+                return -1;
+            if(s1.getCreateDate().contains(".0")){
+                s1.setCreateDate(s1.getCreateDate().substring(0,s1.getCreateDate().length()-2));
+            }
+            if(s2.getCreateDate().contains(".0")){
+                s2.setCreateDate(s2.getCreateDate().substring(0,s2.getCreateDate().length()-2));
+            }
+            Calendar c = Calendar.getInstance();
+            try{
+                dateFormat2.parse(s1.getCreateDate());
+                c.setTime(dateFormat2.parse(s2.getCreateDate()));
+                long a = c.getTimeInMillis();
+                dateFormat2.parse(s1.getCreateDate());
+                c.setTime(dateFormat2.parse(s1.getCreateDate()));
+                long b = c.getTimeInMillis();
+                return (int)b-(int)a;
+            }catch (ParseException e){
+                return 0;
+            }
+        });
+        return articleList;
     }
 
     private static ArrayList<Article> removeDuplicateArticle(List<Article> articles) {

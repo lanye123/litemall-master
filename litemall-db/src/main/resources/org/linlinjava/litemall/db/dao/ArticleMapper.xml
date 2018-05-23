@@ -455,7 +455,7 @@
     </if>
     limit 1
   </select>
-  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.ArticleExample" resultMap="BaseResultMap">
+  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.Article" resultMap="BaseResultMap">
     select
     b.article_id, b.category_ids, b.category_id, b.title, b.brief, b.create_date, b.daodu, b.author,
     b.photo_name, b.photo_url, b.`status`, b.is_view, b.reader, b.update_date, b.head_url, b.read_count
@@ -464,8 +464,8 @@
     <if test="categoryId != null">
       and a.category_id = #{categoryId,jdbcType=INTEGER}
     </if>
-    <if test="updateDate != null">
-      order by ${updateDate}
+    <if test="title != null">
+      order by ${title}
     </if>
   </select>
 </mapper>
