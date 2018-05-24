@@ -81,16 +81,16 @@ public class ArticleService {
         }
         sortDesc(articleListReturn);
         if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
-            return sortDesc(removeDuplicateArticle(articleListReturn));
+            return removeDuplicateArticle(sortDesc(articleListReturn));
         }
         if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
-            return sortAsc(removeDuplicateArticle(articleListReturn));
+            return removeDuplicateArticle(sortAsc(articleListReturn));
         }
         //人气排序
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
-            return sortReader(removeDuplicateArticle(articleListReturn));
+            return removeDuplicateArticle(sortReader(articleListReturn));
         }
-        return removeDuplicateArticle(articleListReturn);
+        return articleListReturn;
     }
 
     /**
