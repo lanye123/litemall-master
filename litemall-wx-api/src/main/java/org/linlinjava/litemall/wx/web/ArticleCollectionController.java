@@ -4,10 +4,7 @@ import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleCollection;
 import org.linlinjava.litemall.db.domain.ArticleDetails;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
-import org.linlinjava.litemall.db.service.ArticleCollectionService;
-import org.linlinjava.litemall.db.service.ArticleDetailsService;
-import org.linlinjava.litemall.db.service.ArticleNotesService;
-import org.linlinjava.litemall.db.service.ArticleService;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +26,8 @@ public class ArticleCollectionController {
     private ArticleDetailsService articleDetailsService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private LitemallUserService litemallUserService;
     /**
      *@Author:lanye
      *@Description:收藏列表接口
@@ -38,6 +37,9 @@ public class ArticleCollectionController {
     public Object list(@RequestParam Integer userId){
         if(userId == null){
             return ResponseUtil.unlogin();
+        }
+        if(litemallUserService.findById(userId)==null){
+            return ResponseUtil.fail(501,"非法请求");
         }
         Map<String,Object> data = new HashMap<>();
         Map<String, Object> dataItem;
@@ -85,6 +87,9 @@ public class ArticleCollectionController {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
+        if(litemallUserService.findById(userId)==null){
+            return ResponseUtil.fail(501,"非法请求");
+        }
         Map<String,Object> data = new HashMap<>();
         List<ArticleNotes> articleNotes = articleNotesService.findByArtitleid(artile_id);
         List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,null,artile_id,null,"");
@@ -102,6 +107,9 @@ public class ArticleCollectionController {
     public Object save(Integer userId, @RequestBody ArticleCollection collection) {
         if(userId == null){
             return ResponseUtil.unlogin();
+        }
+        if(litemallUserService.findById(userId)==null){
+            return ResponseUtil.fail(501,"非法请求");
         }
         if(collection == null){
             return ResponseUtil.badArgument();
