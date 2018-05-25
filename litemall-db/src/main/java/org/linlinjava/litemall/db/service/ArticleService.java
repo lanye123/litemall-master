@@ -81,14 +81,14 @@ public class ArticleService {
         }
         sortDesc(articleListReturn);
         if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
-            return removeDuplicateArticle(sortDesc(articleListReturn));
+            return sortDesc(removeDuplicateArticle(articleListReturn));
         }
         if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
-            return removeDuplicateArticle(sortAsc(articleListReturn));
+            return sortAsc(removeDuplicateArticle(articleListReturn));
         }
         //人气排序
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
-            return removeDuplicateArticle(sortReader(articleListReturn));
+            return sortReader(removeDuplicateArticle(articleListReturn));
         }
         return articleListReturn;
     }
