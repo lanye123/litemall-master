@@ -49,6 +49,9 @@ public class ArticleController {
                 if(article.getPhotoUrl()!=null){
                     articleVo.put("photo_url",article.getPhotoUrl());
                 }
+                if(article.getHeadUrl()!=null){
+                    articleVo.put("headUrl",article.getHeadUrl());
+                }
                 if(article.getPhotoName()!=null){
                     articleVo.put("photo_name",article.getPhotoName());
                 }
