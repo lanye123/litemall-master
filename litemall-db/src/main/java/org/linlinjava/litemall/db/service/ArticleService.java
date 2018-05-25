@@ -106,7 +106,7 @@ public class ArticleService {
                 return -1;
             if(s2 == null)
                 return 1;
-            return s2.getReader()-s1.getReader();
+            return s2.getReadCount()-s1.getReadCount();
         });
         return articleList;
     }
