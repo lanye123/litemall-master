@@ -79,7 +79,7 @@ public class ArticleService {
         }else{
             articleListReturn.addAll(articleMapper.selectByExample2(article));
         }
-        sortDesc(articleListReturn);
+        sortDesc(removeDuplicateArticle(articleListReturn));
         if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
             return sortDesc(removeDuplicateArticle(articleListReturn));
         }

@@ -57,4 +57,20 @@ public class ArticleReplyController {
         articleReplyService.deleteById(articleReply.getId());
         return ResponseUtil.ok(articleReply);
     }
+
+    @PostMapping("/hidden")
+    public Object hidden(@RequestBody ArticleReply articleReply){
+        if(articleReply == null){
+            return ResponseUtil.badArgument();
+        }
+
+        if(articleReply.getStatus()==0){
+            articleReply.setStatus(1);
+            articleReplyService.update(articleReply);
+        }else if(articleReply.getStatus()==1){
+            articleReply.setStatus(0);
+            articleReplyService.update(articleReply);
+        }
+        return ResponseUtil.ok(articleReply);
+    }
 }
