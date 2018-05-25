@@ -4,8 +4,6 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleCategoryMapper;
 import org.linlinjava.litemall.db.domain.ArticleCategory;
 import org.linlinjava.litemall.db.domain.ArticleCategoryExample;
-import org.linlinjava.litemall.db.domain.LitemallCategory;
-import org.linlinjava.litemall.db.domain.LitemallCategoryExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
