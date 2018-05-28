@@ -103,6 +103,18 @@ public class ArticleController {
         return ResponseUtil.ok(articleVoList);
     }
 
+    /**
+      * @author lanye
+      * @Description 推荐图文
+      * @Date 2018/5/28 14:41
+      * @Param []
+      * @return java.lang.Object
+      **/
+    @GetMapping("recommendedList")
+    private Object recommendedList(){
+        return ResponseUtil.ok(articleService.recommendedList());
+    }
+
 /**
     *@Author:LeiQiang
     *@Description:文章详情接口

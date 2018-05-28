@@ -46,6 +46,21 @@ public class ArticleService {
 
     /**
       * @author lanye
+      * @Description 推荐图文
+      * @Date 2018/5/28 14:40
+      * @Param []
+      * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
+      **/
+    public List<Article> recommendedList() {
+        ArticleExample example=new ArticleExample();
+        ArticleExample.Criteria criteria=example.createCriteria();
+        criteria.andIsViewEqualTo(1);
+        criteria.andStatusEqualTo(1);
+        return articleMapper.selectByExample(example);
+    }
+
+    /**
+      * @author lanye
       * @Description 首页导航(后台改版)
       * @Date 2018/5/21 11:44
       * @Param [categoryIds, flag]
