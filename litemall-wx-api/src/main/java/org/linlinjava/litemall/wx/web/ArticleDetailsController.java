@@ -72,8 +72,8 @@ public class ArticleDetailsController {
         }
         Map<String,Object> data = new HashMap<>();
         //该用户分类id定级
-        Integer categoryIdMin;
-        Integer categoryIdMax;
+        Integer categoryIdMin = 0;
+        Integer categoryIdMax = 0;
         StringBuffer sb = new StringBuffer();
         ArticleCategory articleCategory;
         List<ArticleCategory> articleCategoryList = articleCategoryService.queryByList(userId);
@@ -81,31 +81,15 @@ public class ArticleDetailsController {
         int[] readCountArray = new int[articleCategoryList.size()];
         int max = 0;
         int min = 9999;
-        //分类id定级记录数
-        int minContentCount = 0;
-        int maxContentCount = 0;
         for(int i = 0;i<articleCategoryList.size();i++){
             categoryNameArray[i] = articleCategoryList.get(i).getName();
             readCountArray[i] = articleCategoryList.get(i).getAmount();//articleDetailsService.selectList(userId,articleCategoryList.get(i).getCategoryId(),null,null).size();
             if(readCountArray[i]>max){
                 max = readCountArray[i];
-                if(minContentCount<1){
-                    categoryIdMax = articleCategoryList.get(i).getCategoryId();
-                    articleCategory = articleCategoryService.findById(categoryIdMax);
-                    sb.append(articleCategory==null ? "":articleCategory.getMaxContent());
-                    minContentCount++;
-                    continue;
-                }
+                categoryIdMax = articleCategoryList.get(i).getCategoryId();
             }
             if(readCountArray[i]<=min && readCountArray[i]>0){
-                min = readCountArray[i];
-                if(maxContentCount<1){
-                    categoryIdMin = articleCategoryList.get(i).getCategoryId();
-                    articleCategory = articleCategoryService.findById(categoryIdMin);
-                    sb.append(articleCategory==null ? "":articleCategory.getMinContent());
-                    maxContentCount++;
-                    continue;
-                }
+                categoryIdMin = articleCategoryList.get(i).getCategoryId();;
             }
         }
 
@@ -114,6 +98,13 @@ public class ArticleDetailsController {
         data.put("content",sb);
         if(max == 0){
             max = 1;
+        }else{
+            articleCategory = articleCategoryService.findById(categoryIdMax);
+            sb.append(articleCategory==null ? "":articleCategory.getMaxContent());
+            if(categoryIdMax!=categoryIdMin){
+                articleCategory = articleCategoryService.findById(categoryIdMin);
+                sb.append(articleCategory==null ? "":articleCategory.getMinContent());
+            }
         }
         data.put("max",max);
 
