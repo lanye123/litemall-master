@@ -20,6 +20,7 @@ public class IntegretionDetailService {
     public List<IntegretionDetail> querySelective(String userId) {
         IntegretionDetailExample example=new IntegretionDetailExample();
         example.or().andUserIdEqualTo(userId);
+        example.setOrderByClause("create_date desc");
         return IntegretionDetailMapper.selectByExample(example);
     }
 
