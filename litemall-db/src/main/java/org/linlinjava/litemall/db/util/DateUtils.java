@@ -20,6 +20,8 @@ public class DateUtils {
     public static void main(String args[]){
         System.out.println(getCurrentMonday(dateFormat));
         System.out.println(getPreviousSunday(dateFormat));
+        System.out.println("start"+getDayStartString());
+        System.out.println("end"+getDayEndString());
         System.out.println(getMinMonthDate("2017-04-17"));
         System.out.println(getMaxMonthDate("2017-04-17"));
     }

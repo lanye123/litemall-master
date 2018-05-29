@@ -129,4 +129,6 @@ public interface IntegretionDetailMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     IntegretionDetail selectOneByExampleSelective(@Param("example") IntegretionDetailExample example, @Param("selective") IntegretionDetail.Column ... selective);
+
+    int days(IntegretionDetail detail);
 }
