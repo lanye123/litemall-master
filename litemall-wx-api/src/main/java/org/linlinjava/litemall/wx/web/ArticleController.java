@@ -104,6 +104,12 @@ public class ArticleController {
                 if(article.getUpdateDate()!=null){
                     articleVo.put("update_date",article.getUpdateDate());
                 }
+                if(userId==null){
+                    articleVo.put("flag",0);
+                    articleVo.put("collectStatus",0);
+                    articleVoList.add(articleVo);
+                    continue;
+                }
                 //查当前用户是否收藏了这本书
                 articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
                 articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
@@ -138,9 +144,9 @@ public class ArticleController {
         if(article_id == null){
             return ResponseUtil.badArgument();
         }
-        if(userId == null){
+        /*if(userId == null){
             return ResponseUtil.badArgument();
-        }
+        }*/
 
         Article article=articleService.findById(article_id);
         article.setReadCount(article.getReadCount()+1);
@@ -182,11 +188,6 @@ public class ArticleController {
         List<ArticleDetails> articleDetailsList;
         for(ArticleNotes notes : notesList) {
             Map<String, Object> notesVo = new HashMap<>();
-            notesVo.put("read","no");
-            articleDetailsList = articleDetailsService.selectList(userId,null,article_id,notes.getId(),"");
-            if(articleDetailsList!=null && articleDetailsList.size()>0){
-                notesVo.put("read","yes");
-            }
             notesVo.put("id",notes.getId());
             notesVo.put("no",notes.getNo());
             notesVo.put("name",notes.getName());
@@ -205,11 +206,27 @@ public class ArticleController {
             notesVo.put("photo_url",notes.getPhotoUrl());
             notesVo.put("photo_name",notes.getPhotoName());
             notesVo.put("article_id",notes.getArtileId());
+            notesVo.put("read","no");
+            if(userId==null){
+                notesVo.put("flag",0);
+                notesVo.put("read","no");
+                notesVoList.add(notesVo);
+                continue;
+            }
             notesVo.put("flag", medalDetailsService.countSeletive(notes.getId(),article_id,userId,null,null,null,null,"",""));
+            articleDetailsList = articleDetailsService.selectList(userId,null,article_id,notes.getId(),"");
+            if(articleDetailsList!=null && articleDetailsList.size()>0){
+                notesVo.put("read","yes");
+            }
             notesVoList.add(notesVo);
         }
         data.put("notesList",notesVoList);
         data.put("comentCount",comentCount);
+        if(userId==null){
+            data.put("flag",0);
+            data.put("collectStatus",0);
+            return ResponseUtil.ok(data);
+        }
         data.put("flag", medalDetailsService.countSeletive(0,article_id,userId,null,null,null,null,"",""));
         data.put("collectStatus", articleCollectionService.countSeletive(article_id,userId,1,null,null,"",""));
         return ResponseUtil.ok(data);

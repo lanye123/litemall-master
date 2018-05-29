@@ -280,6 +280,16 @@ public class PraiseExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("userId =", value, "userId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFromUseridEqualTo(Integer value) {
+            addCriterion("fromUserid =", value, "fromUserid");
+            return (Criteria) this;
+        }
+
         public Criteria andAmountNotEqualTo(Integer value) {
             addCriterion("amount <>", value, "amount");
             return (Criteria) this;
