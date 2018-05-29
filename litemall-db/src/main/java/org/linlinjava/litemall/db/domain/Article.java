@@ -1,8 +1,5 @@
 package org.linlinjava.litemall.db.domain;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 public class Article {
     private Integer articleId;
 
@@ -35,6 +32,17 @@ public class Article {
     private String headUrl;
 
     private Integer readCount;
+
+    //数据保存的用户id
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public Integer getUser_id() {
         return user_id;
@@ -196,6 +204,7 @@ public class Article {
         sb.append(", updateDate=").append(updateDate);
         sb.append(", headUrl=").append(headUrl);
         sb.append(", readCount=").append(readCount);
+        sb.append(", userId=").append(userId);
         sb.append("]");
         return sb.toString();
     }
@@ -274,7 +283,8 @@ public class Article {
         reader("reader"),
         updateDate("update_date"),
         headUrl("head_url"),
-        readCount("read_count");
+        readCount("read_count"),
+        userId("user_id"),;
 
 
         /**

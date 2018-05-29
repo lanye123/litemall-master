@@ -8,6 +8,7 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -30,6 +31,8 @@ public class ArticleController {
     private ArticleDetailsService articleDetailsService;
     @Autowired
     private ArticleCategoryService articleCategoryService;
+    @Autowired
+    private LitemallUserService litemallUserService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -38,7 +41,14 @@ public class ArticleController {
     @GetMapping("list")
     private Object list(String categoryIds,String flag,Integer userId){
         List<Article> articleList=articleService.querySelective2(categoryIds,flag);
-        //Long comentCount=articleCommentService.countSelective(article_id);
+        articleService.sortDesc(articleList);
+        if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
+            articleService.sortAsc(articleList);
+        }
+        //人气排序
+        if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
+            articleService.sortReader(articleList);
+        }
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
         if(articleList!=null && articleList.size()>0){
             for(Article article : articleList){
@@ -245,4 +255,75 @@ public Object collect(@RequestBody Article model) {
     }
     return ResponseUtil.ok();
 }
+
+    /**
+      * @author lanye
+      * @Description 创建用户自定义图书
+      * @Date 2018/5/29 9:54
+      * @Param [model]
+      * @return java.lang.Object
+      **/
+    @PostMapping("add")
+    public Object add(@RequestBody Article article) {
+        if(article == null){
+            return ResponseUtil.badArgument();
+        }
+        if(article.getUserId() == null){
+            return ResponseUtil.badArgument();
+        }
+        articleService.add(article);
+        return ResponseUtil.ok();
+    }
+
+    /**
+      * @author lanye
+      * @Description 用户自定义图书列表
+      * @Date 2018/5/29 11:36
+      * @Param [flag, userId, page, size]
+      * @return java.lang.Object
+      **/
+    @GetMapping("customList")
+    private Object customList(String flag,Integer userId,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "3")Integer size){
+        logger.debug("传入标识flag："+flag+",用户id："+userId);
+        List<Article> articleList=articleService.querySelective3(flag,page, size);
+        logger.debug("初步查询结果articleList："+articleList);
+        List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
+        if(articleList!=null && articleList.size()>0){
+            for(Article article : articleList){
+                if(article==null){
+                    return ResponseUtil.ok(articleVoList);
+                }
+                Map<String, Object> articleVo = new HashMap<>();
+                articleVo.put("photo_url",article.getPhotoUrl());
+                articleVo.put("headUrl",article.getHeadUrl());
+                articleVo.put("photo_name",article.getPhotoName());
+                articleVo.put("article_id",article.getArticleId());
+                articleVo.put("category_id",article.getCategoryId());
+                articleVo.put("title",article.getTitle());
+                articleVo.put("brief",article.getBrief());
+                article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
+                articleVo.put("create_date",article.getCreateDate());
+                articleVo.put("daodu",article.getDaodu());
+                articleVo.put("author",article.getAuthor());
+                articleVo.put("status",article.getStatus());
+                articleVo.put("is_view",article.getIsView());
+                articleVo.put("reader",article.getReader());
+                articleVo.put("readCount",article.getReadCount());
+                articleVo.put("update_date",article.getUpdateDate());
+                if(article.getUserId()==null){
+                    articleVo.put("nickName","萤火虫");
+                    articleVo.put("avatar","https://sunlands.ministudy.com/images/yhc_logo.png");
+                }else{
+                    LitemallUser user = litemallUserService.findById(article.getUserId());
+                    articleVo.put("nickName",user.getNickname());
+                    articleVo.put("avatar",user.getAvatar());
+                }
+                //查当前用户是否收藏了这本书
+                articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
+                articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
+                articleVoList.add(articleVo);
+            }
+        }
+        return ResponseUtil.ok(articleVoList);
+    }
 }

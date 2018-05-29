@@ -2,6 +2,7 @@ package org.linlinjava.litemall.db.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleMapper;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleCategoryStat;
@@ -94,18 +95,32 @@ public class ArticleService {
         }else{
             articleListReturn.addAll(articleMapper.selectByExample2(article));
         }
-        sortDesc(removeDuplicateArticle(articleListReturn));
+        return removeDuplicateArticle(articleListReturn);
+    }
+
+    /**
+      * @author lanye
+      * @Description 用户自定义图书列表
+      * @Date 2018/5/29 11:25
+      * @Param [flag, page, size]
+      * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
+      **/
+    public List<Article> querySelective3(String flag, Integer page, Integer size) {
+        ArticleExample example=new ArticleExample();
+        ArticleExample.Criteria criteria=example.createCriteria();
+        criteria.andStatusEqualTo(1);
         if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
-            return sortDesc(removeDuplicateArticle(articleListReturn));
+            criteria.example().setOrderByClause("create_date desc");
         }
         if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
-            return sortAsc(removeDuplicateArticle(articleListReturn));
+            criteria.example().setOrderByClause("create_date");
         }
         //人气排序
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
-            return sortReader(removeDuplicateArticle(articleListReturn));
+            criteria.example().setOrderByClause("read_count desc");
         }
-        return articleListReturn;
+        PageHelper.startPage(page, size);
+        return articleMapper.selectByExample(example);
     }
 
     /**
@@ -271,6 +286,9 @@ public class ArticleService {
         boolean isUpdate = false;
         if(article!=null){
             JSONArray categoryIdArray = JSON.parseArray(article.getCategoryIds());
+            if(categoryIdArray == null){
+                return;
+            }
             List<ArticleCategoryStat> articleCategoryStatList = articleCategoryStatService.queryBySelective(null,articleId,null,null,"","");
             if(categoryIdArray.size() != articleCategoryStatList.size()){
                 isUpdate = true;
