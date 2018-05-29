@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.linlinjava.litemall.db.dao.PraiseMapper">
-  <resultMap id="BaseResultMap" type="org.linlinjava.litemall.db.domain.Praise">
+<mapper namespace="org.linlinjava.litemall.db.dao.NotesMapper">
+  <resultMap id="BaseResultMap" type="org.linlinjava.litemall.db.domain.Notes">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="article_id" jdbcType="VARCHAR" property="articleId" />
-    <result column="amount" jdbcType="INTEGER" property="amount" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="temp_id" jdbcType="INTEGER" property="tempId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="from_userid" jdbcType="INTEGER" property="fromUserid" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="infoid" jdbcType="INTEGER" property="infoid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="no" jdbcType="VARCHAR" property="no" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="memo" jdbcType="VARCHAR" property="memo" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,15 +73,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, article_id, amount, create_date, `status`, user_id, from_userid
+    id, temp_id, `type`, user_id, from_userid, create_date, infoid, content, `no`, `status`, 
+    memo
   </sql>
-  <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.PraiseExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.NotesExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from praise
+    from notes
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -98,7 +103,7 @@
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
-    from praise
+    from notes
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -109,7 +114,7 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from praise
+    from notes
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByPrimaryKeySelective" parameterType="map" resultMap="BaseResultMap">
@@ -122,45 +127,43 @@
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
-    from praise
+    from notes
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from praise
+    delete from notes
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="org.linlinjava.litemall.db.domain.PraiseExample">
-    delete from praise
+  <delete id="deleteByExample" parameterType="org.linlinjava.litemall.db.domain.NotesExample">
+    delete from notes
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="org.linlinjava.litemall.db.domain.Praise">
+  <insert id="insert" parameterType="org.linlinjava.litemall.db.domain.Notes">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into praise (article_id, amount, create_date, 
-      `status`, user_id, from_userid)
-    values (#{articleId,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=TINYINT}, #{userId,jdbcType=INTEGER}, #{fromUserid,jdbcType=INTEGER})
+    insert into notes (temp_id, `type`, user_id, 
+      from_userid, create_date, infoid, 
+      content, `no`, `status`, 
+      memo)
+    values (#{tempId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{fromUserid,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{infoid,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{no,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.Praise">
+  <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.Notes">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into praise
+    insert into notes
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="articleId != null">
-        article_id,
+      <if test="tempId != null">
+        temp_id,
       </if>
-      <if test="amount != null">
-        amount,
-      </if>
-      <if test="createDate != null">
-        create_date,
-      </if>
-      <if test="status != null">
-        `status`,
+      <if test="type != null">
+        `type`,
       </if>
       <if test="userId != null">
         user_id,
@@ -168,19 +171,31 @@
       <if test="fromUserid != null">
         from_userid,
       </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="articleId != null">
-        #{articleId,jdbcType=VARCHAR},
-      </if>
-      <if test="amount != null">
-        #{amount,jdbcType=INTEGER},
-      </if>
       <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
+        create_date,
+      </if>
+      <if test="infoid != null">
+        infoid,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="no != null">
+        `no`,
       </if>
       <if test="status != null">
-        #{status,jdbcType=TINYINT},
+        `status`,
+      </if>
+      <if test="memo != null">
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tempId != null">
+        #{tempId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
@@ -188,31 +203,43 @@
       <if test="fromUserid != null">
         #{fromUserid,jdbcType=INTEGER},
       </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoid != null">
+        #{infoid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="no != null">
+        #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="org.linlinjava.litemall.db.domain.PraiseExample" resultType="java.lang.Long">
-    select count(*) from praise
+  <select id="countByExample" parameterType="org.linlinjava.litemall.db.domain.NotesExample" resultType="java.lang.Long">
+    select count(*) from notes
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update praise
+    update notes
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.articleId != null">
-        article_id = #{record.articleId,jdbcType=VARCHAR},
+      <if test="record.tempId != null">
+        temp_id = #{record.tempId,jdbcType=INTEGER},
       </if>
-      <if test="record.amount != null">
-        amount = #{record.amount,jdbcType=INTEGER},
-      </if>
-      <if test="record.createDate != null">
-        create_date = #{record.createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.status != null">
-        `status` = #{record.status,jdbcType=TINYINT},
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
@@ -220,38 +247,54 @@
       <if test="record.fromUserid != null">
         from_userid = #{record.fromUserid,jdbcType=INTEGER},
       </if>
+      <if test="record.createDate != null">
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.infoid != null">
+        infoid = #{record.infoid,jdbcType=INTEGER},
+      </if>
+      <if test="record.content != null">
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.no != null">
+        `no` = #{record.no,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        `status` = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null">
+        memo = #{record.memo,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update praise
+    update notes
     set id = #{record.id,jdbcType=INTEGER},
-      article_id = #{record.articleId,jdbcType=VARCHAR},
-      amount = #{record.amount,jdbcType=INTEGER},
-      create_date = #{record.createDate,jdbcType=TIMESTAMP},
-      `status` = #{record.status,jdbcType=TINYINT},
+      temp_id = #{record.tempId,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
-      from_userid = #{record.fromUserid,jdbcType=INTEGER}
+      from_userid = #{record.fromUserid,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      infoid = #{record.infoid,jdbcType=INTEGER},
+      content = #{record.content,jdbcType=VARCHAR},
+      `no` = #{record.no,jdbcType=VARCHAR},
+      `status` = #{record.status,jdbcType=VARCHAR},
+      memo = #{record.memo,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="org.linlinjava.litemall.db.domain.Praise">
-    update praise
+  <update id="updateByPrimaryKeySelective" parameterType="org.linlinjava.litemall.db.domain.Notes">
+    update notes
     <set>
-      <if test="articleId != null">
-        article_id = #{articleId,jdbcType=VARCHAR},
+      <if test="tempId != null">
+        temp_id = #{tempId,jdbcType=INTEGER},
       </if>
-      <if test="amount != null">
-        amount = #{amount,jdbcType=INTEGER},
-      </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null">
-        `status` = #{status,jdbcType=TINYINT},
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
@@ -259,20 +302,42 @@
       <if test="fromUserid != null">
         from_userid = #{fromUserid,jdbcType=INTEGER},
       </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoid != null">
+        infoid = #{infoid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="no != null">
+        `no` = #{no,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null">
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.Praise">
-    update praise
-    set article_id = #{articleId,jdbcType=VARCHAR},
-      amount = #{amount,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      `status` = #{status,jdbcType=TINYINT},
+  <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.Notes">
+    update notes
+    set temp_id = #{tempId,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
-      from_userid = #{fromUserid,jdbcType=INTEGER}
+      from_userid = #{fromUserid,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      infoid = #{infoid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      `no` = #{no,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.PraiseExample" resultMap="BaseResultMap">
+  <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.NotesExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
       This element is automatically generated by MyBatis Generator, do not modify.
@@ -280,7 +345,7 @@
     -->
     select
     <include refid="Base_Column_List" />
-    from praise
+    from notes
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -299,7 +364,7 @@
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
-    from praise
+    from notes
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

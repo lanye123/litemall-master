@@ -1,36 +1,21 @@
 package org.linlinjava.litemall.db.domain;
 
-
-public class Praise {
+public class NotesTemp {
     private Integer id;
 
-    private String articleId;
+    private String no;
 
-    private Integer amount;
+    private String name;
+
+    private String content;
+
+    private Integer type;
+
+    private String status;
 
     private String createDate;
 
-    private Byte status;
-
-    private Integer userId;
-
-    private Integer fromUserid;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getFromUserid() {
-        return fromUserid;
-    }
-
-    public void setFromUserid(Integer fromUserid) {
-        this.fromUserid = fromUserid;
-    }
+    private String memo;
 
     public Integer getId() {
         return id;
@@ -40,20 +25,44 @@ public class Praise {
         this.id = id;
     }
 
-    public String getArticleId() {
-        return articleId;
+    public String getNo() {
+        return no;
     }
 
-    public void setArticleId(String articleId) {
-        this.articleId = articleId;
+    public void setNo(String no) {
+        this.no = no;
     }
 
-    public Integer getAmount() {
-        return amount;
+    public String getName() {
+        return name;
     }
 
-    public void setAmount(Integer amount) {
-        this.amount = amount;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getCreateDate() {
@@ -64,12 +73,12 @@ public class Praise {
         this.createDate = createDate;
     }
 
-    public Byte getStatus() {
-        return status;
+    public String getMemo() {
+        return memo;
     }
 
-    public void setStatus(Byte status) {
-        this.status = status;
+    public void setMemo(String memo) {
+        this.memo = memo;
     }
 
     @Override
@@ -79,12 +88,13 @@ public class Praise {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", articleId=").append(articleId);
-        sb.append(", amount=").append(amount);
-        sb.append(", createDate=").append(createDate);
+        sb.append(", no=").append(no);
+        sb.append(", name=").append(name);
+        sb.append(", content=").append(content);
+        sb.append(", type=").append(type);
         sb.append(", status=").append(status);
-        sb.append(", userId=").append(userId);
-        sb.append(", fromUserid=").append(fromUserid);
+        sb.append(", createDate=").append(createDate);
+        sb.append(", memo=").append(memo);
         sb.append("]");
         return sb.toString();
     }
@@ -100,12 +110,15 @@ public class Praise {
         if (getClass() != that.getClass()) {
             return false;
         }
-        Praise other = (Praise) that;
+        NotesTemp other = (NotesTemp) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getArticleId() == null ? other.getArticleId() == null : this.getArticleId().equals(other.getArticleId()))
-            && (this.getAmount() == null ? other.getAmount() == null : this.getAmount().equals(other.getAmount()))
+            && (this.getNo() == null ? other.getNo() == null : this.getNo().equals(other.getNo()))
+            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+            && (this.getContent() == null ? other.getContent() == null : this.getContent().equals(other.getContent()))
+            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
+            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()))
-            && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()));
+            && (this.getMemo() == null ? other.getMemo() == null : this.getMemo().equals(other.getMemo()));
     }
 
     @Override
@@ -113,32 +126,36 @@ public class Praise {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
-        result = prime * result + ((getArticleId() == null) ? 0 : getArticleId().hashCode());
-        result = prime * result + ((getAmount() == null) ? 0 : getAmount().hashCode());
-        result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
+        result = prime * result + ((getNo() == null) ? 0 : getNo().hashCode());
+        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = prime * result + ((getContent() == null) ? 0 : getContent().hashCode());
+        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
+        result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
+        result = prime * result + ((getMemo() == null) ? 0 : getMemo().hashCode());
         return result;
     }
 
     /**
      * This enum was generated by MyBatis Generator.
-     * This enum corresponds to the database table praise
+     * This enum corresponds to the database table notes_temp
      *
      * @mbg.generated
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     public enum Column {
         id("id"),
-        articleId("article_id"),
-        amount("amount"),
-        createDate("create_date"),
+        no("no"),
+        name("name"),
+        content("content"),
+        type("type"),
         status("status"),
-        userId("userId"),
-        fromUserid("fromUserid");
+        createDate("create_date"),
+        memo("memo");
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table praise
+         * This field corresponds to the database table notes_temp
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -147,7 +164,7 @@ public class Praise {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table praise
+         * This method corresponds to the database table notes_temp
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -158,7 +175,7 @@ public class Praise {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table praise
+         * This method corresponds to the database table notes_temp
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -169,7 +186,7 @@ public class Praise {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table praise
+         * This method corresponds to the database table notes_temp
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -180,7 +197,7 @@ public class Praise {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table praise
+         * This method corresponds to the database table notes_temp
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -191,7 +208,7 @@ public class Praise {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table praise
+         * This method corresponds to the database table notes_temp
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
