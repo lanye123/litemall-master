@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.PraiseMapper;
 import org.linlinjava.litemall.db.domain.Praise;
 import org.linlinjava.litemall.db.domain.PraiseExample;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -16,6 +17,7 @@ import java.util.List;
   * @Param 
   * @return 
   **/
+@Service
 public class PraiseService {
     @Resource
     private PraiseMapper praiseMapper;
@@ -56,7 +58,6 @@ public class PraiseService {
         criteria.example().setOrderByClause("create_date desc");
 
         if(page!=null && size!=null){
-
             PageHelper.startPage(page, size);
         }
         return praiseMapper.selectByExample(example);
