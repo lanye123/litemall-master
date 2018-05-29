@@ -53,6 +53,46 @@ public class ArticleController {
         return ResponseUtil.ok();
     }
 
+    @PostMapping("/online")
+    public Object online(@RequestBody Article article){
+        if(article == null){
+            return ResponseUtil.badArgument();
+        }
+
+        Article articleDb = articleService.findById(article.getArticleId());
+        if(articleDb==null){
+            return ResponseUtil.ok();
+        }
+        if(articleDb.getStatus()==0){
+            articleDb.setStatus(1);
+            articleService.updateById(articleDb);
+        }else if(articleDb.getStatus()==1){
+            articleDb.setStatus(0);
+            articleService.updateById(articleDb);
+        }
+        return ResponseUtil.ok(articleDb);
+    }
+
+    @PostMapping("/anli")
+    public Object anli(@RequestBody Article article){
+        if(article == null){
+            return ResponseUtil.badArgument();
+        }
+
+        Article articleDb = articleService.findById(article.getArticleId());
+        if(articleDb==null){
+            return ResponseUtil.ok();
+        }
+        if(articleDb.getIsView()==0){
+            articleDb.setIsView(1);
+            articleService.updateById(articleDb);
+        }else if(articleDb.getIsView()==1){
+            articleDb.setIsView(0);
+            articleService.updateById(articleDb);
+        }
+        return ResponseUtil.ok(articleDb);
+    }
+
     @PostMapping("/delete")
     public Object delete(@RequestBody Article article){
         articleService.deleteById(article.getArticleId());

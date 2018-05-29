@@ -30,7 +30,7 @@ public class ArticleCommentController {
         int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("articleCommentList", articleCommentList);
+        data.put("items", articleCommentList);
 
         return ResponseUtil.ok(data);
     }
@@ -55,6 +55,22 @@ public class ArticleCommentController {
     public Object delete(@RequestBody ArticleComment articleComment){
 
         articleCommentService.deleteById(articleComment.getId());
+        return ResponseUtil.ok(articleComment);
+    }
+
+    @PostMapping("/hidden")
+    public Object hidden(@RequestBody ArticleComment articleComment){
+        if(articleComment == null){
+            return ResponseUtil.badArgument();
+        }
+
+        if(articleComment.getStatus()==0){
+            articleComment.setStatus((byte)1);
+            articleCommentService.update(articleComment);
+        }else if(articleComment.getStatus()==1){
+            articleComment.setStatus((byte)0);
+            articleCommentService.update(articleComment);
+        }
         return ResponseUtil.ok(articleComment);
     }
 }

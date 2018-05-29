@@ -2,9 +2,9 @@ package org.linlinjava.litemall.wx.web;
 
 import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
-import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.service.MedalDetailsService;
+import org.linlinjava.litemall.db.service.MedalService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
-import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,6 +55,8 @@ public class MedalController {
         data.put("name",medalDb.getName());
         data.put("imgName",medalDb.getImgName());
 
+        //增加返回该用户点亮文章数 2018-5-28 14:30
+        data.put("shineCount",medalDetailsService.countSeletive(null,null,userId,null,null,null,null,"",""));
         return ResponseUtil.ok(data);
     }
 

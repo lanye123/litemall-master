@@ -2,8 +2,10 @@ package org.linlinjava.litemall.admin.web;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.service.ArticleNotesService;
+import org.linlinjava.litemall.db.service.ArticleService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,8 @@ public class ArticleNotesController {
 
     @Autowired
     private ArticleNotesService articleNotesService;
+    @Autowired
+    private ArticleService articleService;
 
     @GetMapping("/list")
     public Object list(String artileName, String name,String no,String content,Integer artileId,Integer sortNo,
@@ -49,6 +53,22 @@ public class ArticleNotesController {
         logger.debug(articleNotes);
 
         articleNotesService.update(articleNotes);
+        return ResponseUtil.ok(articleNotes);
+    }
+
+    @PostMapping("/updateArticlePhoto")
+    public Object updateArticlePhoto(@RequestBody ArticleNotes articleNotes){
+        logger.debug(articleNotes);
+        if(articleNotes==null){
+            return ResponseUtil.badArgument();
+        }
+        Article article = articleService.findById(articleNotes.getArtileId());
+        if(article==null){
+            return ResponseUtil.badArgument();
+        }
+        article.setPhotoUrl(articleNotes.getPhotoUrl());
+        article.setDaodu(articleNotes.getDaodu());
+        articleService.updateById(article);
         return ResponseUtil.ok(articleNotes);
     }
 

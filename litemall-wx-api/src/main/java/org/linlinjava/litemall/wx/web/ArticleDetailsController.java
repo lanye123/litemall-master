@@ -1,6 +1,5 @@
 package org.linlinjava.litemall.wx.web;
 
-import com.alibaba.fastjson.JSONObject;
 import org.apache.log4j.Logger;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleCategory;
@@ -72,27 +71,40 @@ public class ArticleDetailsController {
             return ResponseUtil.unlogin();
         }
         Map<String,Object> data = new HashMap<>();
-       /* List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,null,null,null);
-        if(articleDetailsList.size() == 0){
-            data.put("count",0);
-            return ResponseUtil.ok(data);
-        }*/
+        //该用户分类id定级
+        Integer categoryIdMin = 0;
+        Integer categoryIdMax = 0;
+        StringBuffer sb = new StringBuffer();
+        ArticleCategory articleCategory;
         List<ArticleCategory> articleCategoryList = articleCategoryService.queryByList(userId);
         String[] categoryNameArray = new String[articleCategoryList.size()];
         int[] readCountArray = new int[articleCategoryList.size()];
         int max = 0;
+        int min = 9999;
         for(int i = 0;i<articleCategoryList.size();i++){
             categoryNameArray[i] = articleCategoryList.get(i).getName();
             readCountArray[i] = articleCategoryList.get(i).getAmount();//articleDetailsService.selectList(userId,articleCategoryList.get(i).getCategoryId(),null,null).size();
             if(readCountArray[i]>max){
                 max = readCountArray[i];
+                categoryIdMax = articleCategoryList.get(i).getCategoryId();
+            }
+            if(readCountArray[i]<=min && readCountArray[i]>0){
+                categoryIdMin = articleCategoryList.get(i).getCategoryId();;
             }
         }
 
         data.put("categoryNameArray",categoryNameArray);
         data.put("readCountArray",readCountArray);
+        data.put("content",sb);
         if(max == 0){
             max = 1;
+        }else{
+            articleCategory = articleCategoryService.findById(categoryIdMax);
+            sb.append(articleCategory==null ? "":articleCategory.getMaxContent());
+            if(categoryIdMax!=categoryIdMin){
+                articleCategory = articleCategoryService.findById(categoryIdMin);
+                sb.append(articleCategory==null ? "":articleCategory.getMinContent());
+            }
         }
         data.put("max",max);
 
