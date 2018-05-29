@@ -1,5 +1,4 @@
 package org.linlinjava.litemall.wx.web;
-
 import org.apache.commons.lang3.ObjectUtils;
 import org.linlinjava.litemall.db.domain.LitemallCollect;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
