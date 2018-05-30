@@ -33,6 +33,8 @@ public class ArticleController {
     private ArticleCategoryService articleCategoryService;
     @Autowired
     private LitemallUserService litemallUserService;
+    @Autowired
+    private PraiseService praiseService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -337,6 +339,8 @@ public Object collect(@RequestBody Article model) {
                 }
                 //查当前用户是否收藏了这本书
                 articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
+                //查当前用户是否喜欢了这本书 0表示未点赞 1表示已点赞
+                articleVo.put("praiseStatus", praiseService.countSeletive(article.getArticleId(),userId,null,null,null,null,"",""));
                 articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
                 articleVoList.add(articleVo);
             }

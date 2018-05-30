@@ -109,9 +109,9 @@ public class ArticleService {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         criteria.andStatusEqualTo(1);
-        if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
-            criteria.example().setOrderByClause("create_date desc");
-        }
+        criteria.example().setOrderByClause("create_date desc");
+        /*if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
+        }*/
         if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
             criteria.example().setOrderByClause("create_date");
         }
