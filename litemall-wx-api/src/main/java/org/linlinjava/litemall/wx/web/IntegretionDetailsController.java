@@ -17,7 +17,7 @@ import java.util.Map;
  * 积分连续签到管理
  */
 @RestController
-@RequestMapping("/wx/integretion")
+@RequestMapping("/wx/integretionDetails")
 public class IntegretionDetailsController {
     @Resource
     private IntegretionDetailService integretionDetailService;

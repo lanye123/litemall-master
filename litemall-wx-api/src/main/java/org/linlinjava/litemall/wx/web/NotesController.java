@@ -93,7 +93,31 @@ public class NotesController {
             return ResponseUtil.badArgument();
         }
         List<Notes> notesList = notesService.querySelective(null,1,null,userId,null,"0",null,null,"","");
-        return ResponseUtil.ok(notesList);
+        //最终返回data
+        Map<String,Object> data = new HashMap<>();
+        //封装的对象
+        List<Map<String,Object>> returnList = new ArrayList<>();
+        //行数据
+        Map<String,Object> dataItem;
+        //给你发送通知的用户
+        LitemallUser user;
+        for(Notes notes:notesList){
+            dataItem = new HashMap<>();
+            user = litemallUserService.findById(notes.getFromUserid());
+            if(notes.getCreateDate().contains(".0")){
+                notes.setCreateDate(notes.getCreateDate().substring(0,notes.getCreateDate().length()-2));
+            }
+            dataItem.put("createDate",notes.getCreateDate());
+            //回复人昵称
+            dataItem.put("nickName",user.getNickname());
+            //回复人头像
+            dataItem.put("avatar",user.getAvatar());
+            //内容
+            dataItem.put("content",notes.getContent());
+            returnList.add(dataItem);
+        }
+        data.put("returnList",returnList);
+        return ResponseUtil.ok(data);
     }
 
     /**

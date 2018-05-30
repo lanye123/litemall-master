@@ -2,8 +2,12 @@ package org.linlinjava.litemall.wx.web;
 
 import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
+import org.linlinjava.litemall.db.domain.Notes;
+import org.linlinjava.litemall.db.domain.NotesTemp;
 import org.linlinjava.litemall.db.service.MedalDetailsService;
 import org.linlinjava.litemall.db.service.MedalService;
+import org.linlinjava.litemall.db.service.NotesService;
+import org.linlinjava.litemall.db.service.NotesTempService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +24,10 @@ public class MedalController {
     private MedalDetailsService medalDetailsService;
     @Autowired
     private MedalService medalService;
+    @Autowired
+    private NotesTempService notesTempService;
+    @Autowired
+    private NotesService notesService;
     /**
      *@Author:lanye
      *@Description:获取用户勋章等级接口
@@ -73,8 +81,27 @@ public class MedalController {
         if(medalDetails.getUserId() == null){
             return ResponseUtil.unlogin();
         }
+        Medal before = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
         medalDetailsService.add(medalDetails);
-
+        Medal after = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
+        if(!before.getId().equals(after.getId())){
+            //发送通知
+            List<NotesTemp> notesTemps = notesTempService.querySelective("upgrade","",null,"",null,null,"","");
+            if(notesTemps==null || notesTemps.size()==0){
+                return ResponseUtil.ok(medalDetails);
+            }
+            NotesTemp notesTemp = notesTemps.get(0);
+            Notes notes = new Notes();
+            //notes.setUserId(reply.getToUserid());
+            notes.setFromUserid(medalDetails.getUserId());
+            notes.setTempId(notesTemp.getId());
+            notes.setType(notesTemp.getType());
+            notes.setContent(notesTemp.getContent());
+            notes.setNo(notesTemp.getNo());
+//            notes.setInfoid(reply.getCommentId());
+            notesService.add(notes);
+            return ResponseUtil.ok(notes);
+        }
         return ResponseUtil.ok(medalDetails);
     }
 
