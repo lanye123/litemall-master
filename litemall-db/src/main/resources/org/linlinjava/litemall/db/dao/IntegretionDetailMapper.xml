@@ -398,4 +398,12 @@
         AND DATE_FORMAT(create_date,'%Y%m%d')<=#{end_date,jdbcType=VARCHAR}
         AND user_id=#{userId,jdbcType=INTEGER}]]>
   </select>
+
+  <select id="queryByLimit" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select * from integretion_detail where 1=1
+    <if test="_parameter!= null">
+      and user_id = #{_parameter,jdbcType=VARCHAR}
+    </if>
+   order by create_date desc limit 7
+  </select>
 </mapper>

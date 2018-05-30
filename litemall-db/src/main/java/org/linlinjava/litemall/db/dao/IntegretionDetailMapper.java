@@ -131,4 +131,6 @@ public interface IntegretionDetailMapper {
     IntegretionDetail selectOneByExampleSelective(@Param("example") IntegretionDetailExample example, @Param("selective") IntegretionDetail.Column ... selective);
 
     int days(IntegretionDetail detail);
+
+    List<IntegretionDetail> queryByLimit(String userId);
 }

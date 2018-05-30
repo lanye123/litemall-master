@@ -41,4 +41,9 @@ public class IntegretionDetailService {
     public int days(IntegretionDetail integretionDetail){
         return IntegretionDetailMapper.days(integretionDetail);
     }
+
+    //查询打卡时间离当前日期最近的7笔记录
+    public List<IntegretionDetail> queryByLimit(String userId) {
+        return IntegretionDetailMapper.queryByLimit(userId);
+    }
 }
