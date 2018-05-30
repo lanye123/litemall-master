@@ -4,10 +4,7 @@ import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
 import org.linlinjava.litemall.db.domain.Notes;
 import org.linlinjava.litemall.db.domain.NotesTemp;
-import org.linlinjava.litemall.db.service.MedalDetailsService;
-import org.linlinjava.litemall.db.service.MedalService;
-import org.linlinjava.litemall.db.service.NotesService;
-import org.linlinjava.litemall.db.service.NotesTempService;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +25,10 @@ public class MedalController {
     private NotesTempService notesTempService;
     @Autowired
     private NotesService notesService;
+    @Autowired
+    private PraiseService praiseService;
+    @Autowired
+    private PraiseCommentService praiseCommentService;
     /**
      *@Author:lanye
      *@Description:获取用户勋章等级接口
@@ -65,6 +66,9 @@ public class MedalController {
 
         //增加返回该用户点亮文章数 2018-5-28 14:30
         data.put("shineCount",medalDetailsService.countSeletive(null,null,userId,null,null,null,null,"",""));
+        //增加返回该用户获得赞数 2018-5-30 10:34
+        data.put("praiseCount",praiseService.countSeletive(null,null,userId,null,null,null,"","")+
+                praiseCommentService.countComment(null,userId,null));
         return ResponseUtil.ok(data);
     }
 

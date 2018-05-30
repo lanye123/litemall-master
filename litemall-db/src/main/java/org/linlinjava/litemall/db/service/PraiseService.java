@@ -34,7 +34,7 @@ public class PraiseService {
         return praiseMapper.selectByPrimaryKey(id);
     }
 
-    public List<Praise> querySelective(String articleId, Integer userId, Integer fromUserid, Integer status, Integer page, Integer size, String sort, String order) {
+    public List<Praise> querySelective(Integer articleId, Integer userId, Integer fromUserid, Integer status, Integer page, Integer size, String sort, String order) {
         PraiseExample example = new PraiseExample();
         PraiseExample.Criteria criteria = example.createCriteria();
 
@@ -63,7 +63,7 @@ public class PraiseService {
         return praiseMapper.selectByExample(example);
     }
 
-    public int countSeletive(String articleId, Integer userId, Integer fromUserid, Integer status, Integer page, Integer size, String sort, String order) {
+    public int countSeletive(Integer articleId, Integer userId, Integer fromUserid, Integer status, Integer page, Integer size, String sort, String order) {
         PraiseExample example = new PraiseExample();
         PraiseExample.Criteria criteria = example.createCriteria();
 
