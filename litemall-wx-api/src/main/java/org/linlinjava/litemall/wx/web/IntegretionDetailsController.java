@@ -8,43 +8,59 @@ import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 积分连续签到管理
+ * @author leiqiang
+ * @date 2018年5月30日13:59:48
  */
 @RestController
-@RequestMapping("/wx/integretionDetails")
+@RequestMapping("/wx/detail")
 public class IntegretionDetailsController {
     @Resource
     private IntegretionDetailService integretionDetailService;
 
-    @GetMapping("/list")
-    public Object list(@RequestBody IntegretionDetail integretionDetail){
+    @RequestMapping("/list")
+    public Object list(String userId){
         Map<String,Object> data = new HashMap<>();
-        List<IntegretionDetail> integretionDetailList=integretionDetailService.querySelective(integretionDetail.getUserId());
-        IntegretionDetail a=new IntegretionDetail();
-        for (IntegretionDetail detail:integretionDetailList)
-        {
-            System.out.println(DateUtils.compareDate(DateUtils.localToDate(detail.getCreateDate()),DateUtils.dateFormat(new Date()),2));
-            integretionDetailService.days(integretionDetail);//
+        List<IntegretionDetail> integretionDetailList=integretionDetailService.queryByLimit(userId);
+        if(integretionDetailList!=null&&integretionDetailList.size()>0){
+            for (int i = 0; i < integretionDetailList.size(); i++) {
+                IntegretionDetail detail=integretionDetailList.get(i);
+                //System.out.println(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i)));
+                //getDateDiff获取两个日期之间的间隔数，两个日期相等或者间隔一天则为0，间隔2天则为1
+                //localToDate将LocalDateTime转换为Date类型
+                //subDays获取当前日期前n天的日期，n为数字
+                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i))==0){
+                    data.put("day"+i,1);
+                }
+            }
         }
-        return ResponseUtil.ok();
-
+        return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")
     public Object create(@RequestBody IntegretionDetail integretionDetail) {
-        Map<String, Object> data = new HashMap<>();
-        /*IntegretionDetail detail = integretionDetailService.querySelective2(integretionDetail.getUserId(), DateUtils., Integer.valueOf(integretionDetail.getType()));
-        if (detail == null) {
-            integretionDetailService.add(integretionDetail);
-            data.put("msg", "签到成功!");
-        } else
-            data.put("msg", "今天已签到，请明天再来哦!");*/
+        Map<String,Object> data = new HashMap<>();
+        Integer j=0;
+        List<IntegretionDetail> integretionDetailList=integretionDetailService.queryByLimit(integretionDetail.getUserId());
+        if(integretionDetailList!=null&&integretionDetailList.size()>0){
+            for (int i = 0; i < integretionDetailList.size(); i++) {
+                IntegretionDetail detail=integretionDetailList.get(i);
+                System.out.println(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i)));
+                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i))==0){
+                    j++;
+                }
+            }
+        }
+        //如果用户连续签到第七天则获得15积分否则获取5积分
+        if(j==6){
+
+            integretionDetail.setAmount(15);
+        }else{
+            integretionDetail.setAmount(5);
+        }
         return ResponseUtil.ok(data);
     }
 
@@ -55,7 +71,7 @@ public class IntegretionDetailsController {
 
     public static void main(String[] args){
 
-        System.out.println(DateUtils.dateFormat(new Date()));
+        System.out.println(DateUtils.subDays(1));
 
     }
 }
