@@ -78,8 +78,11 @@ public class IntegretionDetailsController {
         if(integretionDetail.getUserId()==null){
             return ResponseUtil.badArgument();
         }
+        if(integretionDetailService.countSeletive(integretionDetail.getUserId(),integretionDetail.getType().intValue())>0){
+            return ResponseUtil.ok();
+        }
         integretionDetailService.add(integretionDetail);
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(integretionDetail);
     }
 
     @PostMapping("update")

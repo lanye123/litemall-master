@@ -56,6 +56,7 @@ public class MedalController {
                 medal.setStatus((byte)9);
                 medal.setImgUrl(medal.getImgUrl2());
             }
+            medal.setIsView((byte)0);
             if(integretionDetailService.countSeletive(userId+"",medal.getId())>0){
                 //isView为9表示用户已经获得过该勋章积分
                 medal.setIsView((byte)9);

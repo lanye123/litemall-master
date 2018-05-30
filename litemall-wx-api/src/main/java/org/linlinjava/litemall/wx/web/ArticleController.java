@@ -11,7 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/wx/article")
@@ -125,12 +129,51 @@ public class ArticleController {
       * @author lanye
       * @Description 推荐图文
       * @Date 2018/5/28 14:41
-      * @Param []
+      * @Param [userId]
       * @return java.lang.Object
       **/
     @GetMapping("recommendedList")
-    private Object recommendedList(){
-        return ResponseUtil.ok(articleService.recommendedList());
+    private Object recommendedList(Integer userId){
+        Map<String,Object> data = new HashMap<>();
+        Map<String, Object> dataItem;
+        List<Article> articleList = articleService.recommendedList();
+
+        List<Map<String,Object>> returnArticles = new ArrayList<>();
+        int allCount;
+        int readCount;
+        for(Article article:articleList){
+            dataItem = new HashMap<>();
+            allCount = articleNotesService.findByArtitleid(article.getArticleId()).size();
+            if(allCount == 0){
+                continue;
+            }
+            readCount = articleDetailsService.selectList(userId,null,article.getArticleId(),null,"").size();
+            BigDecimal bd = new BigDecimal(readCount);
+            bd = bd.divide(new BigDecimal(allCount),2,BigDecimal.ROUND_HALF_UP);
+            dataItem.put("percentage",bd.toString());
+            dataItem.put("readCount",readCount);
+            dataItem.put("allCount",allCount);
+            dataItem.put("title",article.getTitle());
+            dataItem.put("brief",article.getBrief());
+            dataItem.put("photoName",article.getPhotoName());
+            dataItem.put("photoUrl",article.getPhotoUrl());
+            dataItem.put("daodu",article.getDaodu());
+            dataItem.put("author",article.getAuthor());
+            dataItem.put("articleId",article.getArticleId());
+            dataItem.put("headUrl",article.getHeadUrl());
+            //查当前用户是否收藏了这本书
+            dataItem.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
+            //查当前用户是否喜欢了这本书 0表示未点赞 1表示已点赞
+            dataItem.put("praiseStatus", praiseService.countSeletive(article.getArticleId(),userId,null,null,null,null,"",""));
+            if(userId==null){
+                dataItem.put("readCount",0);
+                dataItem.put("collectStatus",0);
+                dataItem.put("praiseStatus",0);
+            }
+            returnArticles.add(dataItem);
+        }
+        data.put("returnArticles", returnArticles);
+        return ResponseUtil.ok(data);
     }
 
 /**
