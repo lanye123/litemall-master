@@ -1,19 +1,15 @@
 package org.linlinjava.litemall.wx.web;
 
-import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.service.ArticleNotesService;
 import org.linlinjava.litemall.db.service.MedalDetailsService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
-import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -25,10 +21,12 @@ public class ArticleNotesController {
     private MedalDetailsService medalDetailsService;
 
     @RequestMapping("detail")
-    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@RequestParam Integer userId){
+    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@RequestParam Integer userId,@RequestParam Integer isCount){
         ArticleNotes notes=articleNotesService.findByID(notesId);
-        notes.setReadCount(notes.getReadCount()+1);
-        articleNotesService.update(notes);
+        if(isCount==1){
+            notes.setReadCount(notes.getReadCount()+1);
+            articleNotesService.update(notes);
+        }
         if(articleId == null){
             ResponseUtil.badArgument();
         }

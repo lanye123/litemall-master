@@ -16,7 +16,7 @@ import java.util.*;
  * @date 2018年5月30日13:59:48
  */
 @RestController
-@RequestMapping("/wx/detail")
+@RequestMapping("/wx/integretiondetail")
 public class IntegretionDetailsController {
     @Resource
     private IntegretionDetailService integretionDetailService;
@@ -62,6 +62,24 @@ public class IntegretionDetailsController {
             integretionDetail.setAmount(5);
         }
         return ResponseUtil.ok(data);
+    }
+
+    @PostMapping("/add")
+    public Object add(@RequestBody IntegretionDetail integretionDetail) {
+        if(integretionDetail==null){
+            return ResponseUtil.badArgument();
+        }
+        if(integretionDetail.getAmount()==null){
+            return ResponseUtil.badArgument();
+        }
+        if(integretionDetail.getType()==null){
+            return ResponseUtil.badArgument();
+        }
+        if(integretionDetail.getUserId()==null){
+            return ResponseUtil.badArgument();
+        }
+        integretionDetailService.add(integretionDetail);
+        return ResponseUtil.ok();
     }
 
     @PostMapping("update")

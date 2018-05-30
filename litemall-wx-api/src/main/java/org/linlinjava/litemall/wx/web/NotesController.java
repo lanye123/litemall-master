@@ -46,7 +46,7 @@ public class NotesController {
             return ResponseUtil.badArgument();
         }
         List<Notes> notesList = notesService.querySelective(null,0,null,userId,null,"0",null,null,"","");
-        if(notesList==null || notesList.size()==0){
+        if(notesList==null || notesList.size()<=0){
             return ResponseUtil.ok();
         }
         //最终返回data
@@ -77,6 +77,7 @@ public class NotesController {
             returnList.add(dataItem);
         }
         data.put("returnList",returnList);
+        data.put("count",returnList.size());
         return ResponseUtil.ok(data);
     }
 
@@ -93,6 +94,9 @@ public class NotesController {
             return ResponseUtil.badArgument();
         }
         List<Notes> notesList = notesService.querySelective(null,1,null,userId,null,"0",null,null,"","");
+        if(notesList == null || notesList.size()<=0){
+            return ResponseUtil.ok();
+        }
         //最终返回data
         Map<String,Object> data = new HashMap<>();
         //封装的对象
@@ -117,6 +121,7 @@ public class NotesController {
             returnList.add(dataItem);
         }
         data.put("returnList",returnList);
+        data.put("count",returnList.size());
         return ResponseUtil.ok(data);
     }
 
@@ -134,6 +139,9 @@ public class NotesController {
         }
         Notes notes = notesService.findById(id);
         if (notes==null){
+            return ResponseUtil.ok();
+        }
+        if("1".equals(notes.getStatus())){
             return ResponseUtil.ok();
         }
         notes.setStatus("1");
