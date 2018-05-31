@@ -29,6 +29,8 @@ public class MedalController {
     private PraiseService praiseService;
     @Autowired
     private PraiseCommentService praiseCommentService;
+    @Autowired
+    private IntegretionDetailService integretionDetailService;
     /**
      *@Author:lanye
      *@Description:获取用户勋章等级接口
@@ -53,7 +55,11 @@ public class MedalController {
                 //前端要求只传一个有效图片地址
                 medal.setStatus((byte)9);
                 medal.setImgUrl(medal.getImgUrl2());
-
+            }
+            medal.setIsView((byte)0);
+            if(integretionDetailService.countSeletive(userId+"",medal.getId())>0){
+                //isView为9表示用户已经获得过该勋章积分
+                medal.setIsView((byte)9);
             }
         }
         data.put("medals",medals);
@@ -69,6 +75,8 @@ public class MedalController {
         //增加返回该用户获得赞数 2018-5-30 10:34
         data.put("praiseCount",praiseService.countSeletive(null,null,userId,null,null,null,"","")+
                 praiseCommentService.countComment(null,userId,null));
+        //增加返回该用户未读通知数 2018-5-30 15:00
+        data.put("notesCount",notesService.countSeletive(null,null,null,userId,null,"0",null,null,"",""));
         return ResponseUtil.ok(data);
     }
 

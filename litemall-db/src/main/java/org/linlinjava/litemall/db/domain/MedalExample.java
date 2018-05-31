@@ -1,7 +1,6 @@
 package org.linlinjava.litemall.db.domain;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class MedalExample {
@@ -208,6 +207,11 @@ public class MedalExample {
 
         public Criteria andNameEqualTo(String value) {
             addCriterion("`name` =", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andGradeEqualTo(Integer value) {
+            addCriterion("`grade` =", value, "grade");
             return (Criteria) this;
         }
 
