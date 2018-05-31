@@ -21,9 +21,9 @@ public class ArticleNotesController {
     private MedalDetailsService medalDetailsService;
 
     @RequestMapping("detail")
-    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@RequestParam Integer userId,@RequestParam Integer isCount){
+    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@RequestParam Integer userId,Integer isCount){
         ArticleNotes notes=articleNotesService.findByID(notesId);
-        if(isCount==1){
+        if(isCount!=null && isCount==1){
             notes.setReadCount(notes.getReadCount()+1);
             articleNotesService.update(notes);
         }

@@ -44,8 +44,13 @@ public class PraiseController {
         if(praise == null){
             return ResponseUtil.badArgument();
         }
-        praiseService.update(praise);
-        return ResponseUtil.ok(praise);
+        Praise praiseDb = praiseService.findById(praise.getId());
+        if(praise == null){
+            return ResponseUtil.ok();
+        }
+        praiseDb.setStatus(praise.getStatus());
+        praiseService.update(praiseDb);
+        return ResponseUtil.ok(praiseDb);
     }
 
 }

@@ -333,6 +333,7 @@ public Object collect(@RequestBody Article model) {
         if(article.getUserId() == null){
             return ResponseUtil.badArgument();
         }
+        article.setCategoryId(1);
         articleService.add(article);
         return ResponseUtil.ok();
     }
@@ -363,7 +364,9 @@ public Object collect(@RequestBody Article model) {
                 articleVo.put("category_id",article.getCategoryId());
                 articleVo.put("title",article.getTitle());
                 articleVo.put("brief",article.getBrief());
-                article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
+                if(article.getCreateDate().contains(".0")){
+                    article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
+                }
                 articleVo.put("create_date",article.getCreateDate());
                 articleVo.put("daodu",article.getDaodu());
                 articleVo.put("author",article.getAuthor());
@@ -385,6 +388,11 @@ public Object collect(@RequestBody Article model) {
                 //查当前用户是否喜欢了这本书 0表示未点赞 1表示已点赞
                 articleVo.put("praiseStatus", praiseService.countSeletive(article.getArticleId(),userId,null,null,null,null,"",""));
                 articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
+                if(userId == null){
+                    articleVo.put("collectStatus", 0);
+                    articleVo.put("praiseStatus", 0);
+                    articleVo.put("flag", 0);
+                }
                 articleVoList.add(articleVo);
             }
         }

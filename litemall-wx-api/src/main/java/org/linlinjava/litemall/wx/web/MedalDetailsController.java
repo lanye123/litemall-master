@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
 import org.linlinjava.litemall.db.service.LitemallUserService;
@@ -26,32 +27,42 @@ public class MedalDetailsController {
      *@Date:16:44 2018/5/8
      */
     @GetMapping("totalList")
-    public Object getTotalList(@RequestParam Integer userId){
+    public Object getTotalList(Integer userId){
         if(userId == null){
-            return ResponseUtil.unlogin();
+            return ResponseUtil.badArgument();
         }
-
         Map<String,Object> data = new HashMap<>();
         Map<String,Object> dataItem;
         List<Map<String,Object>> returnTotalList = new ArrayList<>();
         Medal medal;
+        LitemallUser user;
         List<MedalDetails> medalDetailsList = medalDetailsService.selectList(null,null,null,null,null,null);
         for(MedalDetails medalDetails:medalDetailsList){
             medalDetails.setAmount(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
         }
+        //去除重复用户
+        medalDetailsList = removeDuplicateUser(medalDetailsList);
         //对用户成长值进行排序
         sort(medalDetailsList);
         Integer userIdDb = null;
+        int rank = 0;
         for(MedalDetails medalDetails:medalDetailsList){
             if(userIdDb == medalDetails.getUserId()){
                 continue;
             }
             userIdDb = medalDetails.getUserId();
+            rank++;
+            if(userIdDb == userId){
+                data.put("rank",rank);
+            }
             dataItem = new HashMap<>();
             medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
-
+            user = litemallUserService.findById(medalDetails.getUserId());
             dataItem.put("score",medalDetails.getAmount());
-            dataItem.put("userName",litemallUserService.findById(medalDetails.getUserId()).getUsername());
+            dataItem.put("rank",rank);
+            dataItem.put("userId",user.getId());
+            dataItem.put("nickName",user.getNickname());
+            dataItem.put("avatar",user.getAvatar());
             dataItem.put("medalName",medal.getName());
             dataItem.put("imgUrl",medal.getImgUrl());
             dataItem.put("comment",medal.getComment());
@@ -60,9 +71,40 @@ public class MedalDetailsController {
 
             returnTotalList.add(dataItem);
         }
-
         data.put("returnTotalList",returnTotalList);
+        user = litemallUserService.findById(userId);
+        medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null));
+        if(user==null){
+            data.put("score",0);
+            return ResponseUtil.ok(data);
+        }
+        data.put("nickName",user.getNickname());
+        data.put("avatar",user.getAvatar());
+        data.put("score",medalDetailsService.getScoreByUserId(userId,null,null));
+        data.put("medalName",medal.getName());
         return ResponseUtil.ok(data);
+    }
+
+    /**
+      * @author lanye
+      * @Description 去除重复用户
+      * @Date 2018/5/31 11:07
+      * @Param [medalDetailsList]
+      * @return java.util.ArrayList<org.linlinjava.litemall.db.domain.MedalDetails>
+      **/
+    private static ArrayList<MedalDetails> removeDuplicateUser(List<MedalDetails> medalDetailsList) {
+        Set<MedalDetails> set = new TreeSet<MedalDetails>(new Comparator<MedalDetails>() {
+            @Override
+            public int compare(MedalDetails o1, MedalDetails o2) {
+                //字符串,则按照asicc码升序排列
+                if(o1!=null && o2!=null){
+                    return o1.getUserId().compareTo(o2.getUserId());
+                }
+                return 0;
+            }
+        });
+        set.addAll(medalDetailsList);
+        return new ArrayList<MedalDetails>(set);
     }
 
     /**
@@ -71,9 +113,9 @@ public class MedalDetailsController {
      *@Date:10:30 2018/5/9
      */
     @GetMapping("weekList")
-    public Object getWeekList(@RequestParam Integer userId){
+    public Object getWeekList(Integer userId){
         if(userId == null){
-            return ResponseUtil.unlogin();
+            return ResponseUtil.badArgument();
         }
         //拼装时间参数
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -86,34 +128,60 @@ public class MedalDetailsController {
         Map<String,Object> dataItem;
         List<Map<String,Object>> returnTotalList = new ArrayList<>();
         Medal medal;
+        LitemallUser user;
+        //用户当前勋章
+        Medal medalUser = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null));
         List<MedalDetails> medalDetailsList = medalDetailsService.selectList(null,null,null,null,null,null);
         for(MedalDetails medalDetails:medalDetailsList){
             medalDetails.setAmount(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),time1,time2));
         }
+        //去除重复用户
+        medalDetailsList = removeDuplicateUser(medalDetailsList);
         //对用户成长值进行排序
         sort(medalDetailsList);
         Integer userIdDb = null;
+        int rank = 0;
         for(MedalDetails medalDetails:medalDetailsList){
             //剔除重复用户
             if(userIdDb == medalDetails.getUserId()){
                 continue;
             }
             userIdDb = medalDetails.getUserId();
+            rank++;
             dataItem = new HashMap<>();
-            medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),time1,time2));
+            medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
+            user = litemallUserService.findById(medalDetails.getUserId());
 
             dataItem.put("score",medalDetails.getAmount());
-            dataItem.put("userName",litemallUserService.findById(medalDetails.getUserId()).getUsername());
-            dataItem.put("medalName",medal.getName());
+            dataItem.put("rank",rank);
+            dataItem.put("userId",user.getId());
+            dataItem.put("nickName",user.getNickname());
+            dataItem.put("avatar",user.getAvatar());
             dataItem.put("imgUrl",medal.getImgUrl());
+            dataItem.put("medalName",medal.getName());
             dataItem.put("comment",medal.getComment());
             dataItem.put("max",medal.getMax());
             dataItem.put("min",medal.getMin());
+            if(userIdDb == userId){
+                data.put("rank",rank);
+                dataItem.put("medalName",medalUser.getName());
+                dataItem.put("comment",medalUser.getComment());
+            }
 
             returnTotalList.add(dataItem);
         }
 
         data.put("returnTotalList",returnTotalList);
+        user = litemallUserService.findById(userId);
+        medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,time1,time2));
+        if(user==null){
+            data.put("score",0);
+            return ResponseUtil.ok(data);
+        }
+        data.put("nickName",user.getNickname());
+        data.put("avatar",user.getAvatar());
+        data.put("score",medalDetailsService.getScoreByUserId(userId,time1,time2));
+        data.put("medalName",medalUser.getName());
         return ResponseUtil.ok(data);
     }
 

@@ -93,8 +93,9 @@ public class MedalController {
         if(medalDetails.getUserId() == null){
             return ResponseUtil.unlogin();
         }
+        Map<String,Object> data = new HashMap<>();
         Medal before = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
-        medalDetailsService.add(medalDetails);
+        String remsg = medalDetailsService.add(medalDetails);
         Medal after = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
         if(!before.getId().equals(after.getId())){
             //发送通知
@@ -114,7 +115,8 @@ public class MedalController {
             notesService.add(notes);
             return ResponseUtil.ok(notes);
         }
-        return ResponseUtil.ok(medalDetails);
+        data.put("msg",remsg);
+        return ResponseUtil.ok(data);
     }
 
 }

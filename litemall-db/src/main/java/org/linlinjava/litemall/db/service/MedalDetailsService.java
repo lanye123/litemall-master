@@ -23,10 +23,12 @@ public class MedalDetailsService {
      *@Description:用户勋章流水接口
      *@Date:23:24 2018/5/7
      */
-    public void add(MedalDetails medalDetails) {
+    public String add(MedalDetails medalDetails) {
         if(this.getScoreByUserId(medalDetails.getUserId(),DateUtils.getDayStartString(),DateUtils.getDayEndString())<300){
             medalDetailsMapper.insertSelective(medalDetails);
+            return  "ok";
         }
+        return  "fail";
     }
 
     public void update(MedalDetails medalDetails) {

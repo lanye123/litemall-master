@@ -109,6 +109,7 @@ public class ArticleService {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         criteria.andStatusEqualTo(1);
+        criteria.andCategoryIdEqualTo(1);
         criteria.example().setOrderByClause("create_date desc");
         /*if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
         }*/
@@ -162,10 +163,8 @@ public class ArticleService {
             }
             Calendar c = Calendar.getInstance();
             try{
-                dateFormat2.parse(s1.getCreateDate());
                 c.setTime(dateFormat2.parse(s2.getCreateDate()));
                 long a = c.getTimeInMillis();
-                dateFormat2.parse(s1.getCreateDate());
                 c.setTime(dateFormat2.parse(s1.getCreateDate()));
                 long b = c.getTimeInMillis();
                 return (int)a-(int)b;
@@ -240,29 +239,39 @@ public class ArticleService {
         this.sycArticle(article.getArticleId());
     }
 
-    public List<Article> queryBySelective(String title,String author,Integer articleId, Integer page, Integer limit, String sort, String order) {
+    public List<Article> queryBySelective(String title,String author,Integer articleId,Integer categoryId, Integer page, Integer limit, String sort, String order) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(title))
             criteria.andTitleLike("%" + title + "%");
         if(!StringUtils.isEmpty(author))
-            criteria.andTitleLike("%" + author + "%");
+            criteria.andAuthorLike("%" + author + "%");
         if(!StringUtils.isEmpty(articleId))
             criteria.andArticleIdEqualTo(articleId);
+        if(!StringUtils.isEmpty(categoryId))
+            criteria.andCategoryIdEqualTo(categoryId);
+        if(categoryId==null){
+            criteria.andCategoryIdIsNull();
+        }
         if(!StringUtils.isEmpty(order))
             criteria.example().setOrderByClause(order);
         return articleMapper.selectByExample(example);
     }
 
-    public int countSelective(String title, String author, Integer articleId,Integer page, Integer limit, String sort, String order) {
+    public int countSelective(String title, String author, Integer articleId,Integer categoryId,Integer page, Integer limit, String sort, String order) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(title))
             criteria.andTitleLike("%" + title + "%");
         if(!StringUtils.isEmpty(author))
-            criteria.andTitleLike("%" + author + "%");
+            criteria.andAuthorLike("%" + author + "%");
         if(!StringUtils.isEmpty(articleId))
             criteria.andArticleIdEqualTo(articleId);
+        if(!StringUtils.isEmpty(categoryId))
+            criteria.andCategoryIdEqualTo(categoryId);
+        if(categoryId==null){
+            criteria.andCategoryIdIsNull();
+        }
         return (int) articleMapper.countByExample(example);
     }
 
