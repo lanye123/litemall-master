@@ -1,6 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
-import com.alibaba.fastjson.JSONObject;
+import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;

@@ -1,4 +1,4 @@
-package org.linlinjava.litemall.wx.util;
+package org.linlinjava.litemall.admin.util.bcrypt;
 
 import net.sf.json.JSONObject;
 import org.apache.http.HttpResponse;
@@ -11,9 +11,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-
-import javax.imageio.stream.FileImageOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;

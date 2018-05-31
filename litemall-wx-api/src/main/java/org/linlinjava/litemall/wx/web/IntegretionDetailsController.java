@@ -58,6 +58,7 @@ public class IntegretionDetailsController {
         if(j==6){
 
             integretionDetail.setAmount(15);
+            integretionDetail.setStatus((byte) 1);
         }else{
             integretionDetail.setAmount(5);
         }

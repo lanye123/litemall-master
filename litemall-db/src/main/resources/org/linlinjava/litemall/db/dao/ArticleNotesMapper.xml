@@ -18,6 +18,7 @@
     <result column="render" jdbcType="INTEGER" property="render" />
     <result column="read_count" jdbcType="INTEGER" property="readCount" />
     <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="code_url" jdbcType="VARCHAR" property="code_url" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.linlinjava.litemall.db.domain.ArticleNotes">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
@@ -177,12 +178,12 @@
       create_date, sort_no, `status`, 
       brief, article_name, daodu, 
       author, photo_url, photo_name, 
-      render, content, read_count)
+      render, content, read_count,code_url)
     values (#{artileId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{no,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{sortNo,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
       #{brief,jdbcType=VARCHAR}, #{articleName,jdbcType=VARCHAR}, #{daodu,jdbcType=VARCHAR}, 
       #{author,jdbcType=VARCHAR}, #{photoUrl,jdbcType=VARCHAR}, #{photoName,jdbcType=VARCHAR}, 
-      #{render,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{readCount,jdbcType=INTEGER})
+      #{render,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{readCount,jdbcType=INTEGER},#{code_url,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.ArticleNotes">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -235,6 +236,9 @@
       <if test="readCount != null">
         read_count,
       </if>
+      <if test="code_url != null">
+        code_url
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="artileId != null">
@@ -281,6 +285,9 @@
       </if>
       <if test="readCount != null">
         #{readCount,jdbcType=INTEGER},
+      </if>
+      <if test="code_url != null">
+        #{code_url,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
@@ -341,6 +348,9 @@
       <if test="record.readCount != null">
         content = #{record.readCount,jdbcType=INTEGER},
       </if>
+      <if test="record.code_url != null">
+        content = #{record.code_url,jdbcType=VARCHAR}
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -385,6 +395,7 @@
       photo_name = #{record.photoName,jdbcType=VARCHAR},
       render = #{record.render,jdbcType=INTEGER},
       read_count = #{record.readCount,jdbcType=INTEGER}
+      code_url = #{record.code_url,jdbcType=VARCHAR},
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -437,6 +448,9 @@
       <if test="readCount != null">
         read_count = #{readCount,jdbcType=INTEGER},
       </if>
+      <if test="code_url != null">
+        code_url = #{code_url,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -474,7 +488,8 @@
       photo_url = #{photoUrl,jdbcType=VARCHAR},
       photo_name = #{photoName,jdbcType=VARCHAR},
       render = #{render,jdbcType=INTEGER},
-      read_count = #{readCount,jdbcType=INTEGER}
+      read_count = #{readCount,jdbcType=INTEGER},
+      code_url = #{code_url,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleNotesExample" resultMap="BaseResultMap">
