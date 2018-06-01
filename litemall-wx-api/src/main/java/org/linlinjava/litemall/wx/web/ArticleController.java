@@ -206,15 +206,17 @@ public class ArticleController {
         Map<String, Object> data = new HashMap<>();
         JSONArray categoryIds = JSON.parseArray(article.getCategoryIds());
         String categoryName = "";
-        for(Object categoryId:categoryIds){
-            categoryName += articleCategoryService.findById((Integer) categoryId).getName()+",";
+        if(categoryIds!=null && categoryIds.size()>0){
+            for(Object categoryId:categoryIds){
+                categoryName += articleCategoryService.findById((Integer) categoryId).getName()+",";
+            }
+            data.put("categoryName",categoryName);
         }
         data.put("photo_url",article.getPhotoUrl());
         data.put("photo_name",article.getPhotoName());
         data.put("article_id",article.getArticleId());
         data.put("category_id",article.getCategoryId());
         data.put("categoryIds",article.getCategoryIds());
-        data.put("categoryName",categoryName);
         data.put("title",article.getTitle());
         data.put("brief",article.getBrief());
         if(article.getCreateDate().contains(".0")){
@@ -405,6 +407,7 @@ public Object collect(@RequestBody Article model) {
                 articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
                 //查当前用户是否喜欢了这本书 0表示未点赞 1表示已点赞
                 articleVo.put("praiseStatus", praiseService.countSeletive(article.getArticleId(),userId,null,null,null,null,"",""));
+                articleVo.put("praiseCount", praiseService.countSeletive(article.getArticleId(),null,null,null,null,null,"",""));
                 articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
                 if(userId == null){
                     articleVo.put("collectStatus", 0);
