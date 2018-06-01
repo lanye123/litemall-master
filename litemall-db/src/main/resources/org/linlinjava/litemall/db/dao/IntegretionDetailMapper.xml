@@ -406,4 +406,12 @@
     </if>
    order by create_date desc limit 7
   </select>
+
+  <select id="sumByUserid" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select sum(amount) from integretion_detail where 1=1
+    <if test="_parameter!= null">
+      and user_id = #{_parameter,jdbcType=VARCHAR}
+    </if>
+  </select>
+
 </mapper>

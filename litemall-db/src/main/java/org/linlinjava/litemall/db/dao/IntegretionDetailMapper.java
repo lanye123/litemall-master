@@ -133,4 +133,6 @@ public interface IntegretionDetailMapper {
     int days(IntegretionDetail detail);
 
     List<IntegretionDetail> queryByLimit(String userId);
+
+    Integer sumByUserid(String userId);
 }

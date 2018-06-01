@@ -58,4 +58,9 @@ public class IntegretionDetailService {
     public List<IntegretionDetail> queryByLimit(String userId) {
         return integretionDetailMapper.queryByLimit(userId);
     }
+
+    public Integer sumByUserid(String userId) {
+
+        return integretionDetailMapper.sumByUserid(userId);
+    }
 }
