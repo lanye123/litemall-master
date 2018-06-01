@@ -46,6 +46,10 @@ public class ArticleNotesController {
             data.put("author",notes.getAuthor());
             data.put("photoName",notes.getPhotoName());
             data.put("photoUrl",notes.getPhotoUrl());
+            if(notes.getCreateDate().contains(".0")){
+                notes.setCreateDate(notes.getCreateDate().substring(0,notes.getCreateDate().length()-2));
+            }
+            data.put("createDate",notes.getCreateDate());
             data.put("render",notes.getRender());
             data.put("flag", medalDetailsService.countSeletive(notesId,articleId,userId,null,null,null,null,"",""));
             data.put("readCount",notes.getReadCount());
