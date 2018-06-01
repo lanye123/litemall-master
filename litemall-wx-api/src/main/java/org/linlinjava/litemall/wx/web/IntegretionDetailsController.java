@@ -24,7 +24,9 @@ public class IntegretionDetailsController {
     @RequestMapping("/list")
     public Object list(String userId){
         Map<String,Object> data = new HashMap<>();
+        Integer days=0;
         List<IntegretionDetail> integretionDetailList=integretionDetailService.queryByLimit(userId);
+        Integer grade=integretionDetailService.sumByUserid(userId);
         if(integretionDetailList!=null&&integretionDetailList.size()>0){
             for (int i = 0; i < integretionDetailList.size(); i++) {
                 IntegretionDetail detail=integretionDetailList.get(i);
@@ -32,11 +34,16 @@ public class IntegretionDetailsController {
                 //getDateDiff获取两个日期之间的间隔数，两个日期相等或者间隔一天则为0，间隔2天则为1
                 //localToDate将LocalDateTime转换为Date类型
                 //subDays获取当前日期前n天的日期，n为数字
-                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i))==0){
-                    data.put("day"+i,1);
-                }
+                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i))==0&&detail.getAmount()==5){
+                    days++;
+                }else
+                    break;
             }
+            data.put("days",days);
+        }else{
+            data.put("days",1);//默认进入显示一天
         }
+        data.put("grade",grade);
         return ResponseUtil.ok(data);
     }
 
@@ -48,9 +55,10 @@ public class IntegretionDetailsController {
             for (int i = 0; i < integretionDetailList.size(); i++) {
                 IntegretionDetail detail=integretionDetailList.get(i);
                 System.out.println(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i)));
-                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i))==0){
+                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i))==0&&detail.getAmount()==5){
                     j++;
-                }
+                }else
+                    break;
             }
         }
         //如果用户连续签到第七天则获得15积分否则获取5积分
@@ -60,6 +68,7 @@ public class IntegretionDetailsController {
         }else{
             integretionDetail.setAmount(5);
         }
+        integretionDetailService.add(integretionDetail);
         return ResponseUtil.ok(integretionDetail);
     }
 
