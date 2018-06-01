@@ -360,9 +360,12 @@ public Object collect(@RequestBody Article model) {
       * @return java.lang.Object
       **/
     @GetMapping("customList")
-    private Object customList(String flag,Integer userId,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "3")Integer size){
+    private Object customList(String flag,Integer userId,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "5")Integer size){
         logger.debug("传入标识flag："+flag+",用户id："+userId);
         List<Article> articleList=articleService.querySelective3(flag,page, size);
+        if(articleList==null || articleList.size()<=0){
+            return ResponseUtil.ok();
+        }
         logger.debug("初步查询结果articleList："+articleList);
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
         if(articleList!=null && articleList.size()>0){
@@ -373,6 +376,7 @@ public Object collect(@RequestBody Article model) {
                 Map<String, Object> articleVo = new HashMap<>();
                 articleVo.put("photo_url",article.getPhotoUrl());
                 articleVo.put("headUrl",article.getHeadUrl());
+                articleVo.put("userId",article.getUserId());
                 articleVo.put("photo_name",article.getPhotoName());
                 articleVo.put("article_id",article.getArticleId());
                 articleVo.put("category_id",article.getCategoryId());
