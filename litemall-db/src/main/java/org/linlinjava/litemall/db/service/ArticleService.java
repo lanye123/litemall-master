@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -119,6 +120,13 @@ public class ArticleService {
         //人气排序
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
             criteria.example().setOrderByClause("read_count desc");
+        }
+        BigDecimal bg1 = new BigDecimal(articleMapper.selectByExample(example).size());
+        BigDecimal bg2 = new BigDecimal(5);
+        double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        Double pageMax = Math.ceil(d3);
+        if(page>pageMax){
+            return null;
         }
         PageHelper.startPage(page, size);
         return articleMapper.selectByExample(example);

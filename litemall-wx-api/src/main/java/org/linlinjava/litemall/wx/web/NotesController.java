@@ -23,7 +23,7 @@ import java.util.Map;
   **/
 public class NotesController {
     @Autowired
-    private ArticleReplyService articleReplyService;
+    private ArticleService articleService;
     @Autowired
     private NotesTempService notesTempService;
     @Autowired
@@ -72,6 +72,8 @@ public class NotesController {
             dataItem.put("commentContent",articleCommentService.queryById(notes.getInfoid()).getContent());
             //回复内容
             dataItem.put("replyContent",notes.getContent());
+            dataItem.put("title",articleService.findById(articleCommentService.queryById(notes.getInfoid()).getArticleId()).getTitle());
+            dataItem.put("articleId",articleCommentService.queryById(notes.getInfoid()).getArticleId());
             //通知模板内容
             dataItem.put("replyContent",notesTempService.findById(notes.getTempId()).getContent());
             returnList.add(dataItem);

@@ -37,6 +37,12 @@ public class FeedbackController {
         return ResponseUtil.ok();
     }
 
+    @PostMapping("/create")
+    public Object create(@RequestBody Feedback feedback){
+        feedbackService.add(feedback);
+        return ResponseUtil.ok();
+    }
+
     @PostMapping("/delete")
     public Object delete(@RequestBody Feedback feedback){
         feedbackService.deleteById(feedback.getId());
