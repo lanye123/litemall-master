@@ -1,7 +1,13 @@
 package org.linlinjava.litemall.admin.web;
 
 import org.linlinjava.litemall.db.domain.Article;
+import org.linlinjava.litemall.db.domain.LitemallUser;
+import org.linlinjava.litemall.db.domain.Notes;
+import org.linlinjava.litemall.db.domain.NotesTemp;
 import org.linlinjava.litemall.db.service.ArticleService;
+import org.linlinjava.litemall.db.service.LitemallUserService;
+import org.linlinjava.litemall.db.service.NotesService;
+import org.linlinjava.litemall.db.service.NotesTempService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +21,12 @@ import java.util.Map;
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private NotesService notesService;
+    @Autowired
+    private NotesTempService notesTempService;
+    @Autowired
+    private LitemallUserService litemallUserService;
 
     @GetMapping("/list")
     public Object list(String title,String author,Integer articleId,Integer categoryId,
@@ -89,6 +101,36 @@ public class ArticleController {
         }else if(articleDb.getIsView()==1){
             articleDb.setIsView(0);
             articleService.updateById(articleDb);
+        }
+        return ResponseUtil.ok(articleDb);
+    }
+
+    @PostMapping("/push")
+    public Object push(@RequestBody Article article){
+        if(article == null){
+            return ResponseUtil.badArgument();
+        }
+
+        Article articleDb = articleService.findById(article.getArticleId());
+        if(articleDb==null){
+            return ResponseUtil.ok();
+        }
+        List<NotesTemp> notesTemps = notesTempService.querySelective("newbook","",null,"",null,null,"","");
+        if(notesTemps==null || notesTemps.size()==0){
+            return ResponseUtil.ok(article);
+        }
+        List<LitemallUser> userList = litemallUserService.querySelective("","","",null,null,"","");
+        NotesTemp notesTemp = notesTemps.get(0);
+        Notes notes;
+        for(LitemallUser user:userList){
+            notes = new Notes();
+            notes.setFromUserid(user.getId());
+            notes.setTempId(notesTemp.getId());
+            notes.setType(notesTemp.getType());
+            notes.setContent(notesTemp.getContent());
+            notes.setNo(notesTemp.getNo());
+            notes.setInfoid(article.getArticleId());
+            notesService.add(notes);
         }
         return ResponseUtil.ok(articleDb);
     }
