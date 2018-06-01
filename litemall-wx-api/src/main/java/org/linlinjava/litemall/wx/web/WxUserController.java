@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.bouncycastle.asn1.cms.PasswordRecipientInfo;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
@@ -29,6 +30,8 @@ public class WxUserController {
 
     @Autowired
     private LitemallUserService litemallUserService;
+    @Autowired
+    private WxConfigService wxConfigService;
 
     @Value("${miniprogram.url}")
     private String url;
@@ -67,51 +70,8 @@ public class WxUserController {
 
     //获取access_token
     @GetMapping("/token")
-    public String getAcessToken(){
-        String requestUrl=token_url.replace("APPID",appid).replace("APPSECRET",secret);
-        JSONObject re = HttpClientUtil.doGet(requestUrl);
-        return re.getString("access_token");
-    }
-
-    //获取access_token
-    @PostMapping("/createCode")
-    public Object createCode(@RequestBody WxCode code){
-        String token=getAcessToken();
-        JSONObject object=new JSONObject();
-        object.put("path",code.getPath());
-        object.put("width",code.getWidth());
-        String requestUrl=create_codeC_url.replace("ACCESS_TOKEN",token);
-         InputStream i=HttpClientUtil.doPostInstream(requestUrl,object);
-        byte[] data = new byte[1024];
-        int len = -1;
-        FileOutputStream fileOutputStream = null;
-        try {
-            fileOutputStream = new FileOutputStream("D:\\test1.jpg");
-            while ((len = i.read(data)) != -1) {
-                fileOutputStream.write(data, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-
-
-            if (i != null) {
-                try {
-                    i.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-        }
-        return ResponseUtil.ok();
+    public Object getAcessToken(){
+        WxConfig config=wxConfigService.getToken();
+       return ResponseUtil.ok(config);
     }
 }

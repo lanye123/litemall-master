@@ -55,11 +55,13 @@ public class WxMessService {
             object.put("data",data);
             result = HttpClientUtil.doPost(request_url, object);
             logger.info(result);
-            WxMess m = new WxMess();
-            m.setUserId(user_id);
-            m.setReceptOpenId(user.getWeixinOpenid());
-            m.setContent(keyword1_str+","+keyword2_str+","+keyword3_str);
-            wxMessMapper.insertSelective(m);
+            if(Integer.parseInt(result.getString("errcode"))==0){
+                WxMess m = new WxMess();
+                m.setUserId(user_id);
+                m.setReceptOpenId(user.getWeixinOpenid());
+                m.setContent(keyword1_str+","+keyword2_str+","+keyword3_str);
+                wxMessMapper.insertSelective(m);
+            }
         }
         return result;
     }
