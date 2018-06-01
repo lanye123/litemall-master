@@ -479,6 +479,9 @@
     <if test="categoryId != null">
       and a.category_id = #{categoryId,jdbcType=INTEGER}
     </if>
+    <if test="status != null">
+      and b.status = #{status,jdbcType=INTEGER}
+    </if>
     <if test="title != null">
       order by ${title}
     </if>

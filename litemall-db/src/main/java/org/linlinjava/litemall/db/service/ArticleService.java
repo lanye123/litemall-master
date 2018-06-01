@@ -72,6 +72,7 @@ public class ArticleService {
         Article article = new Article();
         List<Article> articleListReturn = new ArrayList<>();
         String[] caIds = categoryIds.split(",");
+        article.setStatus(1);
         //人气排序
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
             article.setTitle("reader desc");
