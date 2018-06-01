@@ -33,9 +33,9 @@
 
         <!--数据库连接信息-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://193.112.142.242:3306/litemall?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false"
+                        connectionURL="jdbc:mysql://10.248.63.150:3306/litemall?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false"
                         userId="root"
-                        password="sunlandsxmt2018" />
+                        password="admin" />
 
 
         <javaModelGenerator targetPackage="org.linlinjava.litemall.db.domain" targetProject="src/main/java" />
@@ -221,9 +221,11 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
         </table>-->
-        <table tableName="medal">
+        <table tableName="wx_mess">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-            <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
+        </table>
+        <table tableName="wx_config">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
     </context>

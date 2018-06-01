@@ -4,12 +4,15 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.validator.internal.constraintvalidators.bv.past.PastValidatorForReadableInstant;
 import org.linlinjava.litemall.admin.util.bcrypt.HttpClientUtil;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.domain.WxCode;
+import org.linlinjava.litemall.db.domain.WxConfig;
 import org.linlinjava.litemall.db.service.ArticleNotesService;
 import org.linlinjava.litemall.db.service.ArticleService;
+import org.linlinjava.litemall.db.service.WxConfigService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,6 +40,8 @@ public class ArticleNotesController {
     private ArticleNotesService articleNotesService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private WxConfigService wxConfigService;
 
     @Value("${miniprogram.appid}")
     private String appid;
@@ -112,29 +117,19 @@ public class ArticleNotesController {
         return ResponseUtil.ok(articleNotes);
     }
 
-
-    //获取access_token
-    @GetMapping("/token")
-    public String getAcessToken(){
-        String requestUrl=token_url.replace("APPID",appid).replace("APPSECRET",secret);
-        JSONObject re = HttpClientUtil.doGet(requestUrl);
-        return re.getString("access_token");
-    }
-
-
     /**
      * 文章详情模块二维码图片生成及保存
      * @author leiqiang
      * @date 2018-5-31 14:15:07
      */
     public void saveCode(Integer article_id,Integer notesId,String name){
+        WxConfig config=wxConfigService.getToken();
         String path=articledetail_url.replace("ARTICLEID",Integer.toString(article_id)).replace("NOTESID",Integer.toString(notesId)).replace("NAME",name);
-        String token=getAcessToken();
         ArticleNotes notes=new ArticleNotes();
         JSONObject object=new JSONObject();
         object.put("path",path);
         object.put("width",430);//小程序二维码宽度
-        String requestUrl=create_codeA_url.replace("ACCESS_TOKEN",token);
+        String requestUrl=create_codeA_url.replace("ACCESS_TOKEN",config.getAccessToken());
         InputStream i=HttpClientUtil.doPostInstream(requestUrl,object);
         byte[] data = new byte[1024];
         int len = -1;

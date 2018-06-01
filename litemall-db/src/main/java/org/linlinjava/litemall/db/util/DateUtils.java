@@ -1422,7 +1422,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(dateFormat(new Date()));
+        System.out.println(new Date());
     }
 
     // 获得本周一与当前日期相差的天数
@@ -1583,5 +1583,16 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Date getCurrentDate(){
+        Date day=new Date();
+        Date day1=null;
+        try {
+            day1= formatTimestamp.parse(formatTimestamp.format(day));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return day1;
     }
 }

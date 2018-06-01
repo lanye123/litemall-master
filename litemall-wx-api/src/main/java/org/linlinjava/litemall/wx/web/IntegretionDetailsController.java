@@ -42,7 +42,6 @@ public class IntegretionDetailsController {
 
     @PostMapping("/create")
     public Object create(@RequestBody IntegretionDetail integretionDetail) {
-        Map<String,Object> data = new HashMap<>();
         Integer j=0;
         List<IntegretionDetail> integretionDetailList=integretionDetailService.queryByLimit(integretionDetail.getUserId());
         if(integretionDetailList!=null&&integretionDetailList.size()>0){
@@ -56,13 +55,12 @@ public class IntegretionDetailsController {
         }
         //如果用户连续签到第七天则获得15积分否则获取5积分
         if(j==6){
-
             integretionDetail.setAmount(15);
             integretionDetail.setStatus((byte) 1);
         }else{
             integretionDetail.setAmount(5);
         }
-        return ResponseUtil.ok(data);
+        return ResponseUtil.ok(integretionDetail);
     }
 
     @PostMapping("/add")

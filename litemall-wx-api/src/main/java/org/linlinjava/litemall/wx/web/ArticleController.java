@@ -2,6 +2,7 @@ package org.linlinjava.litemall.wx.web;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
@@ -39,6 +40,8 @@ public class ArticleController {
     private LitemallUserService litemallUserService;
     @Autowired
     private PraiseService praiseService;
+    @Autowired
+    private WxMessService wxMessService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -335,7 +338,18 @@ public Object collect(@RequestBody Article model) {
         }
         article.setCategoryId(1);
         articleService.add(article);
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(article);
+    }
+    @PostMapping("sendArticleTemplete")
+    public Object sendArticleTemplete(@RequestBody WxMess mess){
+        String url=mess.getUrl();
+        String keyword1=mess.getKeyword1();
+        String keyword2=mess.getKeyword2();
+        String keyword3=mess.getKeyword3();
+        String formId=mess.getFormId();
+        Integer userId=mess.getUserId();
+        JSONObject result=wxMessService.articleCheck(url,keyword1,keyword2,keyword3,formId,userId);
+        return ResponseUtil.ok(result);
     }
 
     /**

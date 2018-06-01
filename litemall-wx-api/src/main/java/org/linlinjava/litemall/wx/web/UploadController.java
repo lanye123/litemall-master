@@ -110,7 +110,8 @@ public class UploadController {
                 // 获取图片的文件名
                 String fileName = file.getOriginalFilename();
                 // 获取图片的扩展名
-                String extensionName = StringUtils.substringAfter(fileName, ".");
+                String extensionName =fileName.substring(fileName.lastIndexOf(".") + 1).trim().toLowerCase();
+                //String extensionName = StringUtils.substringAfter(fileName, ".");
                 // 新的图片文件名 = 获取时间戳+"."图片扩展名
                 String newFileName = String.valueOf(System.currentTimeMillis()) + "." + extensionName;
                 // 文件路径
