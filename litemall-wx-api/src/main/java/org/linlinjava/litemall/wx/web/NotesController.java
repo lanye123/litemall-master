@@ -63,6 +63,7 @@ public class NotesController {
             if(notes.getCreateDate().contains(".0")){
                 notes.setCreateDate(notes.getCreateDate().substring(0,notes.getCreateDate().length()-2));
             }
+            dataItem.put("id",notes.getId());
             dataItem.put("createDate",notes.getCreateDate());
             if(user!=null){
                 //回复人昵称
@@ -115,6 +116,7 @@ public class NotesController {
             if(notes.getCreateDate().contains(".0")){
                 notes.setCreateDate(notes.getCreateDate().substring(0,notes.getCreateDate().length()-2));
             }
+            dataItem.put("id",notes.getId());
             dataItem.put("createDate",notes.getCreateDate());
             //回复人昵称
             dataItem.put("nickName",user.getNickname());

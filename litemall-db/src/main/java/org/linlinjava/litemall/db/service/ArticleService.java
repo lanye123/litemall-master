@@ -110,10 +110,11 @@ public class ArticleService {
     public List<Article> querySelective3(String flag, Integer page, Integer size,Integer isMy) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
-        criteria.andStatusEqualTo(1);
         criteria.andCategoryIdEqualTo(1);
         if(!StringUtils.isEmpty(isMy)) {
             criteria.andUserIdEqualTo(isMy);
+        }else{
+            criteria.andStatusEqualTo(1);
         }
         criteria.example().setOrderByClause("create_date desc");
         /*if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
