@@ -64,10 +64,12 @@ public class NotesController {
                 notes.setCreateDate(notes.getCreateDate().substring(0,notes.getCreateDate().length()-2));
             }
             dataItem.put("createDate",notes.getCreateDate());
-            //回复人昵称
-            dataItem.put("nickName",user.getNickname());
-            //回复人头像
-            dataItem.put("avatar",user.getAvatar());
+            if(user!=null){
+                //回复人昵称
+                dataItem.put("nickName",user.getNickname());
+                //回复人头像
+                dataItem.put("avatar",user.getAvatar());
+            }
             //评论内容
             dataItem.put("commentContent",articleCommentService.queryById(notes.getInfoid()).getContent());
             //回复内容

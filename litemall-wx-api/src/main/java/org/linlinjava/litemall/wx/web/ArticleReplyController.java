@@ -27,10 +27,18 @@ public class ArticleReplyController {
 
     @PostMapping("create")
     public Object create(@RequestBody ArticleReply reply,Integer from_userid,Integer to_userid){
-        if (from_userid!=null)
-            reply.setFromUserid(from_userid);
-        if(to_userid!=null)
-            reply.setToUserid(to_userid);
+        if (reply==null){
+            return ResponseUtil.badArgument();
+        }
+        if (reply.getFromUserid()==null){
+            return ResponseUtil.badArgument();
+        }
+        if (reply.getToUserid()==null){
+            return ResponseUtil.badArgument();
+        }
+        if (reply.getCommentId()==null){
+            return ResponseUtil.badArgument();
+        }
         articleReplyService.add(reply);
         List<NotesTemp> notesTemps = notesTempService.querySelective("reply","",null,"",null,null,"","");
         if(notesTemps==null || notesTemps.size()==0){

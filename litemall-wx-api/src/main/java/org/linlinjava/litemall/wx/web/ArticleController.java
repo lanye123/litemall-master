@@ -395,6 +395,7 @@ public Object collect(@RequestBody Article model) {
                 articleVo.put("reader",article.getReader());
                 articleVo.put("readCount",article.getReadCount());
                 articleVo.put("update_date",article.getUpdateDate());
+                articleVo.put("medalName",medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(article.getUserId(),"","")).getName());
                 if(article.getUserId()==null){
                     articleVo.put("nickName","萤火虫");
                     articleVo.put("avatar","https://sunlands.ministudy.com/images/yhc_logo.png");
