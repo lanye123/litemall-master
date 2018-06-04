@@ -362,9 +362,9 @@ public Object collect(@RequestBody Article model) {
       * @return java.lang.Object
       **/
     @GetMapping("customList")
-    private Object customList(String flag,Integer userId,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "5")Integer size){
+    private Object customList(String flag,Integer userId,Integer isMy,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "5")Integer size){
         logger.debug("传入标识flag："+flag+",用户id："+userId);
-        List<Article> articleList=articleService.querySelective3(flag,page, size);
+        List<Article> articleList=articleService.querySelective3(flag,page, size,isMy);
         if(articleList==null || articleList.size()<=0){
             return ResponseUtil.ok();
         }
@@ -418,5 +418,18 @@ public Object collect(@RequestBody Article model) {
             }
         }
         return ResponseUtil.ok(articleVoList);
+    }
+
+    /**
+      * @author lanye
+      * @Description 删除自定义图书
+      * @Date 2018/6/4 10:23
+      * @Param [article]
+      * @return java.lang.Object
+      **/
+    @PostMapping("/delete")
+    public Object delete(@RequestBody Article article){
+        articleService.deleteById(article.getArticleId());
+        return ResponseUtil.ok();
     }
 }

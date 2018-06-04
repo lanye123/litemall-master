@@ -45,6 +45,9 @@ public class ArticleReplyController {
         notes.setContent(reply.getContent());
         notes.setNo(notesTemp.getNo());
         notes.setInfoid(reply.getCommentId());
+//        if(notesService.countSeletive(notes.getTempId(),notes.getType(),null,notes.getFromUserid(),notes.getInfoid(),"",null,null,"","")>0){
+//            ResponseUtil.ok(reply);
+//        }
         notesService.add(notes);
         return ResponseUtil.ok(reply);
     }

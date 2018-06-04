@@ -3,6 +3,7 @@ package org.linlinjava.litemall.wx.web;
 import org.linlinjava.litemall.db.domain.Feedback;
 import org.linlinjava.litemall.db.service.FeedbackService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.linlinjava.litemall.db.util.ValidateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,6 +40,9 @@ public class FeedbackController {
     public Object add(@RequestBody Feedback feedback){
         if(feedback == null){
             return ResponseUtil.badArgument();
+        }
+        if(ValidateUtils.validateStr(feedback.getContent())||ValidateUtils.validateStr(feedback.getTitle())){
+            return ResponseUtil.fail(500,"暂不支持特殊字符哦，请重新输入吧(*^__^*) 嘻嘻……");
         }
         feedbackService.add(feedback);
         return ResponseUtil.ok();

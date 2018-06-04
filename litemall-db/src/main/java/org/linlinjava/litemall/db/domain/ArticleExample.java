@@ -151,6 +151,11 @@ public class ArticleExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "userId");
+            return (Criteria) this;
+        }
+
         public Criteria andArticleIdNotEqualTo(Integer value) {
             addCriterion("article_id <>", value, "articleId");
             return (Criteria) this;
