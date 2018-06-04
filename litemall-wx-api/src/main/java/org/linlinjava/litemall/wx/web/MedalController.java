@@ -106,6 +106,7 @@ public class MedalController {
         Map<String,Object> data = new HashMap<>();
         Medal before = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
         String remsg = medalDetailsService.add(medalDetails);
+        data.put("msg",remsg);
         Medal after = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
         if(!before.getId().equals(after.getId())){
             //发送通知
@@ -119,13 +120,15 @@ public class MedalController {
             notes.setFromUserid(medalDetails.getUserId());
             notes.setTempId(notesTemp.getId());
             notes.setType(notesTemp.getType());
-            notes.setContent(notesTemp.getContent());
+            notes.setContent(notesTemp.getContent().replace("SNAME",before.getName()).replace("ENAME",after.getName()));
             notes.setNo(notesTemp.getNo());
-//            notes.setInfoid(reply.getCommentId());
+            notes.setInfoid(before.getId());
+            if(notesService.countSeletive(notes.getTempId(),notes.getType(),null,notes.getFromUserid(),notes.getInfoid(),"",null,null,"","")>0){
+                ResponseUtil.ok(data);
+            }
             notesService.add(notes);
-            return ResponseUtil.ok(notes);
+            return ResponseUtil.ok(data);
         }
-        data.put("msg",remsg);
         return ResponseUtil.ok(data);
     }
 

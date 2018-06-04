@@ -127,7 +127,7 @@ public class ArticleController {
             notes.setFromUserid(user.getId());
             notes.setTempId(notesTemp.getId());
             notes.setType(notesTemp.getType());
-            notes.setContent(notesTemp.getContent());
+            notes.setContent(notesTemp.getContent().replace("TITLE",articleDb.getTitle()));
             notes.setNo(notesTemp.getNo());
             notes.setInfoid(article.getArticleId());
             if(notesService.countSeletive(notes.getTempId(),notes.getType(),null,notes.getFromUserid(),notes.getInfoid(),"",null,null,"","")>0){

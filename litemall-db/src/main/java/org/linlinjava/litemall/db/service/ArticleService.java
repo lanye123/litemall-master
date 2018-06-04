@@ -107,11 +107,14 @@ public class ArticleService {
       * @Param [flag, page, size]
       * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
       **/
-    public List<Article> querySelective3(String flag, Integer page, Integer size) {
+    public List<Article> querySelective3(String flag, Integer page, Integer size,Integer isMy) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         criteria.andStatusEqualTo(1);
         criteria.andCategoryIdEqualTo(1);
+        if(!StringUtils.isEmpty(isMy)) {
+            criteria.andUserIdEqualTo(isMy);
+        }
         criteria.example().setOrderByClause("create_date desc");
         /*if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
         }*/
