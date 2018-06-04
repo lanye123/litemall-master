@@ -617,7 +617,7 @@ public class IntegretionDetailExample {
         }
 
         public Criteria andCreateDateEqualTo(LocalDateTime value) {
-            addCriterion("create_date =", value, "createDate");
+            addCriterion("date_format(create_date, 'yyyy-MM-dd') =", value, "createDate");
             return (Criteria) this;
         }
 

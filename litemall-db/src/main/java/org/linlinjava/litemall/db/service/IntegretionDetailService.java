@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.db.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.dao.IntegretionDetailMapper;
 import org.linlinjava.litemall.db.domain.IntegretionDetail;
 import org.linlinjava.litemall.db.domain.IntegretionDetailExample;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @Service
 public class IntegretionDetailService {
+    private final Log logger = LogFactory.getLog(IntegretionDetailService.class);
     @Resource
     private IntegretionDetailMapper integretionDetailMapper;
 
@@ -62,5 +65,12 @@ public class IntegretionDetailService {
     public Integer sumByUserid(String userId) {
 
         return integretionDetailMapper.sumByUserid(userId);
+    }
+
+    public Long countByExample(IntegretionDetail detail) {
+        IntegretionDetailExample example=new IntegretionDetailExample();
+        example.or().andUserIdEqualTo(detail.getUserId()).andCreateDateEqualTo(detail.getCreateDate()).andTypeEqualTo((byte) 0);
+        logger.info(integretionDetailMapper.countByExample(example));
+        return integretionDetailMapper.countByExample(example);
     }
 }

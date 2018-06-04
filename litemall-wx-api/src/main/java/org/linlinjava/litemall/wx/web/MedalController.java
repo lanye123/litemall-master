@@ -1,14 +1,15 @@
 package org.linlinjava.litemall.wx.web;
 
-import org.linlinjava.litemall.db.domain.Medal;
-import org.linlinjava.litemall.db.domain.MedalDetails;
-import org.linlinjava.litemall.db.domain.Notes;
-import org.linlinjava.litemall.db.domain.NotesTemp;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.util.DateUtils;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/wx/medal")
 public class MedalController {
+    private final Log logger = LogFactory.getLog(MedalController.class);
     @Autowired
     private MedalDetailsService medalDetailsService;
     @Autowired
@@ -31,13 +33,14 @@ public class MedalController {
     private PraiseCommentService praiseCommentService;
     @Autowired
     private IntegretionDetailService integretionDetailService;
+
     /**
      *@Author:lanye
      *@Description:获取用户勋章等级接口
      *@Date:16:44 2018/5/7
      */
     @GetMapping("medal")
-    public Object getMedal(@RequestParam Integer userId){
+    public Object getMedal(@RequestParam Integer userId) throws ParseException {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -77,6 +80,13 @@ public class MedalController {
                 praiseCommentService.countComment(null,userId,null));
         //增加返回该用户未读通知数 2018-5-30 15:00
         data.put("notesCount",notesService.countSeletive(null,null,null,userId,null,"0",null,null,"",""));
+
+        //是否打卡状态
+        IntegretionDetail detail=integretionDetailService.queryByLimit(String.valueOf(userId)).get(0);
+        if(DateUtils.compareDate(DateUtils.localToDate(detail.getCreateDate()),DateUtils.getCurrentDate(),5)==0)
+            data.put("dkStatus",1);
+        else
+            data.put("dkStatus",0);
         return ResponseUtil.ok(data);
     }
 

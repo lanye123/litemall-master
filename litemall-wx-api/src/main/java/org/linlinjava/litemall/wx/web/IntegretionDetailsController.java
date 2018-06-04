@@ -25,24 +25,58 @@ public class IntegretionDetailsController {
     public Object list(String userId){
         Map<String,Object> data = new HashMap<>();
         Integer days=0;
+        Integer j=0;
+        IntegretionDetail idetail=new IntegretionDetail();
+        idetail.setUserId(userId);
         List<IntegretionDetail> integretionDetailList=integretionDetailService.queryByLimit(userId);
-        Integer grade=integretionDetailService.sumByUserid(userId);
+
         if(integretionDetailList!=null&&integretionDetailList.size()>0){
-            for (int i = 0; i < integretionDetailList.size(); i++) {
-                IntegretionDetail detail=integretionDetailList.get(i);
+            for (int x = 0; x < integretionDetailList.size(); x++) {
+                IntegretionDetail detail=integretionDetailList.get(x);
                 //System.out.println(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i)));
                 //getDateDiff获取两个日期之间的间隔数，两个日期相等或者间隔一天则为0，间隔2天则为1
                 //localToDate将LocalDateTime转换为Date类型
                 //subDays获取当前日期前n天的日期，n为数字
-                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i))==0&&detail.getAmount()==5){
-                    days++;
+                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(x))==0&&detail.getAmount()==5){
+                    j++;
                 }else
                     break;
             }
-            data.put("days",days);
+
+
+            //自动打卡接口如果用户当天未打卡点击打卡后自动打卡
+            IntegretionDetail id=integretionDetailList.get(0);
+            System.out.println(DateUtils.compareDate(DateUtils.localToDate(id.getCreateDate()),DateUtils.getCurrentDate(),5));
+            if(DateUtils.compareDate(DateUtils.localToDate(id.getCreateDate()),DateUtils.getCurrentDate(),5)<0){
+                if(j==6){
+                    idetail.setAmount(15);
+                    idetail.setStatus((byte) 1);
+                }else{
+                    idetail.setAmount(5);
+                }
+                integretionDetailService.add(idetail);
+            }
         }else{
             data.put("days",1);//默认进入显示一天
         }
+
+        List<IntegretionDetail> integretionDetailList1=integretionDetailService.queryByLimit(userId);
+
+        if(integretionDetailList1!=null&&integretionDetailList1.size()>0) {
+            for (int i = 0; i < integretionDetailList1.size(); i++) {
+                IntegretionDetail detail2 = integretionDetailList1.get(i);
+                //System.out.println(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(i)));
+                //getDateDiff获取两个日期之间的间隔数，两个日期相等或者间隔一天则为0，间隔2天则为1
+                //localToDate将LocalDateTime转换为Date类型
+                //subDays获取当前日期前n天的日期，n为数字
+                if (DateUtils.getDateDiff(DateUtils.localToDate(detail2.getCreateDate()), DateUtils.subDays(i)) == 0 && detail2.getAmount() == 5) {
+                    days++;
+                } else
+                    break;
+            }
+            data.put("days", days);
+        }
+        Integer grade=integretionDetailService.sumByUserid(userId);
         data.put("grade",grade);
         return ResponseUtil.ok(data);
     }

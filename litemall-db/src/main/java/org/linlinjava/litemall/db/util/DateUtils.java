@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -1414,11 +1415,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         return value;
 
     }
-
+    //LocalDateTime转换为Date
     public static Date localToDate(LocalDateTime date) {
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime zdt = date.atZone(zoneId);
         return Date.from(zdt.toInstant());
+    }
+//Date转换为LocalDateTime
+    public static LocalDateTime dateToLocal(Date date) {
+        Instant instant = date.toInstant();
+        ZoneId zoneId = ZoneId.systemDefault();
+        return  instant.atZone(zoneId).toLocalDateTime();
     }
 
     public static void main(String[] args) {
