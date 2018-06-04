@@ -130,6 +130,9 @@ public class ArticleController {
             notes.setContent(notesTemp.getContent());
             notes.setNo(notesTemp.getNo());
             notes.setInfoid(article.getArticleId());
+            if(notesService.countSeletive(notes.getTempId(),notes.getType(),null,notes.getFromUserid(),notes.getInfoid(),"",null,null,"","")>0){
+                continue;
+            }
             notesService.add(notes);
         }
         return ResponseUtil.ok(articleDb);
