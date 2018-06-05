@@ -82,10 +82,14 @@ public class MedalController {
         data.put("notesCount",notesService.countSeletive(null,null,null,userId,null,"0",null,null,"",""));
 
         //是否打卡状态
-        IntegretionDetail detail=integretionDetailService.queryByLimit(String.valueOf(userId)).get(0);
-        if(DateUtils.compareDate(DateUtils.localToDate(detail.getCreateDate()),DateUtils.getCurrentDate(),5)==0)
-            data.put("dkStatus",1);
-        else
+        List<IntegretionDetail> detailList=integretionDetailService.queryByLimit(String.valueOf(userId));
+        if(detailList.size()>0){
+            IntegretionDetail detail=integretionDetailService.queryByLimit(String.valueOf(userId)).get(0);
+            if(DateUtils.compareDate(DateUtils.localToDate(detail.getCreateDate()),DateUtils.getCurrentDate(),5)==0)
+                data.put("dkStatus",1);
+            else
+                data.put("dkStatus",0);
+        }else
             data.put("dkStatus",0);
         return ResponseUtil.ok(data);
     }
