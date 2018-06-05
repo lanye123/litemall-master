@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/wx/praise")
@@ -28,7 +30,27 @@ public class PraiseController {
         if(praise == null){
             return ResponseUtil.badArgument();
         }
-        praiseService.add(praise);
+        if(praise.getUserId() == null){
+            return ResponseUtil.badArgument();
+        }
+        if(praise.getArticleId() == null){
+            return ResponseUtil.badArgument();
+        }
+        if(praise.getFromUserid() == null){
+            return ResponseUtil.badArgument();
+        }
+        List<Praise> praiseList = praiseService.querySelective(praise.getArticleId(),praise.getUserId(),praise.getFromUserid(),null,null,null,"","");
+        if(praiseList==null || praiseList.size()<=0){
+            praiseService.add(praise);
+        }else{
+            praise = praiseList.get(0);
+            if(praise.getStatus()==0){
+                praise.setStatus((byte)1);
+            }else if(praise.getStatus()==1){
+                praise.setStatus((byte)0);
+            }
+            praiseService.update(praise);
+        }
         return ResponseUtil.ok(praise);
     }
 

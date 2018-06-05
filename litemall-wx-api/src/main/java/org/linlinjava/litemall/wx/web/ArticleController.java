@@ -362,7 +362,7 @@ public Object collect(@RequestBody Article model) {
       * @return java.lang.Object
       **/
     @GetMapping("customList")
-    private Object customList(String flag,Integer userId,Integer isMy,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "5")Integer size){
+    private Object customList(String flag,Integer userId,Integer isMy,/*@RequestParam(value = "page", defaultValue = "1")*/Integer page, /*@RequestParam(value = "size", defaultValue = "5")*/Integer size){
         logger.debug("传入标识flag："+flag+",用户id："+userId);
         List<Article> articleList=articleService.querySelective3(flag,page, size,isMy);
         if(articleList==null || articleList.size()<=0){
@@ -397,7 +397,8 @@ public Object collect(@RequestBody Article model) {
                 articleVo.put("update_date",article.getUpdateDate());
                 articleVo.put("medalName",medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(article.getUserId(),"","")).getName());
                 if(article.getUserId()==null){
-                    articleVo.put("nickName","萤火虫");
+//                    articleVo.put("nickName","萤火虫");
+                    articleVo.put("nickName",article.getAuthor());
                     articleVo.put("avatar","https://sunlands.ministudy.com/images/yhc_logo.png");
                 }else{
                     LitemallUser user = litemallUserService.findById(article.getUserId());
@@ -407,9 +408,9 @@ public Object collect(@RequestBody Article model) {
                 //查当前用户是否收藏了这本书
                 articleVo.put("collectStatus", articleCollectionService.countSeletive(article.getArticleId(),userId,1,null,null,"",""));
                 //查当前用户是否喜欢了这本书 0表示未点赞 1表示已点赞
-                articleVo.put("praiseStatus", praiseService.countSeletive(article.getArticleId(),userId,null,null,null,null,"",""));
-                articleVo.put("praiseCount", praiseService.countSeletive(article.getArticleId(),null,null,null,null,null,"",""));
-                articleVo.put("flag", medalDetailsService.countSeletive(0,article.getArticleId(),userId,null,null,null,null,"",""));
+                articleVo.put("praiseStatus", praiseService.countSeletive(article.getArticleId(),userId,null,1,null,null,"",""));
+                articleVo.put("praiseCount", praiseService.countSeletive(article.getArticleId(),null,null,1,null,null,"",""));
+                articleVo.put("flag", medalDetailsService.countSeletive(null,article.getArticleId(),userId,null,null,null,null,"",""));
                 if(userId == null){
                     articleVo.put("collectStatus", 0);
                     articleVo.put("praiseStatus", 0);

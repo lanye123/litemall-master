@@ -2,7 +2,6 @@ package org.linlinjava.litemall.db.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleMapper;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleCategoryStat;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -126,14 +124,14 @@ public class ArticleService {
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
             criteria.example().setOrderByClause("read_count desc");
         }
-        BigDecimal bg1 = new BigDecimal(articleMapper.selectByExample(example).size());
+      /*  BigDecimal bg1 = new BigDecimal(articleMapper.selectByExample(example).size());
         BigDecimal bg2 = new BigDecimal(5);
         double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         Double pageMax = Math.ceil(d3);
         if(page>pageMax){
             return null;
         }
-        PageHelper.startPage(page, size);
+        PageHelper.startPage(page, size);*/
         return articleMapper.selectByExample(example);
     }
 

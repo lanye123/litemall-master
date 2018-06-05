@@ -3,25 +3,15 @@ package org.linlinjava.litemall.wx.web;
 import net.sf.json.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.bouncycastle.asn1.cms.PasswordRecipientInfo;
-import org.linlinjava.litemall.db.domain.*;
-import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.domain.LitemallUser;
+import org.linlinjava.litemall.db.domain.WxConfig;
+import org.linlinjava.litemall.db.service.LitemallUserService;
+import org.linlinjava.litemall.db.service.WxConfigService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 @RestController
 @RequestMapping("/wx/user")
@@ -73,5 +63,35 @@ public class WxUserController {
     public Object getAcessToken(){
         WxConfig config=wxConfigService.getToken();
        return ResponseUtil.ok(config);
+    }
+
+    /**
+      * @author lanye
+      * @Description 获取用户信息
+      * @Date 2018/6/5 10:54
+      * @Param []
+      * @return java.lang.Object
+      **/
+    @GetMapping("/user")
+    public Object getUser(Integer userId){
+        return ResponseUtil.ok(litemallUserService.findById(userId));
+    }
+
+    /**
+      * @author lanye
+      * @Description 更新用户信息
+      * @Date 2018/6/5 10:56
+      * @Param [user]
+      * @return java.lang.Object
+      **/
+    @PostMapping("/update")
+    public Object getUser(@RequestBody LitemallUser user){
+        if(user==null){
+            return ResponseUtil.badArgument();
+        }
+        logger.debug(user);
+
+        litemallUserService.update(user);
+        return ResponseUtil.ok(user);
     }
 }
