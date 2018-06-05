@@ -400,7 +400,7 @@
   </select>
 
   <select id="queryByLimit" parameterType="java.lang.String" resultMap="BaseResultMap">
-      select * from integretion_detail where 1=1
+      select * from integretion_detail where 1=1 and type=0
     <if test="_parameter!= null">
       and user_id = #{_parameter,jdbcType=VARCHAR}
     </if>

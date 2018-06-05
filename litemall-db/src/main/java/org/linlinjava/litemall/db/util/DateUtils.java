@@ -1429,7 +1429,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(new Date());
+        System.out.println(getDate(-1));
     }
 
     // 获得本周一与当前日期相差的天数

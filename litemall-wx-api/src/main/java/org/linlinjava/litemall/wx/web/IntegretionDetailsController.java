@@ -37,8 +37,12 @@ public class IntegretionDetailsController {
                 //getDateDiff获取两个日期之间的间隔数，两个日期相等或者间隔一天则为0，间隔2天则为1
                 //localToDate将LocalDateTime转换为Date类型
                 //subDays获取当前日期前n天的日期，n为数字
-                if(DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()),DateUtils.subDays(x))==0&&detail.getAmount()==5){
-                    j++;
+                if (DateUtils.getDateDiff(DateUtils.localToDate(detail.getCreateDate()), DateUtils.subDays(x)) == 0) {
+                    //当积分值为5分或者当天为第七天签到积分值为15分值得时候签到天数实行累加，否则跳出循环，不计算累加签到天数
+                    if(detail.getAmount() == 5||detail.getAmount() == 15&&DateUtils.compareDate(DateUtils.localToDate(detail.getCreateDate()),DateUtils.getCurrentDate(),5)==0)
+                        j++;
+                    else
+                        break;
                 }else
                     break;
             }
@@ -56,8 +60,6 @@ public class IntegretionDetailsController {
                 }
                 integretionDetailService.add(idetail);
             }
-        }else{
-            data.put("days",1);//默认进入显示一天
         }
 
         List<IntegretionDetail> integretionDetailList1=integretionDetailService.queryByLimit(userId);
@@ -69,9 +71,15 @@ public class IntegretionDetailsController {
                 //getDateDiff获取两个日期之间的间隔数，两个日期相等或者间隔一天则为0，间隔2天则为1
                 //localToDate将LocalDateTime转换为Date类型
                 //subDays获取当前日期前n天的日期，n为数字
-                if (DateUtils.getDateDiff(DateUtils.localToDate(detail2.getCreateDate()), DateUtils.subDays(i)) == 0 && detail2.getAmount() == 5) {
+                System.out.println(DateUtils.localToDate(detail2.getCreateDate())+"###"+DateUtils.subDays(i));
+                System.out.println(DateUtils.getDateDiff(DateUtils.localToDate(detail2.getCreateDate()), DateUtils.subDays(i)));
+                if (DateUtils.compareDate(DateUtils.localToDate(detail2.getCreateDate()), DateUtils.subDays(i),5) == 0) {
+                    //当积分值为5分或者当天为第七天签到积分值为15分值得时候签到天数实行累加，否则跳出循环，不计算累加签到天数
+                    if(detail2.getAmount() == 5||detail2.getAmount() == 15&&DateUtils.compareDate(DateUtils.localToDate(detail2.getCreateDate()),DateUtils.getCurrentDate(),5)==0)
                     days++;
-                } else
+                    else
+                        break;
+                }else
                     break;
             }
             data.put("days", days);
@@ -130,11 +138,5 @@ public class IntegretionDetailsController {
     @PostMapping("update")
     public Object update(@RequestBody Integretion integretion){
         return ResponseUtil.ok(integretion);
-    }
-
-    public static void main(String[] args){
-
-        System.out.println(DateUtils.subDays(1));
-
     }
 }

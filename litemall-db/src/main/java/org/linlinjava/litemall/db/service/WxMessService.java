@@ -55,7 +55,7 @@ public class WxMessService {
             object.put("data",data);
             result = HttpClientUtil.doPost(request_url, object);
             logger.info(result);
-            if(Integer.parseInt(result.getString("errcode"))==0){
+            if(Integer.parseInt(result.getString("data.errcode"))==0){
                 WxMess m = new WxMess();
                 m.setUserId(user_id);
                 m.setReceptOpenId(user.getWeixinOpenid());
