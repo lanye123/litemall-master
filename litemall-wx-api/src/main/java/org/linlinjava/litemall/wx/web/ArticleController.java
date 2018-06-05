@@ -212,6 +212,11 @@ public class ArticleController {
             }
             data.put("categoryName",categoryName);
         }
+        LitemallUser user;
+        user = litemallUserService.findById(article.getUserId());
+        if(user!=null){
+            data.put("nickName",user.getNickname());
+        }
         data.put("photo_url",article.getPhotoUrl());
         data.put("photo_name",article.getPhotoName());
         data.put("article_id",article.getArticleId());

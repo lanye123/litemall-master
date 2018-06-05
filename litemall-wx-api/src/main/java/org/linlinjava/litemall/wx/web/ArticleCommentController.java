@@ -60,7 +60,7 @@ public class ArticleCommentController {
                 articleCommentVo.put("avatar",user.getAvatar());
             }
             articleCommentVo.put("countPraise",countPraise);
-            articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),user_id,null));
+            articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),user_id,null,null));
             articleCommentVoList.add(articleCommentVo);
         }
         if("1".equals(flag)){
@@ -141,7 +141,7 @@ public class ArticleCommentController {
                 articleReplyVo.put("nickname",user.getNickname());
                 articleReplyVo.put("avatar",user.getAvatar());
             }*/
-            articleReplyVo.put("praiseStatus",praiseCommentService.countComment(null,userId,articleReply.getId()));
+            articleReplyVo.put("praiseStatus",praiseCommentService.countComment(null,userId,null,articleReply.getId()));
             articleReplyVoList.add(articleReplyVo);
         }
         //articleReplyVoList.add(data);

@@ -9,6 +9,7 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="from_user_id" jdbcType="INTEGER" property="fromUserId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, comment_id, reply_id, amount, create_date, `status`,user_id
+    id, comment_id, reply_id, amount, create_date, `status`,user_id, from_user_id
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.PraiseCommentExample" resultMap="BaseResultMap">
     select
@@ -139,9 +140,9 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into praise_comment (comment_id, reply_id, amount,user_id,
+    insert into praise_comment (comment_id, reply_id, amount,user_id, from_user_id,
       create_date, `status`)
-    values (#{commentId,jdbcType=INTEGER}, #{replyId,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+    values (#{commentId,jdbcType=INTEGER}, #{replyId,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{fromUserId,jdbcType=INTEGER},
       #{createDate,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.PraiseComment">
@@ -162,6 +163,9 @@
       <if test="userId != null">
         user_id,
       </if>
+      <if test="fromUserId != null">
+        from_user_id,
+      </if>
       <if test="createDate != null">
         create_date,
       </if>
@@ -181,6 +185,9 @@
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="fromUserId != null">
+        #{fromUserId,jdbcType=INTEGER},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
@@ -214,6 +221,9 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
+      <if test="record.fromUserId != null">
+        from_user_id = #{record.fromUserId,jdbcType=INTEGER},
+      </if>
       <if test="record.createDate != null">
         create_date = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
@@ -232,6 +242,7 @@
       reply_id = #{record.replyId,jdbcType=INTEGER},
       amount = #{record.amount,jdbcType=INTEGER},
     user_id = #{record.userId,jdbcType=INTEGER},
+    from_user_id = #{record.fromUserId,jdbcType=INTEGER},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       `status` = #{record.status,jdbcType=TINYINT}
     <if test="_parameter != null">
@@ -259,6 +270,9 @@
       <if test="userId!= null">
         `user_id` = #{userId,jdbcType=INTEGER},
       </if>
+      <if test="fromUserId!= null">
+        `from_user_id` = #{fromUserId,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -268,6 +282,7 @@
       reply_id = #{replyId,jdbcType=INTEGER},
       amount = #{amount,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
+      from_user_id = #{fromUserId,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       `status` = #{status,jdbcType=TINYINT}
     where id = #{id,jdbcType=INTEGER}

@@ -1,6 +1,10 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.linlinjava.litemall.db.domain.ArticleComment;
+import org.linlinjava.litemall.db.domain.ArticleReply;
 import org.linlinjava.litemall.db.domain.PraiseComment;
+import org.linlinjava.litemall.db.service.ArticleCommentService;
+import org.linlinjava.litemall.db.service.ArticleReplyService;
 import org.linlinjava.litemall.db.service.PraiseCommentService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,10 @@ import java.util.List;
 public class PraiseCommentController {
     @Autowired
     private PraiseCommentService praiseCommentService;
+    @Autowired
+    private ArticleCommentService articleCommentService;
+    @Autowired
+    private ArticleReplyService articleReplyService;
     /**
      * 点赞接口
      * @author leiqiang
@@ -40,6 +48,11 @@ public class PraiseCommentController {
                 comment1.setCommentId(comment.getCommentId());
                 comment1.setAmount(1);
                 comment1.setUserId(comment.getUserId());
+                ArticleComment articleComment = articleCommentService.queryById(comment.getCommentId());
+                if(articleComment==null){
+                    return ResponseUtil.fail(999,"该评论不存在");
+                }
+                comment1.setFromUserId(articleComment.getFromUserid());
                 praiseCommentService.add(comment1);
 
             }
@@ -70,6 +83,11 @@ public class PraiseCommentController {
                 comment3.setAmount(1);
                 //comment3.setStatus((byte)1);
                 comment3.setUserId(comment.getUserId());
+                ArticleReply articleReply = articleReplyService.queryById(comment.getReplyId());
+                if(articleReply==null){
+                    return ResponseUtil.fail(999,"该回复不存在");
+                }
+                comment3.setFromUserId(articleReply.getFromUserid());
                 praiseCommentService.add(comment3);
 
             }

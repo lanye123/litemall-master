@@ -395,6 +395,11 @@ public class PraiseCommentExample {
             return (Criteria) this;
         }
 
+        public Criteria andFromUserIdEqualTo(Integer value) {
+            addCriterion("from_user_id =", value, "fromUserId");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateDateNotEqualTo(String value) {
             addCriterion("create_date <>", value, "createDate");
             return (Criteria) this;

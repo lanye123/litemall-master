@@ -44,13 +44,15 @@ public class PraiseCommentService {
         praiseCommentMapper.updateByPrimaryKey(comment1);
     }
 
-    public Integer countComment(Integer commentId, Integer fromUserid,Integer replyId) {
+    public Integer countComment(Integer commentId,Integer userId, Integer fromUserid,Integer replyId) {
         PraiseCommentExample example=new PraiseCommentExample();
         PraiseCommentExample.Criteria criteria=example.createCriteria();
         if(commentId!=null)
             criteria.andCommentIdEqualTo(commentId);
+        if(userId!=null)
+            criteria.andUserIdEqualTo(userId);
         if(fromUserid!=null)
-            criteria.andUserIdEqualTo(fromUserid);
+            criteria.andFromUserIdEqualTo(fromUserid);
         if(replyId!=null)
             criteria.andReplyIdEqualTo(replyId);
         return (int)praiseCommentMapper.countByExample(example);

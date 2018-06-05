@@ -2,10 +2,8 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleReplyMapper;
-import org.linlinjava.litemall.db.domain.ArticleComment;
 import org.linlinjava.litemall.db.domain.ArticleReply;
 import org.linlinjava.litemall.db.domain.ArticleReplyExample;
-import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -106,5 +104,9 @@ public class ArticleReplyService {
     public List<ArticleReply> queryByList(ArticleReply reply){
 
         return  articleReplyMapper.queryByCommentId(reply);
+    }
+
+    public ArticleReply queryById(Integer id) {
+        return articleReplyMapper.selectByPrimaryKey(id);
     }
 }

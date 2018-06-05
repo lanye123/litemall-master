@@ -77,7 +77,7 @@ public class MedalController {
         data.put("shineCount",medalDetailsService.countSeletive(null,null,userId,null,null,null,null,"",""));
         //增加返回该用户获得赞数 2018-5-30 10:34
         data.put("praiseCount",praiseService.countSeletive(null,null,userId,null,null,null,"","")+
-                praiseCommentService.countComment(null,userId,null));
+                praiseCommentService.countComment(null,null,userId,null));
         //增加返回该用户未读通知数 2018-5-30 15:00
         data.put("notesCount",notesService.countSeletive(null,null,null,userId,null,"0",null,null,"",""));
 
@@ -106,6 +106,12 @@ public class MedalController {
         }
         if(medalDetails.getUserId() == null){
             return ResponseUtil.unlogin();
+        }
+        if(medalDetails.getArticleId() == null){
+            return ResponseUtil.badArgument();
+        }
+        if(medalDetails.getAmount() == null){
+            return ResponseUtil.badArgument();
         }
         Map<String,Object> data = new HashMap<>();
         Medal before = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
