@@ -74,8 +74,9 @@ public class ArticleCommentService {
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
         }
-
-        PageHelper.startPage(page, size);
+        if(page!=null&&size!=null){
+            PageHelper.startPage(page, size);
+        }
         return articleCommentMapper.selectByExample(example);
     }
 

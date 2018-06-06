@@ -76,7 +76,9 @@ public class NotesController {
             //回复内容
             dataItem.put("replyContent",notes.getContent());
             dataItem.put("status",notes.getStatus());
-            dataItem.put("title",articleService.findById(articleCommentService.queryById(notes.getInfoid()).getArticleId()).getTitle());
+            if(articleService.findById(articleCommentService.queryById(notes.getInfoid()).getArticleId())!=null){
+                dataItem.put("title",articleService.findById(articleCommentService.queryById(notes.getInfoid()).getArticleId()).getTitle());
+            }
             dataItem.put("articleId",articleCommentService.queryById(notes.getInfoid()).getArticleId());
             //通知模板内容
             dataItem.put("replyContent2",notesTempService.findById(notes.getTempId()).getContent());

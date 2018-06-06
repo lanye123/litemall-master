@@ -42,6 +42,8 @@ public class ArticleController {
     private PraiseService praiseService;
     @Autowired
     private WxMessService wxMessService;
+    @Autowired
+    private NotesService notesService;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口

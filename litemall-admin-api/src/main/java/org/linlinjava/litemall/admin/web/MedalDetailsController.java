@@ -52,9 +52,9 @@ public class MedalDetailsController {
     }
 
     @PostMapping("/delete")
-    public Object delete(Integer id){
+    public Object delete(@RequestBody MedalDetails medalDetails){
 
-        medalDetailsService.deleteById(id);
-        return ResponseUtil.ok(id);
+        medalDetailsService.deleteById(medalDetails.getId());
+        return ResponseUtil.ok(medalDetails);
     }
 }
