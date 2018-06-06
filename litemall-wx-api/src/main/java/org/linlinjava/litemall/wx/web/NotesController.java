@@ -45,7 +45,7 @@ public class NotesController {
         if (userId==null){
             return ResponseUtil.badArgument();
         }
-        List<Notes> notesList = notesService.querySelective(null,0,null,userId,null,"0",null,null,"","");
+        List<Notes> notesList = notesService.querySelective(null,0,null,userId,null,null,null,null,"","");
         if(notesList==null || notesList.size()<=0){
             return ResponseUtil.ok();
         }
@@ -82,7 +82,7 @@ public class NotesController {
             returnList.add(dataItem);
         }
         data.put("returnList",returnList);
-        data.put("count",returnList.size());
+        data.put("count",notesService.querySelective(null,0,null,userId,null,"0",null,null,"","").size());
         return ResponseUtil.ok(data);
     }
 
@@ -98,7 +98,7 @@ public class NotesController {
         if (userId==null){
             return ResponseUtil.badArgument();
         }
-        List<Notes> notesList = notesService.querySelective(null,1,null,userId,null,"0",null,null,"","");
+        List<Notes> notesList = notesService.querySelective(null,1,null,userId,null,null,null,null,"","");
         if(notesList == null || notesList.size()<=0){
             return ResponseUtil.ok();
         }
@@ -124,10 +124,11 @@ public class NotesController {
             dataItem.put("avatar",user.getAvatar());
             //内容
             dataItem.put("content",notes.getContent());
+            dataItem.put("articleId",notes.getInfoid());
             returnList.add(dataItem);
         }
         data.put("returnList",returnList);
-        data.put("count",returnList.size());
+        data.put("count",notesService.querySelective(null,1,null,userId,null,"0",null,null,"","").size());
         return ResponseUtil.ok(data);
     }
 
