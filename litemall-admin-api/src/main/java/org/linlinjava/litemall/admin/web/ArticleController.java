@@ -122,6 +122,8 @@ public class ArticleController {
         List<LitemallUser> userList = litemallUserService.querySelective("","","",null,null,"","");
         NotesTemp notesTemp = notesTemps.get(0);
         Notes notes;
+        Notes notesDb;
+        List<Notes> notesList;
         for(LitemallUser user:userList){
             notes = new Notes();
             notes.setFromUserid(user.getId());
@@ -130,7 +132,12 @@ public class ArticleController {
             notes.setContent(notesTemp.getContent().replace("TITLE",articleDb.getTitle()));
             notes.setNo(notesTemp.getNo());
             notes.setInfoid(article.getArticleId());
-            if(notesService.countSeletive(notes.getTempId(),notes.getType(),null,notes.getFromUserid(),notes.getInfoid(),"",null,null,"","")>0){
+            notesList = notesService.querySelective(notes.getTempId(),notes.getType(),null,notes.getFromUserid(),notes.getInfoid(),null,null,null,"","");
+            if(notesList!=null && notesList.size()>0){
+                notesDb = notesList.get(0);
+                notesDb.setContent(notes.getContent());
+                notesDb.setStatus("0");
+                notesService.update(notesDb);
                 continue;
             }
             notesService.add(notes);

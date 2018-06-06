@@ -2,10 +2,9 @@ package org.linlinjava.litemall.db.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleMapper;
-import org.linlinjava.litemall.db.domain.Article;
-import org.linlinjava.litemall.db.domain.ArticleCategoryStat;
-import org.linlinjava.litemall.db.domain.ArticleExample;
+import org.linlinjava.litemall.db.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -20,6 +19,10 @@ public class ArticleService {
     private ArticleMapper articleMapper;
     @Resource
     private ArticleCategoryStatService articleCategoryStatService;
+    @Resource
+    private NotesService notesService;
+    @Resource
+    private ArticleCommentService articleCommentService;
     private static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 /**
     *@Author:LeiQiang
@@ -266,6 +269,9 @@ public class ArticleService {
         }
         if(!StringUtils.isEmpty(order))
             criteria.example().setOrderByClause(order);
+        if(page!=null&&limit!=null){
+            PageHelper.startPage(page,limit);
+        }
         return articleMapper.selectByExample(example);
     }
 
@@ -293,6 +299,14 @@ public class ArticleService {
 
     public void deleteById(Integer articleId) {
         articleMapper.deleteByPrimaryKey(articleId);
+        //删除相关信息
+        List<ArticleComment> articleCommentList = articleCommentService.query(articleId,null,null,null,null,null,null,null,null);
+        for(ArticleComment articleComment:articleCommentList){
+            List<Notes> notesList = notesService.querySelective(null,null,null,null,articleComment.getId(),null,null,null,null,null);
+            for(Notes notes:notesList){
+                notesService.deleteById(notes.getId());
+            }
+        }
         this.sycArticle(articleId);
     }
 

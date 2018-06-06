@@ -61,6 +61,9 @@ public class ArticleCommentController {
             }
             articleCommentVo.put("countPraise",countPraise);
             articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),user_id,null,null));
+            if(user_id==null){
+                articleCommentVo.put("praiseStatus",0);
+            }
             articleCommentVoList.add(articleCommentVo);
         }
         if("1".equals(flag)){
