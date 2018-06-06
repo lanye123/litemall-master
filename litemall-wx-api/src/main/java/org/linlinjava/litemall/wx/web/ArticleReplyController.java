@@ -26,7 +26,7 @@ public class ArticleReplyController {
     private NotesService notesService;
 
     @PostMapping("create")
-    public Object create(@RequestBody ArticleReply reply,Integer from_userid,Integer to_userid){
+    public Object create(@RequestBody ArticleReply reply){
         if (reply==null){
             return ResponseUtil.badArgument();
         }

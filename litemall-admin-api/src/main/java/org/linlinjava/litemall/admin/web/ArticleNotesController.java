@@ -150,8 +150,10 @@ public class ArticleNotesController {
             while ((len = i.read(data)) != -1) {
                 fileOutputStream.write(data, 0, len);
             }
+            // 将反斜杠转换为正斜杠
+            String datapath = temp.replaceAll("\\\\", "/") + newFileName;
             notes.setId(notesId);
-            notes.setCode_url(filePath+newFileName);
+            notes.setCode_url(datapath);
             articleNotesService.update(notes);
         } catch (IOException e) {
             e.printStackTrace();
