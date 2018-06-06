@@ -2,6 +2,7 @@ package org.linlinjava.litemall.db.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleMapper;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleCategoryStat;
@@ -266,6 +267,9 @@ public class ArticleService {
         }
         if(!StringUtils.isEmpty(order))
             criteria.example().setOrderByClause(order);
+        if(page!=null&&limit!=null){
+            PageHelper.startPage(page,limit);
+        }
         return articleMapper.selectByExample(example);
     }
 

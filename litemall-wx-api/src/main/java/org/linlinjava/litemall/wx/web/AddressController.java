@@ -7,6 +7,8 @@ import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/wx/userAddress")
@@ -54,7 +56,16 @@ public class AddressController {
         if(litemallAddress == null){
             return ResponseUtil.badArgument();
         }
-        return ResponseUtil.ok(litemallAddressService.add(litemallAddress));
+        List<LitemallAddress> litemallAddressList = litemallAddressService.queryByUid(litemallAddress.getUserId());
+        if(litemallAddressList!=null && litemallAddressList.size()>0){
+            LitemallAddress litemallAddressDb = litemallAddressList.get(0);
+            litemallAddressDb.setAddress(litemallAddress.getAddress());
+            litemallAddressDb.setMobile(litemallAddress.getMobile());
+            litemallAddressDb.setName(litemallAddress.getName());
+            return ResponseUtil.ok(litemallAddressService.update(litemallAddressDb));
+        }else{
+            return ResponseUtil.ok(litemallAddressService.add(litemallAddress));
+        }
     }
 
     /**

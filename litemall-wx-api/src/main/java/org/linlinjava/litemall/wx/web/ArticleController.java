@@ -283,6 +283,9 @@ public class ArticleController {
             return ResponseUtil.ok(data);
         }
         data.put("flag", medalDetailsService.countSeletive(0,article_id,userId,null,null,null,null,"",""));
+        if(article.getCategoryId()!=null&&article.getCategoryId()==1){
+            data.put("flag", medalDetailsService.countSeletive(null,article_id,userId,null,null,null,null,"",""));
+        }
         data.put("collectStatus", articleCollectionService.countSeletive(article_id,userId,1,null,null,"",""));
         return ResponseUtil.ok(data);
     }

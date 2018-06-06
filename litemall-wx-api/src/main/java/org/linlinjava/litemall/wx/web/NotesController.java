@@ -75,10 +75,11 @@ public class NotesController {
             dataItem.put("commentContent",articleCommentService.queryById(notes.getInfoid()).getContent());
             //回复内容
             dataItem.put("replyContent",notes.getContent());
+            dataItem.put("status",notes.getStatus());
             dataItem.put("title",articleService.findById(articleCommentService.queryById(notes.getInfoid()).getArticleId()).getTitle());
             dataItem.put("articleId",articleCommentService.queryById(notes.getInfoid()).getArticleId());
             //通知模板内容
-            dataItem.put("replyContent",notesTempService.findById(notes.getTempId()).getContent());
+            dataItem.put("replyContent2",notesTempService.findById(notes.getTempId()).getContent());
             returnList.add(dataItem);
         }
         data.put("returnList",returnList);
@@ -125,6 +126,7 @@ public class NotesController {
             //内容
             dataItem.put("content",notes.getContent());
             dataItem.put("articleId",notes.getInfoid());
+            dataItem.put("status",notes.getStatus());
             returnList.add(dataItem);
         }
         data.put("returnList",returnList);
