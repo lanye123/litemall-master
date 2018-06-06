@@ -21,16 +21,13 @@ public class ArticleNotesController {
     private MedalDetailsService medalDetailsService;
 
     @RequestMapping("detail")
-    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,@RequestParam Integer userId,Integer isCount){
+    public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,Integer userId,Integer isCount){
         ArticleNotes notes=articleNotesService.findByID(notesId);
         if(isCount!=null && isCount==1){
             notes.setReadCount(notes.getReadCount()+1);
             articleNotesService.update(notes);
         }
         if(articleId == null){
-            ResponseUtil.badArgument();
-        }
-        if(userId == null){
             ResponseUtil.badArgument();
         }
         Map<String, Object> data = new HashMap<>();
@@ -53,6 +50,9 @@ public class ArticleNotesController {
             data.put("createDate",notes.getCreateDate());
             data.put("render",notes.getRender());
             data.put("flag", medalDetailsService.countSeletive(notesId,articleId,userId,null,null,null,null,"",""));
+            if(userId == null){
+                data.put("flag",0);
+            }
             data.put("readCount",notes.getReadCount());
             return ResponseUtil.ok(data);
     }
