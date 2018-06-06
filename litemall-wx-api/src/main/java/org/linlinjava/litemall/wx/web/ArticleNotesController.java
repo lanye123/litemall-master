@@ -46,6 +46,7 @@ public class ArticleNotesController {
             data.put("author",notes.getAuthor());
             data.put("photoName",notes.getPhotoName());
             data.put("photoUrl",notes.getPhotoUrl());
+            data.put("codeUrl",notes.getCode_url());
             if(notes.getCreateDate().contains(".0")){
                 notes.setCreateDate(notes.getCreateDate().substring(0,notes.getCreateDate().length()-2));
             }

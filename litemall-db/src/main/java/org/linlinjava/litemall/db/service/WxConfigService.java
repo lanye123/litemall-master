@@ -25,8 +25,8 @@ public class WxConfigService {
         WxConfig config=wxConfigMapper.selectByPrimaryKey(1);
         // 判断当前时间是否大于到期时间 如果大于则重新获取
         System.out.println(config.getEndDate()+"#######"+DateUtils.getCurrentDate());
-        System.out.println(DateUtils.compareTime(config.getEndDate(),DateUtils.getCurrentDate(),13)>0);
-        if(StringUtils.isEmpty(config.getAccessToken())||DateUtils.compareTime(config.getEndDate(),DateUtils.getCurrentDate(),13)>0){
+        System.out.println(DateUtils.compareTime(config.getEndDate(),DateUtils.getCurrentDate(),13)<0);
+        if(StringUtils.isEmpty(config.getAccessToken())||DateUtils.compareTime(config.getEndDate(),DateUtils.getCurrentDate(),13)<0){
             String requestUrl=token_url.replace("APPID",config.getAppid()).replace("APPSECRET",config.getSecret());
             JSONObject re = HttpClientUtil.doGet(requestUrl);
             config.setStartDate(DateUtils.getCurrentDate());

@@ -122,6 +122,7 @@ public class ArticleNotesController {
      * @author leiqiang
      * @date 2018-5-31 14:15:07
      */
+    @PostMapping("/code")
     public void saveCode(Integer article_id,Integer notesId,String name){
         WxConfig config=wxConfigService.getToken();
         String path=articledetail_url.replace("ARTICLEID",Integer.toString(article_id)).replace("NOTESID",Integer.toString(notesId)).replace("NAME",name);

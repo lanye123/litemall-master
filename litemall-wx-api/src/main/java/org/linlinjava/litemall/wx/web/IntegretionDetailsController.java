@@ -60,6 +60,10 @@ public class IntegretionDetailsController {
                 }
                 integretionDetailService.add(idetail);
             }
+        }else
+        {
+            idetail.setAmount(5);
+            integretionDetailService.add(idetail);
         }
 
         List<IntegretionDetail> integretionDetailList1=integretionDetailService.queryByLimit(userId);
@@ -83,8 +87,14 @@ public class IntegretionDetailsController {
                     break;
             }
             data.put("days", days);
+        }else
+        {
+            data.put("days", 1);
         }
         Integer grade=integretionDetailService.sumByUserid(userId);
+        if(grade==null){
+            data.put("grade",5);
+        }else
         data.put("grade",grade);
         return ResponseUtil.ok(data);
     }
