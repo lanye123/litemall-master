@@ -287,6 +287,15 @@ public class ArticleController {
         data.put("flag", medalDetailsService.countSeletive(0,article_id,userId,null,null,null,null,"",""));
         if(article.getCategoryId()!=null&&article.getCategoryId()==1){
             data.put("flag", medalDetailsService.countSeletive(null,article_id,userId,null,null,null,null,"",""));
+            if(article.getUserId()==null){
+//                    articleVo.put("nickName","萤火虫");
+                data.put("nickName",article.getAuthor());
+            }else{
+                LitemallUser user2 = litemallUserService.findById(article.getUserId());
+                if(user2!=null){
+                    data.put("nickName",user2.getNickname());
+                }
+            }
         }
         data.put("collectStatus", articleCollectionService.countSeletive(article_id,userId,1,null,null,"",""));
         return ResponseUtil.ok(data);
