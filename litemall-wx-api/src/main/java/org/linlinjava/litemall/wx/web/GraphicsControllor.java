@@ -36,7 +36,6 @@ public class GraphicsControllor {
     //生成图片文件
     @SuppressWarnings("restriction")
     public void createImage(String fileLocation) {
-        BufferedOutputStream bos = null;
         if(image != null){
             try {
                 String formatName = fileLocation.substring(fileLocation.lastIndexOf(".") + 1);
@@ -46,17 +45,8 @@ public class GraphicsControllor {
 
                 JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(bos);
                 encoder.encode(image);*/
-                bos.close();
             } catch (Exception e) {
                 e.printStackTrace();
-            }finally{
-                if(bos!=null){//关闭输出流
-                    try {
-                        bos.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     }
@@ -145,7 +135,7 @@ public class GraphicsControllor {
         Font tipFont = new Font("微软雅黑", Font.PLAIN, 50);
         tip.setColor(Color.gray);
         tip.setFont(tipFont);
-        tip.drawString(date, 550, 1250);
+        tip.drawString(date, 600, 1250);
         //***********************设置下面的按钮块
 
         //***********************设置下面的提示框
@@ -190,7 +180,34 @@ System.out.println(str.length());
                 }
             }else{
                 int strWidth = tip.getFontMetrics().stringWidth(str);
-                tip.drawString(getStrList.get(0).toString(), 150+strWidth / 2, imageWidth);
+                int length=str.length();
+                if(length==12)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-150, imageWidth);
+                else if(length==13)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+100, imageWidth);
+                else if(length==14)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+100, imageWidth);
+                else if(length==15)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+30, imageWidth);
+                else if(length==16)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-30, imageWidth);
+                else if(length==17)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-60, imageWidth);
+                else if(length==18)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-150, imageWidth);
+                else if(length==19)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-150, imageWidth);
+                else if(length==20)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-210, imageWidth);
+                else if(length==21)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-300, imageWidth);
+                else if(length==22)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-360, imageWidth);
+                else if(length==23)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-410, imageWidth);
+                else
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-460, imageWidth);
+
             }
         }
         String temp = "images" + File.separator + "temp" + File.separator;
@@ -215,7 +232,7 @@ System.out.println(str.length());
     public static void main(String[] args) {
         GraphicsControllor cg = new GraphicsControllor();
         try {
-            cg.graphicsGeneration("2018-06-06", "EVAN", "和谐师生关系一直是大家关注问题之一，此前，河南驻马店西平县一小学老师将学生默写古诗的成绩和照片发到了家长群引发部分家长不满", "D:/1528107313200.jpg");
+            cg.graphicsGeneration("2018-06-06", "EVAN", "自信和自尊心越低，他们就啊啊啊啊啊啊啊啊啊啊啊啊", "https://sunlands.ministudy.com/images/upload/1528265355187.jpg");
         } catch (Exception e) {
             e.printStackTrace();
         }
