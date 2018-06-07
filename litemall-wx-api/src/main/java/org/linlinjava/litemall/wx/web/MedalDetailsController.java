@@ -52,7 +52,7 @@ public class MedalDetailsController {
             }
             userIdDb = medalDetails.getUserId();
             rank++;
-            if(userIdDb == userId){
+            if(userIdDb.intValue() == userId.intValue()){
                 data.put("rank",rank);
             }
             dataItem = new HashMap<>();
@@ -162,7 +162,7 @@ public class MedalDetailsController {
             dataItem.put("comment",medal.getComment());
             dataItem.put("max",medal.getMax());
             dataItem.put("min",medal.getMin());
-            if(userIdDb == userId){
+            if(userIdDb.intValue() == userId.intValue()){
                 data.put("rank",rank);
                 dataItem.put("medalName",medalUser.getName());
                 dataItem.put("comment",medalUser.getComment());
