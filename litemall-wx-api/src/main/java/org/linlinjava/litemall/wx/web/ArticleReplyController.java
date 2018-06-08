@@ -46,8 +46,8 @@ public class ArticleReplyController {
         }
         NotesTemp notesTemp = notesTemps.get(0);
         Notes notes = new Notes();
-        notes.setUserId(reply.getToUserid());
-        notes.setFromUserid(reply.getFromUserid());
+        notes.setUserId(reply.getFromUserid());
+        notes.setFromUserid(reply.getToUserid());
         notes.setTempId(notesTemp.getId());
         notes.setType(notesTemp.getType());
         notes.setContent(reply.getContent());
