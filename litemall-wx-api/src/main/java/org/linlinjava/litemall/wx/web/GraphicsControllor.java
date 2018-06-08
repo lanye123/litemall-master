@@ -51,7 +51,7 @@ public class GraphicsControllor {
         }
     }
     @GetMapping("generatorPhoto")
-    public Object graphicsGeneration(String date, String nickname, String content, String imgurl) {
+    public Object graphicsGeneration(String date, String nickname, String content, String imgurl,String author) {
         Map data=new HashMap();
         image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
         //设置图片的背景色
@@ -136,6 +136,51 @@ public class GraphicsControllor {
         tip.setColor(Color.gray);
         tip.setFont(tipFont);
         tip.drawString(date, 600, 1250);
+        System.out.println(author.length());
+        int authorLength=author.length();
+        int authorWidth = tip.getFontMetrics().stringWidth(author);
+        if (authorLength==1){
+            tip.drawString(author, authorWidth / 2+650, 1900);
+        }else if (authorLength==2)
+            tip.drawString(author, authorWidth / 2+650, 1900);
+        else if (authorLength==3)
+           tip.drawString(author, authorWidth / 2+600, 1900);
+        else if (authorLength==4)
+            tip.drawString(author, authorWidth / 2+550, 1900);
+        else if (authorLength==5)
+            tip.drawString(author, authorWidth / 2+500, 1900);
+        else if (authorLength==6)
+            tip.drawString(author, authorWidth / 2+450, 1900);
+        else if (authorLength==7)
+            tip.drawString(author, authorWidth / 2+400, 1900);
+        else if (authorLength==8)
+            tip.drawString(author, authorWidth / 2+350, 1900);
+        else if (authorLength==9)
+            tip.drawString(author, authorWidth / 2+300, 1900);
+        else if (authorLength==10)
+            tip.drawString(author, authorWidth / 2+250, 1900);
+        else if (authorLength==11)
+            tip.drawString(author, authorWidth / 2+200, 1900);
+        else if (authorLength==12)
+            tip.drawString(author, authorWidth / 2+150, 1900);
+        else if (authorLength==13)
+            tip.drawString(author, authorWidth / 2+100, 1900);
+        else if (authorLength==14)
+            tip.drawString(author, authorWidth / 2+50, 1900);
+        else if (authorLength==15)
+            tip.drawString(author, authorWidth / 2, 1900);
+        else if (authorLength==16)
+            tip.drawString(author, authorWidth / 2-50, 1900);
+        else if (authorLength==17)
+            tip.drawString(author, authorWidth / 2-100, 1900);
+        else if (authorLength==18)
+            tip.drawString(author, authorWidth / 2-150, 1900);
+        else if (authorLength==19)
+            tip.drawString(author, authorWidth / 2-200, 1900);
+        else if (authorLength==20)
+            tip.drawString(author, authorWidth / 2-250, 1900);
+        else
+        tip.drawString(author, authorWidth / 2-200, 1900);
         //***********************设置下面的按钮块
 
         //***********************设置下面的提示框
@@ -154,7 +199,7 @@ public class GraphicsControllor {
 
         Graphics2D tip3 = image.createGraphics();
         //设置区域颜色
-        tip3.setColor(Color.white);
+        tip3.setColor(new Color(247,247,247));
         //填充区域并确定区域大小位置
         //tip3.fillRect(0, btn2_2_top, imageWidth, H_tip);
         //设置字体颜色，先设置颜色，再填充内容
@@ -169,7 +214,7 @@ public class GraphicsControllor {
         //设置字体颜色，先设置颜色，再填充内容
         tip.setColor(Color.gray);
         String str=content;
-System.out.println(str.length());
+
         List getStrList=getStrList(str,24);
         System.out.println(getStrList);
         logger.info(getStrList);
@@ -181,8 +226,12 @@ System.out.println(str.length());
             }else{
                 int strWidth = tip.getFontMetrics().stringWidth(str);
                 int length=str.length();
-                if(length==12)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-150, imageWidth);
+                if(length==10)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+250, imageWidth);
+                else if(length==11)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+200, imageWidth);
+                else if(length==12)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+150, imageWidth);
                 else if(length==13)
                     tip.drawString(getStrList.get(0).toString(), strWidth / 2+100, imageWidth);
                 else if(length==14)
@@ -232,7 +281,7 @@ System.out.println(str.length());
     public static void main(String[] args) {
         GraphicsControllor cg = new GraphicsControllor();
         try {
-            cg.graphicsGeneration("2018-06-06", "EVAN", "自信和自尊心越低，他们就啊啊啊啊啊啊啊啊啊啊啊啊", "https://sunlands.ministudy.com/images/upload/1528265355187.jpg");
+            cg.graphicsGeneration("2018-06-06", "EVAN", "自信和自尊心越低他们啊啊啊", "https://sunlands.ministudy.com/images/upload/1528265355187.jpg","王打累是啊啊啊啊啊啊啊阿斯顿发士大夫");
         } catch (Exception e) {
             e.printStackTrace();
         }
