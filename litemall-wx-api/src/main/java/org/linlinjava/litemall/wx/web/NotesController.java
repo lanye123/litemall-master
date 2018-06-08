@@ -125,6 +125,10 @@ public class NotesController {
             dataItem.put("nickName",user.getNickname());
             //回复人头像
             dataItem.put("avatar",user.getAvatar());
+            if("newbook".equals(notes.getNo()) || "upgrade".equals(notes.getNo())){
+                dataItem.put("nickName","点灯萤火虫");
+                dataItem.put("avatar","https://sunlands.ministudy.com/images/yhc_logo.png");
+            }
             //内容
             dataItem.put("content",notes.getContent());
             dataItem.put("articleId",notes.getInfoid());
