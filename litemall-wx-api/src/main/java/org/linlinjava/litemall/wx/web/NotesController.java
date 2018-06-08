@@ -129,6 +129,7 @@ public class NotesController {
             dataItem.put("content",notes.getContent());
             dataItem.put("articleId",notes.getInfoid());
             dataItem.put("status",notes.getStatus());
+            dataItem.put("no",notes.getNo());
             returnList.add(dataItem);
         }
         data.put("returnList",returnList);
