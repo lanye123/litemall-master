@@ -33,7 +33,7 @@ public class PraiseController {
         if(praise.getArticleId() == null){
             return ResponseUtil.badArgument();
         }
-        if(praise.getFromUserid() == null){
+        if(praise.getUserId() == null){
             return ResponseUtil.badArgument();
         }
         List<Praise> praiseList = praiseService.querySelective(praise.getArticleId(),praise.getUserId(),praise.getFromUserid(),null,null,null,"","");
