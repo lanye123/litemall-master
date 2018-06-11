@@ -103,40 +103,42 @@ public class UploadController {
 
     @PostMapping(value = "/fileUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Object fileupload(@RequestParam("file") MultipartFile file) {
+        System.out.println(file.getSize());
+        Object object=null;
         Map<String, Object> map = new HashMap<>();
         if (!file.isEmpty()) {
-            try {
-                String temp = "images" + File.separator + "upload" + File.separator;
-                // 获取图片的文件名
-                String fileName = file.getOriginalFilename();
-                // 获取图片的扩展名
-                String extensionName =fileName.substring(fileName.lastIndexOf(".") + 1).trim().toLowerCase();
-                //String extensionName = StringUtils.substringAfter(fileName, ".");
-                // 新的图片文件名 = 获取时间戳+"."图片扩展名
-                String newFileName = String.valueOf(System.currentTimeMillis()) + "." + extensionName;
-                // 文件路径
-                String filePath = webUploadPath.concat(temp);
+                try {
+                    String temp = "images" + File.separator + "upload" + File.separator;
+                    // 获取图片的文件名
+                    String fileName = file.getOriginalFilename();
+                    // 获取图片的扩展名
+                    String extensionName = fileName.substring(fileName.lastIndexOf(".") + 1).trim().toLowerCase();
+                    //String extensionName = StringUtils.substringAfter(fileName, ".");
+                    // 新的图片文件名 = 获取时间戳+"."图片扩展名
+                    String newFileName = String.valueOf(System.currentTimeMillis()) + "." + extensionName;
+                    // 文件路径
+                    String filePath = webUploadPath.concat(temp);
 
-                File dest = new File(filePath, newFileName);
-                if (!dest.getParentFile().exists()) {
-                    dest.getParentFile().mkdirs();
+                    File dest = new File(filePath, newFileName);
+                    if (!dest.getParentFile().exists()) {
+                        dest.getParentFile().mkdirs();
+                    }
+                    // 上传到指定目录
+                    file.transferTo(dest);
+                    // 将反斜杠转换为正斜杠
+                    String data = temp.replaceAll("\\\\", "/") + newFileName;
+                    map.put("tempPath", temp);
+                    map.put("fileName", fileName);
+                    map.put("extensionName", extensionName);
+                    map.put("newFileName", newFileName);
+                    map.put("filePath", filePath);
+                    map.put("data", data);
+                    object=ResponseUtil.ok(map);
+                } catch (IOException e) {
+                    object=ResponseUtil.fail(501, "文件大小超出限制10M，请从新选择");
                 }
-                // 上传到指定目录
-                file.transferTo(dest);
-                // 将反斜杠转换为正斜杠
-                String data = temp.replaceAll("\\\\", "/") + newFileName;
-                map.put("tempPath",temp);
-                map.put("fileName",fileName);
-                map.put("extensionName",extensionName);
-                map.put("newFileName",newFileName);
-                map.put("filePath",filePath);
-                map.put("data",data);
-                ResponseUtil.ok(map);
-            } catch (IOException e) {
-                ResponseUtil.fail(0, "上传失败");
             }
-        }
-        return ResponseUtil.ok(map);
+        return object;
     }
 
 

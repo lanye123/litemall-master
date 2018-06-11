@@ -1,13 +1,17 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.db.domain.LitemallUser;
+import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -21,6 +25,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/wx/graphics")
 public class GraphicsControllor {
+    @Resource
+    private LitemallUserService litemallUserService;
     private final Log logger = LogFactory.getLog(GraphicsControllor.class);
     private BufferedImage image;
     private BufferedImage image2;
@@ -51,7 +57,7 @@ public class GraphicsControllor {
         }
     }
     @GetMapping("generatorPhoto")
-    public Object graphicsGeneration(String date, String nickname, String content, String imgurl,String author) {
+    public Object graphicsGeneration(String date, String nickname, String content, String imgurl,String author,Integer userId) {
         Map data=new HashMap();
         image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
         //设置图片的背景色
@@ -121,6 +127,72 @@ public class GraphicsControllor {
             mainPic1.drawImage(bimg1, 1050, 2100, 300, 300, null);
             mainPic1.dispose();
         }
+
+        //***********************插入用户头像
+        if(userId!=null){
+            LitemallUser user=litemallUserService.findById(userId);
+        if(StringUtils.isNotEmpty(user.getAvatar())){
+            Graphics mainPic3 = image.getGraphics();
+            BufferedImage bimg3 = null;
+            try {
+                URL url3 = new URL(user.getAvatar());
+                URLConnection con3 = url3.openConnection();
+                //不超时
+                con3.setConnectTimeout(0);
+
+                //不允许缓存
+                con3.setUseCaches(false);
+                con3.setDefaultUseCaches(false);
+                InputStream is3 = con3.getInputStream();
+
+                //先读入内存
+                ByteArrayOutputStream buf3 = new ByteArrayOutputStream(8192);
+                byte[] b3 = new byte[1024];
+                int len3;
+                while ((len3 = is3.read(b3)) != -1) {
+                    buf3.write(b3, 0, len3);
+                }
+                //读图像
+                is3=new ByteArrayInputStream(buf3.toByteArray());
+                bimg3 = ImageIO.read(is3);
+            } catch (Exception e) {e.printStackTrace();}
+
+            if(bimg3!=null){
+                mainPic3.drawImage(bimg3, 115, 2165, 160, 160, null);
+                mainPic3.dispose();
+            }
+        }
+        }
+        //***********************插入圆圈圈
+        Graphics mainPic5 = image.getGraphics();
+        BufferedImage bimg5 = null;
+        try {
+            URL url5 = new URL("https://sunlands.ministudy.com/images/toux.png");
+            URLConnection con5 = url5.openConnection();
+            //不超时
+            con5.setConnectTimeout(0);
+
+            //不允许缓存
+            con5.setUseCaches(false);
+            con5.setDefaultUseCaches(false);
+            InputStream is5 = con5.getInputStream();
+
+            //先读入内存
+            ByteArrayOutputStream buf5 = new ByteArrayOutputStream(8192);
+            byte[] b5 = new byte[1024];
+            int len5;
+            while ((len5 = is5.read(b5)) != -1) {
+                buf5.write(b5, 0, len5);
+            }
+            //读图像
+            is5=new ByteArrayInputStream(buf5.toByteArray());
+            bimg5 = ImageIO.read(is5);
+        } catch (Exception e) {e.printStackTrace();}
+
+        if(bimg5!=null){
+            mainPic5.drawImage(bimg5, 100, 2150, 200, 200, null);
+            mainPic5.dispose();
+        }
         //***********************设置下面的提示框
 
         Graphics2D tip = image.createGraphics();
@@ -132,56 +204,40 @@ public class GraphicsControllor {
         //设置字体颜色，先设置颜色，再填充内容
         tip.setColor(Color.gray);
         //设置字体
-        Font tipFont = new Font("微软雅黑", Font.PLAIN, 50);
+        Font tipFont = new Font("苹方 常规", Font.PLAIN, 54);
         tip.setColor(Color.gray);
         tip.setFont(tipFont);
-        tip.drawString(date, 600, 1250);
-        System.out.println(author.length());
-        int authorLength=author.length();
-        int authorWidth = tip.getFontMetrics().stringWidth(author);
-        if (authorLength==1){
-            tip.drawString(author, authorWidth / 2+650, 1900);
-        }else if (authorLength==2)
-            tip.drawString(author, authorWidth / 2+650, 1900);
-        else if (authorLength==3)
-           tip.drawString(author, authorWidth / 2+600, 1900);
-        else if (authorLength==4)
-            tip.drawString(author, authorWidth / 2+550, 1900);
-        else if (authorLength==5)
-            tip.drawString(author, authorWidth / 2+500, 1900);
-        else if (authorLength==6)
-            tip.drawString(author, authorWidth / 2+450, 1900);
-        else if (authorLength==7)
-            tip.drawString(author, authorWidth / 2+400, 1900);
-        else if (authorLength==8)
-            tip.drawString(author, authorWidth / 2+350, 1900);
-        else if (authorLength==9)
-            tip.drawString(author, authorWidth / 2+300, 1900);
-        else if (authorLength==10)
-            tip.drawString(author, authorWidth / 2+250, 1900);
-        else if (authorLength==11)
-            tip.drawString(author, authorWidth / 2+200, 1900);
-        else if (authorLength==12)
-            tip.drawString(author, authorWidth / 2+150, 1900);
-        else if (authorLength==13)
-            tip.drawString(author, authorWidth / 2+100, 1900);
-        else if (authorLength==14)
-            tip.drawString(author, authorWidth / 2+50, 1900);
-        else if (authorLength==15)
-            tip.drawString(author, authorWidth / 2, 1900);
-        else if (authorLength==16)
-            tip.drawString(author, authorWidth / 2-50, 1900);
-        else if (authorLength==17)
-            tip.drawString(author, authorWidth / 2-100, 1900);
-        else if (authorLength==18)
-            tip.drawString(author, authorWidth / 2-150, 1900);
-        else if (authorLength==19)
-            tip.drawString(author, authorWidth / 2-200, 1900);
-        else if (authorLength==20)
-            tip.drawString(author, authorWidth / 2-250, 1900);
-        else
-        tip.drawString(author, authorWidth / 2-200, 1900);
         //***********************设置下面的按钮块
+        //***********************插入波塞冬logo
+        Graphics mainPic4 = image.getGraphics();
+        BufferedImage bimg4 = null;
+        try {
+            URL url4 = new URL("https://sunlands.ministudy.com/images/bosaidong.png");
+            URLConnection con4 = url4.openConnection();
+            //不超时
+            con4.setConnectTimeout(0);
+
+            //不允许缓存
+            con4.setUseCaches(false);
+            con4.setDefaultUseCaches(false);
+            InputStream is4 = con4.getInputStream();
+
+            //先读入内存
+            ByteArrayOutputStream buf4 = new ByteArrayOutputStream(8192);
+            byte[] b4 = new byte[1024];
+            int len4;
+            while ((len4 = is4.read(b4)) != -1) {
+                buf4.write(b4, 0, len4);
+            }
+            //读图像
+            is4=new ByteArrayInputStream(buf4.toByteArray());
+            bimg4 = ImageIO.read(is4);
+        } catch (Exception e) {e.printStackTrace();}
+
+        if(bimg4!=null){
+            mainPic4.drawImage(bimg4, 450, 1200, 572, 596, null);
+            mainPic4.dispose();
+        }
 
         //***********************设置下面的提示框
 
@@ -193,7 +249,7 @@ public class GraphicsControllor {
         //设置字体颜色，先设置颜色，再填充内容
         tip2.setColor(Color.gray);
         //设置字体
-        Font tipFont2 = new Font("微软雅黑", Font.PLAIN, 50);
+        Font tipFont2 = new Font("苹方 常规", Font.PLAIN, 50);
         tip2.setFont(tipFont2);
         tip2.drawString("EVAN", 580, 2100);*/
 
@@ -203,62 +259,119 @@ public class GraphicsControllor {
         //填充区域并确定区域大小位置
         //tip3.fillRect(0, btn2_2_top, imageWidth, H_tip);
         //设置字体颜色，先设置颜色，再填充内容
-        tip3.setColor(Color.gray);
+        tip3.setColor(new Color(40,40,40));
         //设置字体
-        Font tipFont3 = new Font("微软雅黑", Font.PLAIN, 50);
+        Font tipFont3 = new Font("苹方 常规", Font.PLAIN, 48);
         tip3.setFont(tipFont3);
-        tip3.drawString("我是"+nickname, 200, 2200);
-        tip3.drawString("我为萤火虫代言", 200, 2300);
+        tip3.drawString("我是", 300, 2230);
+        tip3.drawString("我为萤火虫代言", 300, 2310);
+        tip3.drawString(date, 605, 1140);
+        System.out.println(author.length());
+        int authorLength=author.length();
+        int authorWidth = tip3.getFontMetrics().stringWidth(author);
+        if (authorLength==1){
+            tip3.drawString(author, authorWidth / 2+700, 1896);
+        }else if (authorLength==2)
+            tip3.drawString(author, authorWidth / 2+650, 1886);
+        else if (authorLength==3)
+            tip3.drawString(author, authorWidth / 2+600, 1886);
+        else if (authorLength==4)
+            tip3.drawString(author, authorWidth / 2+550, 1886);
+        else if (authorLength==5)
+            tip3.drawString(author, authorWidth / 2+500, 1886);
+        else if (authorLength==6)
+            tip3.drawString(author, authorWidth / 2+450, 1886);
+        else if (authorLength==7)
+            tip3.drawString(author, authorWidth / 2+400, 1886);
+        else if (authorLength==8)
+            tip3.drawString(author, authorWidth / 2+350, 1886);
+        else if (authorLength==9)
+            tip3.drawString(author, authorWidth / 2+300, 1886);
+        else if (authorLength==10)
+            tip3.drawString(author, authorWidth / 2+250, 1886);
+        else if (authorLength==11)
+            tip3.drawString(author, authorWidth / 2+200, 1886);
+        else if (authorLength==12)
+            tip3.drawString(author, authorWidth / 2+150, 1886);
+        else if (authorLength==13)
+            tip3.drawString(author, authorWidth / 2+100, 1886);
+        else if (authorLength==14)
+            tip3.drawString(author, authorWidth / 2+50, 1886);
+        else if (authorLength==15)
+            tip3.drawString(author, authorWidth / 2, 1886);
+        else if (authorLength==16)
+            tip3.drawString(author, authorWidth / 2-50, 1886);
+        else if (authorLength==17)
+            tip3.drawString(author, authorWidth / 2-100, 1886);
+        else if (authorLength==18)
+            tip3.drawString(author, authorWidth / 2-150, 1886);
+        else if (authorLength==19)
+            tip3.drawString(author, authorWidth / 2-200, 1886);
+        else if (authorLength==20)
+            tip3.drawString(author, authorWidth / 2-250, 1886);
+        else
+            tip3.drawString(author, authorWidth / 2-200, 1886);
         //tip3.drawLine(10,2200,1490,2200);
 
         //设置字体颜色，先设置颜色，再填充内容
-        tip.setColor(Color.gray);
+        tip.setColor(new Color(40,40,40));
         String str=content;
 
-        List getStrList=getStrList(str,24);
+        List getStrList=getStrList(str,22);
         System.out.println(getStrList);
         logger.info(getStrList);
         if(getStrList.size()>0){
             if(getStrList.size()>1){
                 for (int i = 0; i <getStrList.size() ; i++) {
-                    tip.drawString(getStrList.get(i).toString(), 150, 1500+i*80);
+                    tip.drawString(getStrList.get(i).toString(), 155, 1410+i*100);
                 }
             }else{
                 int strWidth = tip.getFontMetrics().stringWidth(str);
                 int length=str.length();
                 if(length==10)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+250, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+180, imageWidth);
                 else if(length==11)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+200, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+130, imageWidth);
                 else if(length==12)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+150, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+80, imageWidth);
                 else if(length==13)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+100, imageWidth);
-                else if(length==14)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2+100, imageWidth);
-                else if(length==15)
                     tip.drawString(getStrList.get(0).toString(), strWidth / 2+30, imageWidth);
-                else if(length==16)
+                else if(length==14)
                     tip.drawString(getStrList.get(0).toString(), strWidth / 2-30, imageWidth);
+                else if(length==15)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-80, imageWidth);
+                else if(length==16)
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-130, imageWidth);
                 else if(length==17)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-60, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-180, imageWidth);
                 else if(length==18)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-150, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-230, imageWidth);
                 else if(length==19)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-150, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-280, imageWidth);
                 else if(length==20)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-210, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-330, imageWidth);
                 else if(length==21)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-300, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-380, imageWidth);
                 else if(length==22)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-360, imageWidth);
-                else if(length==23)
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-410, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-430, imageWidth);
                 else
-                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-460, imageWidth);
+                    tip.drawString(getStrList.get(0).toString(), strWidth / 2-480, imageWidth);
 
             }
         }
+        Graphics2D tip4 = image.createGraphics();
+        //设置区域颜色
+        //tip4.setColor(new Color(247,247,247));
+        //tip4.fillRect(0, 1000, imageWidth, 1000);
+        //填充区域并确定区域大小位置
+        //tip.fillRect(0, 553, imageWidth, 50);
+        //设置字体颜色，先设置颜色，再填充内容
+        //tip4.setColor(new Color(51,129,246));
+        //设置字体
+        Font tipFont4 = new Font("苹方 常规", Font.PLAIN, 48);
+        tip4.setColor(new Color(51,129,246));
+        tip4.setFont(tipFont4);
+        tip4.drawString(nickname, 400, 2230);
         String temp = "images" + File.separator + "temp" + File.separator;
         // 新的图片文件名 = 获取时间戳+"."图片扩展名
         String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
@@ -281,7 +394,7 @@ public class GraphicsControllor {
     public static void main(String[] args) {
         GraphicsControllor cg = new GraphicsControllor();
         try {
-            cg.graphicsGeneration("2018-06-06", "EVAN", "自信和自尊心越低他们啊啊啊", "https://sunlands.ministudy.com/images/upload/1528265355187.jpg","王打累是啊啊啊啊啊啊啊阿斯顿发士大夫");
+            cg.graphicsGeneration("2018-06-06", "Evan", "自信和自尊心越低他们啊啊啊阿士大夫撒旦六块腹肌洒落的咖啡机", "https://sunlands.ministudy.com/images/upload/1528265355187.jpg","居里夫人",16);
         } catch (Exception e) {
             e.printStackTrace();
         }
