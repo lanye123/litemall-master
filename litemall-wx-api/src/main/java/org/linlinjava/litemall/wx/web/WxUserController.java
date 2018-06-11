@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/wx/user")
 public class WxUserController {
@@ -73,8 +75,13 @@ public class WxUserController {
       * @return java.lang.Object
       **/
     @GetMapping("/user")
-    public Object getUser(Integer userId){
-        return ResponseUtil.ok(litemallUserService.findById(userId));
+    public Object getUser(Integer userId,String openId){
+        List<LitemallUser> userList = litemallUserService.querySelective("","",openId,null,null,"","");
+        if(userList==null || userList.size()<=0){
+            return  ResponseUtil.fail(500,"该openId不存在");
+        }else {
+            return  ResponseUtil.ok(userList);
+        }
     }
 
     /**

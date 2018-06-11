@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.domain.Medal;
 import org.linlinjava.litemall.db.domain.MedalDetails;
@@ -21,6 +23,7 @@ public class MedalDetailsController {
     private MedalDetailsService medalDetailsService;
     @Autowired
     private LitemallUserService litemallUserService;
+    private Log log = LogFactory.getLog(MedalDetailsController.class);
     /**
      *@Author:lanye
      *@Description:获取总榜接口
@@ -58,6 +61,9 @@ public class MedalDetailsController {
             dataItem = new HashMap<>();
             medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
             user = litemallUserService.findById(medalDetails.getUserId());
+            if(user==null){
+                continue;
+            }
             dataItem.put("score",medalDetails.getAmount());
             dataItem.put("rank",rank);
             dataItem.put("userId",user.getId());
@@ -151,7 +157,9 @@ public class MedalDetailsController {
             dataItem = new HashMap<>();
             medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
             user = litemallUserService.findById(medalDetails.getUserId());
-
+            if(user==null){
+                continue;
+            }
             dataItem.put("score",medalDetails.getAmount());
             dataItem.put("rank",rank);
             dataItem.put("userId",user.getId());
