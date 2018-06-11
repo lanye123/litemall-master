@@ -83,7 +83,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, artile_id, `name`, `no`, create_date, sort_no, `status`, brief, article_name, 
-    daodu, author, photo_url, photo_name, render, read_count,content
+    daodu, author, photo_url, photo_name, render, read_count,content,code_url
   </sql>
   <sql id="Blob_Column_List">
     content

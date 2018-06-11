@@ -4,10 +4,7 @@ import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.domain.Notes;
 import org.linlinjava.litemall.db.domain.NotesTemp;
-import org.linlinjava.litemall.db.service.ArticleService;
-import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.service.NotesService;
-import org.linlinjava.litemall.db.service.NotesTempService;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +24,8 @@ public class ArticleController {
     private NotesTempService notesTempService;
     @Autowired
     private LitemallUserService litemallUserService;
+    @Autowired
+    private WxMessService wxMessService;
 
     @GetMapping("/list")
     public Object list(String title,String author,Integer articleId,Integer categoryId,
@@ -78,6 +77,7 @@ public class ArticleController {
         if(articleDb.getStatus()==0){
             articleDb.setStatus(1);
             articleService.updateById(articleDb);
+            //wxMessService.articleCheck();
         }else if(articleDb.getStatus()==1){
             articleDb.setStatus(0);
             articleService.updateById(articleDb);

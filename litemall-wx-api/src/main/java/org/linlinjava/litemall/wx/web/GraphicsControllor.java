@@ -57,7 +57,7 @@ public class GraphicsControllor {
         }
     }
     @GetMapping("generatorPhoto")
-    public Object graphicsGeneration(String date, String nickname, String content, String imgurl,String author,Integer userId) {
+    public Object graphicsGeneration(String date, String nickname, String content, String imgurl,String author,Integer userId,String codeUrl) {
         Map data=new HashMap();
         image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
         //设置图片的背景色
@@ -101,7 +101,13 @@ public class GraphicsControllor {
         Graphics mainPic1 = image.getGraphics();
         BufferedImage bimg1 = null;
         try {
-            URL url = new URL(codeurl);
+            URL url=null;
+            if(codeUrl==null){
+                url = new URL(codeurl);
+            }else{
+                url = new URL(codeUrl);
+            }
+
             URLConnection con = url.openConnection();
             //不超时
             con.setConnectTimeout(0);
@@ -394,7 +400,7 @@ public class GraphicsControllor {
     public static void main(String[] args) {
         GraphicsControllor cg = new GraphicsControllor();
         try {
-            cg.graphicsGeneration("2018-06-06", "Evan", "自信和自尊心越低他们啊啊啊阿士大夫撒旦六块腹肌洒落的咖啡机", "https://sunlands.ministudy.com/images/upload/1528265355187.jpg","居里夫人",16);
+            cg.graphicsGeneration("2018-06-06", "Evan", "自信和自尊心越低他们啊啊啊阿士大夫撒旦六块腹肌洒落的咖啡机", "https://sunlands.ministudy.com/images/upload/1528265355187.jpg","居里夫人",16,null);
         } catch (Exception e) {
             e.printStackTrace();
         }
