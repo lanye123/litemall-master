@@ -28,13 +28,13 @@ public class ArticleController {
     private WxMessService wxMessService;
 
     @GetMapping("/list")
-    public Object list(String title,String author,Integer articleId,Integer categoryId,
+    public Object list(String title,String author,Integer articleId,Integer categoryId,String flag,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
-        List<Article> articleList = articleService.queryBySelective(title,author,articleId,categoryId, page, limit, sort, order);
-        int total = articleService.countSelective(title,author,articleId,categoryId, page, limit, sort, order);
+        List<Article> articleList = articleService.queryBySelective(title,author,articleId,categoryId,flag,"", page, limit, sort, order);
+        int total = articleService.countSelective(title,author,articleId,categoryId,flag,"", page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", articleList);

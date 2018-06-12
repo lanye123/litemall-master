@@ -281,6 +281,16 @@ public class ArticleExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserIdIsNull() {
+            addCriterion("user_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUserIdIsNotNull() {
+            addCriterion("user_id is not null");
+            return (Criteria) this;
+        }
+
         public Criteria andCategoryIdIsNotNull() {
             addCriterion("category_id is not null");
             return (Criteria) this;
@@ -1006,7 +1016,7 @@ public class ArticleExample {
             return (Criteria) this;
         }
 
-        public Criteria andUpdateDateEqualTo(Date value) {
+        public Criteria andUpdateDateEqualTo(String value) {
             addCriterion("update_date =", value, "updateDate");
             return (Criteria) this;
         }
