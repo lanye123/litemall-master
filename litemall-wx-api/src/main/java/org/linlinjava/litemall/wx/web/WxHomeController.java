@@ -32,7 +32,8 @@ public class WxHomeController {
     private LitemallCategoryService categoryService;
     @Autowired
     private LitemallCartService cartService;
-
+    @Autowired
+    private IntegretionDetailService integretionDetailService;
     /**
      * app首页
      *
@@ -93,6 +94,25 @@ public class WxHomeController {
         }
         data.put("floorGoodsList", categoryList);
 
+        return ResponseUtil.ok(data);
+    }
+
+    @GetMapping("/home")
+    public Object home(String userId) {
+        Map<String, Object> data = new HashMap<>();
+
+        List<LitemallAd> banner = adService.queryByApid(1);
+        data.put("banner", banner);
+        //只查询书籍的商品列表
+        List<LitemallGoods> goodsList = goodsService.queryByCategory(1036005, 0,20);
+        data.put("goodsList", goodsList);
+
+        //获取当前用户的积分
+        Integer grade=integretionDetailService.sumByUserid(userId);
+        if(grade==null){
+            data.put("grade",0);
+        }else
+            data.put("grade",grade);
         return ResponseUtil.ok(data);
     }
 }

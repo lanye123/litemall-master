@@ -383,4 +383,36 @@ public class WxGoodsController {
         return ResponseUtil.ok(data);
     }
 
+    @GetMapping("details")
+    public Object details(Integer userId, Integer id) {
+        if(id == null){
+            return ResponseUtil.badArgument();
+        }
+
+        // 商品信息
+        LitemallGoods info = goodsService.findById(id);
+
+        // 商品属性
+        List<LitemallGoodsAttribute> goodsAttributeList = goodsAttributeService.queryByGid(id);
+
+        // 商品规格
+        // 返回的是定制的GoodsSpecificationVo
+        Object specificationList = goodsSpecificationService.getSpecificationVoList(id);
+
+        // 商品规格对应的数量和价格
+        List<LitemallProduct> productList = productService.queryByGid(id);
+
+        // 商品问题，这里是一些通用问题
+        //List<LitemallIssue> issue = goodsIssueService.query();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("info", info);
+        data.put("issue", info.getContent());
+        data.put("specificationList", specificationList);
+        data.put("productList", productList);
+        data.put("attribute", goodsAttributeList);
+
+        return ResponseUtil.ok(data);
+    }
+
 }

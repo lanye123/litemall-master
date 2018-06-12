@@ -102,7 +102,7 @@ public class GraphicsControllor {
         BufferedImage bimg1 = null;
         try {
             URL url=null;
-            if(codeUrl==null){
+            if(StringUtils.isEmpty(codeUrl)){
                 url = new URL(codeurl);
             }else{
                 url = new URL(codeUrl);

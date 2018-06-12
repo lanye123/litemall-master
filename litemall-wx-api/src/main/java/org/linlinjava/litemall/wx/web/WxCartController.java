@@ -189,7 +189,7 @@ public class WxCartController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("fastadd")
-    public Object fastadd(@LoginUser Integer userId, @RequestBody LitemallCart cart) {
+    public Object fastadd(Integer userId, @RequestBody LitemallCart cart) {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -427,7 +427,6 @@ public class WxCartController {
      *    如果购物车商品ID非空，则只下单当前购物车商品。
      * @param addressId 收货地址ID
      *    如果收货地址ID是空，则查询当前用户的默认地址。
-     * @param couponId 优惠券ID
      *    目前不支持
      * @return 购物车下单信息
      *   成功则
@@ -451,7 +450,7 @@ public class WxCartController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("checkout")
-    public Object checkout(@LoginUser Integer userId, Integer cartId, Integer addressId, Integer couponId) {
+    public Object checkout(Integer userId, Integer cartId, Integer addressId) {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -518,7 +517,6 @@ public class WxCartController {
         Map<String, Object> data = new HashMap();
         data.put("addressId", addressId);
         data.put("checkedAddress", checkedAddress);
-        data.put("couponId", couponId);
         data.put("checkedCoupon", 0);
         data.put("goodsTotalPrice", checkedGoodsPrice);
         data.put("freightPrice", freightPrice);

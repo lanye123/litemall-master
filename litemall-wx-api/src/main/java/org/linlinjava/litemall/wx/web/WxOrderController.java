@@ -229,7 +229,7 @@ public class WxOrderController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("submit")
-    public Object submit(@LoginUser Integer userId, @RequestBody String body) {
+    public Object submit(Integer userId, @RequestBody String body) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
@@ -238,8 +238,7 @@ public class WxOrderController {
         }
         Integer cartId = JacksonUtil.parseInteger(body, "cartId");
         Integer addressId = JacksonUtil.parseInteger(body, "addressId");
-        Integer couponId = JacksonUtil.parseInteger(body, "couponId");
-        if (cartId == null || addressId == null || couponId == null) {
+        if (cartId == null || addressId == null) {
             return ResponseUtil.badArgument();
         }
 
@@ -297,6 +296,7 @@ public class WxOrderController {
         order.setIntegralPrice(integralPrice);
         order.setOrderPrice(orderTotalPrice);
         order.setActualPrice(actualPrice);
+        order.setOrder_type(0);//0积分单
 
         // 订单商品
         List<LitemallOrderGoods> orderGoodsList = new ArrayList<>(checkedGoodsList.size());
@@ -432,7 +432,7 @@ public class WxOrderController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("pay")
-    public Object pay(@LoginUser Integer userId, @RequestBody String body) {
+    public Object pay(Integer userId, @RequestBody String body) {
         if (userId == null) {
             return ResponseUtil.unlogin();
         }
@@ -783,5 +783,134 @@ public class WxOrderController {
 
         LitemallOrderGoods orderGoods = orderGoodsList.get(0);
         return ResponseUtil.ok(orderGoods);
+    }
+
+
+    @PostMapping("collageSubmit")
+    public Object collageSubmit(Integer userId, @RequestBody String body) {
+        if (userId == null) {
+            return ResponseUtil.unlogin();
+        }
+        if (body == null) {
+            return ResponseUtil.badArgument();
+        }
+        Integer cartId = JacksonUtil.parseInteger(body, "cartId");
+        Integer addressId = JacksonUtil.parseInteger(body, "addressId");
+        Integer type = JacksonUtil.parseInteger(body, "type");
+        if (cartId == null || addressId == null) {
+            return ResponseUtil.badArgument();
+        }
+
+        // 收货地址
+        LitemallAddress checkedAddress = addressService.findById(addressId);
+
+        // 获取可用的优惠券信息
+        // 使用优惠券减免的金额
+        BigDecimal couponPrice = new BigDecimal(0.00);
+
+        // 货品价格
+        List<LitemallCart> checkedGoodsList = null;
+        if (cartId.equals(0)) {
+            checkedGoodsList = cartService.queryByUidAndChecked(userId);
+        } else {
+            LitemallCart cart = cartService.findById(cartId);
+            checkedGoodsList = new ArrayList<>(1);
+            checkedGoodsList.add(cart);
+        }
+        if (checkedGoodsList.size() == 0) {
+            return ResponseUtil.badArgumentValue();
+        }
+        BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
+        for (LitemallCart checkGoods : checkedGoodsList) {
+            checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getRetailPrice().multiply(new BigDecimal(checkGoods.getNumber())));
+        }
+
+        // 根据订单商品总价计算运费，满88则免运费，否则8元；
+        BigDecimal freightPrice = new BigDecimal(0.00);
+        if (checkedGoodsPrice.compareTo(new BigDecimal(88.00)) < 0) {
+            freightPrice = new BigDecimal(8.00);
+        }
+
+        // 可以使用的其他钱，例如用户积分
+        BigDecimal integralPrice = new BigDecimal(0.00);
+
+
+        // 订单费用
+        BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
+        BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
+
+        // 订单
+        LitemallOrder order = new LitemallOrder();
+        order.setUserId(userId);
+        order.setOrderSn(orderService.generateOrderSn(userId));
+        order.setAddTime(LocalDateTime.now());
+        order.setOrderStatus(OrderUtil.STATUS_CREATE);
+        order.setConsignee(checkedAddress.getName());
+        order.setMobile(checkedAddress.getMobile());
+        String detailedAddress = detailedAddress(checkedAddress);
+        order.setAddress(detailedAddress);
+        order.setGoodsPrice(checkedGoodsPrice);
+        order.setFreightPrice(freightPrice);
+        order.setCouponPrice(couponPrice);
+        order.setIntegralPrice(integralPrice);
+        order.setOrderPrice(orderTotalPrice);
+        order.setActualPrice(actualPrice);
+        order.setOrder_type(1);//拼团单
+
+        // 订单商品
+        List<LitemallOrderGoods> orderGoodsList = new ArrayList<>(checkedGoodsList.size());
+        for (LitemallCart cartGoods : checkedGoodsList) {
+            LitemallOrderGoods orderGoods = new LitemallOrderGoods();
+            orderGoods.setOrderId(order.getId());
+            orderGoods.setGoodsId(cartGoods.getGoodsId());
+            orderGoods.setGoodsSn(cartGoods.getGoodsSn());
+            orderGoods.setProductId(cartGoods.getProductId());
+            orderGoods.setGoodsName(cartGoods.getGoodsName());
+            orderGoods.setPicUrl(cartGoods.getPicUrl());
+            orderGoods.setRetailPrice(cartGoods.getRetailPrice());
+            orderGoods.setNumber(cartGoods.getNumber());
+            orderGoods.setGoodsSpecificationIds(cartGoods.getGoodsSpecificationIds());
+            orderGoods.setGoodsSpecificationValues(cartGoods.getGoodsSpecificationValues());
+            orderGoodsList.add(orderGoods);
+        }
+
+        // 开启事务管理
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+        try {
+            // 添加订单表项
+            orderService.add(order);
+
+            // 添加订单商品表项
+            for (LitemallOrderGoods orderGoods : orderGoodsList) {
+                orderGoodsService.add(orderGoods);
+            }
+
+            // 删除购物车里面的商品信息
+            cartService.clearGoods(userId);
+
+            // 商品货品数量减少
+            for (LitemallCart checkGoods : checkedGoodsList) {
+                Integer productId = checkGoods.getProductId();
+                LitemallProduct product = productService.findById(productId);
+
+                Integer remainNumber = product.getGoodsNumber() - checkGoods.getNumber();
+                if (remainNumber < 0) {
+                    throw new RuntimeException("下单的商品货品数量大于库存量");
+                }
+                product.setGoodsNumber(remainNumber);
+                productService.updateById(product);
+            }
+        } catch (Exception ex) {
+            txManager.rollback(status);
+            logger.error("系统内部错误", ex);
+            return ResponseUtil.fail(403, "下单失败");
+        }
+        txManager.commit(status);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("orderId", order.getId());
+        return ResponseUtil.ok(data);
     }
 }

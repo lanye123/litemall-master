@@ -477,6 +477,20 @@ public class LitemallOrderExample {
             addCriterion("order_status not between", value1, value2, "orderStatus");
             return (Criteria) this;
         }
+        public Criteria andOrderTypeEqualTo(Integer value) {
+            addCriterion("order_type =", value, "order_type");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderTypeIsNull() {
+            addCriterion("order_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderTypeIsNotNull() {
+            addCriterion("order_type is not null");
+            return (Criteria) this;
+        }
 
         public Criteria andConsigneeIsNull() {
             addCriterion("consignee is null");

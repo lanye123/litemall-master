@@ -220,11 +220,11 @@
         <table tableName="article_reply">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="create_date"/>
-        </table>-->
+        </table>
         <table tableName="wx_mess">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>
-        <table tableName="wx_config">
+        </table>-->
+        <table tableName="collage_detail">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
