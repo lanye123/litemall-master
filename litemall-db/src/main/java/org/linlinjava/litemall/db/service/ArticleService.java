@@ -253,7 +253,7 @@ public class ArticleService {
         this.sycArticle(article.getArticleId());
     }
 
-    public List<Article> queryBySelective(String title,String author,Integer articleId,Integer categoryId, Integer page, Integer limit, String sort, String order) {
+    public List<Article> queryBySelective(String title,String author,Integer articleId,Integer categoryId,String flag,String updateDate, Integer page, Integer limit, String sort, String order) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(title))
@@ -267,15 +267,27 @@ public class ArticleService {
         if(categoryId==null){
             criteria.andCategoryIdIsNull();
         }
-        if(!StringUtils.isEmpty(order))
+        //0官方 1用户
+        if("0".equals(flag)){
+            criteria.andUserIdIsNull();
+        }else if("1".equals(flag)){
+            criteria.andUserIdIsNotNull();
+        }
+        if(!StringUtils.isEmpty(updateDate)){
+            criteria.andUpdateDateEqualTo(updateDate);
+        }
+        if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
+        }else {
+            criteria.example().setOrderByClause("create_date desc");
+        }
         if(page!=null&&limit!=null){
             PageHelper.startPage(page,limit);
         }
         return articleMapper.selectByExample(example);
     }
 
-    public int countSelective(String title, String author, Integer articleId,Integer categoryId,Integer page, Integer limit, String sort, String order) {
+    public int countSelective(String title, String author, Integer articleId,Integer categoryId,String flag,String updateDate,Integer page, Integer limit, String sort, String order) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(title))
@@ -288,6 +300,15 @@ public class ArticleService {
             criteria.andCategoryIdEqualTo(categoryId);
         if(categoryId==null){
             criteria.andCategoryIdIsNull();
+        }
+        //0官方 1用户
+        if("0".equals(flag)){
+            criteria.andUserIdIsNull();
+        }else if("1".equals(flag)){
+            criteria.andUserIdIsNotNull();
+        }
+        if(!StringUtils.isEmpty(updateDate)){
+            criteria.andUpdateDateEqualTo(updateDate);
         }
         return (int) articleMapper.countByExample(example);
     }
