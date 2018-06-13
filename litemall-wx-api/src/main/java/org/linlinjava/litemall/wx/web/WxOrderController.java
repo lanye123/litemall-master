@@ -63,6 +63,8 @@ public class WxOrderController {
     private LitemallRegionService regionService;
     @Autowired
     private LitemallProductService productService;
+    @Autowired
+    private LitemallGoodsService goodsService;
 
     public WxOrderController() {
     }
@@ -104,7 +106,7 @@ public class WxOrderController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @RequestMapping("list")
-    public Object list(@LoginUser Integer userId, Integer showType,
+    public Object list(Integer userId, Integer showType,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "size", defaultValue = "10") Integer size) {
         if (userId == null) {
@@ -135,6 +137,14 @@ public class WxOrderController {
                 orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
                 orderGoodsVo.put("number", orderGoods.getNumber());
                 orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
+                orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
+                orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
+                LitemallGoods goods = goodsService.findById(orderGoods.getGoodsId());
+                if(goods == null){
+                    continue;
+                }
+                orderGoodsVo.put("goodsBrief", goods.getGoodsBrief());
+                orderGoodsVo.put("integretion", goods.getIntegretion());
                 orderGoodsVoList.add(orderGoodsVo);
             }
             orderVo.put("goodsList", orderGoodsVoList);
@@ -167,7 +177,7 @@ public class WxOrderController {
      * 失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
-    public Object detail(@LoginUser Integer userId, Integer orderId) {
+    public Object detail(Integer userId, Integer orderId) {
         if (userId == null) {
             return ResponseUtil.fail401();
         }
@@ -203,8 +213,15 @@ public class WxOrderController {
             orderGoodsVo.put("id", orderGoods.getId());
             orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
             orderGoodsVo.put("number", orderGoods.getNumber());
-            orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
             orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
+            orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
+            orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
+            LitemallGoods goods = goodsService.findById(orderGoods.getGoodsId());
+            if(goods == null){
+                continue;
+            }
+            orderGoodsVo.put("goodsBrief", goods.getGoodsBrief());
+            orderGoodsVo.put("integretion", goods.getIntegretion());
             orderGoodsVoList.add(orderGoodsVo);
         }
 

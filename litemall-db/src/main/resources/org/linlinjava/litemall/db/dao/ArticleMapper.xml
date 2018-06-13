@@ -19,6 +19,8 @@
     <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
     <result column="read_count" jdbcType="VARCHAR" property="readCount" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="share_count" jdbcType="INTEGER" property="shareCount" />
+    <result column="code_url" jdbcType="VARCHAR" property="codeUrl" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -80,7 +82,7 @@
   </sql>
   <sql id="Base_Column_List">
     article_id, category_ids, category_id, title, brief, create_date, daodu, author, 
-    photo_name, photo_url, `status`, is_view, reader, update_date, head_url, read_count, user_id
+    photo_name, photo_url, `status`, is_view, reader, update_date, head_url, read_count, user_id, share_count, code_url
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleExample" resultMap="BaseResultMap">
     select
@@ -154,13 +156,14 @@
       title, brief, create_date, 
       daodu, author, photo_name, 
       photo_url, `status`, is_view, 
-      reader, update_date, head_url, read_count, user_id
+      reader, update_date, head_url, read_count, user_id, share_count, code_url
       )
     values (#{articleId,jdbcType=INTEGER}, #{categoryIds,jdbcType=CHAR}, #{categoryId,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR}, #{brief,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{daodu,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{photoName,jdbcType=VARCHAR}, 
       #{photoUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{isView,jdbcType=INTEGER}, 
-      #{reader,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{headUrl,jdbcType=VARCHAR}, #{readCount,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}
+      #{reader,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{headUrl,jdbcType=VARCHAR}, #{readCount,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+      #{shareCount,jdbcType=INTEGER}, #{codeUrl,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.Article">
@@ -217,6 +220,12 @@
       <if test="userId != null">
         user_id,
       </if>
+      <if test="shareCount != null">
+        share_count,
+      </if>
+      <if test="codeUrl != null">
+        code_url,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="articleId != null">
@@ -269,6 +278,12 @@
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="shareCount != null">
+        #{shareCount,jdbcType=INTEGER},
+      </if>
+      <if test="codeUrl != null">
+        #{codeUrl,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -332,6 +347,12 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
+      <if test="record.shareCount != null">
+        share_count = #{record.shareCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.codeUrl != null">
+        code_url = #{record.codeUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -355,7 +376,9 @@
       update_date = #{record.updateDate,jdbcType=TIMESTAMP},
       head_url = #{record.headUrl,jdbcType=VARCHAR},
       read_count = #{record.readCount,jdbcType=INTEGER},
-      user_id = #{record.userId,jdbcType=INTEGER}
+      user_id = #{record.userId,jdbcType=INTEGER},
+      share_count = #{record.shareCount,jdbcType=INTEGER},
+      code_url = #{record.codeUrl,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -411,6 +434,12 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
+      <if test="shareCount != null">
+        share_count = #{shareCount,jdbcType=INTEGER},
+      </if>
+      <if test="codeUrl != null">
+        code_url = #{codeUrl,jdbcType=VARCHAR},
+      </if>
     </set>
     where article_id = #{articleId,jdbcType=INTEGER}
   </update>
@@ -431,7 +460,9 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP},
       head_url = #{headUrl,jdbcType=VARCHAR},
       read_count = #{readCount,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER}
+      user_id = #{userId,jdbcType=INTEGER},
+      share_count = #{shareCount,jdbcType=INTEGER},
+      code_url = #{codeUrl,jdbcType=VARCHAR}
     where article_id = #{articleId,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleExample" resultMap="BaseResultMap">
@@ -473,7 +504,7 @@
   <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.Article" resultMap="BaseResultMap">
     select
     b.article_id, b.category_ids, b.category_id, b.title, b.brief, b.create_date, b.daodu, b.author,
-    b.photo_name, b.photo_url, b.`status`, b.is_view, b.reader, b.update_date, b.head_url, b.read_count, b.user_id
+    b.photo_name, b.photo_url, b.`status`, b.is_view, b.reader, b.update_date, b.head_url, b.read_count, b.user_id, b.share_count, b.code_url
     from article_category_stat a LEFT JOIN article b on a.article_id = b.article_id
     where 1=1
     <if test="categoryId != null">
