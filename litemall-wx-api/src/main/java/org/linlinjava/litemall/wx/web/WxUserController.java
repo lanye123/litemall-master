@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/wx/user")
@@ -47,9 +49,23 @@ public class WxUserController {
         if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),null,null,"","")>0){
             return ResponseUtil.ok(litemallUserService.querySelective("","",user.getWeixinOpenid(),null,null,"","").get(0));
         }
-
+        user.setNickname(filterEmoji(user.getNickname()));
         litemallUserService.add(user);
         return ResponseUtil.ok(user);
+    }
+
+    public static String filterEmoji(String source) {
+        if (source == null) {
+            return source;
+        }
+        Pattern emoji = Pattern.compile("[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]",
+                Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+        Matcher emojiMatcher = emoji.matcher(source);
+        if (emojiMatcher.find()) {
+            source = emojiMatcher.replaceAll("*");
+            return source;
+        }
+        return source;
     }
 
     //获取微信用户信息
