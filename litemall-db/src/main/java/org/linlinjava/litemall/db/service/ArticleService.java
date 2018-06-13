@@ -253,7 +253,7 @@ public class ArticleService {
         this.sycArticle(article.getArticleId());
     }
 
-    public List<Article> queryBySelective(String title,String author,Integer articleId,Integer categoryId,String flag,String updateDate, Integer page, Integer limit, String sort, String order) {
+    public List<Article> queryBySelective(String title,String author,Integer articleId,Integer categoryId,String flag,String updateDate,Integer status, Integer page, Integer limit, String sort, String order) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(title))
@@ -276,6 +276,9 @@ public class ArticleService {
         if(!StringUtils.isEmpty(updateDate)){
             criteria.andUpdateDateEqualTo(updateDate);
         }
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status);
+        }
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
         }else {
@@ -287,7 +290,7 @@ public class ArticleService {
         return articleMapper.selectByExample(example);
     }
 
-    public int countSelective(String title, String author, Integer articleId,Integer categoryId,String flag,String updateDate,Integer page, Integer limit, String sort, String order) {
+    public int countSelective(String title, String author, Integer articleId,Integer categoryId,String flag,String updateDate,Integer status,Integer page, Integer limit, String sort, String order) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(title))
@@ -306,6 +309,9 @@ public class ArticleService {
             criteria.andUserIdIsNull();
         }else if("1".equals(flag)){
             criteria.andUserIdIsNotNull();
+        }
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status);
         }
         if(!StringUtils.isEmpty(updateDate)){
             criteria.andUpdateDateEqualTo(updateDate);
