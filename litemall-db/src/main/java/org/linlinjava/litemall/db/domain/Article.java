@@ -31,10 +31,30 @@ public class Article {
 
     private String headUrl;
 
+    private String codeUrl;
+
     private Integer readCount;
+
+    private Integer shareCount;
 
     //数据保存的用户id
     private Integer userId;
+
+    public String getCodeUrl() {
+        return codeUrl;
+    }
+
+    public void setCodeUrl(String codeUrl) {
+        this.codeUrl = codeUrl;
+    }
+
+    public Integer getShareCount() {
+        return shareCount;
+    }
+
+    public void setShareCount(Integer shareCount) {
+        this.shareCount = shareCount;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -205,6 +225,8 @@ public class Article {
         sb.append(", headUrl=").append(headUrl);
         sb.append(", readCount=").append(readCount);
         sb.append(", userId=").append(userId);
+        sb.append(", shareCount=").append(shareCount);
+        sb.append(", codeUrl=").append(codeUrl);
         sb.append("]");
         return sb.toString();
     }
@@ -284,7 +306,9 @@ public class Article {
         updateDate("update_date"),
         headUrl("head_url"),
         readCount("read_count"),
-        userId("user_id"),;
+        userId("user_id"),
+        shareCount("share_count"),
+        codeUrl("code_url");
 
 
         /**

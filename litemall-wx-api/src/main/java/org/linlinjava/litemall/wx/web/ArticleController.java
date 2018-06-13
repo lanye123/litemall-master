@@ -421,6 +421,9 @@ public Object collect(@RequestBody Article model) {
                     articleVo.put("avatar","https://sunlands.ministudy.com/images/yhc_logo.png");
                 }else{
                     LitemallUser user = litemallUserService.findById(article.getUserId());
+                    if(user == null){
+                        continue;
+                    }
                     articleVo.put("nickName",user.getNickname());
                     articleVo.put("avatar",user.getAvatar());
                 }

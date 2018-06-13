@@ -65,6 +65,22 @@ public class OrderUtil {
             return "已收货(系统)";
         }
 
+        if (status == 0) {
+            return "待分享";
+        }
+
+        if (status == 1) {
+            return "拼团成功";
+        }
+
+        if (status == 2) {
+            return "拼团失败";
+        }
+
+        if (status == 3) {
+            return "兑换成功";
+        }
+
         Assert.state(false, "orderStatus不支持");
         return "";
     }
@@ -102,6 +118,26 @@ public class OrderUtil {
             // 如果订单已经支付，且已经收货，则可完成交易、评论和再次购买
             handleOption.setDelete(true);
             handleOption.setComment(true);
+            handleOption.setRebuy(true);
+        }
+        else if (status == 0) {
+            // 如果订单已经取消或是已完成，则可删除
+            handleOption.setDelete(true);
+            handleOption.setRebuy(true);
+        }
+        else if (status == 1) {
+            // 如果订单已经取消或是已完成，则可删除
+            handleOption.setDelete(true);
+            handleOption.setRebuy(true);
+        }
+        else if (status == 2) {
+            // 如果订单已经取消或是已完成，则可删除
+            handleOption.setDelete(true);
+            handleOption.setRebuy(true);
+        }
+        else if (status == 3) {
+            // 如果订单已经取消或是已完成，则可删除
+            handleOption.setDelete(true);
             handleOption.setRebuy(true);
         }
         else {
