@@ -5,6 +5,7 @@ import org.linlinjava.litemall.db.service.WxFormidService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +18,8 @@ public class WxFormidController {
     private WxFormidService wxFormidService;
 
     @PostMapping("add")
-    public Object add(String form_id){
-        wxFormidService.add(form_id);
+    public Object add(@RequestBody WxFormid formid){
+        wxFormidService.add(formid);
         return ResponseUtil.ok();
     };
 

@@ -15,6 +15,11 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.logging.Logger;
 
+/**
+ * leiqiang
+ * 服务通知
+ * 2018-6-14 18:04
+ */
 @Service
 public class WxMessService {
     private final Log logger = LogFactory.getLog(WxMessService.class);
@@ -69,5 +74,41 @@ public class WxMessService {
     //图文发布审核不通过提醒
     public void articleCheckFail(String url,String keyword1,String keyword2,String keyword3,Integer user_id){
 
+    }
+
+    //新书上架提醒服务通知
+    public JSONObject articleNotice(String url,String keyword1_str,String keyword2_str,String formId,Integer user_id){
+        LitemallUser user=litemallUserService.findById(user_id);
+        JSONObject result=null;
+        if(user!=null&&!StringUtils.isEmpty(user.getWeixinOpenid())){
+            WxConfig config= wxConfigService.getToken();
+            String request_url=muban_url.replace("ACCESS_TOKEN",config.getAccessToken());
+            JSONObject data=new JSONObject();
+            JSONObject object=new JSONObject();
+            JSONObject object2=new JSONObject();
+            object.put("touser",user.getWeixinOpenid());
+            object.put("template_id","iRulSPWFrSb2lYLlRBtvJpKq3G1VIz4i581huunYP4M");
+            if(!StringUtils.isEmpty(url))
+                object.put("page",url);
+            if(!StringUtils.isEmpty(formId))
+                object.put("form_id",formId);
+            JSONObject keyword1 = new JSONObject();
+            keyword1.put("value",keyword1_str);
+            data.put("keyword1",keyword1);
+            JSONObject keyword2 = new JSONObject();
+            keyword2.put("value",keyword2_str);
+            data.put("keyword2",keyword2);
+            object.put("data",data);
+            result = HttpClientUtil.doPost(request_url, object);
+            logger.info(result);
+            if(Integer.parseInt(result.getString("data.errcode"))==0){
+                WxMess m = new WxMess();
+                m.setUserId(user_id);
+                m.setReceptOpenId(user.getWeixinOpenid());
+                m.setContent(keyword1_str+","+keyword2_str);
+                wxMessMapper.insertSelective(m);
+            }
+        }
+        return result;
     }
 }

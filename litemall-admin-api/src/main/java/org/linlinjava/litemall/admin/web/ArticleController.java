@@ -37,6 +37,8 @@ public class ArticleController {
     private MedalDetailsService medalDetailsService;
     @Autowired
     private PraiseService praiseService;
+    @Autowired
+    private WxFormidService wxFormidService;
 
     @Value("${miniprogram.appid}")
     private String appid;
@@ -136,7 +138,14 @@ public class ArticleController {
         if(articleDb.getStatus()==0){
             articleDb.setStatus(1);
             articleService.updateById(articleDb);
-            //wxMessService.articleCheck();
+            //小程序上线提醒
+            String url=article_url.replace("ARTICLEID",Integer.toString(article.getArticleId()));
+            List<WxFormid> list=wxFormidService.queryByStatus(0);
+            if(list.size()>0){
+                String formid=list.get(0).getFormId();
+                wxMessService.articleNotice(url,article.getTitle(),article.getTitle()+"新书上架啦！"+article.getDaodu(),formid,article.getUser_id());
+            }
+
         }else if(articleDb.getStatus()==1){
             articleDb.setStatus(0);
             articleService.updateById(articleDb);

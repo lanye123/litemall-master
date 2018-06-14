@@ -14,10 +14,7 @@ public class WxFormidService {
     @Resource
     private WxFormidMapper wxFormidMapper;
 
-    public void add(String form_id){
-        WxFormid formid=new WxFormid();
-        formid.setFormId(form_id);
-        formid.setStatus(0);
+    public void add(WxFormid formid){
         wxFormidMapper.insertSelective(formid);
     }
 
@@ -27,7 +24,7 @@ public class WxFormidService {
 
     public List<WxFormid> queryByStatus(int i) {
         WxFormidExample example=new WxFormidExample();
-        example.or().andStatusEqualTo(1);
+        example.or().andStatusEqualTo(i);
         return wxFormidMapper.selectByExampleSelective(example);
     }
 }
