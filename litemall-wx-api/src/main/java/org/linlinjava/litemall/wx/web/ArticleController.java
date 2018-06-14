@@ -9,6 +9,7 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,8 @@ public class ArticleController {
     private WxMessService wxMessService;
     @Autowired
     private NotesService notesService;
+    @Value("${codeurl}")
+    private String codeurl;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -229,6 +232,11 @@ public class ArticleController {
         if(article.getCreateDate().contains(".0")){
             article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
         }
+        if(!StringUtils.isEmpty(article.getCodeUrl())){
+            data.put("codeUrl",article.getCodeUrl());
+        }else{
+            data.put("codeUrl",codeurl);
+        }
         data.put("create_date",article.getCreateDate());
         data.put("daodu",article.getDaodu());
         data.put("author",article.getAuthor());
@@ -320,6 +328,7 @@ public Object collect(@RequestBody Article model) {
         List<ArticleCollection> articleCollectionList = articleCollectionService.querySelective(model.getArticleId(),model.getUser_id(),1,null,null,"","");
         for(ArticleCollection articleCollection:articleCollectionList){
             articleCollection.setStatus(0);
+            articleCollection.setIsView(model.getType());
             articleCollectionService.update(articleCollection);
         }
     }else if(model.getStatus() == 1){
@@ -330,6 +339,7 @@ public Object collect(@RequestBody Article model) {
             collection.setArticleId(model.getArticleId());
             collection.setUserId(model.getUser_id());
             collection.setStatus(model.getStatus());
+            collection.setIsView(model.getType());
             articleCollectionService.add(collection);
         }else
         {
@@ -383,6 +393,7 @@ public Object collect(@RequestBody Article model) {
     @GetMapping("customList")
     private Object customList(String flag,Integer userId,Integer isMy,/*@RequestParam(value = "page", defaultValue = "1")*/Integer page, /*@RequestParam(value = "size", defaultValue = "5")*/Integer size){
         logger.debug("传入标识flag："+flag+",用户id："+userId);
+
         List<Article> articleList=articleService.querySelective3(flag,page, size,isMy);
         if(articleList==null || articleList.size()<=0){
             return ResponseUtil.ok();
@@ -406,6 +417,12 @@ public Object collect(@RequestBody Article model) {
                 if(article.getCreateDate().contains(".0")){
                     article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
                 }
+                if(!StringUtils.isEmpty(article.getCodeUrl())){
+                    articleVo.put("codeUrl",article.getCodeUrl());
+                }else{
+                    articleVo.put("codeUrl",codeurl);
+                }
+
                 articleVo.put("create_date",article.getCreateDate());
                 articleVo.put("daodu",article.getDaodu());
                 articleVo.put("author",article.getAuthor());

@@ -34,7 +34,7 @@ public class ArticleCollectionController {
      *@Date:13:44 2018/5/7
      */
     @GetMapping("list")
-    public Object list(@RequestParam Integer userId){
+    public Object list(@RequestParam Integer userId, Boolean isView){
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -43,7 +43,7 @@ public class ArticleCollectionController {
         }
         Map<String,Object> data = new HashMap<>();
         Map<String, Object> dataItem;
-        List<ArticleCollection> articleCollectionList = articleCollectionService.selectByUserId(userId);
+        List<ArticleCollection> articleCollectionList = articleCollectionService.selectByUserId(userId,isView);
 
         List<Map<String,Object>> returnArticles = new ArrayList<>();
         int allCount;

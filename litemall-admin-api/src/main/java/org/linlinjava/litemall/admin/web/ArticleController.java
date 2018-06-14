@@ -69,7 +69,7 @@ public class ArticleController {
     @PostMapping("/create")
     public Object create(@RequestBody Article article){
         articleService.add(article);
-        saveCode(article.getArticleId());
+        saveCode(article);
         return ResponseUtil.ok(article);
     }
 
@@ -87,7 +87,7 @@ public class ArticleController {
     public Object update(@RequestBody Article article){
         articleService.updateById(article);
         if(StringUtils.isNotEmpty(article.getCodeUrl()))
-            saveCode(article.getArticleId());
+            saveCode(article);
         return ResponseUtil.ok();
     }
 
@@ -189,9 +189,9 @@ public class ArticleController {
      * @date 2018-5-31 14:15:07
      */
     @PostMapping("/code")
-    public void saveCode(Integer article_id){
+    public void saveCode(@RequestBody Article a){
         WxConfig config=wxConfigService.getToken();
-        String path=article_url.replace("ARTICLEID",Integer.toString(article_id));
+        String path=article_url.replace("ARTICLEID",Integer.toString(a.getArticleId()));
         Article article=new Article();
         JSONObject object=new JSONObject();
         object.put("path",path);
@@ -218,7 +218,7 @@ public class ArticleController {
             }
             // 将反斜杠转换为正斜杠
             String datapath = temp.replaceAll("\\\\", "/") + newFileName;
-            article.setArticleId(article_id);
+            article.setArticleId(a.getArticleId());
             article.setCodeUrl(datapath);
             articleService.update(article);
         } catch (IOException e) {

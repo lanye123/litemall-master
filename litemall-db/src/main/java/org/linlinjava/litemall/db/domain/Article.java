@@ -40,6 +40,16 @@ public class Article {
     //数据保存的用户id
     private Integer userId;
 
+    private Boolean type;
+
+    public Boolean getType() {
+        return type;
+    }
+
+    public void setType(Boolean type) {
+        this.type = type;
+    }
+
     public String getCodeUrl() {
         return codeUrl;
     }

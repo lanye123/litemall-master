@@ -27,14 +27,14 @@ public class ArticleCollectionService {
         articleCollectionMapper.updateByPrimaryKeySelective(collection);
     }
 
-    public List<ArticleCollection> selectByUserId(Integer userId) {
+    public List<ArticleCollection> selectByUserId(Integer userId, Boolean isView) {
         ArticleCollectionExample example = new ArticleCollectionExample();
         ArticleCollectionExample.Criteria criteria = example.createCriteria();
 
         if(!StringUtils.isEmpty(userId)){
             criteria.andUserIdEqualTo(userId);
         }
-        criteria.andStatusEqualTo(1);
+        criteria.andStatusEqualTo(1).andIsViewEqualTo(isView);
         criteria.example().setOrderByClause("create_date");
 
         return articleCollectionMapper.selectByExample(example);
