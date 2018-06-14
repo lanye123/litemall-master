@@ -90,7 +90,6 @@
     a.id, a.article_id, a.category_name, a.category_id, a.content, a.from_userid, a.status, a.create_date,
     b.nickname,b.register_ip,b.mobile
     from article_comment a LEFT JOIN litemall_user b on a.from_userid = b.id
-    where 1=1
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
