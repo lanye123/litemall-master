@@ -102,4 +102,9 @@ public class LitemallUserService {
     public LitemallUser queryById(Integer fromUserid) {
         return userMapper.selectByPrimaryKey(fromUserid);
     }
+
+    public List<LitemallUser> queryAll() {
+        LitemallUserExample example=new LitemallUserExample();
+        return userMapper.selectByExample(example);
+    }
 }

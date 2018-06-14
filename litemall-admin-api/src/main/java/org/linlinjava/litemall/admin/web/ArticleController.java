@@ -143,7 +143,17 @@ public class ArticleController {
             List<WxFormid> list=wxFormidService.queryByStatus(0);
             if(list.size()>0){
                 String formid=list.get(0).getFormId();
-                wxMessService.articleNotice(url,article.getTitle(),article.getTitle()+"新书上架啦！"+article.getDaodu(),formid,article.getUser_id());
+                if(article.getUser_id()!=null){
+                    //图文发布审核通过通知
+                    wxMessService.articleNotice(url,article.getTitle(),article.getTitle()+"新书上架啦！"+article.getDaodu(),formid,article.getUser_id());
+                }else{
+                    List<LitemallUser> userList=litemallUserService.queryAll();
+                    for(LitemallUser users:userList){
+                        //新书上架通知
+                        wxMessService.articleNotice(url,article.getTitle(),article.getTitle()+"新书上架啦！"+article.getDaodu(),formid,users.getId());
+                    }
+                }
+
             }
 
         }else if(articleDb.getStatus()==1){
