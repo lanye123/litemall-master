@@ -32,7 +32,7 @@ public class OnlineTiming {
         long begin = System.currentTimeMillis();
         log.debug("每天零点三十执行定时任务");
         log.info("图文上线开始-------"+new Date());
-        List<Article> articleList =  articleService.queryBySelective("","",null,1,"",simpleDateFormat.format(new Date()), null, null, "", "");
+        List<Article> articleList =  articleService.queryBySelective("","",null,1,"",simpleDateFormat.format(new Date()), null,null, null, "", "");
         for(Article article:articleList){
             if(article.getStatus()==1){
                 continue;
