@@ -138,14 +138,16 @@ public class ArticleService {
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
             criteria.example().setOrderByClause("read_count desc");
         }
-        BigDecimal bg1 = new BigDecimal(articleMapper.selectByExample(example).size());
-        BigDecimal bg2 = new BigDecimal(20);
-        double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        Double pageMax = Math.ceil(d3);
-        if(page>pageMax){
-            return null;
+        if(page!=null && size!=null){
+            BigDecimal bg1 = new BigDecimal(articleMapper.selectByExample(example).size());
+            BigDecimal bg2 = new BigDecimal(20);
+            double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            Double pageMax = Math.ceil(d3);
+            if(page>pageMax){
+                return null;
+            }
+            PageHelper.startPage(page, size);
         }
-        PageHelper.startPage(page, size);
         return articleMapper.selectByExample(example);
     }
 
