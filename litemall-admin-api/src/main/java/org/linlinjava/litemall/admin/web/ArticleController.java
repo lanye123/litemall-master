@@ -67,7 +67,7 @@ public class ArticleController {
         data.put("total", total);
         //点亮次数 点赞次数 用户昵称 用户名
         LitemallUser user;
-        if(categoryId == 1){
+        if(categoryId!=null && categoryId == 1){
             for(Article article:articleList){
                 if(article.getUserId() == null){
                     article.setNickName(article.getAuthor());
