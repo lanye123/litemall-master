@@ -636,53 +636,253 @@ public class CollageDetailExample {
             return (Criteria) this;
         }
 
-        public Criteria andSnoEqualTo(Integer value) {
+        public Criteria andSnoEqualTo(String value) {
             addCriterion("sno =", value, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoNotEqualTo(Integer value) {
+        public Criteria andSnoNotEqualTo(String value) {
             addCriterion("sno <>", value, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoGreaterThan(Integer value) {
+        public Criteria andSnoGreaterThan(String value) {
             addCriterion("sno >", value, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoGreaterThanOrEqualTo(Integer value) {
+        public Criteria andSnoGreaterThanOrEqualTo(String value) {
             addCriterion("sno >=", value, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoLessThan(Integer value) {
+        public Criteria andSnoLessThan(String value) {
             addCriterion("sno <", value, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoLessThanOrEqualTo(Integer value) {
+        public Criteria andSnoLessThanOrEqualTo(String value) {
             addCriterion("sno <=", value, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoIn(List<Integer> values) {
+        public Criteria andSnoLike(String value) {
+            addCriterion("sno like", value, "sno");
+            return (Criteria) this;
+        }
+
+        public Criteria andSnoNotLike(String value) {
+            addCriterion("sno not like", value, "sno");
+            return (Criteria) this;
+        }
+
+        public Criteria andSnoIn(List<String> values) {
             addCriterion("sno in", values, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoNotIn(List<Integer> values) {
+        public Criteria andSnoNotIn(List<String> values) {
             addCriterion("sno not in", values, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoBetween(Integer value1, Integer value2) {
+        public Criteria andSnoBetween(String value1, String value2) {
             addCriterion("sno between", value1, value2, "sno");
             return (Criteria) this;
         }
 
-        public Criteria andSnoNotBetween(Integer value1, Integer value2) {
+        public Criteria andSnoNotBetween(String value1, String value2) {
             addCriterion("sno not between", value1, value2, "sno");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeIsNull() {
+            addCriterion("wincode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeIsNotNull() {
+            addCriterion("wincode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeEqualTo(String value) {
+            addCriterion("wincode =", value, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeNotEqualTo(String value) {
+            addCriterion("wincode <>", value, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeGreaterThan(String value) {
+            addCriterion("wincode >", value, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeGreaterThanOrEqualTo(String value) {
+            addCriterion("wincode >=", value, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeLessThan(String value) {
+            addCriterion("wincode <", value, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeLessThanOrEqualTo(String value) {
+            addCriterion("wincode <=", value, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeLike(String value) {
+            addCriterion("wincode like", value, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeNotLike(String value) {
+            addCriterion("wincode not like", value, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeIn(List<String> values) {
+            addCriterion("wincode in", values, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeNotIn(List<String> values) {
+            addCriterion("wincode not in", values, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeBetween(String value1, String value2) {
+            addCriterion("wincode between", value1, value2, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andWincodeNotBetween(String value1, String value2) {
+            addCriterion("wincode not between", value1, value2, "wincode");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNull() {
+            addCriterion("pid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIsNotNull() {
+            addCriterion("pid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidEqualTo(Integer value) {
+            addCriterion("pid =", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotEqualTo(Integer value) {
+            addCriterion("pid <>", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThan(Integer value) {
+            addCriterion("pid >", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("pid >=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThan(Integer value) {
+            addCriterion("pid <", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidLessThanOrEqualTo(Integer value) {
+            addCriterion("pid <=", value, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidIn(List<Integer> values) {
+            addCriterion("pid in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotIn(List<Integer> values) {
+            addCriterion("pid not in", values, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidBetween(Integer value1, Integer value2) {
+            addCriterion("pid between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andPidNotBetween(Integer value1, Integer value2) {
+            addCriterion("pid not between", value1, value2, "pid");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIsNull() {
+            addCriterion("flag is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIsNotNull() {
+            addCriterion("flag is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagEqualTo(Integer value) {
+            addCriterion("flag =", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotEqualTo(Integer value) {
+            addCriterion("flag <>", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagGreaterThan(Integer value) {
+            addCriterion("flag >", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagGreaterThanOrEqualTo(Integer value) {
+            addCriterion("flag >=", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLessThan(Integer value) {
+            addCriterion("flag <", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagLessThanOrEqualTo(Integer value) {
+            addCriterion("flag <=", value, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagIn(List<Integer> values) {
+            addCriterion("flag in", values, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotIn(List<Integer> values) {
+            addCriterion("flag not in", values, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagBetween(Integer value1, Integer value2) {
+            addCriterion("flag between", value1, value2, "flag");
+            return (Criteria) this;
+        }
+
+        public Criteria andFlagNotBetween(Integer value1, Integer value2) {
+            addCriterion("flag not between", value1, value2, "flag");
             return (Criteria) this;
         }
     }

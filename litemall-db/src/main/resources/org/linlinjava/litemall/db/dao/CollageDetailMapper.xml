@@ -10,7 +10,10 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="join_date" jdbcType="TIMESTAMP" property="joinDate" />
-    <result column="sno" jdbcType="INTEGER" property="sno" />
+    <result column="sno" jdbcType="VARCHAR" property="sno" />
+    <result column="wincode" jdbcType="VARCHAR" property="wincode" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,7 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, goods_id, order_id, user_id, avatar, `status`, create_date, join_date, sno
+    id, goods_id, order_id, user_id, avatar, `status`, create_date, join_date, sno, wincode, 
+    pid, flag
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CollageDetailExample" resultMap="BaseResultMap">
     select
@@ -120,10 +124,12 @@
     </selectKey>
     insert into collage_detail (goods_id, order_id, user_id, 
       avatar, `status`, create_date, 
-      join_date, sno)
+      join_date, sno, wincode, 
+      pid, flag)
     values (#{goodsId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{avatar,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{joinDate,jdbcType=TIMESTAMP}, #{sno,jdbcType=INTEGER})
+      #{joinDate,jdbcType=TIMESTAMP}, #{sno,jdbcType=VARCHAR}, #{wincode,jdbcType=VARCHAR}, 
+      #{pid,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.CollageDetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -155,6 +161,15 @@
       <if test="sno != null">
         sno,
       </if>
+      <if test="wincode != null">
+        wincode,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="flag != null">
+        flag,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
@@ -179,7 +194,16 @@
         #{joinDate,jdbcType=TIMESTAMP},
       </if>
       <if test="sno != null">
-        #{sno,jdbcType=INTEGER},
+        #{sno,jdbcType=VARCHAR},
+      </if>
+      <if test="wincode != null">
+        #{wincode,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -217,7 +241,16 @@
         join_date = #{record.joinDate,jdbcType=TIMESTAMP},
       </if>
       <if test="record.sno != null">
-        sno = #{record.sno,jdbcType=INTEGER},
+        sno = #{record.sno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wincode != null">
+        wincode = #{record.wincode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pid != null">
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null">
+        flag = #{record.flag,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -234,7 +267,10 @@
       `status` = #{record.status,jdbcType=INTEGER},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       join_date = #{record.joinDate,jdbcType=TIMESTAMP},
-      sno = #{record.sno,jdbcType=INTEGER}
+      sno = #{record.sno,jdbcType=VARCHAR},
+      wincode = #{record.wincode,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
