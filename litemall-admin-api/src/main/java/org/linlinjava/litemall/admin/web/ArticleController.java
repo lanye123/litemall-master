@@ -33,6 +33,10 @@ public class ArticleController {
     private WxMessService wxMessService;
     @Autowired
     private WxConfigService wxConfigService;
+    @Autowired
+    private MedalDetailsService medalDetailsService;
+    @Autowired
+    private PraiseService praiseService;
 
     @Value("${miniprogram.appid}")
     private String appid;
@@ -61,6 +65,31 @@ public class ArticleController {
         int total = articleService.countSelective(title,author,articleId,categoryId,flag,"",status, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
+        //点亮次数 点赞次数 用户昵称 用户名
+        LitemallUser user;
+        if(categoryId == 1){
+            for(Article article:articleList){
+                if(article.getUserId() == null){
+                    article.setNickName(article.getAuthor());
+                    article.setUserName("官方");
+                }else {
+                    user = litemallUserService.findById(article.getUserId());
+                    if(user!=null){
+                        article.setNickName(user.getNickname());
+                        article.setUserName(user.getRegisterIp());
+                    }
+                }
+                article.setShineCount(medalDetailsService.countSeletive(null,article.getArticleId(),null,null,null,null,null,"",""));
+                article.setPraiseCount(praiseService.countSeletive(article.getArticleId(),null,null,1,null,null,"",""));
+                if(article.getCreateDate().contains(".0")){
+                    article.setCreateDate(article.getCreateDate().substring(0,article.getCreateDate().length()-2));
+                }
+                if(article.getUpdateDate()!=null && article.getUpdateDate().contains("00:00:00.0")){
+                    article.setUpdateDate(article.getUpdateDate().substring(0,article.getUpdateDate().length()-11));
+                }
+                article.setPhotoUrl("https://sunlands.ministudy.com/"+article.getPhotoUrl());
+            }
+        }
         data.put("items", articleList);
 
         return ResponseUtil.ok(data);

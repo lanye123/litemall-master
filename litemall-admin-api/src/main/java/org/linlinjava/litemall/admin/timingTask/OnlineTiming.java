@@ -26,6 +26,7 @@ public class OnlineTiming {
     private ArticleService articleService;
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Scheduled(cron = "0 30 0 * * ?")
     public void online(){
@@ -38,9 +39,13 @@ public class OnlineTiming {
                 continue;
             }
             article.setStatus(1);
+            article.setCreateDate(simpleDateFormat2.format(new Date()));
             articleService.updateById(article);
         }
         long end = System.currentTimeMillis();
         log.info("图文上线结束-------耗时："+(end-begin)+"ms");
+    }
+
+    public static void main(String[] args){
     }
 }
