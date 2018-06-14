@@ -221,7 +221,7 @@ public class ArticleController {
      * @date 2018-5-31 14:15:07
      */
     @PostMapping("/code")
-    public void saveCode(@RequestBody Article a){
+    public Object saveCode(@RequestBody Article a){
         WxConfig config=wxConfigService.getToken();
         String path=article_url.replace("ARTICLEID",Integer.toString(a.getArticleId()));
         Article article=new Article();
@@ -271,5 +271,6 @@ public class ArticleController {
                 }
             }
         }
+        return ResponseUtil.ok(article);
     }
 }
