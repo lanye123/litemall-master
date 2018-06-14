@@ -1,12 +1,10 @@
 package org.linlinjava.litemall.wx.web;
 
-import org.linlinjava.litemall.db.domain.Article;
-import org.linlinjava.litemall.db.domain.ArticleCollection;
-import org.linlinjava.litemall.db.domain.ArticleDetails;
-import org.linlinjava.litemall.db.domain.ArticleNotes;
+import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -67,9 +65,15 @@ public class ArticleCollectionController {
             dataItem.put("photoName",article.getPhotoName());
             dataItem.put("photoUrl",article.getPhotoUrl());
             dataItem.put("daodu",article.getDaodu());
-            dataItem.put("author",article.getAuthor());
+            if(StringUtils.isEmpty(article.getUserId())){
+                dataItem.put("author",article.getAuthor());
+            }else{
+                LitemallUser user=litemallUserService.findById(article.getUserId());
+                dataItem.put("author",user.getNickname());
+            }
             dataItem.put("articleId",article.getArticleId());
             dataItem.put("headUrl",article.getHeadUrl());
+            dataItem.put("createDate",article.getCreateDate());
             returnArticles.add(dataItem);
         }
         data.put("returnArticles", returnArticles);

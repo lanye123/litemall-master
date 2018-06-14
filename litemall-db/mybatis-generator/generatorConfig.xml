@@ -224,7 +224,7 @@
         <table tableName="wx_mess">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>-->
-        <table tableName="collage_detail">
+        <table tableName="wx_formid">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
