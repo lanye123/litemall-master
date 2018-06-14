@@ -20,6 +20,46 @@ public class ArticleComment {
 
     private Integer userId;
 
+    private String nickName;
+
+    private String registerIp;
+
+    private String mobile;
+
+    private Integer countPraise;
+
+    public Integer getCountPraise() {
+        return countPraise;
+    }
+
+    public void setCountPraise(Integer countPraise) {
+        this.countPraise = countPraise;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getRegisterIp() {
+        return registerIp;
+    }
+
+    public void setRegisterIp(String registerIp) {
+        this.registerIp = registerIp;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
     public Integer getUserId() {
         return userId;
     }

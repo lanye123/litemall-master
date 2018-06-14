@@ -5,10 +5,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleMapper;
 import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.util.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -108,7 +110,7 @@ public class ArticleService {
       * @Param [flag, page, size]
       * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
       **/
-    public List<Article> querySelective3(String flag, Integer page, Integer size,Integer isMy) {
+    public List<Article> querySelective3(String flag, Integer page, Integer size,Integer isMy,String time) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
         criteria.andCategoryIdEqualTo(1);
@@ -116,6 +118,15 @@ public class ArticleService {
             criteria.andUserIdEqualTo(isMy);
         }else{
             criteria.andStatusEqualTo(1);
+        }
+        if(!StringUtils.isEmpty(time)) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                criteria.andCreateDateBetween("2018-01-01 00:00:00",dateFormat2.format(DateUtils.getDayEnd(dateFormat.parse(time))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         criteria.example().setOrderByClause("create_date desc");
         /*if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
@@ -127,14 +138,16 @@ public class ArticleService {
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
             criteria.example().setOrderByClause("read_count desc");
         }
-      /*  BigDecimal bg1 = new BigDecimal(articleMapper.selectByExample(example).size());
-        BigDecimal bg2 = new BigDecimal(5);
-        double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-        Double pageMax = Math.ceil(d3);
-        if(page>pageMax){
-            return null;
+        if(page!=null && size!=null){
+            BigDecimal bg1 = new BigDecimal(articleMapper.selectByExample(example).size());
+            BigDecimal bg2 = new BigDecimal(20);
+            double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            Double pageMax = Math.ceil(d3);
+            if(page>pageMax){
+                return null;
+            }
+            PageHelper.startPage(page, size);
         }
-        PageHelper.startPage(page, size);*/
         return articleMapper.selectByExample(example);
     }
 

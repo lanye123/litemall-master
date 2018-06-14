@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.ArticleComment;
 import org.linlinjava.litemall.db.service.ArticleCommentService;
+import org.linlinjava.litemall.db.service.PraiseCommentService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,8 @@ public class ArticleCommentController {
 
     @Autowired
     private ArticleCommentService articleCommentService;
+    @Autowired
+    private PraiseCommentService praiseCommentService;
 
     @GetMapping("/list")
     public Object list(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,
@@ -30,6 +33,10 @@ public class ArticleCommentController {
         int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
+        for(ArticleComment articleComment:articleCommentList){
+            //统计点赞数量
+            articleComment.setCountPraise(praiseCommentService.count(articleComment.getId()));
+        }
         data.put("items", articleCommentList);
 
         return ResponseUtil.ok(data);

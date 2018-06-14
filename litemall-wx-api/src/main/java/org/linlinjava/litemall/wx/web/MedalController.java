@@ -87,7 +87,7 @@ public class MedalController {
         //增加返回该用户收藏数 2018-6-6 15:45
         data.put("collectionCount",articleCollectionService.countSeletive(null,userId,1,null,null,"",""));
         //增加返回该用户制作图文数 2018-6-6 15:45
-        data.put("createCount",articleService.querySelective3(null,null,null,userId).size());
+        data.put("createCount",articleService.querySelective3(null,null,null,userId,"").size());
 
         //是否打卡状态
         List<IntegretionDetail> detailList=integretionDetailService.queryByLimit(String.valueOf(userId));

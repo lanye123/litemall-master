@@ -37,10 +37,51 @@ public class Article {
 
     private Integer shareCount;
 
+    //点赞次数
+    private Integer praiseCount;
+    //点亮次数
+    private Integer shineCount;
+    //用户昵称
+    private String nickName;
+    //用户名称
+    private String userName;
+
     //数据保存的用户id
     private Integer userId;
 
     private Boolean type;
+
+    public Integer getPraiseCount() {
+        return praiseCount;
+    }
+
+    public void setPraiseCount(Integer praiseCount) {
+        this.praiseCount = praiseCount;
+    }
+
+    public Integer getShineCount() {
+        return shineCount;
+    }
+
+    public void setShineCount(Integer shineCount) {
+        this.shineCount = shineCount;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Boolean getType() {
         return type;
