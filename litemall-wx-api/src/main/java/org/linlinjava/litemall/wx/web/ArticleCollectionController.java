@@ -52,14 +52,14 @@ public class ArticleCollectionController {
         for(ArticleCollection articleCollection:articleCollectionList){
             dataItem = new HashMap<>();
             allCount = articleNotesService.findByArtitleid(articleCollection.getArticleId()).size();
-            if(allCount == 0){
+/*            if(allCount == 0){
                 continue;
-            }
+            }*/
             article = articleService.findById(articleCollection.getArticleId());
             readCount = articleDetailsService.selectList(userId,null,articleCollection.getArticleId(),null,"").size();
-            BigDecimal bd = new BigDecimal(readCount);
-            bd = bd.divide(new BigDecimal(allCount),2,BigDecimal.ROUND_HALF_UP);
-            dataItem.put("percentage",bd.toString());
+            //BigDecimal bd = new BigDecimal(readCount);
+            //bd = bd.divide(new BigDecimal(allCount),2,BigDecimal.ROUND_HALF_UP);
+            //dataItem.put("percentage",bd.toString());
             dataItem.put("readCount",readCount);
             dataItem.put("allCount",allCount);
             dataItem.put("title",article.getTitle());
@@ -100,7 +100,7 @@ public class ArticleCollectionController {
 
     /**
      *@Author:LeiQiang
-     *@Description:图文-收藏接口
+     *@Description:图文-收藏接口已废弃
      *@Date:23:24 2018/5/4
      */
     @PostMapping("save")

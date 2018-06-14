@@ -15,15 +15,13 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /*
  * 订单设计
@@ -50,7 +48,6 @@ public class WxOrderController {
 
     @Autowired
     private PlatformTransactionManager txManager;
-
     @Autowired
     private LitemallOrderService orderService;
     @Autowired
@@ -65,6 +62,10 @@ public class WxOrderController {
     private LitemallProductService productService;
     @Autowired
     private LitemallGoodsService goodsService;
+    @Autowired
+    private CollageDetailService collageDetailService;
+    @Autowired
+    private LitemallUserService litemallUserService;
 
     public WxOrderController() {
     }
@@ -814,12 +815,15 @@ public class WxOrderController {
         Integer cartId = JacksonUtil.parseInteger(body, "cartId");
         Integer addressId = JacksonUtil.parseInteger(body, "addressId");
         Integer type = JacksonUtil.parseInteger(body, "type");
+        Integer pid=JacksonUtil.parseInteger(body, "pid");//团长为空团员为pid
         if (cartId == null || addressId == null) {
             return ResponseUtil.badArgument();
         }
 
         // 收货地址
         LitemallAddress checkedAddress = addressService.findById(addressId);
+        //用户信息
+        LitemallUser user=litemallUserService.findById(userId);
 
         // 获取可用的优惠券信息
         // 使用优惠券减免的金额
@@ -873,7 +877,8 @@ public class WxOrderController {
         order.setOrderPrice(orderTotalPrice);
         order.setActualPrice(actualPrice);
         order.setOrder_type(1);//拼团单
-
+        //拼团流水
+        CollageDetail detail=new CollageDetail();
         // 订单商品
         List<LitemallOrderGoods> orderGoodsList = new ArrayList<>(checkedGoodsList.size());
         for (LitemallCart cartGoods : checkedGoodsList) {
@@ -889,6 +894,19 @@ public class WxOrderController {
             orderGoods.setGoodsSpecificationIds(cartGoods.getGoodsSpecificationIds());
             orderGoods.setGoodsSpecificationValues(cartGoods.getGoodsSpecificationValues());
             orderGoodsList.add(orderGoods);
+
+            detail.setGoodsId(cartGoods.getGoodsId());
+            detail.setOrderId(order.getId());
+            detail.setUserId(userId);
+            if(user!=null)
+                detail.setAvatar(user.getAvatar());
+            detail.setStatus(0);
+            detail.setJoinDate(new Date());
+            if(!StringUtils.isEmpty(pid)){
+                detail.setPid(pid);
+                detail.setFlag(0);//拼团团员标识
+            }else
+                detail.setFlag(1);//拼团团长标识
         }
 
         // 开启事务管理
@@ -919,6 +937,9 @@ public class WxOrderController {
                 product.setGoodsNumber(remainNumber);
                 productService.updateById(product);
             }
+
+            //保存拼团流水表
+            collageDetailService.add(detail);
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);
