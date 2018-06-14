@@ -45,7 +45,7 @@ public class ArticleController {
     private WxMessService wxMessService;
     @Autowired
     private NotesService notesService;
-    @Value("${codeurl}")
+    @Value("${code_url}")
     private String codeurl;
 /**
     *@Author:LeiQiang
