@@ -45,9 +45,12 @@ public class WxUserController {
     @PostMapping("/create")
     public Object create(@RequestBody LitemallUser user){
         logger.debug(user);
-
-        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),null,null,"","")>0){
-            return ResponseUtil.ok(litemallUserService.querySelective("","",user.getWeixinOpenid(),null,null,"","").get(0));
+        List<LitemallUser> userList = litemallUserService.querySelective("","",user.getWeixinOpenid(),null,null,"","");
+        if(userList!=null && userList.size()>0){
+            user.setId(userList.get(0).getId());
+            user.setNickname(filterEmoji(user.getNickname()));
+            litemallUserService.update(user);
+            return ResponseUtil.ok(user);
         }
         user.setNickname(filterEmoji(user.getNickname()));
         litemallUserService.add(user);
