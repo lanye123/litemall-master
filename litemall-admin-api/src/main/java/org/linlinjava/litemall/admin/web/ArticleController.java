@@ -114,6 +114,9 @@ public class ArticleController {
 
     @PostMapping("/update")
     public Object update(@RequestBody Article article){
+        if(article.getPhotoUrl().contains("https://sunlands.ministudy.com/")){
+            article.setPhotoUrl(article.getPhotoUrl().replace("https://sunlands.ministudy.com/",""));
+        }
         articleService.updateById(article);
         if(StringUtils.isNotEmpty(article.getCodeUrl()))
             saveCode(article);
