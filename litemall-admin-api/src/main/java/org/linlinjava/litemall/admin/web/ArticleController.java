@@ -133,7 +133,9 @@ public class ArticleController {
                         "1：发布图片需为横图，无水印且美观清晰。\n" +
                         "2：发布内容正向积极，不得违反互联网发布内容规范。\n" +
                         "3：用户发布优秀图文，则被官方审核通过并推荐展现。", DateUtils.getLongDateStr(), formid, article.getUser_id());
+                wxFormidService.update(formid);
                  }
+
         }
         return ResponseUtil.ok();
     }
@@ -156,10 +158,11 @@ public class ArticleController {
             String url=article_url.replace("ARTICLEID",Integer.toString(article.getArticleId()));
             List<WxFormid> list=wxFormidService.queryByStatus(0);
             if(list.size()>0){
+                Article a=articleService.findById(article.getArticleId());
                 String formid=list.get(0).getFormId();
-                if(article.getUser_id()!=null){
+                if(a.getUserId()!=null){
                     //图文发布审核通过通知
-                    wxMessService.articleCheck(url,article.getDaodu(),article.getCreateDate(),article.getUpdateDate(),formid,article.getUser_id());
+                    wxMessService.articleCheck(url,article.getDaodu(),article.getCreateDate(),article.getUpdateDate(),formid,a.getUserId());
                 }else{
                     List<LitemallUser> userList=litemallUserService.queryAll();
                     for(LitemallUser users:userList){
@@ -167,7 +170,7 @@ public class ArticleController {
                         wxMessService.articleNotice(url,article.getTitle(),article.getTitle()+"新书上架啦！"+article.getDaodu(),formid,users.getId());
                     }
                 }
-
+                wxFormidService.update(formid);
             }
 
         }else if(articleDb.getStatus()==1){

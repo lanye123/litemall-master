@@ -109,6 +109,14 @@
     from wx_formid
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wx_formid
+    where status = #{status,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPrimaryKeySelective" parameterType="map" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
