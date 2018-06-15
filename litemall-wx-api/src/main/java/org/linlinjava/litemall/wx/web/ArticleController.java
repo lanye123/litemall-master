@@ -473,4 +473,21 @@ public Object collect(@RequestBody Article model) {
         articleService.deleteById(article.getArticleId());
         return ResponseUtil.ok();
     }
+
+    /**
+      * @author lanye
+      * @Description 更新分享次数
+      * @Date 2018/6/15 9:24
+      * @Param [article]
+      * @return java.lang.Object
+      **/
+    @PostMapping("/share")
+    public Object delete(Integer articleId){
+        Article article = articleService.findById(articleId);
+        if(article!=null){
+            article.setShareCount(article.getShareCount()+1);
+            articleService.updateById(article);
+        }
+        return ResponseUtil.ok(article);
+    }
 }
