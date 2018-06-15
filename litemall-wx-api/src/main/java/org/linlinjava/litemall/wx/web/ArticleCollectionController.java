@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +53,9 @@ public class ArticleCollectionController {
                 continue;
             }*/
             article = articleService.findById(articleCollection.getArticleId());
+            if(article == null){
+                continue;
+            }
             readCount = articleDetailsService.selectList(userId,null,articleCollection.getArticleId(),null,"").size();
             //BigDecimal bd = new BigDecimal(readCount);
             //bd = bd.divide(new BigDecimal(allCount),2,BigDecimal.ROUND_HALF_UP);

@@ -128,7 +128,7 @@ public class ArticleService {
                 e.printStackTrace();
             }
         }
-        criteria.example().setOrderByClause("create_date desc");
+        criteria.example().setOrderByClause("is_view desc,create_date desc");
         /*if(!StringUtils.isEmpty(flag)&&flag.equals("date1")) {
         }*/
         if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {

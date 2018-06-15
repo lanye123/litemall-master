@@ -391,7 +391,7 @@ public Object collect(@RequestBody Article model) {
       * @return java.lang.Object
       **/
     @GetMapping("customList")
-    private Object customList(String flag,Integer userId,Integer isMy,String time,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "20")Integer size){
+    private Object customList(String flag,Integer userId,Integer isMy,String time,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "30")Integer size){
         logger.debug("传入标识flag："+flag+",用户id："+userId);
 
         List<Article> articleList=articleService.querySelective3(flag,page, size,isMy,time);
