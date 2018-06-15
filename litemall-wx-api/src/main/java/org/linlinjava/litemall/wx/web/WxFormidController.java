@@ -20,7 +20,7 @@ public class WxFormidController {
     @PostMapping("add")
     public Object add(@RequestBody WxFormid formid){
         wxFormidService.add(formid);
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(formid);
     };
 
 

@@ -3,7 +3,9 @@ package org.linlinjava.litemall.admin.timingTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.Article;
+import org.linlinjava.litemall.db.domain.WxFormid;
 import org.linlinjava.litemall.db.service.ArticleService;
+import org.linlinjava.litemall.db.service.WxFormidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,8 @@ public class OnlineTiming {
 
     @Autowired
     private ArticleService articleService;
-
+    @Autowired
+    private WxFormidService wxFormidService;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -44,6 +47,13 @@ public class OnlineTiming {
         }
         long end = System.currentTimeMillis();
         log.info("图文上线结束-------耗时："+(end-begin)+"ms");
+
+        log.info("定时清理过期formid开始......"+new Date());
+        List<WxFormid> formidList=wxFormidService.queryByStatus(1);
+        for(WxFormid formid:formidList){
+            wxFormidService.delete(formid.getId());
+        }
+        log.info("定时清理过期formid结束"+new Date());
     }
 
     public static void main(String[] args){

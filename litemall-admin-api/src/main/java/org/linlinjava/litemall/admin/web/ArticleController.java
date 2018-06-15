@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.linlinjava.litemall.admin.util.bcrypt.HttpClientUtil;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.util.DateUtils;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -122,6 +123,18 @@ public class ArticleController {
         articleService.updateById(article);
         if(StringUtils.isNotEmpty(article.getCodeUrl()))
             saveCode(article);
+        //审核不通过通知
+        if(article.getStatus()==2&&article.getUser_id()!=null)
+        {
+            List<WxFormid> list=wxFormidService.queryByStatus(0);
+            if(list.size()>0) {
+                String formid = list.get(0).getFormId();
+                wxMessService.articleCheckFail("pages/graphic/main", "图文发布规则：\n" +
+                        "1：发布图片需为横图，无水印且美观清晰。\n" +
+                        "2：发布内容正向积极，不得违反互联网发布内容规范。\n" +
+                        "3：用户发布优秀图文，则被官方审核通过并推荐展现。", DateUtils.getLongDateStr(), formid, article.getUser_id());
+                 }
+        }
         return ResponseUtil.ok();
     }
 
@@ -139,13 +152,14 @@ public class ArticleController {
             articleDb.setStatus(1);
             articleService.updateById(articleDb);
             //小程序上线提醒
+            //by leiqiang
             String url=article_url.replace("ARTICLEID",Integer.toString(article.getArticleId()));
             List<WxFormid> list=wxFormidService.queryByStatus(0);
             if(list.size()>0){
                 String formid=list.get(0).getFormId();
                 if(article.getUser_id()!=null){
                     //图文发布审核通过通知
-                    wxMessService.articleNotice(url,article.getTitle(),article.getTitle()+"新书上架啦！"+article.getDaodu(),formid,article.getUser_id());
+                    wxMessService.articleCheck(url,article.getDaodu(),article.getCreateDate(),article.getUpdateDate(),formid,article.getUser_id());
                 }else{
                     List<LitemallUser> userList=litemallUserService.queryAll();
                     for(LitemallUser users:userList){
