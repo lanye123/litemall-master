@@ -3,10 +3,7 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
-import org.linlinjava.litemall.db.service.LitemallGoodsService;
-import org.linlinjava.litemall.db.service.LitemallOrderService;
-import org.linlinjava.litemall.db.service.LitemallProductService;
-import org.linlinjava.litemall.db.service.LitemallUserService;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +24,10 @@ public class DashbordController {
     private LitemallProductService productService;
     @Autowired
     private LitemallOrderService orderService;
+    @Autowired
+    private ArticleService articleService;
+    @Autowired
+    private WxFormidService wxFormidService;
 
     @GetMapping("")
     public Object info(@LoginAdmin Integer adminId){
@@ -35,14 +36,14 @@ public class DashbordController {
         }
 
         int userTotal = userService.count();
-        int goodsTotal = goodsService.count();
-        int productTotal = productService.count();
-        int orderTotal = orderService.count();
+        int articleTotal = articleService.countSelective("","",null,null,"","",1,null,null,"","");
+        int customArticleTotal = articleService.countSelective("","",null,1,"","",1,null,null,"","");
+        int formIdTotal = wxFormidService.count();
         Map<String, Integer> data = new HashMap<>();
         data.put("userTotal", userTotal);
-        data.put("goodsTotal", goodsTotal);
-        data.put("productTotal", productTotal);
-        data.put("orderTotal", orderTotal);
+        data.put("articleTotal", articleTotal);
+        data.put("customArticleTotal", customArticleTotal);
+        data.put("formIdTotal", formIdTotal);
 
         return ResponseUtil.ok(data);
     }
