@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.wx.web;
 
+import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
@@ -105,6 +106,17 @@ public class WxHomeController {
         data.put("banner", banner);
         //只查询书籍的商品列表
         List<LitemallGoods> goodsList = goodsService.queryByCategory(1036005, 0,20);
+        for(LitemallGoods goods:goodsList){
+            JSONArray gallery = JSONArray.parseArray(goods.getGallery());
+            if(gallery==null){
+                continue;
+            }
+            if(gallery.size()>0){
+                goods.setGallery(gallery.get(0).toString());
+            }else {
+                goods.setGallery("");
+            }
+        }
         data.put("goodsList", goodsList);
 
         //获取当前用户的积分
