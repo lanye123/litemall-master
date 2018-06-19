@@ -32,7 +32,7 @@ public class WxMessService {
 
     @Value("${mubaninfo.url}")
     private String muban_url;
-    //图文发布审核通过提醒
+    //审核通过提醒
     public JSONObject articleCheck(String url,String keyword1_str,String keyword2_str,String keyword3_str,String formId,Integer user_id){
         LitemallUser user=litemallUserService.findById(user_id);
         JSONObject result=null;
@@ -70,8 +70,7 @@ public class WxMessService {
 
 
 
-    //图文发布审核不通过提醒
-//新书上架提醒服务通知
+//审核未通过提醒
     public JSONObject articleCheckFail(String url,String keyword1_str,String keyword2_str,String formId,Integer user_id){
         LitemallUser user=litemallUserService.findById(user_id);
         JSONObject result=null;
@@ -106,7 +105,7 @@ public class WxMessService {
     }
 
     //中奖结果通知	奖品名称、截止日期、兑奖号、备注
-    public JSONObject articleCheckFail(String url,String keyword1_str,String keyword2_str,String keyword3_str,String keyword4_str,String formId,Integer user_id){
+    public JSONObject winNotice(String url,String keyword1_str,String keyword2_str,String keyword3_str,String keyword4_str,String formId,Integer user_id){
         LitemallUser user=litemallUserService.findById(user_id);
         JSONObject result=null;
         if(user!=null&&!StringUtils.isEmpty(user.getWeixinOpenid())){
@@ -116,7 +115,7 @@ public class WxMessService {
             JSONObject object=new JSONObject();
             JSONObject object2=new JSONObject();
             object.put("touser",user.getWeixinOpenid());
-            object.put("template_id","mUSbwdJRzoFOsdbbEF7hKTUfVuwE10_6UD1Ql9DxPVw");
+            object.put("template_id","qrT4CptDNE0dLHclsjWaqukwbyiKehP-LrWGqH_wWpM");
             if(!StringUtils.isEmpty(url))
                 object.put("page",url);
             if(!StringUtils.isEmpty(formId))
@@ -139,13 +138,14 @@ public class WxMessService {
                 WxMess m = new WxMess();
                 m.setUserId(user_id);
                 m.setReceptOpenId(user.getWeixinOpenid());
-                m.setContent(keyword1_str+","+keyword2_str+","+keyword3_str);
+                m.setContent(keyword1_str+","+keyword2_str+","+keyword3_str+","+keyword4_str);
                 wxMessMapper.insertSelective(m);
         }
         return result;
     }
 
     //新书上架提醒服务通知
+    //读书计划提醒
     public JSONObject articleNotice(String url,String keyword1_str,String keyword2_str,String formId,Integer user_id){
         LitemallUser user=litemallUserService.findById(user_id);
         JSONObject result=null;
@@ -256,5 +256,49 @@ public class WxMessService {
                 wxMessMapper.insertSelective(m);
         }
         return result;
+    }
+
+    public static void main(String[] args){
+        JSONObject result=null;
+        String request_url="https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=10_G6GBSmykOEq39PlMqhmte8djQIYAOi7nEeAOzDSKSsX9u_YFsw0_SjzS7VGa7zZ2s6N1Ip_YWh2UYrQNJFaN7tCECy5oI2uVCIDUMcYkNKPEj3IFFAmsw4N1YPMHmnzSU-b3iGfGLsLoZXR6UIXjAIAPDS";
+        JSONObject data=new JSONObject();
+        JSONObject object=new JSONObject();
+        JSONObject object2=new JSONObject();
+        object.put("touser","oYCtG45fpiSuMZiXzEn1pRdFBoJk");
+        object.put("template_id","MOWaYveLTKs3WWOdyp1hceTSNB7jIzaxEHk01RwNLzE");
+            object.put("page","pages/graphic/main");
+            object.put("form_id","4456adbdd50eee9dbbe2877bdc637bf2");
+        JSONObject keyword1 = new JSONObject();
+        keyword1.put("value","早上8点早客户CASIO办公室接2个客人到厂里做质检");
+        data.put("keyword1",keyword1);
+        JSONObject keyword2 = new JSONObject();
+        keyword2.put("value","2018-02-15 12:25:30");
+        data.put("keyword2",keyword2);
+        JSONObject keyword3 = new JSONObject();
+        keyword3.put("value","2017-05-04 12:30:30");
+        data.put("keyword3",keyword3);
+        object.put("data",data);
+        result = HttpClientUtil.doPost(request_url, object);
+        Integer errcode=Integer.parseInt(result.getString("errcode"));
+        switch (errcode){
+            case 0:
+                System.out.println("信息发送成功");
+                break;
+            case 40037:
+                System.out.println("template_id不正确");
+                break;
+            case 41028:
+                System.out.println("form_id不正确，或者过期");
+                break;
+            case 41029:
+                System.out.println("form_id已被使用");
+                break;
+            case 41030:
+                System.out.println("page不正确");
+                break;
+            case 45009:
+                System.out.println("接口调用超过限额（目前默认每个帐号日调用限额为100万）");
+                break;
+        }
     }
 }

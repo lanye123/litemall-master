@@ -47,13 +47,6 @@ public class OnlineTiming {
         }
         long end = System.currentTimeMillis();
         log.info("图文上线结束-------耗时："+(end-begin)+"ms");
-
-        log.info("定时清理过期formid开始......"+new Date());
-        List<WxFormid> formidList=wxFormidService.queryByStatus(1);
-        for(WxFormid formid:formidList){
-            wxFormidService.delete(formid.getId());
-        }
-        log.info("定时清理过期formid结束"+new Date());
     }
 
     public static void main(String[] args){

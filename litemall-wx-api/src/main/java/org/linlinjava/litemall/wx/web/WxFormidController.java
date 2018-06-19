@@ -22,12 +22,4 @@ public class WxFormidController {
         wxFormidService.add(formid);
         return ResponseUtil.ok(formid);
     };
-
-
-    public void delete(){
-        List<WxFormid> formidList=wxFormidService.queryByStatus(1);
-        for(WxFormid formid:formidList){
-            wxFormidService.delete(formid.getId());
-        }
-    }
 }

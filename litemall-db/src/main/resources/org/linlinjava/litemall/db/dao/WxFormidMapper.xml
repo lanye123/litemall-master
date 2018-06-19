@@ -6,6 +6,7 @@
     <result column="form_id" jdbcType="VARCHAR" property="formId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, form_id, `status`, create_date
+    id, form_id, `status`, create_date ,openid
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.WxFormidExample" resultMap="BaseResultMap">
     select
@@ -110,11 +111,11 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from wx_formid
-    where status = #{status,jdbcType=INTEGER}
+    <![CDATA[where DATE_SUB(NOW(), INTERVAL 7 DAY)<=create_date]]> and status=0 and openid = #{openid,jdbcType=VARCHAR}
   </select>
 
   <select id="selectByPrimaryKeySelective" parameterType="map" resultMap="BaseResultMap">
@@ -144,9 +145,9 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into wx_formid (form_id, `status`, create_date
+    insert into wx_formid (form_id, `status`, create_date,openid
       )
-    values (#{formId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}
+    values (#{formId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{openid,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.WxFormid">
@@ -164,6 +165,9 @@
       <if test="createDate != null">
         create_date,
       </if>
+      <if test="openid != null">
+        openid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="formId != null">
@@ -174,6 +178,9 @@
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -198,6 +205,9 @@
       <if test="record.createDate != null">
         create_date = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.openid != null">
+        openid = #{record.openid,jdbcType=VARCHAR}
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -208,7 +218,8 @@
     set id = #{record.id,jdbcType=INTEGER},
       form_id = #{record.formId,jdbcType=VARCHAR},
       `status` = #{record.status,jdbcType=INTEGER},
-      create_date = #{record.createDate,jdbcType=TIMESTAMP}
+       create_date = #{record.createDate,jdbcType=TIMESTAMP},
+       openid = #{record.openid,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -225,6 +236,9 @@
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
+      <if test="openid != null">
+        openid = #{openid,jdbcType=VARCHAR}
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -232,7 +246,8 @@
     update wx_formid
     set form_id = #{formId,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP}
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      openid = #{openid,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.WxFormidExample" resultMap="BaseResultMap">

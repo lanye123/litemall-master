@@ -21,10 +21,8 @@ public class WxFormidService {
         wxFormidMapper.deleteByPrimaryKey(id);
     }
 
-    public List<WxFormid> queryByStatus(int i) {
-        WxFormidExample example=new WxFormidExample();
-        example.or().andStatusEqualTo(i);
-        return wxFormidMapper.selectByExampleSelective(example);
+    public List<WxFormid> queryByStatus(String openid) {
+        return wxFormidMapper.selectByStatus(openid);
     }
 
 
@@ -33,5 +31,16 @@ public class WxFormidService {
         example.or().andStatusEqualTo(0);
 
         return (int)wxFormidMapper.countByExample(example);
+    }
+
+    /*public void update(Integer id) {
+        WxFormid formid=new WxFormid();
+        formid.setStatus(1);
+        formid.setId(id);
+        wxFormidMapper.updateByPrimaryKey(formid);
+    }*/
+
+    public void update(WxFormid formid) {
+        wxFormidMapper.updateByPrimaryKey(formid);
     }
 }

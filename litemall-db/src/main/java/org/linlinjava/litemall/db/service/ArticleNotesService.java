@@ -44,7 +44,7 @@ public class ArticleNotesService {
             criteria.andContentLike("%" + content + "%");
         }
         if(!StringUtils.isEmpty(order)){
-            criteria.example().setOrderByClause(order+" desc");
+            criteria.example().setOrderByClause(order);
         }
         if(!StringUtils.isEmpty(articleId)){
             criteria.andArtileIdEqualTo(articleId);

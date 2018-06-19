@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.DateUtils;
 import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,8 @@ public class ArticleController {
     private PraiseService praiseService;
     @Autowired
     private WxFormidService wxFormidService;
+    @Autowired
+    private ArticleNotesService articleNotesService;
 
     @Value("${miniprogram.appid}")
     private String appid;
@@ -57,6 +60,8 @@ public class ArticleController {
     private String article_url;
     @Value("${web.upload-path}")
     private String webUploadPath;
+    @Value("${articledetail.url}")
+    private String articleurl;
 
     @GetMapping("/list")
     public Object list(String title,String author,Integer articleId,Integer categoryId,String flag,Integer status,
@@ -123,18 +128,22 @@ public class ArticleController {
         articleService.updateById(article);
         if(StringUtils.isNotEmpty(article.getCodeUrl()))
             saveCode(article);
+        Article a=articleService.findById(article.getArticleId());
         //审核不通过通知
-        if(article.getStatus()==2&&article.getUser_id()!=null)
+        if(article.getStatus()==2&&a.getUserId()!=null)
         {
-            List<WxFormid> list=wxFormidService.queryByStatus(0);
-            if(list.size()>0) {
-                String formid = list.get(0).getFormId();
-                wxMessService.articleCheckFail("pages/graphic/main", "图文发布规则：\n" +
-                        "1：发布图片需为横图，无水印且美观清晰。\n" +
-                        "2：发布内容正向积极，不得违反互联网发布内容规范。\n" +
-                        "3：用户发布优秀图文，则被官方审核通过并推荐展现。", DateUtils.getLongDateStr(), formid, article.getUser_id());
-                wxFormidService.update(formid);
-                 }
+            LitemallUser user=litemallUserService.findById(a.getUserId());
+            if(StringUtils.isNotEmpty(user.getWeixinOpenid())){
+                List<WxFormid> list=wxFormidService.queryByStatus(user.getWeixinOpenid());
+                if(list.size()>0){
+                    WxFormid form=list.get(0);
+                    wxMessService.articleCheckFail(null,"1：发布图片需为横图，无水印且美观清晰。\n" +
+                            "2：发布内容正向积极，不得违反互联网发布内容规范。\n" +
+                            "3：用户发布优秀图文，则被官方审核通过并推荐展现。",DateUtils.currentTime(),form.getFormId(),a.getUserId());
+                    form.setStatus(1);//formid状态更新为已使用
+                    wxFormidService.update(form);
+                }
+            }
 
         }
         return ResponseUtil.ok();
@@ -155,22 +164,40 @@ public class ArticleController {
             articleService.updateById(articleDb);
             //小程序上线提醒
             //by leiqiang
-            String url=article_url.replace("ARTICLEID",Integer.toString(article.getArticleId()));
-            List<WxFormid> list=wxFormidService.queryByStatus(0);
-            if(list.size()>0){
-                Article a=articleService.findById(article.getArticleId());
-                String formid=list.get(0).getFormId();
-                if(a.getUserId()!=null){
-                    //图文发布审核通过通知
-                    wxMessService.articleCheck(url,article.getDaodu(),article.getCreateDate(),article.getUpdateDate(),formid,a.getUserId());
-                }else{
-                    List<LitemallUser> userList=litemallUserService.queryAll();
-                    for(LitemallUser users:userList){
-                        //新书上架通知
-                        wxMessService.articleNotice(url,article.getTitle(),article.getTitle()+"新书上架啦！"+article.getDaodu(),formid,users.getId());
+            String url="";
+            Article a=articleService.findById(article.getArticleId());
+            //图文发布审核通过通知
+            if(a.getUserId()!=null){
+                url=article_url.replace("ARTICLEID",Integer.toString(article.getArticleId()));
+                LitemallUser user=litemallUserService.findById(a.getUserId());
+                if(StringUtils.isNotEmpty(user.getWeixinOpenid())){
+                    List<WxFormid> list=wxFormidService.queryByStatus(user.getWeixinOpenid());
+                    if(list.size()>0){
+                        WxFormid form=list.get(0);
+                        wxMessService.articleCheck(url,a.getDaodu(),a.getCreateDate(),DateUtils.currentTime(),form.getFormId(),a.getUserId());
+                        form.setStatus(1);//formid状态更新为已使用
+                        wxFormidService.update(form);
                     }
                 }
-                wxFormidService.update(formid);
+            }else
+            {
+                List<ArticleNotes> notesList=articleNotesService.querySelective(null,null,null,null,null,article.getArticleId(),1,20,null,"sort_no asc");
+                if(notesList.size()>0){
+                    ArticleNotes notes=notesList.get(0);
+                    url=articleurl.replace("ARTICLEID",Integer.toString(notes.getArtileId())).replace("NOTESID",Integer.toString(notes.getId())).replace("NAME",notes.getName());
+                    //新书上架通知
+                    List<LitemallUser> userList=litemallUserService.queryAll();
+                    for(LitemallUser users:userList){
+                        List<WxFormid> list=wxFormidService.queryByStatus(users.getWeixinOpenid());
+                        if(list.size()>0){
+                            WxFormid form=list.get(0);
+                            wxMessService.articleNotice(url,a.getTitle(),"新书上架啦！"+a.getDaodu(),form.getFormId(),users.getId());
+                            form.setStatus(1);//formid状态更新为已使用
+                            wxFormidService.update(form);
+                        }
+
+                    }
+                }
             }
 
         }else if(articleDb.getStatus()==1){
@@ -309,4 +336,8 @@ public class ArticleController {
         }
         return ResponseUtil.ok(article);
     }
+
+    /*public static void main(String[] args){
+        wxMessService.articleCheck("pages/graphic/main","早上8点早客户CASIO办公室接2个客人到厂里做质检","2018-02-15 12:25:30","2017-05-04 12:30:30","1529055473776",6);
+    }*/
 }

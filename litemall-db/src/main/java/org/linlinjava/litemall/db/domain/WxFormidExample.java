@@ -196,6 +196,21 @@ public class WxFormidExample {
             return (Criteria) this;
         }
 
+        public Criteria andOpenidEqualTo(String value) {
+            addCriterion("openid =", value, "openid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenidNotEqualTo(String value) {
+            addCriterion("openid <>", value, "openid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOpenidIsNotNull() {
+            addCriterion("openid is not null");
+            return (Criteria) this;
+        }
+
         public Criteria andFormIdIsNull() {
             addCriterion("form_id is null");
             return (Criteria) this;

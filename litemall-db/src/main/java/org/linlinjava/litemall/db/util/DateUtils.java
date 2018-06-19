@@ -1141,7 +1141,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return String
      */
     public static String currentTime() {
-        return formatDate(new Date(), "yyyyMMddhhmmssSSS");
+        return formatDate(new Date(), "yyyy-MM-dd HH:mm:ss");
     }
 
     /**
