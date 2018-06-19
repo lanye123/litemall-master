@@ -25,6 +25,9 @@ public class ArticleService {
     private NotesService notesService;
     @Resource
     private ArticleCommentService articleCommentService;
+    @Resource
+    private NotesTempService notesTempService;
+
     private static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 /**
     *@Author:LeiQiang
@@ -339,15 +342,25 @@ public class ArticleService {
 
     public void deleteById(Integer articleId) {
         articleMapper.deleteByPrimaryKey(articleId);
-        //删除相关信息
+        //删除书籍评论及评论通知
         List<ArticleComment> articleCommentList = articleCommentService.query(articleId,null,null,null,null,null,null,null,null);
         for(ArticleComment articleComment:articleCommentList){
-            List<Notes> notesList = notesService.querySelective(null,null,null,null,articleComment.getId(),null,null,null,null,null);
-            for(Notes notes:notesList){
-                notesService.deleteById(notes.getId());
-            }
+            articleCommentService.deleteById(articleComment.getId());
         }
         this.sycArticle(articleId);
+        //删除书籍通知
+        List<NotesTemp> notesTemps = notesTempService.querySelective("newbook","",null,"",null,null,"","");
+        if(notesTemps==null || notesTemps.size()==0){
+            return;
+        }
+        NotesTemp notesTemp = notesTemps.get(0);
+        List<Notes> notesList = notesService.querySelective(notesTemp.getId(),notesTemp.getType(),null,null,articleId,null,null,null,"","");
+        if(notesList==null || notesList.size()==0){
+            return;
+        }
+        for(Notes notes:notesList){
+            notesService.deleteById(notes.getId());
+        }
     }
 
     public void updateById(Article article) {

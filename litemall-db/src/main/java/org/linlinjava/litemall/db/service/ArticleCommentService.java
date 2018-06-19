@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.ArticleCommentMapper;
 import org.linlinjava.litemall.db.domain.ArticleComment;
 import org.linlinjava.litemall.db.domain.ArticleCommentExample;
+import org.linlinjava.litemall.db.domain.Notes;
+import org.linlinjava.litemall.db.domain.NotesTemp;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -14,6 +16,10 @@ import java.util.List;
 public class ArticleCommentService {
     @Resource
     private ArticleCommentMapper articleCommentMapper;
+    @Resource
+    private NotesService notesService;
+    @Resource
+    private NotesTempService notesTempService;
 
     /**
      * @autor by leiqiang
@@ -105,6 +111,18 @@ public class ArticleCommentService {
 
     public void deleteById(Integer id) {
         articleCommentMapper.deleteByPrimaryKey(id);
+        List<NotesTemp> notesTemps = notesTempService.querySelective("reply","",null,"",null,null,"","");
+        if(notesTemps==null || notesTemps.size()==0){
+            return;
+        }
+        NotesTemp notesTemp = notesTemps.get(0);
+        List<Notes> notesList = notesService.querySelective(notesTemp.getId(),1,null,null,id,null,null,null,"","");
+        if(notesList==null || notesList.size()==0){
+            return;
+        }
+        for(Notes notes:notesList){
+            notesService.deleteById(notes.getId());
+        }
     }
 
     public void update(ArticleComment articleComment) {
