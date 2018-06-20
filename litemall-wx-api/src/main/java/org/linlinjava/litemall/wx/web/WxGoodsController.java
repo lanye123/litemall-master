@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +53,10 @@ public class WxGoodsController {
     private LitemallCartService cartService;
     @Autowired
     private LitemallGoodsSpecificationService goodsSpecificationService;
+    @Autowired
+    private CollageDetailService collageDetailService;
+    @Autowired
+    private LitemallAdService litemallAdService;
 
     /**
      * 商品详情
@@ -405,7 +408,13 @@ public class WxGoodsController {
         // 商品问题，这里是一些通用问题
         //List<LitemallIssue> issue = goodsIssueService.query();
 
+        int groupCount = collageDetailService.count(null,null,id);
+
+        List<LitemallAd> adList = litemallAdService.querySelective("","",null,null,"","");
+
         Map<String, Object> data = new HashMap<>();
+        data.put("groupCount", groupCount);
+        data.put("adList", adList);
         data.put("info", info);
         data.put("issue", info.getContent());
         data.put("specificationList", specificationList);

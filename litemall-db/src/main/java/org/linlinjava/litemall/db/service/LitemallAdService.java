@@ -33,7 +33,9 @@ public class LitemallAdService {
         }
         criteria.andDeletedEqualTo(false);
 
-        PageHelper.startPage(page, limit);
+        if(page!=null && limit!=null){
+            PageHelper.startPage(page, limit);
+        }
         return adMapper.selectByExample(example);
     }
 

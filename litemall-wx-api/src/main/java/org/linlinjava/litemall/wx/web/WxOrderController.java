@@ -186,6 +186,47 @@ public class WxOrderController {
             return ResponseUtil.fail402();
         }
 
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> orderVo = new HashMap<String, Object>();
+        //查出该笔订单的拼团信息
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(orderId,null,null,null,null,"","");
+        List<CollageDetail> collageDetailList2 = collageDetailService.queryById(orderId);
+        List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
+        Map<String, Object> userVo;
+        LitemallUser user;
+        for (CollageDetail collageDetail : collageDetailList) {
+            if(userId == collageDetail.getUserId()){
+                orderVo.put("sno",collageDetail.getSno());
+                orderVo.put("groupTime", collageDetail.getCreateDate());
+            }
+            userVo = new HashMap<>();
+            user = litemallUserService.findById(collageDetail.getUserId());
+            if(user == null){
+                continue;
+            }
+            userVo.put("id", user.getId());
+            userVo.put("nickName", user.getNickname());
+            userVo.put("avatar", user.getAvatar());
+            userVo.put("master", collageDetail.getPid());
+            userVoList.add(userVo);
+        }
+        for (CollageDetail collageDetail : collageDetailList2) {
+            if(userId == collageDetail.getUserId()){
+                orderVo.put("sno",collageDetail.getSno());
+                orderVo.put("groupTime", collageDetail.getCreateDate());
+            }
+            userVo = new HashMap<>();
+            user = litemallUserService.findById(collageDetail.getUserId());
+            if(user == null){
+                continue;
+            }
+            userVo.put("id", user.getId());
+            userVo.put("avatar", user.getAvatar());
+            userVo.put("nickName", user.getNickname());
+            userVo.put("master", collageDetail.getPid());
+            userVoList.add(userVo);
+        }
+
         // 订单信息
         LitemallOrder order = orderService.findById(orderId);
         if (null == order) {
@@ -194,7 +235,8 @@ public class WxOrderController {
         if (!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(403, "不是当前用户的订单");
         }
-        Map<String, Object> orderVo = new HashMap<String, Object>();
+        orderVo.put("createTime", order.getAddTime());
+
         orderVo.put("id", order.getId());
         orderVo.put("orderSn", order.getOrderSn());
         orderVo.put("addTime", LocalDate.now());
@@ -226,9 +268,10 @@ public class WxOrderController {
             orderGoodsVoList.add(orderGoodsVo);
         }
 
-        Map<String, Object> result = new HashMap<>();
         result.put("orderInfo", orderVo);
+        result.put("userVoList", userVoList);
         result.put("orderGoods", orderGoodsVoList);
+//        result.put("collageDetailList", collageDetailList);
         return ResponseUtil.ok(result);
 
     }
