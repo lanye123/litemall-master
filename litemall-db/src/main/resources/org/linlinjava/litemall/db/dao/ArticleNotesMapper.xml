@@ -19,6 +19,7 @@
     <result column="read_count" jdbcType="INTEGER" property="readCount" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="code_url" jdbcType="VARCHAR" property="code_url" />
+    <result column="share_count" jdbcType="INTEGER" property="shareCount" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.linlinjava.litemall.db.domain.ArticleNotes">
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
@@ -83,7 +84,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, artile_id, `name`, `no`, create_date, sort_no, `status`, brief, article_name, 
-    daodu, author, photo_url, photo_name, render, read_count,content,code_url
+    daodu, author, photo_url, photo_name, render, read_count,content,code_url,share_count
   </sql>
   <sql id="Blob_Column_List">
     content
@@ -178,12 +179,12 @@
       create_date, sort_no, `status`, 
       brief, article_name, daodu, 
       author, photo_url, photo_name, 
-      render, content, read_count,code_url)
+      render, content, read_count,code_url,share_count)
     values (#{artileId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{no,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{sortNo,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, 
       #{brief,jdbcType=VARCHAR}, #{articleName,jdbcType=VARCHAR}, #{daodu,jdbcType=VARCHAR}, 
       #{author,jdbcType=VARCHAR}, #{photoUrl,jdbcType=VARCHAR}, #{photoName,jdbcType=VARCHAR}, 
-      #{render,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{readCount,jdbcType=INTEGER},#{code_url,jdbcType=VARCHAR})
+      #{render,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR}, #{readCount,jdbcType=INTEGER},#{code_url,jdbcType=VARCHAR}, #{shareCount,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.ArticleNotes">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -239,6 +240,9 @@
       <if test="code_url != null">
         code_url
       </if>
+      <if test="shareCount != null">
+        share_count
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="artileId != null">
@@ -287,7 +291,10 @@
         #{readCount,jdbcType=INTEGER},
       </if>
       <if test="code_url != null">
-        #{code_url,jdbcType=VARCHAR}
+        #{code_url,jdbcType=VARCHAR},
+      </if>
+      <if test="shareCount != null">
+        #{shareCount,jdbcType=INTEGER}
       </if>
     </trim>
   </insert>
@@ -346,10 +353,13 @@
         content = #{record.content,jdbcType=LONGVARCHAR},
       </if>
       <if test="record.readCount != null">
-        content = #{record.readCount,jdbcType=INTEGER},
+        read_count = #{record.readCount,jdbcType=INTEGER},
       </if>
       <if test="record.code_url != null">
-        content = #{record.code_url,jdbcType=VARCHAR}
+        code_url = #{record.code_url,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shareCount != null">
+        share_count = #{record.shareCount,jdbcType=INTEGER}
       </if>
     </set>
     <if test="_parameter != null">
@@ -373,7 +383,8 @@
       photo_name = #{record.photoName,jdbcType=VARCHAR},
       render = #{record.render,jdbcType=INTEGER},
       content = #{record.content,jdbcType=LONGVARCHAR},
-      read_count = #{record.readCount,jdbcType=INTEGER}
+      read_count = #{record.readCount,jdbcType=INTEGER},
+      share_count = #{record.shareCount,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -396,6 +407,7 @@
       render = #{record.render,jdbcType=INTEGER},
       read_count = #{record.readCount,jdbcType=INTEGER}
       code_url = #{record.code_url,jdbcType=VARCHAR},
+      share_count = #{record.shareCount,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -451,6 +463,9 @@
       <if test="code_url != null">
         code_url = #{code_url,jdbcType=VARCHAR},
       </if>
+      <if test="shareCount != null">
+        share_count = #{shareCount,jdbcType=INTEGER}
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -470,7 +485,8 @@
       photo_name = #{photoName,jdbcType=VARCHAR},
       render = #{render,jdbcType=INTEGER},
       content = #{content,jdbcType=LONGVARCHAR},
-      read_count = #{readCount,jdbcType=INTEGER}
+      read_count = #{readCount,jdbcType=INTEGER},
+      share_count = #{shareCount,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.ArticleNotes">
@@ -489,7 +505,8 @@
       photo_name = #{photoName,jdbcType=VARCHAR},
       render = #{render,jdbcType=INTEGER},
       read_count = #{readCount,jdbcType=INTEGER},
-      code_url = #{code_url,jdbcType=VARCHAR}
+      code_url = #{code_url,jdbcType=VARCHAR},
+      share_count = #{shareCount,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleNotesExample" resultMap="BaseResultMap">

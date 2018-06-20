@@ -4,10 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
-import org.linlinjava.litemall.db.util.JacksonUtil;
-import org.linlinjava.litemall.db.util.OrderHandleOption;
-import org.linlinjava.litemall.db.util.OrderUtil;
-import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.linlinjava.litemall.db.util.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -188,6 +185,66 @@ public class WxOrderController {
             return ResponseUtil.fail402();
         }
 
+        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> orderVo = new HashMap<String, Object>();
+        //查出该笔订单的拼团信息
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(orderId,null,null,null,null,"","create_date");
+        List<CollageDetail> collageDetailList2 = collageDetailService.queryById(orderId);
+
+        List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
+        Map<String, Object> userVo;
+        LitemallUser user;
+        Integer goodsId = null;
+        for (CollageDetail collageDetail : collageDetailList) {
+            if(userId == collageDetail.getUserId()){
+                orderVo.put("sno",collageDetail.getSno());
+                if(collageDetail.getCreateDate().contains(".0")){
+                    collageDetail.setCreateDate(collageDetail.getCreateDate().substring(0,collageDetail.getCreateDate().length()-2));
+                }
+                orderVo.put("groupTime", collageDetail.getCreateDate());
+            }
+            userVo = new HashMap<>();
+            user = litemallUserService.findById(collageDetail.getUserId());
+            if(user == null){
+                continue;
+            }
+            userVo.put("id", user.getId());
+            userVo.put("nickName", user.getNickname());
+            userVo.put("avatar", user.getAvatar());
+            if(collageDetail.getPid()==null){
+                userVo.put("master", 0);
+                goodsId = collageDetail.getGoodsId();
+            }else{
+                userVo.put("master", 1);
+            }
+            userVoList.add(userVo);
+        }
+        for (CollageDetail collageDetail : collageDetailList2) {
+            if(userId == collageDetail.getUserId()){
+                orderVo.put("sno",collageDetail.getSno());
+                if(collageDetail.getCreateDate().contains(".0")){
+                    collageDetail.setCreateDate(collageDetail.getCreateDate().substring(0,collageDetail.getCreateDate().length()-2));
+                }
+                orderVo.put("groupTime", collageDetail.getCreateDate());
+            }
+            userVo = new HashMap<>();
+            user = litemallUserService.findById(collageDetail.getUserId());
+            if(user == null){
+                continue;
+            }
+            userVo.put("id", user.getId());
+            userVo.put("avatar", user.getAvatar());
+            userVo.put("nickName", user.getNickname());
+            if(collageDetail.getPid()==null){
+                userVo.put("master", 0);
+                goodsId = collageDetail.getGoodsId();
+            }else{
+                userVo.put("master", 1);
+            }
+            userVoList.add(userVo);
+        }
+
+        LitemallGoods goods2 = goodsService.findById(goodsId);
         // 订单信息
         LitemallOrder order = orderService.findById(orderId);
         if (null == order) {
@@ -196,7 +253,11 @@ public class WxOrderController {
         if (!order.getUserId().equals(userId)) {
             return ResponseUtil.fail(403, "不是当前用户的订单");
         }
-        Map<String, Object> orderVo = new HashMap<String, Object>();
+        if(order.getAddTime().contains(".0")){
+            order.setAddTime(order.getAddTime().substring(0,order.getAddTime().length()-2));
+        }
+        orderVo.put("createTime", order.getAddTime());
+
         orderVo.put("id", order.getId());
         orderVo.put("orderSn", order.getOrderSn());
         orderVo.put("addTime", LocalDate.now());
@@ -228,9 +289,13 @@ public class WxOrderController {
             orderGoodsVoList.add(orderGoodsVo);
         }
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("orderInfo", orderVo);
+        if(goods2!=null){
+            result.put("count", goods2.getPersonNum());
+        }
+        result.put("userVoList", userVoList);
         result.put("orderGoods", orderGoodsVoList);
+        result.put("orderInfo", orderVo);
+//        result.put("collageDetailList", collageDetailList);
         return ResponseUtil.ok(result);
 
     }
@@ -304,7 +369,7 @@ public class WxOrderController {
         LitemallOrder order = new LitemallOrder();
         order.setUserId(userId);
         order.setOrderSn(orderService.generateOrderSn(userId));
-        order.setAddTime(LocalDateTime.now());
+        order.setAddTime(DateUtils.formatTimestamp.format(new Date()));
         order.setOrderStatus(OrderUtil.STATUS_CREATE);
         order.setConsignee(checkedAddress.getName());
         order.setMobile(checkedAddress.getMobile());
@@ -866,7 +931,7 @@ public class WxOrderController {
         LitemallOrder order = new LitemallOrder();
         order.setUserId(userId);
         order.setOrderSn(orderService.generateOrderSn(userId));
-        order.setAddTime(LocalDateTime.now());
+        order.setAddTime(DateUtils.formatTimestamp.format(new Date()));
         order.setOrderStatus(OrderUtil.STATUS_CREATE);
         order.setConsignee(checkedAddress.getName());
         order.setMobile(checkedAddress.getMobile());
