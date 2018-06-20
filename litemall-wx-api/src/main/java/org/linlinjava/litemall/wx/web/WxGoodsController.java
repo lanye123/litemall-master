@@ -83,7 +83,7 @@ public class WxGoodsController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("detail")
-    public Object detail(@LoginUser Integer userId, Integer id) {
+    public Object detail(Integer userId,Integer id) {
         if(id == null){
             return ResponseUtil.badArgument();
         }
@@ -102,7 +102,7 @@ public class WxGoodsController {
         List<LitemallProduct> productList = productService.queryByGid(id);
 
         // 商品问题，这里是一些通用问题
-        List<LitemallIssue> issue = goodsIssueService.query();
+        /*List<LitemallIssue> issue = goodsIssueService.query();
 
         // 商品品牌商
         LitemallBrand brand = brandService.findById(info.getBrandId());
@@ -139,17 +139,17 @@ public class WxGoodsController {
             footprint.setUserId(userId);
             footprint.setGoodsId(id);
             footprintService.add(footprint);
-        }
+        }*/
 
         Map<String, Object> data = new HashMap<>();
         data.put("info", info);
-        data.put("userHasCollect", userHasCollect);
-        data.put("issue", issue);
-        data.put("comment", commentList);
+        //data.put("userHasCollect", userHasCollect);
+        //data.put("issue", issue);
+        //data.put("comment", commentList);
         data.put("specificationList", specificationList);
         data.put("productList", productList);
         data.put("attribute", goodsAttributeList);
-        data.put("brand", brand);
+        //data.put("brand", brand);
 
         return ResponseUtil.ok(data);
     }

@@ -66,6 +66,8 @@ public class WxOrderController {
     private CollageDetailService collageDetailService;
     @Autowired
     private LitemallUserService litemallUserService;
+    @Autowired
+    private IntegretionDetailService integretionDetailService;
 
     public WxOrderController() {
     }
@@ -805,17 +807,15 @@ public class WxOrderController {
 
 
     @PostMapping("collageSubmit")
-    public Object collageSubmit(Integer userId, @RequestBody String body) {
-        if (userId == null) {
-            return ResponseUtil.unlogin();
-        }
+    public Object collageSubmit(@RequestBody String body) {
         if (body == null) {
             return ResponseUtil.badArgument();
         }
         Integer cartId = JacksonUtil.parseInteger(body, "cartId");
         Integer addressId = JacksonUtil.parseInteger(body, "addressId");
-        Integer type = JacksonUtil.parseInteger(body, "type");
         Integer pid=JacksonUtil.parseInteger(body, "pid");//团长为空团员为pid
+        Integer userId = JacksonUtil.parseInteger(body, "userId");
+
         if (cartId == null || addressId == null) {
             return ResponseUtil.badArgument();
         }
@@ -827,9 +827,10 @@ public class WxOrderController {
 
         // 获取可用的优惠券信息
         // 使用优惠券减免的金额
-        BigDecimal couponPrice = new BigDecimal(0.00);
+        //BigDecimal couponPrice = new BigDecimal(0.00);
 
         // 货品价格
+        BigDecimal actualPrice=null;
         List<LitemallCart> checkedGoodsList = null;
         if (cartId.equals(0)) {
             checkedGoodsList = cartService.queryByUidAndChecked(userId);
@@ -837,11 +838,12 @@ public class WxOrderController {
             LitemallCart cart = cartService.findById(cartId);
             checkedGoodsList = new ArrayList<>(1);
             checkedGoodsList.add(cart);
+            actualPrice=cart.getRetailPrice();
         }
         if (checkedGoodsList.size() == 0) {
             return ResponseUtil.badArgumentValue();
         }
-        BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
+        /*BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart checkGoods : checkedGoodsList) {
             checkedGoodsPrice = checkedGoodsPrice.add(checkGoods.getRetailPrice().multiply(new BigDecimal(checkGoods.getNumber())));
         }
@@ -858,7 +860,7 @@ public class WxOrderController {
 
         // 订单费用
         BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
-        BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
+        BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);*/
 
         // 订单
         LitemallOrder order = new LitemallOrder();
@@ -870,11 +872,11 @@ public class WxOrderController {
         order.setMobile(checkedAddress.getMobile());
         String detailedAddress = detailedAddress(checkedAddress);
         order.setAddress(detailedAddress);
-        order.setGoodsPrice(checkedGoodsPrice);
+        /*order.setGoodsPrice(checkedGoodsPrice);
         order.setFreightPrice(freightPrice);
         order.setCouponPrice(couponPrice);
         order.setIntegralPrice(integralPrice);
-        order.setOrderPrice(orderTotalPrice);
+        order.setOrderPrice(orderTotalPrice);*/
         order.setActualPrice(actualPrice);
         order.setOrder_type(1);//拼团单
         //拼团流水
@@ -909,6 +911,14 @@ public class WxOrderController {
                 detail.setFlag(1);//拼团团长标识
         }
 
+        //订单提交积分扣除
+        IntegretionDetail integretion=new IntegretionDetail();
+        integretion.setUserId(String.valueOf(userId));
+        integretion.setAmount(-actualPrice.intValue());
+        integretion.setStatus((byte) 0);
+        integretion.setType((byte) 20);//20代表扣除否则都为添加积分
+
+
         // 开启事务管理
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -940,6 +950,9 @@ public class WxOrderController {
 
             //保存拼团流水表
             collageDetailService.add(detail);
+
+            //保存积分拼团扣除记录
+            integretionDetailService.add(integretion);
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);

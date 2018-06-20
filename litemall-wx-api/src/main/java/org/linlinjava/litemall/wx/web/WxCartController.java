@@ -238,7 +238,7 @@ public class WxCartController {
             cart.setGoodsSn(goods.getGoodsSn());
             cart.setGoodsName((goods.getName()));
             cart.setPicUrl(goods.getPrimaryPicUrl());
-            cart.setRetailPrice(product.getRetailPrice());
+            cart.setRetailPrice(new BigDecimal(goods.getIntegretion()));
             cart.setGoodsSpecificationIds(product.getGoodsSpecificationIds());
             cart.setGoodsSpecificationValues(goodsSpecificationValue);
             cart.setUserId(userId);
@@ -450,7 +450,7 @@ public class WxCartController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @GetMapping("checkout")
-    public Object checkout(Integer userId, Integer cartId, Integer addressId) {
+    public Object checkout(Integer userId, Integer cartId, Integer addressId,Integer pid) {
         if(userId == null){
             return ResponseUtil.unlogin();
         }
@@ -481,9 +481,10 @@ public class WxCartController {
 
         // 获取可用的优惠券信息
         // 使用优惠券减免的金额
-        BigDecimal couponPrice = new BigDecimal(0.00);
+        //BigDecimal couponPrice = new BigDecimal(0.00);
 
         // 商品价格
+        Integer actualPrice= null;
         List<LitemallCart> checkedGoodsList = null;
         if(cartId == null || cartId.equals(0)) {
             checkedGoodsList = cartService.queryByUidAndChecked(userId);
@@ -493,10 +494,11 @@ public class WxCartController {
             if (cart == null){
                 return ResponseUtil.badArgumentValue();
             }
+            actualPrice=cart.getRetailPrice().intValue();//BigDecimal转换成Integer
             checkedGoodsList = new ArrayList<>(1);
             checkedGoodsList.add(cart);
         }
-        BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
+        /*BigDecimal checkedGoodsPrice = new BigDecimal(0.00);
         for (LitemallCart cart : checkedGoodsList) {
             checkedGoodsPrice = checkedGoodsPrice.add(cart.getRetailPrice().multiply(new BigDecimal(cart.getNumber())));
         }
@@ -512,17 +514,18 @@ public class WxCartController {
 
         // 订单费用
         BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
-        BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);
+        BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);*/
 
         Map<String, Object> data = new HashMap();
         data.put("addressId", addressId);
         data.put("checkedAddress", checkedAddress);
-        data.put("checkedCoupon", 0);
-        data.put("goodsTotalPrice", checkedGoodsPrice);
-        data.put("freightPrice", freightPrice);
-        data.put("couponPrice", couponPrice);
-        data.put("orderTotalPrice", orderTotalPrice);
+        //data.put("checkedCoupon", 0);
+        //data.put("goodsTotalPrice", checkedGoodsPrice);
+        //data.put("freightPrice", freightPrice);
+        //data.put("couponPrice", couponPrice);
+        //data.put("orderTotalPrice", orderTotalPrice);
         data.put("actualPrice", actualPrice);
+        data.put("pid",pid);
         data.put("checkedGoodsList", checkedGoodsList);
         return ResponseUtil.ok(data);
     }
