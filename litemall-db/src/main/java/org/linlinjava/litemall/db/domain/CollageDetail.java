@@ -15,7 +15,7 @@ public class CollageDetail {
 
     private Integer status;
 
-    private Date createDate;
+    private String createDate;
 
     private Date joinDate;
 
@@ -75,11 +75,11 @@ public class CollageDetail {
         this.status = status;
     }
 
-    public Date getCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 

@@ -1,10 +1,13 @@
 package org.linlinjava.litemall.wx.web;
 
+import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
 import org.linlinjava.litemall.db.service.ArticleNotesService;
+import org.linlinjava.litemall.db.service.ArticleService;
 import org.linlinjava.litemall.db.service.MedalDetailsService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +22,8 @@ public class ArticleNotesController {
     private ArticleNotesService articleNotesService;
     @Autowired
     private MedalDetailsService medalDetailsService;
+    @Autowired
+    private ArticleService articleService;
 
     @RequestMapping("detail")
     public Object detail(@RequestParam Integer notesId,@RequestParam Integer articleId,Integer userId,Integer isCount){
@@ -55,5 +60,27 @@ public class ArticleNotesController {
             }
             data.put("readCount",notes.getReadCount());
             return ResponseUtil.ok(data);
+    }
+
+    /**
+     * @author lanye
+     * @Description 更新分享次数
+     * @Date 2018/6/20 16:02
+     * @Param [articleId]
+     * @return java.lang.Object
+     **/
+    @PostMapping("/share")
+    public Object share(Integer id){
+        ArticleNotes articleNotes = articleNotesService.findByID(id);
+        if(articleNotes!=null){
+            articleNotes.setShareCount(articleNotes.getShareCount()+1);
+            articleNotesService.update(articleNotes);
+            Article article = articleService.findById(articleNotes.getArtileId());
+            if(article!=null){
+                article.setShareCount(article.getShareCount()+1);
+                articleService.updateById(article);
+            }
+        }
+        return ResponseUtil.ok(articleNotes);
     }
 }

@@ -210,7 +210,7 @@ public class LitemallOrder {
      *
      * @mbg.generated Sat Apr 07 10:22:31 CST 2018
      */
-    private LocalDateTime addTime;
+    private String addTime;
 
     /**
      *
@@ -766,7 +766,7 @@ public class LitemallOrder {
      *
      * @mbg.generated Sat Apr 07 10:22:31 CST 2018
      */
-    public LocalDateTime getAddTime() {
+    public String getAddTime() {
         return addTime;
     }
 
@@ -778,7 +778,7 @@ public class LitemallOrder {
      *
      * @mbg.generated Sat Apr 07 10:22:31 CST 2018
      */
-    public void setAddTime(LocalDateTime addTime) {
+    public void setAddTime(String addTime) {
         this.addTime = addTime;
     }
 

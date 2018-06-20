@@ -57,6 +57,8 @@ public class WxGoodsController {
     private CollageDetailService collageDetailService;
     @Autowired
     private LitemallAdService litemallAdService;
+    @Autowired
+    private LitemallUserService litemallUserService;
 
     /**
      * 商品详情
@@ -420,6 +422,97 @@ public class WxGoodsController {
         data.put("specificationList", specificationList);
         data.put("productList", productList);
         data.put("attribute", goodsAttributeList);
+
+        return ResponseUtil.ok(data);
+    }
+
+    @GetMapping("goodsGroup")
+    public Object goodsGroup(Integer userId, Integer id) {
+
+        // 商品信息
+        LitemallGoods info = goodsService.findById(id);
+
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(null,userId,id,null,null,"","create_date");
+
+        List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
+        Map<String, Object> userVo;
+        LitemallUser user = null;
+        for (CollageDetail collageDetail : collageDetailList) {
+            userVo = new HashMap<>();
+            user = litemallUserService.findById(collageDetail.getUserId());
+            if(user == null){
+                continue;
+            }
+            userVo.put("id", user.getId());
+            userVo.put("nickName", user.getNickname());
+            userVo.put("avatar", user.getAvatar());
+            userVo.put("master", collageDetail.getPid());
+            userVoList.add(userVo);
+        }
+
+        List<LitemallAd> adList = litemallAdService.querySelective("","",null,null,"","");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("adList", adList);
+        data.put("userVoList", userVoList);
+        data.put("collageDetailList", collageDetailList);
+        data.put("info", info);
+
+        return ResponseUtil.ok(data);
+    }
+
+    @GetMapping("shareGroup")
+    public Object shareGroup(Integer orderId,Integer userId) {
+
+        //团员
+        List<CollageDetail> collageDetailList = collageDetailService.queryById(orderId);
+        //团长
+        List<CollageDetail> collageDetailList2 = collageDetailService.queryBySelective(orderId,null,null,null,null,"","create_date");
+
+        List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
+        Map<String, Object> userVo;
+        LitemallUser user;
+        Integer goodsId = null;
+        for (CollageDetail collageDetail : collageDetailList2) {
+            userVo = new HashMap<>();
+            user = litemallUserService.findById(collageDetail.getUserId());
+            if(user == null){
+                continue;
+            }
+            if(collageDetail.getPid()==0){
+                goodsId = collageDetail.getGoodsId();
+            }
+            userVo.put("id", user.getId());
+            userVo.put("avatar", user.getAvatar());
+            userVo.put("master", collageDetail.getPid());
+            userVo.put("nickName", user.getNickname());
+            userVoList.add(userVo);
+        }
+        for (CollageDetail collageDetail : collageDetailList) {
+            userVo = new HashMap<>();
+            user = litemallUserService.findById(collageDetail.getUserId());
+            if(user == null){
+                continue;
+            }
+            if(collageDetail.getPid()==0){
+                goodsId = collageDetail.getGoodsId();
+            }
+            userVo.put("id", user.getId());
+            userVo.put("avatar", user.getAvatar());
+            userVo.put("nickName", user.getNickname());
+            userVo.put("master", collageDetail.getPid());
+            userVoList.add(userVo);
+        }
+
+        List<LitemallAd> adList = litemallAdService.querySelective("","",null,null,"","");
+
+        // 商品信息
+        LitemallGoods info = goodsService.findById(goodsId);
+        Map<String, Object> data = new HashMap<>();
+        data.put("adList", adList);
+        data.put("userVoList", userVoList);
+        data.put("collageDetailList", collageDetailList);
+        data.put("info", info);
 
         return ResponseUtil.ok(data);
     }

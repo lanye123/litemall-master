@@ -4,14 +4,14 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.validator.internal.constraintvalidators.bv.past.PastValidatorForReadableInstant;
 import org.linlinjava.litemall.admin.util.bcrypt.HttpClientUtil;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.domain.ArticleNotes;
-import org.linlinjava.litemall.db.domain.WxCode;
+import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.domain.WxConfig;
 import org.linlinjava.litemall.db.service.ArticleNotesService;
 import org.linlinjava.litemall.db.service.ArticleService;
+import org.linlinjava.litemall.db.service.MedalDetailsService;
 import org.linlinjava.litemall.db.service.WxConfigService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +42,8 @@ public class ArticleNotesController {
     private ArticleService articleService;
     @Autowired
     private WxConfigService wxConfigService;
+    @Autowired
+    private MedalDetailsService medalDetailsService;
 
     @Value("${miniprogram.appid}")
     private String appid;
@@ -71,6 +73,15 @@ public class ArticleNotesController {
         int total = articleNotesService.countSelective(artileName, name,no,content,sortNo, artileId,page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
+        //点亮次数 分享次数
+        LitemallUser user;
+        for(ArticleNotes articleNotes:articleNotesList){
+            articleNotes.setShineCount(medalDetailsService.countSeletive(articleNotes.getId(),articleNotes.getArtileId(),null,null,null,null,null,"",""));
+            if(articleNotes.getCreateDate().contains(".0")){
+                articleNotes.setCreateDate(articleNotes.getCreateDate().substring(0,articleNotes.getCreateDate().length()-2));
+            }
+        }
+
         data.put("items", articleNotesList);
 
         return ResponseUtil.ok(data);

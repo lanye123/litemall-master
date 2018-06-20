@@ -482,7 +482,7 @@ public Object collect(@RequestBody Article model) {
       * @return java.lang.Object
       **/
     @PostMapping("/share")
-    public Object delete(Integer articleId){
+    public Object share(Integer articleId){
         Article article = articleService.findById(articleId);
         if(article!=null){
             article.setShareCount(article.getShareCount()+1);

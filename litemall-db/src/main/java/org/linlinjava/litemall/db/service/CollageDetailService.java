@@ -28,6 +28,7 @@ public class CollageDetailService {
     public List<CollageDetail> queryById(Integer pid){
         CollageDetailExample example=new CollageDetailExample();
         example.or().andPidEqualTo(pid);
+        example.setOrderByClause("create_date");
       return collageDetailMapper.selectByExample(example);
     }
 
