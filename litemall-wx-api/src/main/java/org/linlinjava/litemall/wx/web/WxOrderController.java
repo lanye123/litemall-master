@@ -127,6 +127,7 @@ public class WxOrderController {
             orderVo.put("orderSn", order.getOrderSn());
             orderVo.put("actualPrice", order.getActualPrice());
             orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
+            orderVo.put("orderStatus", order.getOrderStatus());
             orderVo.put("handleOption", OrderUtil.build(order));
 
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
