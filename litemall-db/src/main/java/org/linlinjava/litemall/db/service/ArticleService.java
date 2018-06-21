@@ -64,6 +64,7 @@ public class ArticleService {
         ArticleExample.Criteria criteria=example.createCriteria();
         criteria.andIsViewEqualTo(1);
         criteria.andStatusEqualTo(1);
+        example.setOrderByClause("anli_date desc");
         return articleMapper.selectByExample(example);
     }
 
