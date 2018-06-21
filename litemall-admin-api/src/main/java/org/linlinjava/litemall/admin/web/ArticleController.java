@@ -7,7 +7,6 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.DateUtils;
 import org.linlinjava.litemall.db.util.ResponseUtil;
-import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +15,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -218,7 +219,9 @@ public class ArticleController {
             return ResponseUtil.ok();
         }
         if(articleDb.getIsView()==0){
+            SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             articleDb.setIsView(1);
+            articleDb.setAnliDate(simpleDateFormat2.format(new Date()));
             articleService.updateById(articleDb);
         }else if(articleDb.getIsView()==1){
             articleDb.setIsView(0);

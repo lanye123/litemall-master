@@ -51,6 +51,16 @@ public class Article {
 
     private Boolean type;
 
+    private String anliDate;
+
+    public String getAnliDate() {
+        return anliDate;
+    }
+
+    public void setAnliDate(String anliDate) {
+        this.anliDate = anliDate;
+    }
+
     public Integer getPraiseCount() {
         return praiseCount;
     }
@@ -278,6 +288,7 @@ public class Article {
         sb.append(", userId=").append(userId);
         sb.append(", shareCount=").append(shareCount);
         sb.append(", codeUrl=").append(codeUrl);
+        sb.append(", anliDate=").append(anliDate);
         sb.append("]");
         return sb.toString();
     }
@@ -359,7 +370,8 @@ public class Article {
         readCount("read_count"),
         userId("user_id"),
         shareCount("share_count"),
-        codeUrl("code_url");
+        codeUrl("code_url"),
+        anliDate("anli_date");
 
 
         /**
