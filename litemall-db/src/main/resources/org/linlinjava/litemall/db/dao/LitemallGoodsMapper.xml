@@ -29,6 +29,7 @@
     <result column="memo" jdbcType="VARCHAR" property="memo" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="integretions" jdbcType="INTEGER" property="integretions" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.linlinjava.litemall.db.domain.LitemallGoods">
     <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
@@ -95,7 +96,7 @@
     id, goods_sn, `name`, category_id, brand_id, gallery, keywords, goods_brief, is_on_sale, 
     sort_order, counter_price, is_new, primary_pic_url, list_pic_url, is_hot, goods_unit, 
     retail_price, add_time, deleted, start_date, end_date, integretion, person_num, content, 
-    memo, `status`, create_date
+    memo, `status`, create_date, integretions
   </sql>
   <sql id="Blob_Column_List">
     goods_desc
@@ -192,7 +193,7 @@
       counter_price, is_new, primary_pic_url, 
       list_pic_url, is_hot, goods_unit, 
       retail_price, add_time, deleted, 
-      start_date, end_date, integretion, 
+      start_date, end_date, integretion,integretion,
       person_num, content, memo, 
       `status`, create_date, goods_desc
       )
@@ -202,7 +203,7 @@
       #{counterPrice,jdbcType=DECIMAL}, #{isNew,jdbcType=BIT}, #{primaryPicUrl,jdbcType=VARCHAR}, 
       #{listPicUrl,jdbcType=VARCHAR}, #{isHot,jdbcType=BIT}, #{goodsUnit,jdbcType=VARCHAR}, 
       #{retailPrice,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
-      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{integretion,jdbcType=INTEGER}, 
+      #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{integretion,jdbcType=INTEGER}, #{integretions,jdbcType=INTEGER},
       #{personNum,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{goodsDesc,jdbcType=LONGVARCHAR}
       )
@@ -275,6 +276,9 @@
       </if>
       <if test="integretion != null">
         integretion,
+      </if>
+      <if test="integretions != null">
+        integretions,
       </if>
       <if test="personNum != null">
         person_num,
@@ -358,6 +362,9 @@
       </if>
       <if test="integretion != null">
         #{integretion,jdbcType=INTEGER},
+      </if>
+      <if test="integretions != null">
+        #{integretions,jdbcType=INTEGER},
       </if>
       <if test="personNum != null">
         #{personNum,jdbcType=INTEGER},
@@ -454,6 +461,9 @@
       <if test="record.integretion != null">
         integretion = #{record.integretion,jdbcType=INTEGER},
       </if>
+      <if test="record.integretions != null">
+        integretions = #{record.integretions,jdbcType=INTEGER},
+      </if>
       <if test="record.personNum != null">
         person_num = #{record.personNum,jdbcType=INTEGER},
       </if>
@@ -501,6 +511,7 @@
       start_date = #{record.startDate,jdbcType=TIMESTAMP},
       end_date = #{record.endDate,jdbcType=TIMESTAMP},
       integretion = #{record.integretion,jdbcType=INTEGER},
+      integretions = #{record.integretions,jdbcType=INTEGER},
       person_num = #{record.personNum,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
       memo = #{record.memo,jdbcType=VARCHAR},
@@ -535,6 +546,7 @@
       start_date = #{record.startDate,jdbcType=TIMESTAMP},
       end_date = #{record.endDate,jdbcType=TIMESTAMP},
       integretion = #{record.integretion,jdbcType=INTEGER},
+      integretions = #{record.integretions,jdbcType=INTEGER},
       person_num = #{record.personNum,jdbcType=INTEGER},
       content = #{record.content,jdbcType=VARCHAR},
       memo = #{record.memo,jdbcType=VARCHAR},
@@ -610,6 +622,9 @@
       <if test="integretion != null">
         integretion = #{integretion,jdbcType=INTEGER},
       </if>
+      <if test="integretions != null">
+        integretions = #{integretions,jdbcType=INTEGER},
+      </if>
       <if test="personNum != null">
         person_num = #{personNum,jdbcType=INTEGER},
       </if>
@@ -654,6 +669,7 @@
       start_date = #{startDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
       integretion = #{integretion,jdbcType=INTEGER},
+      integretions = #{integretions,jdbcType=INTEGER},
       person_num = #{personNum,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       memo = #{memo,jdbcType=VARCHAR},
@@ -685,6 +701,7 @@
       start_date = #{startDate,jdbcType=TIMESTAMP},
       end_date = #{endDate,jdbcType=TIMESTAMP},
       integretion = #{integretion,jdbcType=INTEGER},
+      integretions = #{integretions,jdbcType=INTEGER},
       person_num = #{personNum,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       memo = #{memo,jdbcType=VARCHAR},

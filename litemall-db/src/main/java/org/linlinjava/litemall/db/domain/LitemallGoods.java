@@ -58,7 +58,17 @@ public class LitemallGoods {
 
     private Date createDate;
 
+    private Integer integretions;
+
     private String goodsDesc;
+
+    public Integer getIntegretions() {
+        return integretions;
+    }
+
+    public void setIntegretions(Integer integretions) {
+        this.integretions = integretions;
+    }
 
     public Integer getId() {
         return id;
