@@ -127,7 +127,8 @@ public class WxOrderController {
             orderVo.put("orderSn", order.getOrderSn());
             orderVo.put("actualPrice", order.getActualPrice());
             orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
-            //orderVo.put("handleOption", OrderUtil.build(order));
+            orderVo.put("orderStatus", order.getOrderStatus());
+            orderVo.put("handleOption", OrderUtil.build(order));
 
             List<LitemallOrderGoods> orderGoodsList = orderGoodsService.queryByOid(order.getId());
             List<Map<String, Object>> orderGoodsVoList = new ArrayList<>(orderGoodsList.size());
@@ -138,14 +139,13 @@ public class WxOrderController {
                 orderGoodsVo.put("number", orderGoods.getNumber());
                 orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
                 orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
-                //orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
+                orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
                 LitemallGoods goods = goodsService.findById(orderGoods.getGoodsId());
                 if(goods == null){
                     continue;
                 }
                 orderGoodsVo.put("goodsBrief", goods.getGoodsBrief());
                 orderGoodsVo.put("integretion", goods.getIntegretion());
-                orderGoodsVo.put("price",goods.getCounterPrice());
                 orderGoodsVoList.add(orderGoodsVo);
             }
             orderVo.put("goodsList", orderGoodsVoList);
@@ -198,10 +198,10 @@ public class WxOrderController {
         Integer goodsId = null;
         for (CollageDetail collageDetail : collageDetailList) {
             if(userId == collageDetail.getUserId()){
-                orderVo.put("sno",collageDetail.getSno());
                 if(collageDetail.getCreateDate().contains(".0")){
                     collageDetail.setCreateDate(collageDetail.getCreateDate().substring(0,collageDetail.getCreateDate().length()-2));
                 }
+                orderVo.put("sno",collageDetail.getSno());
                 orderVo.put("groupTime", collageDetail.getCreateDate());
             }
             userVo = new HashMap<>();
@@ -212,7 +212,7 @@ public class WxOrderController {
             userVo.put("id", user.getId());
             userVo.put("nickName", user.getNickname());
             userVo.put("avatar", user.getAvatar());
-            if(collageDetail.getPid()==null){
+            if(collageDetail.getPid()==0){
                 userVo.put("master", 0);
                 goodsId = collageDetail.getGoodsId();
             }else{
@@ -236,7 +236,7 @@ public class WxOrderController {
             userVo.put("id", user.getId());
             userVo.put("avatar", user.getAvatar());
             userVo.put("nickName", user.getNickname());
-            if(collageDetail.getPid()==null){
+            if(collageDetail.getPid()==0){
                 userVo.put("master", 0);
                 goodsId = collageDetail.getGoodsId();
             }else{
@@ -265,8 +265,8 @@ public class WxOrderController {
         orderVo.put("consignee", order.getConsignee());
         orderVo.put("mobile", order.getMobile());
         orderVo.put("address", order.getAddress());
-        //orderVo.put("goodsPrice", order.getGoodsPrice());
-        //orderVo.put("freightPrice", order.getFreightPrice());
+        orderVo.put("goodsPrice", order.getGoodsPrice());
+        orderVo.put("freightPrice", order.getFreightPrice());
         orderVo.put("actualPrice", order.getActualPrice());
         orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
         orderVo.put("handleOption", OrderUtil.build(order));
@@ -933,7 +933,7 @@ public class WxOrderController {
         order.setUserId(userId);
         order.setOrderSn(orderService.generateOrderSn(userId));
         order.setAddTime(DateUtils.formatTimestamp.format(new Date()));
-        order.setOrderStatus(OrderUtil.STATUS_SHARE);
+        order.setOrderStatus(OrderUtil.STATUS_CREATE);
         if(checkedAddress!=null){
             order.setConsignee(checkedAddress.getName());
             order.setMobile(checkedAddress.getMobile());
@@ -997,7 +997,6 @@ public class WxOrderController {
 
             // 添加订单商品表项
             for (LitemallOrderGoods orderGoods : orderGoodsList) {
-                orderGoods.setOrderId(order.getId());
                 orderGoodsService.add(orderGoods);
             }
 
