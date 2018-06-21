@@ -65,11 +65,11 @@ public class WxMessService {
                 m.setUserId(user_id);
                 m.setReceptOpenId(user.getWeixinOpenid());
                 m.setContent(keyword1_str+","+keyword2_str+","+keyword3_str);
+                wxMessMapper.insertSelective(m);
             }
         }
         return result;
     }
-
 
 
 //审核未通过提醒
@@ -97,11 +97,13 @@ public class WxMessService {
             object.put("data",data);
             result = HttpClientUtil.doPost(request_url, object);
             logger.info(result);
+            if(Integer.parseInt(result.getString("errcode"))==0) {
                 WxMess m = new WxMess();
                 m.setUserId(user_id);
                 m.setReceptOpenId(user.getWeixinOpenid());
-                m.setContent(keyword1_str+","+keyword2_str);
+                m.setContent(keyword1_str + "," + keyword2_str);
                 wxMessMapper.insertSelective(m);
+            }
         }
         return result;
     }
@@ -137,11 +139,13 @@ public class WxMessService {
             object.put("data",data);
             result = HttpClientUtil.doPost(request_url, object);
             logger.info(result);
+            if(Integer.parseInt(result.getString("errcode"))==0) {
                 WxMess m = new WxMess();
                 m.setUserId(user_id);
                 m.setReceptOpenId(user.getWeixinOpenid());
-                m.setContent(keyword1_str+","+keyword2_str+","+keyword3_str+","+keyword4_str);
+                m.setContent(keyword1_str + "," + keyword2_str + "," + keyword3_str + "," + keyword4_str);
                 wxMessMapper.insertSelective(m);
+            }
         }
         return result;
     }
@@ -172,11 +176,13 @@ public class WxMessService {
             object.put("data",data);
             result = HttpClientUtil.doPost(request_url, object);
             logger.info(result);
+            if(Integer.parseInt(result.getString("errcode"))==0) {
                 WxMess m = new WxMess();
                 m.setUserId(user_id);
                 m.setReceptOpenId(user.getWeixinOpenid());
-                m.setContent(keyword1_str+","+keyword2_str);
+                m.setContent(keyword1_str + "," + keyword2_str);
                 wxMessMapper.insertSelective(m);
+            }
         }
         return result;
     }
@@ -209,11 +215,13 @@ public class WxMessService {
             object.put("data",data);
             result = HttpClientUtil.doPost(request_url, object);
             logger.info(result);
+            if(Integer.parseInt(result.getString("errcode"))==0) {
                 WxMess m = new WxMess();
                 m.setUserId(user_id);
                 m.setReceptOpenId(user.getWeixinOpenid());
-                m.setContent(keyword1_str+","+keyword2_str+","+keyword3_str);
+                m.setContent(keyword1_str + "," + keyword2_str + "," + keyword3_str);
                 wxMessMapper.insertSelective(m);
+            }
         }
         return result;
     }
@@ -251,11 +259,13 @@ public class WxMessService {
             object.put("data",data);
             result = HttpClientUtil.doPost(request_url, object);
             logger.info(result);
+            if(Integer.parseInt(result.getString("errcode"))==0) {
                 WxMess m = new WxMess();
                 m.setUserId(user_id);
                 m.setReceptOpenId(user.getWeixinOpenid());
-                m.setContent(keyword1_str+","+keyword2_str+","+keyword3_str);
+                m.setContent(keyword1_str + "," + keyword2_str + "," + keyword3_str);
                 wxMessMapper.insertSelective(m);
+            }
         }
         return result;
     }

@@ -144,6 +144,30 @@ public class ArticleController {
                             "2：发布内容正向积极，不得违反互联网发布内容规范。\n" +
                             "3：用户发布优秀图文，则被官方审核通过并推荐展现。",DateUtils.currentTime(),form.getFormId(),a.getUserId());
                     data.put("result",result);
+                    Integer errcode=Integer.parseInt(result.getString("errcode"));
+                    switch (errcode){
+                        case 0:
+                            data.put("errmsg","信息发送成功");
+                            break;
+                        case 40037:
+                            data.put("errmsg","template_id不正确");
+                            break;
+                        case 41028:
+                            data.put("errmsg","form_id不正确，或者过期");
+                            break;
+                        case 41029:
+                            data.put("errmsg","form_id已被使用");
+                            break;
+                        case 41030:
+                            data.put("errmsg","page不正确");
+                            break;
+                        case 45009:
+                            data.put("errmsg","接口调用超过限额（目前默认每个帐号日调用限额为100万）");
+                            break;
+                        case 40001:
+                            data.put("errmsg","不合法的调用凭证");
+                            break;
+                    }
                     form.setStatus(1);//formid状态更新为已使用
                     wxFormidService.update(form);
                 }
@@ -183,6 +207,30 @@ public class ArticleController {
                         WxFormid form=list.get(0);
                         result=wxMessService.articleCheck(url,a.getDaodu(),a.getCreateDate(),DateUtils.currentTime(),form.getFormId(),a.getUserId());
                         data.put("result",result);
+                        Integer errcode=Integer.parseInt(result.getString("errcode"));
+                        switch (errcode){
+                            case 0:
+                                data.put("errmsg","信息发送成功");
+                                break;
+                            case 40037:
+                                data.put("errmsg","template_id不正确");
+                                break;
+                            case 41028:
+                                data.put("errmsg","form_id不正确，或者过期");
+                                break;
+                            case 41029:
+                                data.put("errmsg","form_id已被使用");
+                                break;
+                            case 41030:
+                                data.put("errmsg","page不正确");
+                                break;
+                            case 45009:
+                                data.put("errmsg","接口调用超过限额（目前默认每个帐号日调用限额为100万）");
+                                break;
+                            case 40001:
+                                data.put("errmsg","不合法的调用凭证");
+                                break;
+                        }
                         form.setStatus(1);//formid状态更新为已使用
                         wxFormidService.update(form);
                     }
@@ -201,6 +249,30 @@ public class ArticleController {
                             WxFormid form=list.get(0);
                            result=wxMessService.articleNotice(url,a.getTitle(),"新书上架啦！"+a.getDaodu(),form.getFormId(),users.getId());
                             data.put("result",result);
+                            Integer errcode=Integer.parseInt(result.getString("errcode"));
+                            switch (errcode){
+                                case 0:
+                                    data.put("errmsg","信息发送成功");
+                                    break;
+                                case 40037:
+                                    data.put("errmsg","template_id不正确");
+                                    break;
+                                case 41028:
+                                    data.put("errmsg","form_id不正确，或者过期");
+                                    break;
+                                case 41029:
+                                    data.put("errmsg","form_id已被使用");
+                                    break;
+                                case 41030:
+                                    data.put("errmsg","page不正确");
+                                    break;
+                                case 45009:
+                                    data.put("errmsg","接口调用超过限额（目前默认每个帐号日调用限额为100万）");
+                                    break;
+                                case 40001:
+                                    data.put("errmsg","不合法的调用凭证");
+                                    break;
+                            }
                             form.setStatus(1);//formid状态更新为已使用
                             wxFormidService.update(form);
                         }

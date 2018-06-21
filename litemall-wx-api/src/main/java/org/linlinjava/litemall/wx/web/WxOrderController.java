@@ -936,7 +936,8 @@ public class WxOrderController {
         if(checkedAddress!=null){
             order.setConsignee(checkedAddress.getName());
             order.setMobile(checkedAddress.getMobile());
-            String detailedAddress = detailedAddress(checkedAddress);
+            //String detailedAddress = detailedAddress(checkedAddress);
+            String detailedAddress =checkedAddress.getAddress();
             order.setAddress(detailedAddress);
         }
         /*order.setGoodsPrice(checkedGoodsPrice);
@@ -965,7 +966,6 @@ public class WxOrderController {
             orderGoodsList.add(orderGoods);
 
             detail.setGoodsId(cartGoods.getGoodsId());
-            detail.setOrderId(order.getId());
             detail.setUserId(userId);
             if(user!=null)
                 detail.setAvatar(user.getAvatar());
@@ -1016,6 +1016,7 @@ public class WxOrderController {
             }
 
             //保存拼团流水表
+            detail.setOrderId(order.getId());
             collageDetailService.add(detail);
 
             //保存积分拼团扣除记录
