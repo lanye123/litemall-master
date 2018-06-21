@@ -933,10 +933,12 @@ public class WxOrderController {
         order.setOrderSn(orderService.generateOrderSn(userId));
         order.setAddTime(DateUtils.formatTimestamp.format(new Date()));
         order.setOrderStatus(OrderUtil.STATUS_CREATE);
-        order.setConsignee(checkedAddress.getName());
-        order.setMobile(checkedAddress.getMobile());
-        String detailedAddress = detailedAddress(checkedAddress);
-        order.setAddress(detailedAddress);
+        if(checkedAddress!=null){
+            order.setConsignee(checkedAddress.getName());
+            order.setMobile(checkedAddress.getMobile());
+            String detailedAddress = detailedAddress(checkedAddress);
+            order.setAddress(detailedAddress);
+        }
         /*order.setGoodsPrice(checkedGoodsPrice);
         order.setFreightPrice(freightPrice);
         order.setCouponPrice(couponPrice);
