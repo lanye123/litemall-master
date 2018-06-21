@@ -107,6 +107,7 @@ public class ArticleController {
     @PostMapping("/create")
     public Object create(@RequestBody Article article){
         articleService.add(article);
+        if(article.getCategoryId()==1)
         saveCode(article);
         return ResponseUtil.ok(article);
     }

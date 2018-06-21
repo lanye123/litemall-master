@@ -31,6 +31,7 @@ public class OrderUtil {
     public static final Short STATUS_CANCEL= 102;
     public static final Short STATUS_REFUND = 202;
     public static final Short STATUS_AUTO_CONFIRM= 402;
+    public static final Short STATUS_SHARE = 0;
 
 
     public static String orderStatusText(LitemallOrder order) {

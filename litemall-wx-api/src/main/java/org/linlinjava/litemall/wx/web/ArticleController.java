@@ -8,11 +8,16 @@ import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.linlinjava.litemall.wx.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,8 +50,26 @@ public class ArticleController {
     private WxMessService wxMessService;
     @Autowired
     private NotesService notesService;
+    @Autowired
+    private WxConfigService wxConfigService;
     @Value("${code_url}")
     private String codeurl;
+    @Value("${miniprogram.appid}")
+    private String appid;
+    @Value("${miniprogram.secret}")
+    private String secret;
+    @Value("${access_token.url}")
+    private String token_url;
+    @Value("${create_codeA.url}")
+    private String create_codeA_url;
+    @Value("${create_codeB.url}")
+    private String create_codeB_url;
+    @Value("${create_codeC.url}")
+    private String create_codeC_url;
+    @Value("${article.url}")
+    private String article_url;
+    @Value("${web.upload-path}")
+    private String webUploadPath;
 /**
     *@Author:LeiQiang
     *@Description:全部图文模块列表接口
@@ -369,6 +392,7 @@ public Object collect(@RequestBody Article model) {
         }
         article.setCategoryId(1);
         articleService.add(article);
+        saveCode(article);
         return ResponseUtil.ok(article);
     }
     @PostMapping("sendArticleTemplete")
@@ -487,6 +511,65 @@ public Object collect(@RequestBody Article model) {
         if(article!=null){
             article.setShareCount(article.getShareCount()+1);
             articleService.updateById(article);
+        }
+        return ResponseUtil.ok(article);
+    }
+
+    /**
+     * 图文详情模块二维码图片生成及保存
+     * @author leiqiang
+     * @date 2018-5-31 14:15:07
+     */
+    @PostMapping("/code")
+    public Object saveCode(@RequestBody Article a){
+        WxConfig config=wxConfigService.getToken();
+        String path=article_url.replace("ARTICLEID",Integer.toString(a.getArticleId()));
+        Article article=new Article();
+        JSONObject object=new JSONObject();
+        object.put("path",path);
+        object.put("width",430);//小程序二维码宽度
+        String requestUrl=create_codeA_url.replace("ACCESS_TOKEN",config.getAccessToken());
+        InputStream i=HttpClientUtil.doPostInstream(requestUrl,object);
+        byte[] data = new byte[1024];
+        int len = -1;
+        FileOutputStream fileOutputStream = null;
+        try {
+            String temp = "images" + File.separator + "code" + File.separator;
+            // 新的图片文件名 = 获取时间戳+"."图片扩展名
+            String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
+            // 文件路径
+            String filePath = webUploadPath.concat(temp);
+
+            File dest = new File(filePath, newFileName);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            fileOutputStream = new FileOutputStream(dest);
+            while ((len = i.read(data)) != -1) {
+                fileOutputStream.write(data, 0, len);
+            }
+            // 将反斜杠转换为正斜杠
+            String datapath = temp.replaceAll("\\\\", "/") + newFileName;
+            article.setArticleId(a.getArticleId());
+            article.setCodeUrl(datapath);
+            articleService.update(article);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (i != null) {
+                try {
+                    i.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return ResponseUtil.ok(article);
     }
