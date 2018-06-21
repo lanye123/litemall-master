@@ -122,6 +122,8 @@ public class ArticleController {
 
     @PostMapping("/update")
     public Object update(@RequestBody Article article){
+        Map data=new HashMap();
+        JSONObject result=null;
         if(article.getPhotoUrl().contains("https://sunlands.ministudy.com/")){
             article.setPhotoUrl(article.getPhotoUrl().replace("https://sunlands.ministudy.com/",""));
         }
@@ -137,20 +139,23 @@ public class ArticleController {
                 List<WxFormid> list=wxFormidService.queryByStatus(user.getWeixinOpenid());
                 if(list.size()>0){
                     WxFormid form=list.get(0);
-                    wxMessService.articleCheckFail(null,"1：发布图片需为横图，无水印且美观清晰。\n" +
+                    result=wxMessService.articleCheckFail(null,"1：发布图片需为横图，无水印且美观清晰。\n" +
                             "2：发布内容正向积极，不得违反互联网发布内容规范。\n" +
                             "3：用户发布优秀图文，则被官方审核通过并推荐展现。",DateUtils.currentTime(),form.getFormId(),a.getUserId());
+                    data.put("result",result);
                     form.setStatus(1);//formid状态更新为已使用
                     wxFormidService.update(form);
                 }
             }
 
         }
-        return ResponseUtil.ok();
+        return ResponseUtil.ok(data);
     }
 
     @PostMapping("/online")
     public Object online(@RequestBody Article article){
+        Map data=new HashMap();
+        JSONObject result=null;
         if(article == null){
             return ResponseUtil.badArgument();
         }
@@ -162,6 +167,7 @@ public class ArticleController {
         if(articleDb.getStatus()==0){
             articleDb.setStatus(1);
             articleService.updateById(articleDb);
+            data.put("articleDb",articleDb);
             //小程序上线提醒
             //by leiqiang
             String url="";
@@ -174,7 +180,8 @@ public class ArticleController {
                     List<WxFormid> list=wxFormidService.queryByStatus(user.getWeixinOpenid());
                     if(list.size()>0){
                         WxFormid form=list.get(0);
-                        wxMessService.articleCheck(url,a.getDaodu(),a.getCreateDate(),DateUtils.currentTime(),form.getFormId(),a.getUserId());
+                        result=wxMessService.articleCheck(url,a.getDaodu(),a.getCreateDate(),DateUtils.currentTime(),form.getFormId(),a.getUserId());
+                        data.put("result",result);
                         form.setStatus(1);//formid状态更新为已使用
                         wxFormidService.update(form);
                     }
@@ -191,7 +198,8 @@ public class ArticleController {
                         List<WxFormid> list=wxFormidService.queryByStatus(users.getWeixinOpenid());
                         if(list.size()>0){
                             WxFormid form=list.get(0);
-                            wxMessService.articleNotice(url,a.getTitle(),"新书上架啦！"+a.getDaodu(),form.getFormId(),users.getId());
+                           result=wxMessService.articleNotice(url,a.getTitle(),"新书上架啦！"+a.getDaodu(),form.getFormId(),users.getId());
+                            data.put("result",result);
                             form.setStatus(1);//formid状态更新为已使用
                             wxFormidService.update(form);
                         }
@@ -203,8 +211,9 @@ public class ArticleController {
         }else if(articleDb.getStatus()==1){
             articleDb.setStatus(0);
             articleService.updateById(articleDb);
+            data.put("articleDb",articleDb);
         }
-        return ResponseUtil.ok(articleDb);
+        return ResponseUtil.ok(data);
     }
 
     @PostMapping("/anli")

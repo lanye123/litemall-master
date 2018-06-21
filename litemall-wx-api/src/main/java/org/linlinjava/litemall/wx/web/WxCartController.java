@@ -177,7 +177,6 @@ public class WxCartController {
      * 1. 如果购物车内已经存在购物车货品，前者的逻辑是数量添加，这里的逻辑是数量覆盖
      * 2. 添加成功以后，前者的逻辑是返回当前购物车商品数量，这里的逻辑是返回对应购物车项的ID
      *
-     * @param userId 用户ID
      * @param cart 购物车商品信息， { goodsId: xxx, productId: xxx, number: xxx }
      * @return 即购买操作结果
      *   成功则
@@ -189,7 +188,8 @@ public class WxCartController {
      *   失败则 { errno: XXX, errmsg: XXX }
      */
     @PostMapping("fastadd")
-    public Object fastadd(Integer userId, @RequestBody LitemallCart cart) {
+    public Object fastadd(@RequestBody LitemallCart cart) {
+        Integer userId=cart.getUserId();
         if(userId == null){
             return ResponseUtil.unlogin();
         }

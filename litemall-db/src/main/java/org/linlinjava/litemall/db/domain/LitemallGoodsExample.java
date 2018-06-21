@@ -136,7 +136,15 @@ public class LitemallGoodsExample {
             }
             criteria.add(new Criterion(condition, value1, value2));
         }
+        public Criteria andIntegretionsEqualTo(Integer value) {
+            addCriterion("integretions =", value, "integretions");
+            return (Criteria) this;
+        }
 
+        public Criteria andIntegretionsNotEqualTo(Integer value) {
+            addCriterion("integretions <>", value, "integretions");
+            return (Criteria) this;
+        }
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;
