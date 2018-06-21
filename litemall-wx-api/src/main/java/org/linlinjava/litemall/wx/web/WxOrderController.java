@@ -198,10 +198,10 @@ public class WxOrderController {
         Integer goodsId = null;
         for (CollageDetail collageDetail : collageDetailList) {
             if(userId == collageDetail.getUserId()){
-                orderVo.put("sno",collageDetail.getSno());
                 if(collageDetail.getCreateDate().contains(".0")){
                     collageDetail.setCreateDate(collageDetail.getCreateDate().substring(0,collageDetail.getCreateDate().length()-2));
                 }
+                orderVo.put("sno",collageDetail.getSno());
                 orderVo.put("groupTime", collageDetail.getCreateDate());
             }
             userVo = new HashMap<>();
@@ -212,7 +212,7 @@ public class WxOrderController {
             userVo.put("id", user.getId());
             userVo.put("nickName", user.getNickname());
             userVo.put("avatar", user.getAvatar());
-            if(collageDetail.getPid()==null){
+            if(collageDetail.getPid()==0){
                 userVo.put("master", 0);
                 goodsId = collageDetail.getGoodsId();
             }else{
@@ -236,7 +236,7 @@ public class WxOrderController {
             userVo.put("id", user.getId());
             userVo.put("avatar", user.getAvatar());
             userVo.put("nickName", user.getNickname());
-            if(collageDetail.getPid()==null){
+            if(collageDetail.getPid()==0){
                 userVo.put("master", 0);
                 goodsId = collageDetail.getGoodsId();
             }else{
