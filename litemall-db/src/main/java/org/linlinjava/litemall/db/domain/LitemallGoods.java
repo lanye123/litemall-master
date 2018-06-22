@@ -62,14 +62,14 @@ public class LitemallGoods {
 
     private String goodsDesc;
 
-    private Integer flag;
+    private Integer isexist;
 
-    public Integer getFlag() {
-        return flag;
+    public Integer getIsexist() {
+        return isexist;
     }
 
-    public void setFlag(Integer flag) {
-        this.flag = flag;
+    public void setIsexist(Integer isexist) {
+        this.isexist = isexist;
     }
 
     public Integer getIntegretions() {

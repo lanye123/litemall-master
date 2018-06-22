@@ -55,4 +55,6 @@ public interface CollageDetailMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     CollageDetail selectByPrimaryKeySelective(@Param("selective") CollageDetail.Column ... selective);
+
+    Integer countByPid(Integer pid);
 }

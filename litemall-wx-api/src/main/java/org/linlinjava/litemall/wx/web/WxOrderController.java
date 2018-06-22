@@ -886,6 +886,7 @@ public class WxOrderController {
         Integer addressId = JacksonUtil.parseInteger(body, "addressId");
         Integer pid=JacksonUtil.parseInteger(body, "pid");//团长为空团员为pid
         Integer userId = JacksonUtil.parseInteger(body, "userId");
+        Integer flag = JacksonUtil.parseInteger(body, "flag");
 
         if (cartId == null || addressId == null) {
             return ResponseUtil.badArgument();
@@ -902,7 +903,9 @@ public class WxOrderController {
 
         // 货品价格
         BigDecimal actualPrice=null;
+        Integer person_num=null;
         List<LitemallCart> checkedGoodsList = null;
+        LitemallGoods goods=new LitemallGoods();
         if (cartId.equals(0)) {
             checkedGoodsList = cartService.queryByUidAndChecked(userId);
         } else {
@@ -910,6 +913,8 @@ public class WxOrderController {
             checkedGoodsList = new ArrayList<>(1);
             checkedGoodsList.add(cart);
             actualPrice=cart.getRetailPrice();
+            goods=goodsService.findById(cart.getGoodsId());
+            person_num=goods.getPersonNum();
         }
         if (checkedGoodsList.size() == 0) {
             return ResponseUtil.badArgumentValue();
@@ -977,11 +982,10 @@ public class WxOrderController {
                 detail.setAvatar(user.getAvatar());
             detail.setStatus(0);
             detail.setJoinDate(new Date());
-            if(!StringUtils.isEmpty(pid)){
-                detail.setPid(pid);
-                detail.setFlag(0);//拼团团员标识
+            if(flag==0){
+                detail.setFlag(0);//拼团团长标识
             }else
-                detail.setFlag(1);//拼团团长标识
+                detail.setFlag(1);//拼团团员标识
         }
 
         //订单提交积分扣除
@@ -1023,17 +1027,36 @@ public class WxOrderController {
 
             //保存拼团流水表
             detail.setOrderId(order.getId());
+            if(pid==0)
+            detail.setPid(order.getId());
+            else
+                detail.setPid(pid);
             collageDetailService.add(detail);
 
             //保存积分拼团扣除记录
             integretionDetailService.add(integretion);
+
+
         } catch (Exception ex) {
             txManager.rollback(status);
             logger.error("系统内部错误", ex);
             return ResponseUtil.fail(403, "下单失败");
         }
         txManager.commit(status);
+        if(pid!=0){
+            Integer countPerson=collageDetailService.countByPid(pid);
+            if(countPerson==person_num){
+                //更新订单状态为拼团成功
+                List<CollageDetail> detailList=collageDetailService.queryByPids(pid);
+                for(CollageDetail details:detailList){
+                   LitemallOrder orders= orderService.findById(details.getOrderId());
+                   orders.setOrderStatus((short) 1);
+                    orderService.updateById(orders);
+                }
+                //派发兑奖码
 
+            }
+        }
         Map<String, Object> data = new HashMap<>();
         data.put("orderId", order.getId());
         return ResponseUtil.ok(data);

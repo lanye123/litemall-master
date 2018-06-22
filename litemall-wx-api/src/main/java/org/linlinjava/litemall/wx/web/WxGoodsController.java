@@ -451,7 +451,7 @@ public class WxGoodsController {
         }
 
         List<LitemallAd> adList = litemallAdService.querySelective("","",null,null,"","");
-        info.setFlag(0);//显示邀请好友按钮1显示参团按钮，如果已经参团
+        info.setIsexist(0);//显示邀请好友按钮1显示参团按钮，如果已经参团
         Map<String, Object> data = new HashMap<>();
         data.put("adList", adList);
         data.put("userVoList", userVoList);
@@ -511,9 +511,9 @@ public class WxGoodsController {
         //查询参团人是否针对该商品已经参团
         CollageDetail collageDetail = collageDetailService.queryByPid(orderId,userId);
         if(collageDetail!=null)
-            info.setFlag(1);
+            info.setIsexist(1);
         else
-            info.setFlag(0);
+            info.setIsexist(0);
         Map<String, Object> data = new HashMap<>();
         data.put("adList", adList);
         data.put("userVoList", userVoList);

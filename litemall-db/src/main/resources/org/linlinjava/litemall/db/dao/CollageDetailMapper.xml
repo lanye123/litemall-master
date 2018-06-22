@@ -213,6 +213,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+  <select id="countByPid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*) from collage_detail t where t.pid=#{pid,jdbcType=INTEGER}
+  </select>
+
+
   <update id="updateByExampleSelective" parameterType="map">
     update collage_detail
     <set>

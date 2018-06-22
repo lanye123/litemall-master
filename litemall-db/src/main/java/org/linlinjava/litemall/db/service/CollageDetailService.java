@@ -70,4 +70,16 @@ public class CollageDetailService {
             criteria.andPidEqualTo(orderId);
         return collageDetailMapper.selectOneByExample(example);
     }
+
+    public Integer countByPid(Integer pid) {
+        return collageDetailMapper.countByPid(pid);
+    }
+
+    public List<CollageDetail> queryByPids(Integer pid) {
+        CollageDetailExample example=new CollageDetailExample();
+        CollageDetailExample.Criteria criteria=example.createCriteria();
+        if(pid!=null)
+            criteria.andPidEqualTo(pid);
+        return collageDetailMapper.selectByExample(example);
+    }
 }
