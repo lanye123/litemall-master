@@ -224,7 +224,10 @@
         <table tableName="wx_mess">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>-->
-        <table tableName="wx_formid">
+        <table tableName="litemall_order_goods">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="litemall_cart">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 

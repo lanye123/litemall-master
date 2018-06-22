@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.wx.web;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
@@ -8,6 +9,7 @@ import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.JacksonUtil;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,7 +102,7 @@ public class WxCartController {
      *  }
      *   失败则 { errno: XXX, errmsg: XXX }
      */
-    @PostMapping("add")
+   /* @PostMapping("add")
     public Object add(@LoginUser Integer userId, @RequestBody LitemallCart cart) {
         if(userId == null){
             return ResponseUtil.unlogin();
@@ -168,7 +170,7 @@ public class WxCartController {
         }
 
         return goodscount(userId);
-    }
+    }*/
 
     /**
      * 立即购买商品
@@ -197,10 +199,10 @@ public class WxCartController {
             return ResponseUtil.badArgument();
         }
 
-        Integer productId = cart.getProductId();
+        Integer specificationId = cart.getProductId();
         Integer number = cart.getNumber().intValue();
         Integer goodsId = cart.getGoodsId();
-        if(!ObjectUtils.allNotNull(productId, number, goodsId)){
+        if(!ObjectUtils.allNotNull(specificationId, number, goodsId)){
             return ResponseUtil.badArgument();
         }
 
@@ -209,38 +211,24 @@ public class WxCartController {
         if (goods == null || !goods.getIsOnSale()) {
             return ResponseUtil.fail(400, "商品已下架");
         }
-
-        LitemallProduct product = productService.findById(productId);
+        LitemallGoodsSpecification goodsSpecification = goodsSpecificationService.findById(specificationId);
+        //LitemallProduct product = productService.findById(specificationId);
         //判断购物车中是否存在此规格商品
-        LitemallCart existCart = cartService.queryExist(goodsId, productId, userId);
+        LitemallCart existCart = cartService.queryExist(goodsId, specificationId, userId);
         if(existCart == null){
             //取得规格的信息,判断规格库存
-            if(product == null || number > product.getGoodsNumber() ){
+            if(goodsSpecification==null||number>goodsSpecification.getGoodsNumber())
                 return ResponseUtil.fail(400, "库存不足");
-            }
-
-            Integer[] ids = product.getGoodsSpecificationIds();
-            String goodsSpecificationValue = null;
-            for(Integer id : ids){
-                LitemallGoodsSpecification goodsSpecification = goodsSpecificationService.findById(id);
-                if(goodsSpecification == null || !goodsSpecification.getGoodsId().equals(goodsId)){
-                    return ResponseUtil.badArgument();
-                }
-                if(goodsSpecificationValue == null){
-                    goodsSpecificationValue = goodsSpecification.getValue();
-                }
-                else {
-                    goodsSpecificationValue = goodsSpecificationValue + " " + goodsSpecification.getValue();
-                }
-            }
 
             cart.setId(null);
             cart.setGoodsSn(goods.getGoodsSn());
             cart.setGoodsName((goods.getName()));
             cart.setPicUrl(goods.getPrimaryPicUrl());
             cart.setRetailPrice(new BigDecimal(goods.getIntegretion()));
-            cart.setGoodsSpecificationIds(product.getGoodsSpecificationIds());
-            cart.setGoodsSpecificationValues(goodsSpecificationValue);
+            if(goodsSpecification.getId()!=null)
+            cart.setGoodsSpecificationIds(goodsSpecification.getId());
+            if(StringUtils.isNotEmpty(goodsSpecification.getValue()))
+            cart.setGoodsSpecificationValues(goodsSpecification.getValue());
             cart.setUserId(userId);
             cart.setChecked(true);
             cartService.add(cart);
@@ -248,9 +236,8 @@ public class WxCartController {
         else{
             //取得规格的信息,判断规格库存
             int num = number;
-            if(num >  product.getGoodsNumber()){
+            if(goodsSpecification==null||number>goodsSpecification.getGoodsNumber())
                 return ResponseUtil.fail(400, "库存不足");
-            }
             existCart.setNumber((short)num);
             cartService.update(existCart);
         }
@@ -525,6 +512,7 @@ public class WxCartController {
         //data.put("couponPrice", couponPrice);
         //data.put("orderTotalPrice", orderTotalPrice);
         data.put("actualPrice", actualPrice);
+        data.put("cartId",cartId);
         data.put("pid",pid);
         data.put("checkedGoodsList", checkedGoodsList);
         return ResponseUtil.ok(data);
