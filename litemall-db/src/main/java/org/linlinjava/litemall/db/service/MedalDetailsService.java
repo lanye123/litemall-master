@@ -25,8 +25,11 @@ public class MedalDetailsService {
      */
     public String add(MedalDetails medalDetails) {
         if(this.getScoreByUserId(medalDetails.getUserId(),DateUtils.getDayStartString(),DateUtils.getDayEndString())<300){
-            medalDetailsMapper.insertSelective(medalDetails);
-            return  "ok";
+            if(this.countSeletive(medalDetails.getNotesId(),medalDetails.getArticleId(),medalDetails.getUserId(),null,null,null,null,"","")<=0){
+                medalDetailsMapper.insertSelective(medalDetails);
+                return  "ok";
+            }
+            return "ok";
         }
         return  "fail";
     }
