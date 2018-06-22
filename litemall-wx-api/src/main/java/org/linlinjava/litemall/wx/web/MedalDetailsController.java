@@ -54,6 +54,9 @@ public class MedalDetailsController {
                 continue;
             }
             userIdDb = medalDetails.getUserId();
+            if(rank==101){
+                break;
+            }
             rank++;
             if(userIdDb.intValue() == userId.intValue()){
                 data.put("rank",rank);
@@ -153,6 +156,9 @@ public class MedalDetailsController {
                 continue;
             }
             userIdDb = medalDetails.getUserId();
+            if(rank==101){
+                break;
+            }
             rank++;
             dataItem = new HashMap<>();
             medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
