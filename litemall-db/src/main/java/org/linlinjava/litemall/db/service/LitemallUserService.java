@@ -2,10 +2,12 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallUserMapper;
+import org.linlinjava.litemall.db.domain.IntegretionDetail;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.domain.LitemallUserExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -13,6 +15,10 @@ import java.util.List;
 public class LitemallUserService {
     @Resource
     private LitemallUserMapper userMapper;
+    @Resource
+    private LitemallUserService litemallUserService;
+    @Resource
+    private IntegretionDetailService integretionDetailService;
 
     public LitemallUser findById(Integer userId) {
         return userMapper.selectByPrimaryKey(userId);
@@ -25,7 +31,16 @@ public class LitemallUserService {
     }
 
     public void add(LitemallUser user) {
+        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),null,null,"","")>0){
+            return;
+        }
         userMapper.insertSelective(user);
+        //新用户赠送5积分
+        IntegretionDetail integretionDetail = new IntegretionDetail();
+        integretionDetail.setAmount(5);
+        integretionDetail.setUserId(user.getId()+"");
+        integretionDetail.setType((byte)20);
+        integretionDetailService.add(integretionDetail);
     }
 
     public void update(LitemallUser user) {

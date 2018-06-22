@@ -11,6 +11,7 @@ import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +46,9 @@ public class WxUserController {
     @PostMapping("/create")
     public Object create(@RequestBody LitemallUser user){
         logger.debug(user);
+        if(StringUtils.isEmpty(user.getWeixinOpenid())){
+            return ResponseUtil.badArgument();
+        }
         List<LitemallUser> userList = litemallUserService.querySelective("","",user.getWeixinOpenid(),null,null,"","");
         if(userList!=null && userList.size()>0){
             user.setId(userList.get(0).getId());
