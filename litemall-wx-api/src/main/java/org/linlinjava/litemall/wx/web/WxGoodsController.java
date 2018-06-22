@@ -5,6 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.util.DateUtils;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.db.util.SortUtil;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
@@ -14,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/wx/goods")
@@ -59,6 +59,8 @@ public class WxGoodsController {
     private LitemallAdService litemallAdService;
     @Autowired
     private LitemallUserService litemallUserService;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 商品详情
@@ -432,6 +434,7 @@ public class WxGoodsController {
         // 商品信息
         LitemallGoods info = goodsService.findById(id);
 
+        Map<String, Object> data = new HashMap<>();
         List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(null,userId,id,null,null,"","create_date");
 
         List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
@@ -443,6 +446,13 @@ public class WxGoodsController {
             if(user == null){
                 continue;
             }
+            try {
+                Date date = sdf.parse(collageDetail.getCreateDate());
+                data.put("startDate", date);
+                data.put("endDate", DateUtils.addDay(date,1));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             userVo.put("id", user.getId());
             userVo.put("nickName", user.getNickname());
             userVo.put("avatar", user.getAvatar());
@@ -451,8 +461,7 @@ public class WxGoodsController {
         }
 
         List<LitemallAd> adList = litemallAdService.querySelective("","",null,null,"","");
-        info.setIsexist(0);//显示邀请好友按钮1显示参团按钮，如果已经参团
-        Map<String, Object> data = new HashMap<>();
+        info.setFlag(0);//显示邀请好友按钮1显示参团按钮，如果已经参团
         data.put("adList", adList);
         data.put("userVoList", userVoList);
         data.put("collageDetailList", collageDetailList);
@@ -469,6 +478,7 @@ public class WxGoodsController {
         //团长
         List<CollageDetail> collageDetailList2 = collageDetailService.queryBySelective(orderId,null,null,null,null,"","create_date");
 
+        Map<String, Object> data = new HashMap<>();
         List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
         Map<String, Object> userVo;
         LitemallUser user;
@@ -478,6 +488,13 @@ public class WxGoodsController {
             user = litemallUserService.findById(collageDetail.getUserId());
             if(user == null){
                 continue;
+            }
+            try {
+                Date date = sdf.parse(collageDetail.getCreateDate());
+                data.put("endDate", DateUtils.addDay(date,1));
+                data.put("startDate", date);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
             if(collageDetail.getPid()==0){
                 goodsId = collageDetail.getGoodsId();
@@ -510,11 +527,12 @@ public class WxGoodsController {
         LitemallGoods info = goodsService.findById(goodsId);
         //查询参团人是否针对该商品已经参团
         CollageDetail collageDetail = collageDetailService.queryByPid(orderId,userId);
-        if(collageDetail!=null)
-            info.setIsexist(1);
-        else
-            info.setIsexist(0);
-        Map<String, Object> data = new HashMap<>();
+        if(collageDetail!=null) {
+            info.setFlag(1);
+        }
+        else {
+            info.setFlag(0);
+        }
         data.put("adList", adList);
         data.put("userVoList", userVoList);
         data.put("collageDetailList", collageDetailList);
