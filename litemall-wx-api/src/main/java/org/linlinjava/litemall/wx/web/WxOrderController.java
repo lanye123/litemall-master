@@ -1005,7 +1005,6 @@ public class WxOrderController {
                 orderGoods.setOrderId(order.getId());
                 orderGoodsService.add(orderGoods);
             }
-
             // 删除购物车里面的商品信息
             cartService.clearGoods(userId);
 
