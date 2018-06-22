@@ -508,6 +508,12 @@ public class WxGoodsController {
 
         // 商品信息
         LitemallGoods info = goodsService.findById(goodsId);
+        //查询参团人是否针对该商品已经参团
+        CollageDetail collageDetail = collageDetailService.queryByPid(orderId,userId);
+        if(collageDetail!=null)
+            info.setFlag(1);
+        else
+            info.setFlag(0);
         Map<String, Object> data = new HashMap<>();
         data.put("adList", adList);
         data.put("userVoList", userVoList);

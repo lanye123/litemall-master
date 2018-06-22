@@ -62,6 +62,16 @@ public class LitemallGoods {
 
     private String goodsDesc;
 
+    private Integer flag;
+
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
+    }
+
     public Integer getIntegretions() {
         return integretions;
     }

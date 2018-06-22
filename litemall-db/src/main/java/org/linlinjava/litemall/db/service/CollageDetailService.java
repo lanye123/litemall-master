@@ -60,4 +60,14 @@ public class CollageDetailService {
             criteria.andGoodsIdEqualTo(goodsId);
         return (int)collageDetailMapper.countByExample(example);
     }
+
+    public CollageDetail queryByPid(Integer orderId, Integer userId) {
+        CollageDetailExample example=new CollageDetailExample();
+        CollageDetailExample.Criteria criteria=example.createCriteria();
+        if(!StringUtils.isEmpty(userId))
+            criteria.andUserIdEqualTo(userId);
+        if(!StringUtils.isEmpty(orderId))
+            criteria.andPidEqualTo(orderId);
+        return collageDetailMapper.selectOneByExample(example);
+    }
 }
