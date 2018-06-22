@@ -54,12 +54,12 @@ public class MedalDetailsController {
                 continue;
             }
             userIdDb = medalDetails.getUserId();
-            if(rank==101){
-                break;
-            }
             rank++;
             if(userIdDb.intValue() == userId.intValue()){
                 data.put("rank",rank);
+            }
+            if(rank>=101){
+                continue;
             }
             dataItem = new HashMap<>();
             medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
@@ -79,6 +79,9 @@ public class MedalDetailsController {
             dataItem.put("min",medal.getMin());
 
             returnTotalList.add(dataItem);
+        }
+        if(data.get("rank")==null){
+            data.put("rank",rank);
         }
         data.put("returnTotalList",returnTotalList);
         user = litemallUserService.findById(userId);
@@ -156,11 +159,16 @@ public class MedalDetailsController {
                 continue;
             }
             userIdDb = medalDetails.getUserId();
-            if(rank==101){
-                break;
-            }
             rank++;
             dataItem = new HashMap<>();
+            if(userIdDb.intValue() == userId.intValue()){
+                data.put("rank",rank);
+                dataItem.put("medalName",medalUser.getName());
+                dataItem.put("comment",medalUser.getComment());
+            }
+            if(rank>=101){
+                continue;
+            }
             medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
             user = litemallUserService.findById(medalDetails.getUserId());
             if(user==null){
@@ -176,13 +184,11 @@ public class MedalDetailsController {
             dataItem.put("comment",medal.getComment());
             dataItem.put("max",medal.getMax());
             dataItem.put("min",medal.getMin());
-            if(userIdDb.intValue() == userId.intValue()){
-                data.put("rank",rank);
-                dataItem.put("medalName",medalUser.getName());
-                dataItem.put("comment",medalUser.getComment());
-            }
 
             returnTotalList.add(dataItem);
+        }
+        if(data.get("rank")==null){
+            data.put("rank",rank);
         }
 
         data.put("returnTotalList",returnTotalList);
