@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang3.StringUtils;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.service.ArticleService;
@@ -8,14 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -137,6 +141,55 @@ public class UploadController {
             }
         }
         return ResponseUtil.ok(map);
+    }
+
+    @PostMapping(value = "/batchFileUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object batchFileUpload(HttpServletRequest request) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String,Object> map = new HashMap<>();
+        Map<String,Object> returnMap = new HashMap<>();
+        JSONArray batchFilePath = new JSONArray();
+        List<MultipartFile> files = ((MultipartHttpServletRequest)request).getFiles("file");
+        MultipartFile file;
+        try {
+            for (int i = 0; i < files.size(); ++i) {
+                file = files.get(i);
+                if (!file.isEmpty()) {
+                    String temp = "images" + File.separator + "upload" + File.separator;
+                    // 获取图片的文件名
+                    String fileName = file.getOriginalFilename();
+                    // 获取图片的扩展名
+                    String extensionName = StringUtils.substringAfter(fileName, ".");
+                    // 新的图片文件名 = 获取时间戳+"."图片扩展名
+                    String newFileName = String.valueOf(System.currentTimeMillis()) + "." + extensionName;
+                    // 文件路径
+                    String filePath = webUploadPath.concat(temp);
+
+                    File dest = new File(filePath, newFileName);
+                    if (!dest.getParentFile().exists()) {
+                        dest.getParentFile().mkdirs();
+                    }
+                    // 上传到指定目录
+                    file.transferTo(dest);
+                    // 将反斜杠转换为正斜杠
+                    String data = temp.replaceAll("\\\\", "/") + newFileName;
+                    map.put("tempPath", temp);
+                    map.put("fileName", fileName);
+                    map.put("extensionName", extensionName);
+                    map.put("newFileName", newFileName);
+                    map.put("filePath", filePath);
+                    map.put("data", data);
+                    batchFilePath.add(data);
+                    list.add(map);
+                }
+            }
+            returnMap.put("list",list);
+            returnMap.put("data", batchFilePath);
+            ResponseUtil.ok(returnMap);
+        } catch (IOException e) {
+            return ResponseUtil.fail(0, "上传失败");
+        }
+        return ResponseUtil.ok(returnMap);
     }
 
 
