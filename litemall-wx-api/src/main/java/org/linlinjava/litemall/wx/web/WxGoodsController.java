@@ -456,7 +456,7 @@ public class WxGoodsController {
             userVo.put("id", user.getId());
             userVo.put("nickName", user.getNickname());
             userVo.put("avatar", user.getAvatar());
-            userVo.put("master", collageDetail.getPid());
+            userVo.put("master", collageDetail.getFlag());
             userVoList.add(userVo);
         }
 
@@ -485,13 +485,20 @@ public class WxGoodsController {
             if(user == null){
                 continue;
             }
+            try {
+                Date date = sdf.parse(collageDetail.getCreateDate());
+                data.put("endDate", DateUtils.addDay(date,1));
+                data.put("startDate", date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             if(collageDetail.getFlag()==0){
                 goodsId = collageDetail.getGoodsId();
             }
             userVo.put("id", user.getId());
             userVo.put("avatar", user.getAvatar());
             userVo.put("nickName", user.getNickname());
-            userVo.put("master", collageDetail.getPid());
+            userVo.put("master", collageDetail.getFlag());
             userVoList.add(userVo);
         }
 
