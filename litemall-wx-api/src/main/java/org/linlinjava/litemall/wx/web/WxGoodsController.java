@@ -448,8 +448,8 @@ public class WxGoodsController {
             }
             try {
                 Date date = sdf.parse(collageDetail.getCreateDate());
-                data.put("startDate", date);
-                data.put("endDate", DateUtils.addDay(date,1));
+                data.put("startDate", date.getTime());
+                data.put("endDate", DateUtils.addDay(date,1).getTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -487,8 +487,8 @@ public class WxGoodsController {
             }
             try {
                 Date date = sdf.parse(collageDetail.getCreateDate());
-                data.put("endDate", DateUtils.addDay(date,1));
-                data.put("startDate", date);
+                data.put("endDate", DateUtils.addDay(date,1).getTime());
+                data.put("startDate", date.getTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
