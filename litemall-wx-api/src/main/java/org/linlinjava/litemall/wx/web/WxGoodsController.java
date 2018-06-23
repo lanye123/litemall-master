@@ -59,6 +59,8 @@ public class WxGoodsController {
     private LitemallAdService litemallAdService;
     @Autowired
     private LitemallUserService litemallUserService;
+    @Autowired
+    private IntegretionDetailService integretionDetailService;
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -417,6 +419,12 @@ public class WxGoodsController {
         List<LitemallAd> adList = litemallAdService.querySelective("","",null,null,"","");
 
         Map<String, Object> data = new HashMap<>();
+        //获取当前用户的积分
+        Integer grade=integretionDetailService.sumByUserid(userId+"");
+        if(grade==null){
+            data.put("grade",0);
+        }else
+            data.put("grade",grade);
         data.put("groupCount", groupCount);
         data.put("adList", adList);
         data.put("info", info);
