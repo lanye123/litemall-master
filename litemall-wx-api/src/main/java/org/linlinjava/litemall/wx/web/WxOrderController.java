@@ -12,10 +12,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PreDestroy;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -141,6 +139,7 @@ public class WxOrderController {
                 orderGoodsVo.put("number", orderGoods.getNumber());
                 orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
                 orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
+                orderGoodsVo.put("goodsSpecificationIds", orderGoods.getGoodsSpecificationIds());
                 //orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
                 LitemallGoods goods = goodsService.findById(orderGoods.getGoodsId());
                 if(goods == null){
@@ -263,6 +262,7 @@ public class WxOrderController {
             orderGoodsVo.put("goodsName", orderGoods.getGoodsName());
             orderGoodsVo.put("number", orderGoods.getNumber());
             orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
+            orderGoodsVo.put("goodsSpecificationIds", orderGoods.getGoodsSpecificationIds());
             orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
             //orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
             LitemallGoods goods = goodsService.findById(orderGoods.getGoodsId());

@@ -1,5 +1,6 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
@@ -31,7 +32,7 @@ public class GoodsController {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, order);
+        List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, "create_date desc");
         int total = goodsService.countSelective(goodsSn, name, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
@@ -44,6 +45,18 @@ public class GoodsController {
     public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods){
         if(adminId == null){
             return ResponseUtil.unlogin();
+        }
+        logger.info("before goods："+goods);
+        if(goods.getGallery().contains(",")){
+            String[] gallery = goods.getGallery().split(",");
+            JSONArray galleryArray = new JSONArray();
+            JSONArray jj;
+            for(int i=0;i<gallery.length;i++){
+                jj = JSONArray.parseArray(gallery[i]);
+                galleryArray.add(jj.get(0));
+            }
+            goods.setGallery(galleryArray.toJSONString());
+            logger.info("after goods："+goods);
         }
         goodsService.add(goods);
         return ResponseUtil.ok(goods);
@@ -67,6 +80,18 @@ public class GoodsController {
     public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods){
         if(adminId == null){
             return ResponseUtil.unlogin();
+        }
+        logger.info("before  goods："+goods);
+        if(goods.getGallery().contains(",")){
+            String[] gallery = goods.getGallery().split(",");
+            JSONArray galleryArray = new JSONArray();
+            JSONArray jj;
+            for(int i=0;i<gallery.length;i++){
+                jj = JSONArray.parseArray(gallery[i]);
+                galleryArray.add(jj.get(0));
+            }
+            goods.setGallery(galleryArray.toJSONString());
+            logger.info("after  goods："+goods);
         }
         goodsService.updateById(goods);
         return ResponseUtil.ok(goods);
