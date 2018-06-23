@@ -139,6 +139,7 @@ public class WxOrderController {
                 orderGoodsVo.put("number", orderGoods.getNumber());
                 orderGoodsVo.put("picUrl", orderGoods.getPicUrl());
                 orderGoodsVo.put("goodsSpecificationValues", orderGoods.getGoodsSpecificationValues());
+                orderGoodsVo.put("goodsSpecificationIds", orderGoods.getGoodsSpecificationIds());
                 //orderGoodsVo.put("retailPrice", orderGoods.getRetailPrice());
                 LitemallGoods goods = goodsService.findById(orderGoods.getGoodsId());
                 if(goods == null){
