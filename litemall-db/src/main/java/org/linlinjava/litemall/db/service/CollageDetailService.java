@@ -33,7 +33,7 @@ public class CollageDetailService {
       return collageDetailMapper.selectByExample(example);
     }
 
-    public List<CollageDetail> queryBySelective(Integer orderId,Integer userId,Integer goodsId, Integer page, Integer limit, String sort, String order) {
+    public List<CollageDetail>  queryBySelective(Integer orderId,Integer userId,Integer goodsId, Integer page, Integer limit, String sort, String order) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))

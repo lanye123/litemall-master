@@ -429,13 +429,13 @@ public class WxGoodsController {
     }
 
     @GetMapping("goodsGroup")
-    public Object goodsGroup(Integer userId, Integer id) {
+    public Object goodsGroup(Integer userId, Integer id,Integer orderId) {
 
         // 商品信息
         LitemallGoods info = goodsService.findById(id);
 
         Map<String, Object> data = new HashMap<>();
-        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(null,userId,id,null,null,"","create_date");
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(orderId,userId,id,null,null,"","create_date");
 
         List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
         Map<String, Object> userVo;

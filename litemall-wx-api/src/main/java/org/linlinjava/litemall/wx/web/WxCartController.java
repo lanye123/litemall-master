@@ -224,6 +224,7 @@ public class WxCartController {
             cart.setGoodsSn(goods.getGoodsSn());
             cart.setGoodsName((goods.getName()));
             cart.setPicUrl(goods.getPrimaryPicUrl());
+            cart.setPrice(goods.getCounterPrice());
             cart.setRetailPrice(new BigDecimal(goods.getIntegretion()));
             if(goodsSpecification.getId()!=null)
             cart.setGoodsSpecificationIds(goodsSpecification.getId());
