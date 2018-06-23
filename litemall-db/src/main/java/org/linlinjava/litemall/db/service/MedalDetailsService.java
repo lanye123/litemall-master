@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -72,8 +73,16 @@ public class MedalDetailsService {
         if(!StringUtils.isEmpty(time1) && !StringUtils.isEmpty(time2)){
             criteria.andMDCreateDateBetween(time1,time2);
         }
-        if(page!=null&& limit!=null){
-            PageHelper.startPage(page,limit);
+
+        if(page!=null && limit!=null){
+            BigDecimal bg2 = new BigDecimal(20);
+            BigDecimal bg1 = new BigDecimal(medalDetailsMapper.selectByExample(example).size());
+            double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            Double pageMax = Math.ceil(d3);
+            if(page>pageMax){
+                return null;
+            }
+            PageHelper.startPage(page, limit);
         }
 
         return medalDetailsMapper.selectList(example);

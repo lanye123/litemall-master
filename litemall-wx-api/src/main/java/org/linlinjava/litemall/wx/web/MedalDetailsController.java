@@ -114,6 +114,9 @@ public class MedalDetailsController {
       * @return void
       **/
     private List<Map<String,Object>> returnList(List<MedalDetails> medalDetailsList) {
+        if(medalDetailsList==null || medalDetailsList.size()<=0){
+            return null;
+        }
         List<Map<String,Object>> returnTotalList = new ArrayList<>();
         Medal medal;
         Map<String, Object> dataItem;
