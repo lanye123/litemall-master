@@ -94,4 +94,16 @@ public class CollageDetailService {
             criteria.andUserIdEqualTo(userId);
         return collageDetailMapper.selectOneByExample(example);
     }
+
+    public CollageDetail selectOneByExample(Integer userId, Integer pid) {
+        CollageDetailExample example=new CollageDetailExample();
+        CollageDetailExample.Criteria criteria=example.createCriteria();
+        if(pid!=null)
+            criteria.andPidEqualTo(pid);
+        if(userId!=null)
+            criteria.andUserIdEqualTo(userId);
+        criteria.andStatusEqualTo(0);//参团中
+        return collageDetailMapper.selectOneByExample(example);
+
+    }
 }

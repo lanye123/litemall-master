@@ -36,6 +36,8 @@ public class WxCartController {
     private LitemallAddressService addressService;
     @Autowired
     private LitemallCouponService apiCouponService;
+    @Autowired
+    private CollageDetailService collageDetailService;
 
     /**
      * 购物车
@@ -503,7 +505,8 @@ public class WxCartController {
         // 订单费用
         BigDecimal orderTotalPrice = checkedGoodsPrice.add(freightPrice).subtract(couponPrice);
         BigDecimal actualPrice = orderTotalPrice.subtract(integralPrice);*/
-
+        //查询此人是否已经参团过
+        CollageDetail collageDetail=collageDetailService.selectOneByExample(userId,pid);
         Map<String, Object> data = new HashMap();
         data.put("addressId", addressId);
         data.put("checkedAddress", checkedAddress);
@@ -516,6 +519,10 @@ public class WxCartController {
         data.put("cartId",cartId);
         data.put("pid",pid);
         data.put("checkedGoodsList", checkedGoodsList);
+        if(collageDetail!=null)
+            data.put("isjoin",1);
+        else
+            data.put("isjoin",0);
         return ResponseUtil.ok(data);
     }
 
