@@ -2,6 +2,8 @@ package org.linlinjava.litemall.admin.web;
 
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.Article;
 import org.linlinjava.litemall.db.service.ArticleService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
@@ -35,6 +37,8 @@ public class UploadController {
     private ArticleService articleService;
     public static final String ROOT = "upload-dir";
     private final ResourceLoader resourceLoader;
+
+    private Log log = LogFactory.getLog(UploadController.class);
 
     @Autowired
     public UploadController(ResourceLoader resourceLoader) {
@@ -155,6 +159,7 @@ public class UploadController {
             for (int i = 0; i < files.size(); ++i) {
                 file = files.get(i);
                 if (!file.isEmpty()) {
+                    log.info("第"+i+"个文件上传："+file);
                     String temp = "images" + File.separator + "upload" + File.separator;
                     // 获取图片的文件名
                     String fileName = file.getOriginalFilename();
@@ -170,7 +175,7 @@ public class UploadController {
                         dest.getParentFile().mkdirs();
                     }
                     // 上传到指定目录
-                   // file.transferTo(dest);
+                    file.transferTo(dest);
                     // 将反斜杠转换为正斜杠
                     String data = temp.replaceAll("\\\\", "/") + newFileName;
                     map.put("tempPath", temp);
@@ -182,13 +187,14 @@ public class UploadController {
                     batchFilePath.add(data);
                     list.add(map);
                 }
-            }
-            returnMap.put("list",list);
-            returnMap.put("data", batchFilePath.toJSONString());
-            ResponseUtil.ok(returnMap);
-        } catch (Exception e) {
-            return ResponseUtil.fail(0, "上传失败");
         }
+        returnMap.put("list",list);
+        returnMap.put("data", batchFilePath.toJSONString());
+        log.info("batchFilePath:"+returnMap.get("data"));
+        ResponseUtil.ok(returnMap);
+    } catch (IOException e) {
+        return ResponseUtil.fail(0, "上传失败");
+    }
         return ResponseUtil.ok(returnMap);
     }
 
