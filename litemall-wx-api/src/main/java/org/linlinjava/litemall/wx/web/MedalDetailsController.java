@@ -30,70 +30,24 @@ public class MedalDetailsController {
      *@Date:16:44 2018/5/8
      */
     @GetMapping("totalList")
-    public Object getTotalList(Integer userId){
+    public Object getTotalList(Integer userId,@RequestParam(value = "page", defaultValue = "1")Integer page,@RequestParam(value = "limit", defaultValue = "20")Integer limit){
         if(userId == null){
             return ResponseUtil.badArgument();
         }
+        LitemallUser user = litemallUserService.findById(userId);
+        if(user == null){
+            return ResponseUtil.badArgumentValue();
+        }
         Map<String,Object> data = new HashMap<>();
-        Map<String,Object> dataItem;
-        List<Map<String,Object>> returnTotalList = new ArrayList<>();
-        Medal medal;
-        LitemallUser user;
-        List<MedalDetails> medalDetailsList = medalDetailsService.selectList(null,null,null,null,null,null);
-        for(MedalDetails medalDetails:medalDetailsList){
-            medalDetails.setAmount(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
-        }
-        //去除重复用户
-        medalDetailsList = removeDuplicateUser(medalDetailsList);
-        //对用户成长值进行排序
-        sort(medalDetailsList);
-        Integer userIdDb = null;
-        int rank = 0;
-        for(MedalDetails medalDetails:medalDetailsList){
-            if(userIdDb == medalDetails.getUserId()){
-                continue;
-            }
-            userIdDb = medalDetails.getUserId();
-            rank++;
-            if(userIdDb.intValue() == userId.intValue()){
-                data.put("rank",rank);
-            }
-            if(rank>=101){
-                continue;
-            }
-            dataItem = new HashMap<>();
-            medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
-            user = litemallUserService.findById(medalDetails.getUserId());
-            if(user==null){
-                continue;
-            }
-            dataItem.put("score",medalDetails.getAmount());
-            dataItem.put("rank",rank);
-            dataItem.put("userId",user.getId());
-            dataItem.put("nickName",user.getNickname());
-            dataItem.put("avatar",user.getAvatar());
-            dataItem.put("medalName",medal.getName());
-            dataItem.put("imgUrl",medal.getImgUrl());
-            dataItem.put("comment",medal.getComment());
-            dataItem.put("max",medal.getMax());
-            dataItem.put("min",medal.getMin());
-
-            returnTotalList.add(dataItem);
-        }
-        if(data.get("rank")==null){
-            data.put("rank",rank);
-        }
-        data.put("returnTotalList",returnTotalList);
-        user = litemallUserService.findById(userId);
-        medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null));
-        if(user==null){
-            data.put("score",0);
-            return ResponseUtil.ok(data);
-        }
+        data.put("userId",userId);
+        //排行榜所有人
+        List<MedalDetails> medalDetailsList = medalDetailsService.list(null,"","",page,limit);
+        List<Map<String,Object>> returnTotalList = this.returnList(medalDetailsList);
+        //自己成长值情况
+        this.getMedal(data);
         data.put("nickName",user.getNickname());
         data.put("avatar",user.getAvatar());
-        data.put("score",medalDetailsService.getScoreByUserId(userId,null,null));
-        data.put("medalName",medal.getName());
+        data.put("returnTotalList",returnTotalList);
         return ResponseUtil.ok(data);
     }
 
@@ -125,84 +79,86 @@ public class MedalDetailsController {
      *@Date:10:30 2018/5/9
      */
     @GetMapping("weekList")
-    public Object getWeekList(Integer userId){
+    public Object getWeekList(Integer userId,@RequestParam(value = "page", defaultValue = "1")Integer page,@RequestParam(value = "limit", defaultValue = "20")Integer limit){
         if(userId == null){
             return ResponseUtil.badArgument();
         }
-        //拼装时间参数
+        LitemallUser user = litemallUserService.findById(userId);
+        if(user == null){
+            return ResponseUtil.badArgumentValue();
+        }
+        Map<String,Object> data = new HashMap<>();
+        data.put("userId",userId);
+        //拼装周榜时间参数
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = DateUtils.getCurrentMondayDate();
         String time1 = dateFormat.format(date);
         date = DateUtils.getPreviousSundayDate();
         String time2 = dateFormat.format(date);
+        //排行榜所有人
+        List<MedalDetails> medalDetailsList = medalDetailsService.list(null,time1,time2,page,limit);
+        List<Map<String,Object>> returnTotalList = this.returnList(medalDetailsList);
+        //用户总共成长值情况
+        this.getMedal(data);
+        data.put("nickName",user.getNickname());
+        data.put("avatar",user.getAvatar());
+        data.put("returnTotalList",returnTotalList);
+        return ResponseUtil.ok(data);
+    }
 
-        Map<String,Object> data = new HashMap<>();
-        Map<String,Object> dataItem;
+    /**
+      * @author lanye
+      * @Description 封装排行榜数据
+      * @Date 2018/6/23 17:42
+      * @Param [returnTotalList, medalDetailsList]
+      * @return void
+      **/
+    private List<Map<String,Object>> returnList(List<MedalDetails> medalDetailsList) {
         List<Map<String,Object>> returnTotalList = new ArrayList<>();
         Medal medal;
-        LitemallUser user;
-        //用户当前勋章
-        Medal medalUser = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,null,null));
-        List<MedalDetails> medalDetailsList = medalDetailsService.selectList(null,null,null,null,null,null);
+        Map<String, Object> dataItem;
         for(MedalDetails medalDetails:medalDetailsList){
-            medalDetails.setAmount(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),time1,time2));
-        }
-        //去除重复用户
-        medalDetailsList = removeDuplicateUser(medalDetailsList);
-        //对用户成长值进行排序
-        sort(medalDetailsList);
-        Integer userIdDb = null;
-        int rank = 0;
-        for(MedalDetails medalDetails:medalDetailsList){
-            //剔除重复用户
-            if(userIdDb == medalDetails.getUserId()){
-                continue;
-            }
-            userIdDb = medalDetails.getUserId();
-            rank++;
-            dataItem = new HashMap<>();
-            if(userIdDb.intValue() == userId.intValue()){
-                data.put("rank",rank);
-                dataItem.put("medalName",medalUser.getName());
-                dataItem.put("comment",medalUser.getComment());
-            }
-            if(rank>=101){
-                continue;
-            }
             medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(medalDetails.getUserId(),null,null));
-            user = litemallUserService.findById(medalDetails.getUserId());
-            if(user==null){
-                continue;
-            }
+            dataItem = new HashMap<>();
             dataItem.put("score",medalDetails.getAmount());
-            dataItem.put("rank",rank);
-            dataItem.put("userId",user.getId());
-            dataItem.put("nickName",user.getNickname());
-            dataItem.put("avatar",user.getAvatar());
-            dataItem.put("imgUrl",medal.getImgUrl());
+            dataItem.put("rank",medalDetails.getRank());
+            dataItem.put("userId",medalDetails.getUserId());
+            dataItem.put("nickName",medalDetails.getNickName());
+            dataItem.put("avatar",medalDetails.getAvatar());
             dataItem.put("medalName",medal.getName());
+            dataItem.put("imgUrl",medal.getImgUrl());
             dataItem.put("comment",medal.getComment());
             dataItem.put("max",medal.getMax());
             dataItem.put("min",medal.getMin());
-
             returnTotalList.add(dataItem);
         }
-        if(data.get("rank")==null){
-            data.put("rank",rank);
-        }
+        return returnTotalList;
+    }
 
-        data.put("returnTotalList",returnTotalList);
-        user = litemallUserService.findById(userId);
-        medal = medalDetailsService.getMedalByScore(medalDetailsService.getScoreByUserId(userId,time1,time2));
-        if(user==null){
-            data.put("score",0);
-            return ResponseUtil.ok(data);
+    /**
+      * @author lanye
+      * @Description 获取当前用户得成长值
+      * @Date 2018/6/23 17:35
+      * @Param [userId]
+      * @return java.util.Map<java.lang.String,java.lang.Object>
+      **/
+    private void getMedal(Map<String,Object> data){
+        List<MedalDetails> medalDetailsList2 = medalDetailsService.list(null,"","",null,null);
+        Medal medal;
+        for(MedalDetails medalDetails:medalDetailsList2){
+            if(medalDetails.getUserId()==data.get("userId")){
+                medal = medalDetailsService.getMedalByScore(medalDetails.getAmount());
+                data.put("rank",medalDetails.getRank());
+                data.put("score",medalDetails.getAmount());
+                data.put("medalName",medal.getName());
+            }
         }
-        data.put("nickName",user.getNickname());
-        data.put("avatar",user.getAvatar());
-        data.put("score",medalDetailsService.getScoreByUserId(userId,time1,time2));
-        data.put("medalName",medalUser.getName());
-        return ResponseUtil.ok(data);
+        if(data.get("rank")==null){
+            medal = medalDetailsService.getMedalByScore(0);
+            data.put("rank",0);
+            data.put("score",0);
+            data.put("medalName",medal.getName());
+        }
     }
 
     /**

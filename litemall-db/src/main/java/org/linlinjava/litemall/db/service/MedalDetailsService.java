@@ -62,6 +62,23 @@ public class MedalDetailsService {
         return medalDetailsMapper.selectByExample(example);
     }
 
+    public List<MedalDetails> list(Integer userId,String time1,String time2,Integer page,Integer limit) {
+        MedalDetailsExample example = new MedalDetailsExample();
+        MedalDetailsExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(userId)){
+            criteria.andUserIdEqualTo(userId);
+        }
+        if(!StringUtils.isEmpty(time1) && !StringUtils.isEmpty(time2)){
+            criteria.andMDCreateDateBetween(time1,time2);
+        }
+        if(page!=null&& limit!=null){
+            PageHelper.startPage(page,limit);
+        }
+
+        return medalDetailsMapper.selectList(example);
+    }
+
     /**
      *@param :score
      *@return :Medal

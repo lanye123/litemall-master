@@ -1,8 +1,5 @@
 package org.linlinjava.litemall.db.domain;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
 public class MedalDetails {
     private Integer id;
 
@@ -21,6 +18,36 @@ public class MedalDetails {
     private Byte type;
 
     private Integer amount;
+
+    private String avatar;
+
+    private String nickName;
+
+    private Integer rank;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
+    }
 
     public Integer getId() {
         return id;

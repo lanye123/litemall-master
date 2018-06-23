@@ -12,6 +12,13 @@
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="amount" jdbcType="INTEGER" property="amount" />
   </resultMap>
+  <resultMap id="BaseResultMap2" type="org.linlinjava.litemall.db.domain.MedalDetails">
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickName" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -339,5 +346,53 @@
       order by ${example.orderByClause}
     </if>
     limit 1
+  </select>
+  <select id="selectList" parameterType="org.linlinjava.litemall.db.domain.MedalDetailsExample" resultMap="BaseResultMap2">
+    SELECT
+      obj.user_id,obj.amount,obj.avatar,obj.nickName,@rownum := @rownum + 1 AS rank
+    FROM
+    (
+      SELECT
+        MD.user_id,
+        SUM(MD.amount) amount,
+        u.avatar avatar,
+        u.nickname nickName
+      FROM
+        medal_details MD
+      LEFT JOIN litemall_user u ON MD.user_id = u.id
+    <if test="_parameter != null">
+      <where>
+        <foreach collection="oredCriteria" item="criteria" separator="or">
+          <if test="criteria.valid">
+            <trim prefix="(" prefixOverrides="and" suffix=")">
+              <foreach collection="criteria.criteria" item="criterion">
+                <choose>
+                  <when test="criterion.noValue">
+                    and ${criterion.condition}
+                  </when>
+                  <when test="criterion.singleValue">
+                    and ${criterion.condition} #{criterion.value}
+                  </when>
+                  <when test="criterion.betweenValue">
+                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                  </when>
+                  <when test="criterion.listValue">
+                    and ${criterion.condition}
+                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                      #{listItem}
+                    </foreach>
+                  </when>
+                </choose>
+              </foreach>
+            </trim>
+          </if>
+        </foreach>
+      </where>
+    </if>
+      GROUP BY MD.user_id
+      ORDER BY amount DESC
+    ) AS obj,
+    (SELECT @rownum := 0) r
+
   </select>
 </mapper>

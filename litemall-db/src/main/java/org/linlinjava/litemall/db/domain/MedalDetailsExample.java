@@ -550,6 +550,11 @@ public class MedalDetailsExample {
             return (Criteria) this;
         }
 
+        public Criteria andMDCreateDateBetween(String value1, String value2) {
+            addCriterion("MD.create_date between", value1, value2, "createDate");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateDateNotBetween(String value1, String value2) {
             addCriterion("create_date not between", value1, value2, "createDate");
             return (Criteria) this;
