@@ -192,8 +192,13 @@ public class WxOrderController {
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> orderVo = new HashMap<String, Object>();
         //查出该笔订单的拼团信息
-        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(orderId,null,null,null,null,"","create_date");
-        List<CollageDetail> collageDetailList2 = collageDetailService.queryById(orderId);
+        Integer pid=null;
+        CollageDetail detail=collageDetailService.findByOrderId(orderId,userId);
+        if(detail!=null&&detail.getPid()!=null){
+            pid =detail.getPid();
+        }
+
+        List<CollageDetail> collageDetailList = collageDetailService.queryById(pid);
 
         List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
         Map<String, Object> userVo;
@@ -213,33 +218,9 @@ public class WxOrderController {
                 continue;
             }
             userVo.put("id", user.getId());
-            userVo.put("nickName", user.getNickname());
-            userVo.put("avatar", user.getAvatar());
-            if(collageDetail.getPid()==0){
-                userVo.put("master", 0);
-                goodsId = collageDetail.getGoodsId();
-            }else{
-                userVo.put("master", 1);
-            }
-            userVoList.add(userVo);
-        }
-        for (CollageDetail collageDetail : collageDetailList2) {
-            if(userId == collageDetail.getUserId()){
-                orderVo.put("sno",collageDetail.getSno());
-                if(collageDetail.getCreateDate().contains(".0")){
-                    collageDetail.setCreateDate(collageDetail.getCreateDate().substring(0,collageDetail.getCreateDate().length()-2));
-                }
-                orderVo.put("groupTime", collageDetail.getCreateDate());
-            }
-            userVo = new HashMap<>();
-            user = litemallUserService.findById(collageDetail.getUserId());
-            if(user == null){
-                continue;
-            }
-            userVo.put("id", user.getId());
             userVo.put("avatar", user.getAvatar());
             userVo.put("nickName", user.getNickname());
-            if(collageDetail.getPid()==0){
+            if(collageDetail.getFlag()==0){
                 userVo.put("master", 0);
                 goodsId = collageDetail.getGoodsId();
             }else{

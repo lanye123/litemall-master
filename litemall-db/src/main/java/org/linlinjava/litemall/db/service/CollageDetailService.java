@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.CollageDetailMapper;
 import org.linlinjava.litemall.db.domain.CollageDetail;
 import org.linlinjava.litemall.db.domain.CollageDetailExample;
+import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -68,6 +69,7 @@ public class CollageDetailService {
             criteria.andUserIdEqualTo(userId);
         if(!StringUtils.isEmpty(orderId))
             criteria.andPidEqualTo(orderId);
+        criteria.andFlagEqualTo(1);
         return collageDetailMapper.selectOneByExample(example);
     }
 
@@ -81,5 +83,15 @@ public class CollageDetailService {
         if(pid!=null)
             criteria.andPidEqualTo(pid);
         return collageDetailMapper.selectByExample(example);
+    }
+
+    public CollageDetail findByOrderId(Integer orderId,Integer userId) {
+        CollageDetailExample example=new CollageDetailExample();
+        CollageDetailExample.Criteria criteria=example.createCriteria();
+        if(orderId!=null)
+            criteria.andOrderIdEqualTo(orderId);
+        if(userId!=null)
+            criteria.andUserIdEqualTo(userId);
+        return collageDetailMapper.selectOneByExample(example);
     }
 }

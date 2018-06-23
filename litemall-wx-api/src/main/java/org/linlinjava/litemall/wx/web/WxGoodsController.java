@@ -472,46 +472,20 @@ public class WxGoodsController {
 
     @GetMapping("shareGroup")
     public Object shareGroup(Integer orderId,Integer userId) {
-
-        //团员
+        //Integer pid=collageDetailService.findByOrderId(orderId);
         List<CollageDetail> collageDetailList = collageDetailService.queryById(orderId);
-        //团长
-        List<CollageDetail> collageDetailList2 = collageDetailService.queryBySelective(orderId,null,null,null,null,"","create_date");
-
         Map<String, Object> data = new HashMap<>();
         List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
         Map<String, Object> userVo;
         LitemallUser user;
         Integer goodsId = null;
-        for (CollageDetail collageDetail : collageDetailList2) {
-            userVo = new HashMap<>();
-            user = litemallUserService.findById(collageDetail.getUserId());
-            if(user == null){
-                continue;
-            }
-            try {
-                Date date = sdf.parse(collageDetail.getCreateDate());
-                data.put("endDate", DateUtils.addDay(date,1));
-                data.put("startDate", date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            if(collageDetail.getPid()==0){
-                goodsId = collageDetail.getGoodsId();
-            }
-            userVo.put("id", user.getId());
-            userVo.put("avatar", user.getAvatar());
-            userVo.put("master", collageDetail.getPid());
-            userVo.put("nickName", user.getNickname());
-            userVoList.add(userVo);
-        }
         for (CollageDetail collageDetail : collageDetailList) {
             userVo = new HashMap<>();
             user = litemallUserService.findById(collageDetail.getUserId());
             if(user == null){
                 continue;
             }
-            if(collageDetail.getPid()==0){
+            if(collageDetail.getFlag()==0){
                 goodsId = collageDetail.getGoodsId();
             }
             userVo.put("id", user.getId());
