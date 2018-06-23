@@ -170,7 +170,7 @@ public class UploadController {
                         dest.getParentFile().mkdirs();
                     }
                     // 上传到指定目录
-                    file.transferTo(dest);
+                   // file.transferTo(dest);
                     // 将反斜杠转换为正斜杠
                     String data = temp.replaceAll("\\\\", "/") + newFileName;
                     map.put("tempPath", temp);
@@ -184,9 +184,9 @@ public class UploadController {
                 }
             }
             returnMap.put("list",list);
-            returnMap.put("data", batchFilePath);
+            returnMap.put("data", batchFilePath.toJSONString());
             ResponseUtil.ok(returnMap);
-        } catch (IOException e) {
+        } catch (Exception e) {
             return ResponseUtil.fail(0, "上传失败");
         }
         return ResponseUtil.ok(returnMap);

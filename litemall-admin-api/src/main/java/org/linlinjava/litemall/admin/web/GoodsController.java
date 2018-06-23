@@ -31,7 +31,7 @@ public class GoodsController {
             return ResponseUtil.unlogin();
         }
 
-        List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, order);
+        List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, "create_date desc");
         int total = goodsService.countSelective(goodsSn, name, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);

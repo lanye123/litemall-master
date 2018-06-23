@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.linlinjava.litemall.db.dao.LitemallGoodsSpecificationMapper;
 import org.linlinjava.litemall.db.domain.LitemallGoodsSpecification;
 import org.linlinjava.litemall.db.domain.LitemallGoodsSpecificationExample;
@@ -33,6 +34,9 @@ public class LitemallGoodsSpecificationService {
 
         if(goodsId != null){
             criteria.andGoodsIdEqualTo(goodsId);
+        }
+        if(StringUtils.isNotEmpty(order)){
+            example.setOrderByClause(order);
         }
         criteria.andDeletedEqualTo(false);
 
