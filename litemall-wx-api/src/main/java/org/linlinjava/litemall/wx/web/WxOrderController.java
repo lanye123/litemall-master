@@ -207,6 +207,7 @@ public class WxOrderController {
         for (CollageDetail collageDetail : collageDetailList) {
             if(userId == collageDetail.getUserId()){
                 orderVo.put("sno",collageDetail.getSno());
+                orderVo.put("wincode",collageDetail.getWincode());
                 if(collageDetail.getCreateDate().contains(".0")){
                     collageDetail.setCreateDate(collageDetail.getCreateDate().substring(0,collageDetail.getCreateDate().length()-2));
                 }
