@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.CollageDetailMapper;
 import org.linlinjava.litemall.db.domain.CollageDetail;
 import org.linlinjava.litemall.db.domain.CollageDetailExample;
-import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -106,5 +105,14 @@ public class CollageDetailService {
         criteria.andStatusEqualTo(0);//参团中
         return collageDetailMapper.selectOneByExample(example);
 
+    }
+
+
+    public CollageDetail findById(Integer id) {
+        return collageDetailMapper.selectByPrimaryKey(id);
+    }
+
+    public void deleteById(Integer id) {
+        collageDetailMapper.deleteByPrimaryKey(id);
     }
 }

@@ -1,9 +1,10 @@
 package org.linlinjava.litemall.db.dao;
 
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.linlinjava.litemall.db.domain.CollageDetail;
 import org.linlinjava.litemall.db.domain.CollageDetailExample;
+
+import java.util.List;
 
 public interface CollageDetailMapper {
     long countByExample(CollageDetailExample example);
@@ -57,4 +58,8 @@ public interface CollageDetailMapper {
     CollageDetail selectByPrimaryKeySelective(@Param("selective") CollageDetail.Column ... selective);
 
     Integer countByPid(Integer pid);
+
+    CollageDetail selectByPrimaryKey(Integer id);
+
+    int deleteByPrimaryKey(Integer id);
 }

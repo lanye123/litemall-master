@@ -98,7 +98,7 @@ public class LitemallOrderService {
         return orderMapper.updateByPrimaryKeySelective(order);
     }
 
-    public List<LitemallOrder> querySelective(Integer userId, String orderSn, Integer page, Integer size, String sort, String order) {
+    public List<LitemallOrder> querySelective(Integer userId, String orderSn,Integer orderType,Short orderStatus, Integer page, Integer size, String sort, String order) {
         LitemallOrderExample example = new LitemallOrderExample();
         LitemallOrderExample.Criteria criteria = example.createCriteria();
 
@@ -107,6 +107,12 @@ public class LitemallOrderService {
         }
         if(!StringUtils.isEmpty(orderSn)){
             criteria.andOrderSnEqualTo(orderSn);
+        }
+        if(!StringUtils.isEmpty(orderType)){
+            criteria.andOrderTypeEqualTo(orderType);
+        }
+        if(!StringUtils.isEmpty(orderStatus)){
+            criteria.andOrderStatusEqualTo(orderStatus);
         }
         criteria.andDeletedEqualTo(false);
 
@@ -114,7 +120,7 @@ public class LitemallOrderService {
         return orderMapper.selectByExample(example);
     }
 
-    public int countSelective(Integer userId, String orderSn, Integer page, Integer size, String sort, String order) {
+    public int countSelective(Integer userId, String orderSn,Integer orderType,Short orderStatus, Integer page, Integer size, String sort, String order) {
         LitemallOrderExample example = new LitemallOrderExample();
         LitemallOrderExample.Criteria criteria = example.createCriteria();
 
@@ -123,6 +129,12 @@ public class LitemallOrderService {
         }
         if(!StringUtils.isEmpty(orderSn)){
             criteria.andOrderSnEqualTo(orderSn);
+        }
+        if(!StringUtils.isEmpty(orderType)){
+            criteria.andOrderTypeEqualTo(orderType);
+        }
+        if(!StringUtils.isEmpty(orderStatus)){
+            criteria.andOrderStatusEqualTo(orderStatus);
         }
         criteria.andDeletedEqualTo(false);
 

@@ -112,6 +112,10 @@
       order by ${example.orderByClause}
     </if>
   </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from collage_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
   <delete id="deleteByExample" parameterType="org.linlinjava.litemall.db.domain.CollageDetailExample">
     delete from collage_detail
     <if test="_parameter != null">
@@ -328,5 +332,11 @@
       ${column.value}
     </foreach>
     from collage_detail
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from collage_detail
+    where id = #{id,jdbcType=INTEGER}
   </select>
 </mapper>
