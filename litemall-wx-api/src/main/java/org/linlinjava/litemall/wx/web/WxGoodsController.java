@@ -448,6 +448,7 @@ public class WxGoodsController {
         List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
         Map<String, Object> userVo;
         LitemallUser user = null;
+        Date date2 = null;
         for (CollageDetail collageDetail : collageDetailList) {
             userVo = new HashMap<>();
             user = litemallUserService.findById(collageDetail.getUserId());
@@ -455,9 +456,15 @@ public class WxGoodsController {
                 continue;
             }
             try {
+                if(collageDetail.getFlag()==0){
+                    date2 = sdf.parse(collageDetail.getCreateDate());
+                }
                 Date date = sdf.parse(collageDetail.getCreateDate());
                 data.put("startDate", date.getTime());
                 data.put("endDate", DateUtils.addDay(date,1).getTime());
+                if(date2!=null){
+                    data.put("endDate", DateUtils.addDay(date2,1).getTime());
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -494,6 +501,7 @@ public class WxGoodsController {
         Map<String, Object> userVo;
         LitemallUser user;
         Integer goodsId = null;
+        Date date2 = null;
         for (CollageDetail collageDetail : collageDetailList) {
             userVo = new HashMap<>();
             user = litemallUserService.findById(collageDetail.getUserId());
@@ -501,9 +509,15 @@ public class WxGoodsController {
                 continue;
             }
             try {
+                if(collageDetail.getFlag()==0){
+                    date2 = sdf.parse(collageDetail.getCreateDate());
+                }
                 Date date = sdf.parse(collageDetail.getCreateDate());
                 data.put("endDate", DateUtils.addDay(date,1).getTime());
                 data.put("startDate", date.getTime());
+                if(date2!=null){
+                    data.put("endDate", DateUtils.addDay(date2,1).getTime());
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
