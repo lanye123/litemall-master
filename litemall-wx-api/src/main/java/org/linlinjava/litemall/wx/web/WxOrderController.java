@@ -6,6 +6,7 @@ import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.*;
 import org.linlinjava.litemall.wx.annotation.LoginUser;
+import org.linlinjava.litemall.wx.util.CharacterUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -1027,15 +1028,16 @@ public class WxOrderController {
         if(pid!=0){
             Integer countPerson=collageDetailService.countByPid(pid);
             if(countPerson==person_num){
-                //更新订单状态为拼团成功
                 List<CollageDetail> detailList=collageDetailService.queryByPids(pid);
                 for(CollageDetail details:detailList){
+                    //更新订单状态为拼团成功
                    LitemallOrder orders= orderService.findById(details.getOrderId());
                    orders.setOrderStatus((short) 1);
                     orderService.updateById(orders);
+                    //派发兑奖码
+                    details.setSno(CharacterUtils.getRandomString(12));
+                    collageDetailService.update(details);
                 }
-                //派发兑奖码
-
             }
         }
         Map<String, Object> data = new HashMap<>();
