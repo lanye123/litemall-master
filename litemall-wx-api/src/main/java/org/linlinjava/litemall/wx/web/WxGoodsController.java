@@ -469,7 +469,14 @@ public class WxGoodsController {
         }
 
         List<LitemallAd> adList = litemallAdService.querySelective("","",null,null,"","");
-        info.setIsexist(0);//显示邀请好友按钮1显示参团按钮，如果已经参团
+        //查询参团人是否针对该商品已经参团
+        CollageDetail collageDetail = collageDetailService.queryByPid(orderId,userId);
+        if(collageDetail!=null) {
+            info.setIsexist(1);
+        }
+        else {
+            info.setIsexist(0);
+        }
         data.put("adList", adList);
         data.put("userVoList", userVoList);
         data.put("collageDetailList", collageDetailList);
