@@ -69,7 +69,7 @@ public class CollageDetailService {
             criteria.andUserIdEqualTo(userId);
         if(!StringUtils.isEmpty(orderId))
             criteria.andPidEqualTo(orderId);
-        criteria.andFlagEqualTo(1);
+        //criteria.andFlagEqualTo(1);
         return collageDetailMapper.selectOneByExample(example);
     }
 
