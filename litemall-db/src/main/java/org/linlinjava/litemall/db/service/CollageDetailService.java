@@ -82,6 +82,7 @@ public class CollageDetailService {
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(pid!=null)
             criteria.andPidEqualTo(pid);
+        criteria.andStatusEqualTo(0);//拼团成功待开奖记录
         return collageDetailMapper.selectByExample(example);
     }
 
