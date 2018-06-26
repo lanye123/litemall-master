@@ -1036,6 +1036,7 @@ public class WxOrderController {
                    orders.setOrderStatus((short) 1);
                     orderService.updateById(orders);
                     //派发兑奖码
+                    details.setStatus(1);
                     details.setSno(CharacterUtils.getRandomString(12));
                     collageDetailService.update(details);
                 }
