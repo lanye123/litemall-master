@@ -114,25 +114,6 @@ public class GoodsController {
         return ResponseUtil.ok(goods);
     }
 
-    public static void main(String[] args){
-        LitemallGoods goods = new LitemallGoods();
-        String aa = "#[\"images/goods/1530001841517.jpg\"]#[\"images/goods/1530001841718.jpg\"]";
-        String bb = "[\"https://sunlands.ministudy.com/images/goods/iphonexdetail1.jpg\",\"https://sunlands.ministudy.com/images/goods/iphonexdetail2.jpg\",\"https://sunlands.ministudy.com/images/goods/iphonexdetail3.jpg\",\"https://sunlands.ministudy.com/images/goods/iphonexdetail4.jpg\"]#[\"images/upload/1529999891852.jpg\"]#[\"images/upload/1529999892008.jpg\"]#[\"images/upload/1529999892120.jpg\"]#";
-        goods.setGallery(aa);
-        String[] gallery = goods.getGallery().split("#");
-        JSONArray galleryArray = new JSONArray();
-        JSONArray jj;
-        for(int i=0;i<gallery.length;i++){
-            if(StringUtils.isEmpty(gallery[i])){
-                continue;
-            }
-            jj = JSONArray.parseArray(gallery[i]);
-            galleryArray.add(PREFIX+jj.get(0));
-        }
-        goods.setGallery(galleryArray.toJSONString());
-        System.out.println(galleryArray.toJSONString());
-    }
-
     @PostMapping("/delete")
     public Object delete(@RequestBody LitemallGoods goods){
         goodsService.deleteById(goods.getId());

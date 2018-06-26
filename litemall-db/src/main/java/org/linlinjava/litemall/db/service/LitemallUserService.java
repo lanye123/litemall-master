@@ -31,7 +31,7 @@ public class LitemallUserService {
     }
 
     public void add(LitemallUser user) {
-        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),null,null,"","")>0){
+        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),"",null,null,"","")>0){
             return;
         }
         userMapper.insertSelective(user);
@@ -47,7 +47,7 @@ public class LitemallUserService {
         userMapper.updateByPrimaryKeySelective(user);
     }
 
-    public List<LitemallUser> querySelective(String username, String mobile, String weixinOpenid,  Integer page, Integer size, String sort, String order) {
+    public List<LitemallUser> querySelective(String username, String mobile, String weixinOpenid, String registerIp, Integer page, Integer size, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
 
@@ -59,6 +59,9 @@ public class LitemallUserService {
         }
         if(!StringUtils.isEmpty(weixinOpenid)){
             criteria.andWeixinOpenidEqualTo(weixinOpenid);
+        }
+        if(!StringUtils.isEmpty(registerIp)){
+            criteria.andRegisterIpEqualTo(registerIp);
         }
         criteria.andDeletedEqualTo(false);
 
@@ -68,7 +71,7 @@ public class LitemallUserService {
         return userMapper.selectByExample(example);
     }
 
-    public int countSeletive(String username, String mobile, String weixinOpenid, Integer page, Integer size, String sort, String order) {
+    public int countSeletive(String username, String mobile, String weixinOpenid, String registerIp, Integer page, Integer size, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
 
@@ -80,6 +83,9 @@ public class LitemallUserService {
         }
         if(!StringUtils.isEmpty(weixinOpenid)){
             criteria.andWeixinOpenidEqualTo(weixinOpenid);
+        }
+        if(!StringUtils.isEmpty(registerIp)){
+            criteria.andRegisterIpEqualTo(registerIp);
         }
         criteria.andDeletedEqualTo(false);
 
