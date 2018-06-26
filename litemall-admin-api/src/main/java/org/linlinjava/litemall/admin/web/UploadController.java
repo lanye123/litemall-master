@@ -160,7 +160,7 @@ public class UploadController {
                 file = files.get(i);
                 if (!file.isEmpty()) {
                     log.info("第"+i+"个文件上传："+file);
-                    String temp = "images" + File.separator + "upload" + File.separator;
+                    String temp = "images" + File.separator + "goods" + File.separator;
                     // 获取图片的文件名
                     String fileName = file.getOriginalFilename();
                     // 获取图片的扩展名
