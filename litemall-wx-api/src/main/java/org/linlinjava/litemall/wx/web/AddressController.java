@@ -56,6 +56,9 @@ public class AddressController {
         if(litemallAddress == null){
             return ResponseUtil.badArgument();
         }
+        if(litemallAddress.getUserId() == null){
+            return ResponseUtil.badArgument();
+        }
         List<LitemallAddress> litemallAddressList = litemallAddressService.queryByUid(litemallAddress.getUserId());
         if(litemallAddressList!=null && litemallAddressList.size()>0){
             LitemallAddress litemallAddressDb = litemallAddressList.get(0);

@@ -27,6 +27,7 @@ public class CollageController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
+        order = "create_date desc";
         List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(userId, orderId, goodsId,status,page, limit, sort, order);
         int total = collageDetailService.count(userId, orderId,goodsId,status);
 

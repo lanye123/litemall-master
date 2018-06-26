@@ -7,6 +7,7 @@ import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,6 +21,8 @@ public class GoodsController {
 
     @Autowired
     private LitemallGoodsService goodsService;
+
+    private final static String PREFIX = "https://sunlands.ministudy.com/";
 
     @GetMapping("/list")
     public Object list(String goodsSn, String name,
@@ -39,24 +42,30 @@ public class GoodsController {
     @PostMapping("/create")
     public Object create(@RequestBody LitemallGoods goods){
         logger.info("before goods："+goods);
-        if(goods.getGallery().contains(",")){
-            String[] gallery = goods.getGallery().split(",");
+        if(goods.getGallery().contains("#")){
+            String[] gallery = goods.getGallery().split("#");
             JSONArray galleryArray = new JSONArray();
             JSONArray jj;
             for(int i=0;i<gallery.length;i++){
+                if(StringUtils.isEmpty(gallery[i])){
+                    continue;
+                }
                 jj = JSONArray.parseArray(gallery[i]);
-                galleryArray.add(jj.get(0));
+                galleryArray.add(PREFIX+jj.get(0));
             }
             goods.setGallery(galleryArray.toJSONString());
             logger.info("after goods："+goods);
         }
-        if(goods.getListPicUrl().contains(",")){
-            String[] listPicUrl = goods.getListPicUrl().split(",");
+        if(goods.getListPicUrl().contains("#")){
+            String[] listPicUrl = goods.getListPicUrl().split("#");
             JSONArray listPicUrlArray = new JSONArray();
             JSONArray jj;
             for(int i=0;i<listPicUrl.length;i++){
+                if(StringUtils.isEmpty(listPicUrl[i])){
+                    continue;
+                }
                 jj = JSONArray.parseArray(listPicUrl[i]);
-                listPicUrlArray.add(jj.get(0));
+                listPicUrlArray.add(PREFIX+jj.get(0));
             }
             goods.setListPicUrl(listPicUrlArray.toJSONString());
             logger.info("after goods："+goods);
@@ -79,24 +88,24 @@ public class GoodsController {
     @PostMapping("/update")
     public Object update(@RequestBody LitemallGoods goods){
         logger.info("before  goods："+goods);
-        if(goods.getGallery().contains(",")){
-            String[] gallery = goods.getGallery().split(",");
+        if(goods.getGallery().contains("#")){
+            String[] gallery = goods.getGallery().split("#");
             JSONArray galleryArray = new JSONArray();
             JSONArray jj;
-            for(int i=0;i<gallery.length;i++){
+            for(int i=1;i<gallery.length;i++){
                 jj = JSONArray.parseArray(gallery[i]);
-                galleryArray.add(jj.get(0));
+                galleryArray.add(PREFIX+jj.get(0));
             }
             goods.setGallery(galleryArray.toJSONString());
             logger.info("after  goods："+goods);
         }
-        if(goods.getListPicUrl().contains(",")){
-            String[] listPicUrl = goods.getListPicUrl().split(",");
+        if(goods.getListPicUrl().contains("#")){
+            String[] listPicUrl = goods.getListPicUrl().split("#");
             JSONArray listPicUrlArray = new JSONArray();
             JSONArray jj;
-            for(int i=0;i<listPicUrl.length;i++){
+            for(int i=1;i<listPicUrl.length;i++){
                 jj = JSONArray.parseArray(listPicUrl[i]);
-                listPicUrlArray.add(jj.get(0));
+                listPicUrlArray.add(PREFIX+jj.get(0));
             }
             goods.setListPicUrl(listPicUrlArray.toJSONString());
             logger.info("after  goods："+goods);
