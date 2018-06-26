@@ -32,7 +32,7 @@ public class CollageDetailService {
       return collageDetailMapper.selectByExample(example);
     }
 
-    public List<CollageDetail>  queryBySelective(Integer orderId,Integer userId,Integer goodsId, Integer page, Integer limit, String sort, String order) {
+    public List<CollageDetail>  queryBySelective(Integer orderId,Integer userId,Integer goodsId,Integer status, Integer page, Integer limit, String sort, String order) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -41,6 +41,8 @@ public class CollageDetailService {
             criteria.andOrderIdEqualTo(orderId);
         if(!StringUtils.isEmpty(goodsId))
             criteria.andGoodsIdEqualTo(goodsId);
+        if(!StringUtils.isEmpty(status))
+            criteria.andStatusEqualTo(status);
         if(!StringUtils.isEmpty(order))
             criteria.example().setOrderByClause(order);
         if(page!=null && limit!=null){
@@ -49,7 +51,7 @@ public class CollageDetailService {
         return collageDetailMapper.selectByExample(example);
     }
 
-    public int count(Integer orderId,Integer userId,Integer goodsId) {
+    public int count(Integer orderId,Integer userId,Integer goodsId,Integer status) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -58,6 +60,8 @@ public class CollageDetailService {
             criteria.andOrderIdEqualTo(orderId);
         if(!StringUtils.isEmpty(goodsId))
             criteria.andGoodsIdEqualTo(goodsId);
+        if(!StringUtils.isEmpty(status))
+            criteria.andStatusEqualTo(status);
         return (int)collageDetailMapper.countByExample(example);
     }
 
