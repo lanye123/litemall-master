@@ -24,15 +24,15 @@ public class OrderController {
 
     @GetMapping("/list")
     public Object list(@LoginAdmin Integer adminId,
-                       Integer userId, String orderSn,
+                       Integer userId, String orderSn,Integer orderType,Short orderStatus,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
         if(adminId == null){
             return ResponseUtil.fail401();
         }
-        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn, page, limit, sort, order);
-        int total = orderService.countSelective(userId, orderSn, page, limit, sort, order);
+        List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn,orderType,orderStatus, page, limit, sort, order);
+        int total = orderService.countSelective(userId, orderSn, orderType,orderStatus, page, limit, sort, order);
 
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);

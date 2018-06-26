@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.CollageDetailMapper;
 import org.linlinjava.litemall.db.domain.CollageDetail;
 import org.linlinjava.litemall.db.domain.CollageDetailExample;
-import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -33,7 +32,7 @@ public class CollageDetailService {
       return collageDetailMapper.selectByExample(example);
     }
 
-    public List<CollageDetail>  queryBySelective(Integer orderId,Integer userId,Integer goodsId, Integer page, Integer limit, String sort, String order) {
+    public List<CollageDetail>  queryBySelective(Integer orderId,Integer userId,Integer goodsId,Integer status, Integer page, Integer limit, String sort, String order) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -42,6 +41,8 @@ public class CollageDetailService {
             criteria.andOrderIdEqualTo(orderId);
         if(!StringUtils.isEmpty(goodsId))
             criteria.andGoodsIdEqualTo(goodsId);
+        if(!StringUtils.isEmpty(status))
+            criteria.andStatusEqualTo(status);
         if(!StringUtils.isEmpty(order))
             criteria.example().setOrderByClause(order);
         if(page!=null && limit!=null){
@@ -50,7 +51,7 @@ public class CollageDetailService {
         return collageDetailMapper.selectByExample(example);
     }
 
-    public int count(Integer orderId,Integer userId,Integer goodsId) {
+    public int count(Integer orderId,Integer userId,Integer goodsId,Integer status) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -59,6 +60,8 @@ public class CollageDetailService {
             criteria.andOrderIdEqualTo(orderId);
         if(!StringUtils.isEmpty(goodsId))
             criteria.andGoodsIdEqualTo(goodsId);
+        if(!StringUtils.isEmpty(status))
+            criteria.andStatusEqualTo(status);
         return (int)collageDetailMapper.countByExample(example);
     }
 
@@ -106,5 +109,14 @@ public class CollageDetailService {
         criteria.andStatusEqualTo(0);//参团中
         return collageDetailMapper.selectOneByExample(example);
 
+    }
+
+
+    public CollageDetail findById(Integer id) {
+        return collageDetailMapper.selectByPrimaryKey(id);
+    }
+
+    public void deleteById(Integer id) {
+        collageDetailMapper.deleteByPrimaryKey(id);
     }
 }

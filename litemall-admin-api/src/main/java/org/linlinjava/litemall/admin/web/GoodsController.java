@@ -3,7 +3,6 @@ package org.linlinjava.litemall.admin.web;
 import com.alibaba.fastjson.JSONArray;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.db.domain.LitemallGoods;
 import org.linlinjava.litemall.db.service.LitemallGoodsService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
@@ -23,17 +22,13 @@ public class GoodsController {
     private LitemallGoodsService goodsService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
-                       String goodsSn, String name,
+    public Object list(String goodsSn, String name,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                       @RequestParam(value = "limit2", defaultValue = "10") Integer limit2,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
 
-        List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit, sort, "create_date desc");
-        int total = goodsService.countSelective(goodsSn, name, page, limit, sort, order);
+        List<LitemallGoods> goodsList = goodsService.querySelective(goodsSn, name, page, limit2, sort, "create_date desc");
+        int total = goodsService.countSelective(goodsSn, name, page, limit2, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", goodsList);
@@ -42,10 +37,7 @@ public class GoodsController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create(@RequestBody LitemallGoods goods){
         logger.info("before goods："+goods);
         if(goods.getGallery().contains(",")){
             String[] gallery = goods.getGallery().split(",");
@@ -58,15 +50,23 @@ public class GoodsController {
             goods.setGallery(galleryArray.toJSONString());
             logger.info("after goods："+goods);
         }
+        if(goods.getListPicUrl().contains(",")){
+            String[] listPicUrl = goods.getListPicUrl().split(",");
+            JSONArray listPicUrlArray = new JSONArray();
+            JSONArray jj;
+            for(int i=0;i<listPicUrl.length;i++){
+                jj = JSONArray.parseArray(listPicUrl[i]);
+                listPicUrlArray.add(jj.get(0));
+            }
+            goods.setListPicUrl(listPicUrlArray.toJSONString());
+            logger.info("after goods："+goods);
+        }
         goodsService.add(goods);
         return ResponseUtil.ok(goods);
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read(Integer id){
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -77,10 +77,7 @@ public class GoodsController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update(@RequestBody LitemallGoods goods){
         logger.info("before  goods："+goods);
         if(goods.getGallery().contains(",")){
             String[] gallery = goods.getGallery().split(",");
@@ -93,15 +90,23 @@ public class GoodsController {
             goods.setGallery(galleryArray.toJSONString());
             logger.info("after  goods："+goods);
         }
+        if(goods.getListPicUrl().contains(",")){
+            String[] listPicUrl = goods.getListPicUrl().split(",");
+            JSONArray listPicUrlArray = new JSONArray();
+            JSONArray jj;
+            for(int i=0;i<listPicUrl.length;i++){
+                jj = JSONArray.parseArray(listPicUrl[i]);
+                listPicUrlArray.add(jj.get(0));
+            }
+            goods.setListPicUrl(listPicUrlArray.toJSONString());
+            logger.info("after  goods："+goods);
+        }
         goodsService.updateById(goods);
         return ResponseUtil.ok(goods);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGoods goods){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete(@RequestBody LitemallGoods goods){
         goodsService.deleteById(goods.getId());
         return ResponseUtil.ok();
     }
