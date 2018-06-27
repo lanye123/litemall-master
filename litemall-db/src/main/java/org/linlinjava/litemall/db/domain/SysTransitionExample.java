@@ -645,6 +645,66 @@ public class SysTransitionExample {
             addCriterion("deleted not between", value1, value2, "deleted");
             return (Criteria) this;
         }
+
+        public Criteria andCorpsIdIsNull() {
+            addCriterion("corps_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdIsNotNull() {
+            addCriterion("corps_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdEqualTo(Integer value) {
+            addCriterion("corps_id =", value, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdNotEqualTo(Integer value) {
+            addCriterion("corps_id <>", value, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdGreaterThan(Integer value) {
+            addCriterion("corps_id >", value, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("corps_id >=", value, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdLessThan(Integer value) {
+            addCriterion("corps_id <", value, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("corps_id <=", value, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdIn(List<Integer> values) {
+            addCriterion("corps_id in", values, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdNotIn(List<Integer> values) {
+            addCriterion("corps_id not in", values, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdBetween(Integer value1, Integer value2) {
+            addCriterion("corps_id between", value1, value2, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCorpsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("corps_id not between", value1, value2, "corpsId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

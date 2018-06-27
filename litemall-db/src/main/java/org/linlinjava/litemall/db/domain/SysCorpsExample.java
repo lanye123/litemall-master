@@ -645,6 +645,66 @@ public class SysCorpsExample {
             addCriterion("deleted not between", value1, value2, "deleted");
             return (Criteria) this;
         }
+
+        public Criteria andBuIdIsNull() {
+            addCriterion("bu_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdIsNotNull() {
+            addCriterion("bu_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdEqualTo(Integer value) {
+            addCriterion("bu_id =", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdNotEqualTo(Integer value) {
+            addCriterion("bu_id <>", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdGreaterThan(Integer value) {
+            addCriterion("bu_id >", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("bu_id >=", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdLessThan(Integer value) {
+            addCriterion("bu_id <", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdLessThanOrEqualTo(Integer value) {
+            addCriterion("bu_id <=", value, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdIn(List<Integer> values) {
+            addCriterion("bu_id in", values, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdNotIn(List<Integer> values) {
+            addCriterion("bu_id not in", values, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdBetween(Integer value1, Integer value2) {
+            addCriterion("bu_id between", value1, value2, "buId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBuIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("bu_id not between", value1, value2, "buId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

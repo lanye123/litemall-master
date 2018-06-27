@@ -223,7 +223,7 @@
         </table>
         <table tableName="wx_mess">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>
+        </table>-->
         <table tableName="learn_planner">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
@@ -235,7 +235,10 @@
         </table>
         <table tableName="sys_dept">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>-->
+        </table>
+        <table tableName="sys_transition">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
         <table tableName="litemall_user">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="last_login_time"/>
