@@ -19,10 +19,10 @@ public class SysTransitionService {
         return sysTransitionMapper.selectByPrimaryKey(id);
     }
 
-    public SysTransition queryByCorpsId(Integer corpsId) {
+    public List<SysTransition> queryByCorpsId(Integer corpsId) {
         SysTransitionExample example = new SysTransitionExample();
         example.or().andCorpsIdEqualTo(corpsId);
-        return sysTransitionMapper.selectOneByExample(example);
+        return sysTransitionMapper.selectByExample(example);
     }
 
     public void add(SysTransition sysTransition) {

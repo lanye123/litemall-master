@@ -36,7 +36,7 @@ public class SysCorpsController {
         return ResponseUtil.ok(data);
     }
 
-    @GetMapping("/deptId")
+    @GetMapping("/buId")
     public Object getBuByDeptId(Integer buId){
         if(StringUtils.isEmpty(buId)){
             return ResponseUtil.fail402();

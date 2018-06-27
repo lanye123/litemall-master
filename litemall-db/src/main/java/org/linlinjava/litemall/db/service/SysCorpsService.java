@@ -19,10 +19,10 @@ public class SysCorpsService {
         return sysCorpsMapper.selectByPrimaryKey(id);
     }
 
-    public SysCorps queryByBuId(Integer buId) {
+    public List<SysCorps> queryByBuId(Integer buId) {
         SysCorpsExample example = new SysCorpsExample();
         example.or().andBuIdEqualTo(buId);
-        return sysCorpsMapper.selectOneByExample(example);
+        return sysCorpsMapper.selectByExample(example);
     }
 
     public void add(SysCorps sysCorps) {
