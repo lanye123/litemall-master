@@ -37,7 +37,10 @@ public class SysDeptController {
 
     @GetMapping("/all")
     public Object queryAll(){
-        return ResponseUtil.ok(sysDeptService.queryAll());
+        Map<String, Object> data = new HashMap<>();
+        List<SysDept> deptList=sysDeptService.queryAll();
+        data.put("items",deptList);
+        return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")
