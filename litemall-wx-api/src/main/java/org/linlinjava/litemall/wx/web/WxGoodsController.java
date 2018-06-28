@@ -461,9 +461,9 @@ public class WxGoodsController {
                 }
                 Date date = sdf.parse(collageDetail.getCreateDate());
                 data.put("startDate", date.getTime());
-                data.put("endDate", DateUtils.addDay(date,1).getTime());
+                data.put("endDate", DateUtils.addDay(date,1).getTime()-60000);
                 if(date2!=null){
-                    data.put("endDate", DateUtils.addDay(date2,1).getTime());
+                    data.put("endDate", DateUtils.addDay(date2,1).getTime()-60000);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -513,10 +513,10 @@ public class WxGoodsController {
                     date2 = sdf.parse(collageDetail.getCreateDate());
                 }
                 Date date = sdf.parse(collageDetail.getCreateDate());
-                data.put("endDate", DateUtils.addDay(date,1).getTime());
+                data.put("endDate", DateUtils.addDay(date,1).getTime()-30000);
                 data.put("startDate", date.getTime());
                 if(date2!=null){
-                    data.put("endDate", DateUtils.addDay(date2,1).getTime());
+                    data.put("endDate", DateUtils.addDay(date2,1).getTime()-30000);
                 }
             } catch (ParseException e) {
                 e.printStackTrace();

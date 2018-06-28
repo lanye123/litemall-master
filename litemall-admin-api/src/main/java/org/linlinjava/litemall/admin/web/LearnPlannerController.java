@@ -9,12 +9,12 @@ import org.linlinjava.litemall.db.service.WxConfigService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -34,6 +34,13 @@ public class LearnPlannerController {
 
     @PostMapping("add")
     public Object add(@RequestBody LearnPlanner planner){
+        if(StringUtils.isEmpty(planner.getOpenid()) || StringUtils.isEmpty(planner.getBuId()) || StringUtils.isEmpty(planner.getCorpsId()) ){
+            return ResponseUtil.ok();
+        }
+        LearnPlanner learnPlannerDb = learnPlannerService.queryByOpenid(planner.getOpenid());
+        if(learnPlannerDb!=null){
+            return ResponseUtil.ok(learnPlannerDb);
+        }
         WxConfig config=wxConfigService.getToken();
         JSONObject object=new JSONObject();
         LearnPlanner learnPlanner=new LearnPlanner();
@@ -86,5 +93,7 @@ public class LearnPlannerController {
         return ResponseUtil.ok(planner);
 
     }
+
+
 
 }

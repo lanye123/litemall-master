@@ -72,14 +72,15 @@ public class UserController {
 
     @GetMapping("/validate")
     public Object validate(String mobile,String registerIp){
+
         if(StringUtil.isEmpty(registerIp) || StringUtil.isEmpty(mobile)){
-            return ResponseUtil.fail402();
+            return ResponseUtil.ok("001","");
         }
 
         List<LitemallUser> userList = userService.querySelective("", mobile,"" ,registerIp,null, null, null, null);
         if(userList != null && userList.size()>0){
             return ResponseUtil.ok(userList.get(0));
         }
-        return ResponseUtil.ok();
+        return ResponseUtil.ok("001","");
     }
 }
