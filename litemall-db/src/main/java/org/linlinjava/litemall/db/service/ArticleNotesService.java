@@ -16,11 +16,15 @@ public class ArticleNotesService {
     private ArticleNotesMapper articleNotesMapper;
 
 
-    public List<ArticleNotes> findByArtitleid(Integer artitle_id) {
+    public List<ArticleNotes> findByArtitleid(Integer artitle_id,Integer status) {
         ArticleNotesExample example=new ArticleNotesExample();
         ArticleNotesExample.Criteria criteria=example.createCriteria();
-        if (artitle_id!=null)
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status.byteValue());
+        }
+        if (artitle_id!=null) {
             criteria.andArtileIdEqualTo(artitle_id);
+        }
         return articleNotesMapper.selectByExample(example);
     }
 
