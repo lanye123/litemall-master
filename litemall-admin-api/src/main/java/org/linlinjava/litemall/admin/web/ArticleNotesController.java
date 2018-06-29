@@ -63,14 +63,14 @@ public class ArticleNotesController {
     private String webUploadPath;
 
     @GetMapping("/list")
-    public Object list(String artileName, String name,String no,String content,Integer artileId,Integer sortNo,
+    public Object list(String artileName, String name,String no,String content,Integer artileId,Integer sortNo,Integer status,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
-        order = "create_date";
-        List<ArticleNotes> articleNotesList = articleNotesService.querySelective(artileName, name,no,content,sortNo,artileId, page, limit, sort, order);
-        int total = articleNotesService.countSelective(artileName, name,no,content,sortNo, artileId,page, limit, sort, order);
+        order = "create_date desc";
+        List<ArticleNotes> articleNotesList = articleNotesService.querySelective(artileName, name,no,content,sortNo,artileId,status, page, limit, sort, order);
+        int total = articleNotesService.countSelective(artileName, name,no,content,sortNo, artileId,status,page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         //点亮次数 分享次数
@@ -79,6 +79,9 @@ public class ArticleNotesController {
             articleNotes.setShineCount(medalDetailsService.countSeletive(articleNotes.getId(),articleNotes.getArtileId(),null,null,null,null,null,"",""));
             if(articleNotes.getCreateDate().contains(".0")){
                 articleNotes.setCreateDate(articleNotes.getCreateDate().substring(0,articleNotes.getCreateDate().length()-2));
+            }
+            if(articleNotes.getOnlineDate()!=null && articleNotes.getOnlineDate().contains("00:00:00.0")){
+                articleNotes.setOnlineDate(articleNotes.getOnlineDate().substring(0,articleNotes.getOnlineDate().length()-11));
             }
         }
 
@@ -103,6 +106,25 @@ public class ArticleNotesController {
             saveCode(articleNotes.getArtileId(),articleNotes.getId(),articleNotes.getName());//保存该详情页面小程序二维码
         articleNotesService.update(articleNotes);
         return ResponseUtil.ok(articleNotes);
+    }
+
+    @PostMapping("/online")
+    public Object online(@RequestBody ArticleNotes articleNotes){
+        if(articleNotes == null){
+            return ResponseUtil.badArgument();
+        }
+        ArticleNotes articleNotesDb = articleNotesService.findByID(articleNotes.getId());
+        if(articleNotesDb==null){
+            return ResponseUtil.ok();
+        }
+        if(articleNotesDb.getStatus()==0){
+            articleNotesDb.setStatus((byte)1);
+            articleNotesService.update(articleNotesDb);
+        }else if(articleNotesDb.getStatus()==1){
+            articleNotesDb.setStatus((byte)0);
+            articleNotesService.update(articleNotesDb);
+        }
+        return ResponseUtil.ok(articleNotesDb);
     }
 
     @PostMapping("/updateArticlePhoto")

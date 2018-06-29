@@ -24,7 +24,7 @@ public class ArticleNotesService {
         return articleNotesMapper.selectByExample(example);
     }
 
-    public List<ArticleNotes> querySelective(String artileName, String name,String no,String content,Integer sortNo,Integer articleId,Integer page, Integer size, String sort, String order) {
+    public List<ArticleNotes> querySelective(String artileName, String name,String no,String content,Integer sortNo,Integer articleId,Integer status, Integer page, Integer size, String sort, String order) {
         ArticleNotesExample example = new ArticleNotesExample();
         ArticleNotesExample.Criteria criteria = example.createCriteria();
 
@@ -43,6 +43,9 @@ public class ArticleNotesService {
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
         }
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status.byteValue());
+        }
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
         }
@@ -54,7 +57,7 @@ public class ArticleNotesService {
         return articleNotesMapper.selectByExample(example);
     }
 
-    public int countSelective(String artileName, String name,String no,String content,Integer sortNo,Integer articleId,Integer page, Integer size, String sort, String order) {
+    public int countSelective(String artileName, String name,String no,String content,Integer sortNo,Integer articleId,Integer status, Integer page, Integer size, String sort, String order) {
         ArticleNotesExample example = new ArticleNotesExample();
         ArticleNotesExample.Criteria criteria = example.createCriteria();
 
@@ -69,6 +72,9 @@ public class ArticleNotesService {
         }
         if(!StringUtils.isEmpty(sortNo)){
             criteria.andSortNoEqualTo(sortNo);
+        }
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status.byteValue());
         }
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
