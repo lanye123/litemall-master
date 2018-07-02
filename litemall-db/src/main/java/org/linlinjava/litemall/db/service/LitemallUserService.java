@@ -156,6 +156,9 @@ public class LitemallUserService {
         if(!StringUtils.isEmpty(end_date)){
             criteria.andEndDateEqualTo(end_date);
         }
+        if(page!=null && limit!=null){
+            PageHelper.startPage(page, limit);
+        }
         return userMapper.listByPlanner(example);
     }
 
