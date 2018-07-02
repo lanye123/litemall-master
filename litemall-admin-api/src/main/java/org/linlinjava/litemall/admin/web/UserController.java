@@ -116,4 +116,44 @@ public class UserController {
         return ResponseUtil.ok(data);
     }
 
+    @PostMapping("/updateStatus")
+    public Object updateStatus(Integer userId,String flag){
+        if(userId == null){
+            return ResponseUtil.badArgumentValue();
+        }
+
+        LitemallUser userDb = userService.findById(userId);
+        if(userDb==null){
+            return ResponseUtil.ok();
+        }
+        if("1".equals(flag)){
+            if(userDb.getIsjoin()==0){
+                userDb.setIsjoin(1);
+                userService.update(userDb);
+            }else if(userDb.getIsjoin()==1){
+                userDb.setIsjoin(0);
+                userService.update(userDb);
+            }
+        }else if("2".equals(flag)){
+            if(userDb.getIntention()==0){
+                userDb.setIntention(1);
+                userService.update(userDb);
+            }else if(userDb.getIntention()==1){
+                userDb.setIntention(0);
+                userService.update(userDb);
+            }
+        }else if("3".equals(flag)){
+            if(userDb.getIssigin()==0){
+                userDb.setIssigin(1);
+                userService.update(userDb);
+            }else if(userDb.getIssigin()==1){
+                userDb.setIssigin(0);
+                userService.update(userDb);
+            }
+        }else {
+            return ResponseUtil.fail(110,"不支持的参数类型");
+        }
+        return ResponseUtil.ok(userDb);
+    }
+
 }

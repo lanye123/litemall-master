@@ -27,6 +27,30 @@ public class ArticleReply {
     private String fromMobile;
     private String articleId;
 
+    public String getFromRegisterIp() {
+        return fromRegisterIp;
+    }
+
+    public void setFromRegisterIp(String fromRegisterIp) {
+        this.fromRegisterIp = fromRegisterIp;
+    }
+
+    public String getFromMobile() {
+        return fromMobile;
+    }
+
+    public void setFromMobile(String fromMobile) {
+        this.fromMobile = fromMobile;
+    }
+
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
+    }
+
     public String getTo_nickname() {
         return to_nickname;
     }
