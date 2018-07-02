@@ -16,15 +16,19 @@ public class ArticleNotesService {
     private ArticleNotesMapper articleNotesMapper;
 
 
-    public List<ArticleNotes> findByArtitleid(Integer artitle_id) {
+    public List<ArticleNotes> findByArtitleid(Integer artitle_id,Integer status) {
         ArticleNotesExample example=new ArticleNotesExample();
         ArticleNotesExample.Criteria criteria=example.createCriteria();
-        if (artitle_id!=null)
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status.byteValue());
+        }
+        if (artitle_id!=null) {
             criteria.andArtileIdEqualTo(artitle_id);
+        }
         return articleNotesMapper.selectByExample(example);
     }
 
-    public List<ArticleNotes> querySelective(String artileName, String name,String no,String content,Integer sortNo,Integer articleId,Integer page, Integer size, String sort, String order) {
+    public List<ArticleNotes> querySelective(String artileName, String name,String no,String content,Integer sortNo,Integer articleId,Integer status, Integer page, Integer size, String sort, String order) {
         ArticleNotesExample example = new ArticleNotesExample();
         ArticleNotesExample.Criteria criteria = example.createCriteria();
 
@@ -43,6 +47,9 @@ public class ArticleNotesService {
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
         }
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status.byteValue());
+        }
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
         }
@@ -54,7 +61,7 @@ public class ArticleNotesService {
         return articleNotesMapper.selectByExample(example);
     }
 
-    public int countSelective(String artileName, String name,String no,String content,Integer sortNo,Integer articleId,Integer page, Integer size, String sort, String order) {
+    public int countSelective(String artileName, String name,String no,String content,Integer sortNo,Integer articleId,Integer status, Integer page, Integer size, String sort, String order) {
         ArticleNotesExample example = new ArticleNotesExample();
         ArticleNotesExample.Criteria criteria = example.createCriteria();
 
@@ -69,6 +76,9 @@ public class ArticleNotesService {
         }
         if(!StringUtils.isEmpty(sortNo)){
             criteria.andSortNoEqualTo(sortNo);
+        }
+        if(!StringUtils.isEmpty(status)){
+            criteria.andStatusEqualTo(status.byteValue());
         }
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");

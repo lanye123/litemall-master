@@ -174,7 +174,7 @@ public class ArticleController {
         int readCount;
         for(Article article:articleList){
             dataItem = new HashMap<>();
-            allCount = articleNotesService.findByArtitleid(article.getArticleId()).size();
+            allCount = articleNotesService.findByArtitleid(article.getArticleId(),null).size();
             if(allCount == 0){
                 continue;
             }
@@ -271,7 +271,7 @@ public class ArticleController {
         //评论数量
         Long comentCount=articleCommentService.countSelective(article_id);
         //目录列表
-        List<ArticleNotes> notesList=articleNotesService.findByArtitleid(article_id);
+        List<ArticleNotes> notesList=articleNotesService.findByArtitleid(article_id,1);
         List<Map<String, Object>> notesVoList = new ArrayList<>(notesList.size());
         List<ArticleDetails> articleDetailsList;
         for(ArticleNotes notes : notesList) {

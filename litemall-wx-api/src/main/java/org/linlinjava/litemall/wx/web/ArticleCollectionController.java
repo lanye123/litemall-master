@@ -48,7 +48,7 @@ public class ArticleCollectionController {
         Article article;
         for(ArticleCollection articleCollection:articleCollectionList){
             dataItem = new HashMap<>();
-            allCount = articleNotesService.findByArtitleid(articleCollection.getArticleId()).size();
+            allCount = articleNotesService.findByArtitleid(articleCollection.getArticleId(),null).size();
 /*            if(allCount == 0){
                 continue;
             }*/
@@ -97,7 +97,7 @@ public class ArticleCollectionController {
             return ResponseUtil.fail(501,"非法请求");
         }
         Map<String,Object> data = new HashMap<>();
-        List<ArticleNotes> articleNotes = articleNotesService.findByArtitleid(artile_id);
+        List<ArticleNotes> articleNotes = articleNotesService.findByArtitleid(artile_id,1);
         List<ArticleDetails> articleDetailsList = articleDetailsService.selectList(userId,null,artile_id,null,"");
         data.put("articleNotes",articleNotes);
         data.put("readNo",articleDetailsList.size());

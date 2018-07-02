@@ -238,7 +238,7 @@ public class ArticleController {
                 }
             }else
             {
-                List<ArticleNotes> notesList=articleNotesService.querySelective(null,null,null,null,null,article.getArticleId(),1,20,null,"sort_no asc");
+                List<ArticleNotes> notesList=articleNotesService.querySelective(null,null,null,null,null,article.getArticleId(),null,1,20,null,"sort_no asc");
                 if(notesList.size()>0){
                     ArticleNotes notes=notesList.get(0);
                     url=articleurl.replace("ARTICLEID",Integer.toString(notes.getArtileId())).replace("NOTESID",Integer.toString(notes.getId())).replace("NAME",notes.getName());
