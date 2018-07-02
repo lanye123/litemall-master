@@ -189,5 +189,7 @@ public class LitemallUserService {
         return userMapper.countByPlanner(example);
     }
 
-
+    public List<LitemallUser> tjCorpsPie(){
+        return userMapper.tjByCorps();
+    }
 }

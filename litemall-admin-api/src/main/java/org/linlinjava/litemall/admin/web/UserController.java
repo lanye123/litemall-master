@@ -10,6 +10,7 @@ import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,20 @@ public class UserController {
             return ResponseUtil.ok(userList.get(0));
         }
         return ResponseUtil.ok("001","");
+    }
+
+    public Object tjCorpsPie(){
+        List<LitemallUser> corpsList=userService.tjCorpsPie();
+        List nameList=new ArrayList();
+        if(corpsList.size()>0&&corpsList!=null){
+            for (LitemallUser user:corpsList) {
+                nameList.add(user.getName());
+            }
+        }
+        Map<String,Object> data=new HashMap<>();
+        data.put("series",corpsList);
+        data.put("legend",nameList);
+        return ResponseUtil.ok(data);
     }
 
 }
