@@ -86,14 +86,16 @@ public class CollageController {
         if(StringUtils.isEmpty(sno)){
             return ResponseUtil.fail(102,"sno是空的");
         }
-        LitemallOrder order=litemallOrderService.findById(collageDetailV.getOrderId());
-        if(order!=null)
-            order.setOrderStatus((short) OrderUtil.win);
-           litemallOrderService.update(order);
         List<CollageDetail> collageDetailList = collageDetailService.queryBySelective2(collageDetailV.getPid(), null, collageDetail.getGoodsId(),1,null, null, null, null);
         for(CollageDetail collageDetailDb:collageDetailList){
             collageDetailDb.setWincode(sno);
             collageDetailService.update(collageDetailDb);
+            LitemallOrder order=litemallOrderService.findById(collageDetailDb.getOrderId());
+            if(order!=null) {
+                order.setOrderStatus((short) OrderUtil.win);
+                litemallOrderService.update(order);
+            }
+
         }
         return ResponseUtil.ok();
     }

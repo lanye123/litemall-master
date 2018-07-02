@@ -36,6 +36,7 @@ public class OrderUtil {
     public static final Short GOURP_FAIL= 2;
     public static final Short EXCHANGE_SUCCESS= 3;
     public static final Short win= 4;
+    public static final Short fail= 5;
 
 
     public static String orderStatusText(LitemallOrder order) {
