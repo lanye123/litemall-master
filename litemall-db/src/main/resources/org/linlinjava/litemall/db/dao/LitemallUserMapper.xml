@@ -22,6 +22,7 @@
     <result column="isjoin" jdbcType="INTEGER" property="isjoin" />
     <result column="issigin" jdbcType="INTEGER" property="issigin" />
     <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -84,7 +85,7 @@
   <sql id="Base_Column_List">
     id, username, `password`, gender, birthday, last_login_time, last_login_ip, user_level, 
     nickname, mobile, register_ip, avatar, weixin_openid, `status`, add_time, deleted, 
-    pid, isjoin, issigin, address
+    pid, isjoin, issigin, address, account
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallUserExample" resultMap="BaseResultMap">
     select
@@ -160,14 +161,14 @@
       register_ip, avatar, weixin_openid, 
       `status`, add_time, deleted, 
       pid, isjoin, issigin, 
-      address)
+      address,account)
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
       #{birthday,jdbcType=DATE}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, 
       #{userLevel,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
       #{registerIp,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{weixinOpenid,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
       #{pid,jdbcType=VARCHAR}, #{isjoin,jdbcType=INTEGER}, #{issigin,jdbcType=INTEGER}, 
-      #{address,jdbcType=VARCHAR})
+      #{address,jdbcType=VARCHAR},#{account,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallUser">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -232,6 +233,9 @@
       <if test="address != null">
         address,
       </if>
+      <if test="account != null">
+        account,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -290,6 +294,9 @@
       </if>
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -362,6 +369,9 @@
       <if test="record.address != null">
         address = #{record.address,jdbcType=VARCHAR},
       </if>
+      <if test="record.account != null">
+        address = #{record.account,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -388,7 +398,8 @@
       pid = #{record.pid,jdbcType=VARCHAR},
       isjoin = #{record.isjoin,jdbcType=INTEGER},
       issigin = #{record.issigin,jdbcType=INTEGER},
-      address = #{record.address,jdbcType=VARCHAR}
+      address = #{record.address,jdbcType=VARCHAR},
+    account = #{record.account,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -453,6 +464,9 @@
       <if test="address != null">
         address = #{address,jdbcType=VARCHAR},
       </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -476,7 +490,8 @@
       pid = #{pid,jdbcType=VARCHAR},
       isjoin = #{isjoin,jdbcType=INTEGER},
       issigin = #{issigin,jdbcType=INTEGER},
-      address = #{address,jdbcType=VARCHAR}
+      address = #{address,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallUserExample" resultMap="BaseResultMap">
@@ -514,5 +529,29 @@
       order by ${example.orderByClause}
     </if>
     limit 1
+  </select>
+
+  <select id="listByPlanner" parameterType="org.linlinjava.litemall.db.domain.LitemallUserExample" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from v_user_planner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="countByPlanner" parameterType="org.linlinjava.litemall.db.domain.LitemallUserExample" resultType="java.lang.Integer">
+    select
+    count(*)
+    from v_user_planner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
   </select>
 </mapper>

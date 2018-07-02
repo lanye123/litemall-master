@@ -164,6 +164,35 @@ public class LitemallUserExample {
             addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
+        public Criteria andDeptIdEqualTo(Integer value) {
+                addCriterion("dept_id =", value, "dept_id");
+            return (Criteria) this;
+        }
+        public Criteria andBuIdEqualTo(Integer value) {
+            addCriterion("bu_id =", value, "bu_id");
+            return (Criteria) this;
+        }
+        public Criteria andCorpsIdEqualTo(Integer value) {
+            addCriterion("corps_id =", value, "corps_id");
+            return (Criteria) this;
+        }
+        public Criteria andTransitionIdEqualTo(Integer value) {
+            addCriterion("transition_id =", value, "transition_id");
+            return (Criteria) this;
+        }
+        public Criteria andStartDateEqualTo(String value) {
+            addCriterion("DATE_FORMAT(add_time,'%Y-%m-%d')>=", value, "start_date");
+            return (Criteria) this;
+        }
+        public Criteria andEndDateEqualTo(String value) {
+            addCriterion("DATE_FORMAT(add_time,'%Y-%m-%d')<=", value, "end_date");
+            return (Criteria) this;
+        }
+        public Criteria andAccountEqualTo(String value) {
+            addCriterion("account =", value, "account");
+            return (Criteria) this;
+        }
+
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;

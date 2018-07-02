@@ -44,6 +44,70 @@ public class LitemallUser {
 
     private String address;
 
+    private Integer dept_id;
+    private Integer bu_id;
+    private Integer corps_id;
+    private Integer transition_id;
+    private String start_date;
+    private String end_date;
+    private String account;
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public Integer getDept_id() {
+        return dept_id;
+    }
+
+    public void setDept_id(Integer dept_id) {
+        this.dept_id = dept_id;
+    }
+
+    public Integer getBu_id() {
+        return bu_id;
+    }
+
+    public void setBu_id(Integer bu_id) {
+        this.bu_id = bu_id;
+    }
+
+    public Integer getCorps_id() {
+        return corps_id;
+    }
+
+    public void setCorps_id(Integer corps_id) {
+        this.corps_id = corps_id;
+    }
+
+    public Integer getTransition_id() {
+        return transition_id;
+    }
+
+    public void setTransition_id(Integer transition_id) {
+        this.transition_id = transition_id;
+    }
+
+    public String getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
+    }
+
+    public String getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(String end_date) {
+        this.end_date = end_date;
+    }
+
     public Integer getId() {
         return id;
     }
