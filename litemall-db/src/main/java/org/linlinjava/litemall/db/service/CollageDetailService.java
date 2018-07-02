@@ -51,6 +51,25 @@ public class CollageDetailService {
         return collageDetailMapper.selectByExample(example);
     }
 
+    public List<CollageDetail>  queryBySelective2(Integer pid,Integer userId,Integer goodsId,Integer status, Integer page, Integer limit, String sort, String order) {
+        CollageDetailExample example=new CollageDetailExample();
+        CollageDetailExample.Criteria criteria=example.createCriteria();
+        if(!StringUtils.isEmpty(userId))
+            criteria.andUserIdEqualTo(userId);
+        if(pid!=null)
+            criteria.andPidEqualTo(pid);
+        if(!StringUtils.isEmpty(goodsId))
+            criteria.andGoodsIdEqualTo(goodsId);
+        if(!StringUtils.isEmpty(status))
+            criteria.andStatusEqualTo(status);
+        if(!StringUtils.isEmpty(order))
+            criteria.example().setOrderByClause(order);
+        if(page!=null && limit!=null){
+            PageHelper.startPage(page,limit);
+        }
+        return collageDetailMapper.selectByExample(example);
+    }
+
     public int count(Integer orderId,Integer userId,Integer goodsId,Integer status) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();

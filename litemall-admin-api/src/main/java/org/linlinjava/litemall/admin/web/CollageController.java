@@ -3,7 +3,10 @@ package org.linlinjava.litemall.admin.web;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.CollageDetail;
+import org.linlinjava.litemall.db.domain.LitemallOrder;
 import org.linlinjava.litemall.db.service.CollageDetailService;
+import org.linlinjava.litemall.db.service.LitemallOrderService;
+import org.linlinjava.litemall.db.util.OrderUtil;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -20,6 +23,8 @@ public class CollageController {
 
     @Autowired
     private CollageDetailService collageDetailService;
+    @Autowired
+    private LitemallOrderService litemallOrderService;
 
     @GetMapping("/list")
     public Object list(Integer userId, Integer orderId,Integer goodsId,Integer status,
@@ -81,7 +86,11 @@ public class CollageController {
         if(StringUtils.isEmpty(sno)){
             return ResponseUtil.fail(102,"sno是空的");
         }
-        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(null, null, collageDetail.getGoodsId(),1,null, null, null, null);
+        LitemallOrder order=litemallOrderService.findById(collageDetailV.getOrderId());
+        if(order!=null)
+            order.setOrderStatus((short) OrderUtil.win);
+           litemallOrderService.update(order);
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective2(collageDetailV.getPid(), null, collageDetail.getGoodsId(),1,null, null, null, null);
         for(CollageDetail collageDetailDb:collageDetailList){
             collageDetailDb.setWincode(sno);
             collageDetailService.update(collageDetailDb);

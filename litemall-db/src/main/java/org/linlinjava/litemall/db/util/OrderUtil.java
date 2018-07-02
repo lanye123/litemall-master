@@ -35,6 +35,7 @@ public class OrderUtil {
     public static final Short GOURP_SUCCESS= 1;
     public static final Short GOURP_FAIL= 2;
     public static final Short EXCHANGE_SUCCESS= 3;
+    public static final Short win= 4;
 
 
     public static String orderStatusText(LitemallOrder order) {
@@ -83,6 +84,12 @@ public class OrderUtil {
 
         if (status == 3) {
             return "兑换成功";
+        }
+        if (status == 4) {
+            return "已中奖";
+        }
+        if (status == 5) {
+            return "未中奖";
         }
 
         Assert.state(false, "orderStatus不支持");
