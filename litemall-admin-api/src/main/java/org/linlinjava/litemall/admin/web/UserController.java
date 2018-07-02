@@ -101,7 +101,7 @@ public class UserController {
         }
         return ResponseUtil.ok("001","");
     }
-
+    @GetMapping("/tjCorpsPie")
     public Object tjCorpsPie(){
         List<LitemallUser> corpsList=userService.tjCorpsPie();
         List nameList=new ArrayList();
