@@ -42,14 +42,14 @@ public class UserController {
 
     @GetMapping("/listPlanner")
     public Object listPlanner(
-                       Integer dept_id,Integer bu_id,Integer corps_id,String pid,
-                       Integer transition_id,String start_date, String end_date,String mobile,
+                       Integer deptId,Integer buId,Integer corpsId,String pid,
+                       Integer transitionId,String startDate, String endDate,String mobile,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        List<LitemallUser> userList = userService.queryPlannerSelective(pid,dept_id,bu_id,corps_id,transition_id,start_date,end_date, mobile, "","",page, limit, sort, order);
+        List<LitemallUser> userList = userService.queryPlannerSelective(pid,deptId,buId,corpsId,transitionId,startDate,endDate, mobile, "","",page, limit, sort, order);
         int total=0;
-        total= userService.countPlannerSeletive(pid,dept_id,bu_id,corps_id,transition_id,start_date,end_date, mobile,"", "",page, limit, sort, order);
+        total= userService.countPlannerSeletive(pid,deptId,buId,corpsId,transitionId,startDate,endDate, mobile,"", "",page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", userList);

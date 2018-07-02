@@ -23,6 +23,9 @@ public class ArticleReply {
     private String from_avatar;
     private String to_nickname;
     private String to_avatar;
+    private String fromRegisterIp;
+    private String fromMobile;
+    private String articleId;
 
     public String getTo_nickname() {
         return to_nickname;

@@ -26,11 +26,11 @@ public class ArticleReplyController {
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
-        List<ArticleReply> articleNotesList = articleReplyService.querySelective(commentId, replyId,replyType,content,fromUserid, toUserid,page, limit, sort, order);
+        List<ArticleReply> articleReplyList = articleReplyService.querySelective2(commentId, replyId,replyType,content,fromUserid, toUserid,page, limit, sort, order);
         int total = articleReplyService.countSelective(commentId, replyId,replyType,content,fromUserid, toUserid, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
-        data.put("items", articleNotesList);
+        data.put("items", articleReplyList);
 
         return ResponseUtil.ok(data);
     }

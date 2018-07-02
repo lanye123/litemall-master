@@ -21,6 +21,12 @@
     <result column="toNickname" jdbcType="VARCHAR" property="toNickname" />
     <result column="toAvatar" jdbcType="VARCHAR" property="toAvatar" />
   </resultMap>
+  <resultMap id="BaseResultMap3" type="org.linlinjava.litemall.db.domain.ArticleReply" extends="BaseResultMap">
+    <result column="from_nickname" jdbcType="VARCHAR" property="from_nickname" />
+    <result column="fromRegisterIp" jdbcType="VARCHAR" property="fromRegisterIp" />
+    <result column="fromMobile" jdbcType="VARCHAR" property="fromMobile" />
+    <result column="articleId" jdbcType="INTEGER" property="articleId" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -90,6 +96,18 @@
     </if>
     <include refid="Base_Column_List" />
     from article_reply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.ArticleReplyExample" resultMap="BaseResultMap3">
+    select
+    a.*,b.article_id articleId,c.nickname from_nickname,c.register_ip fromRegisterIp,c.mobile fromMobile from article_reply a
+    LEFT JOIN article_comment b on a.comment_id=b.id
+    LEFT JOIN litemall_user c on a.from_userid=c.id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>

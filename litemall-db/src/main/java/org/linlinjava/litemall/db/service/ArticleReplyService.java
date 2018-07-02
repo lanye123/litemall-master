@@ -45,6 +45,36 @@ public class ArticleReplyService {
         return articleReplyMapper.selectByExample(example);
     }
 
+    public List<ArticleReply> querySelective2(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid, Integer toUserid, Integer page, Integer size, String sort, String order) {
+        ArticleReplyExample example = new ArticleReplyExample();
+        ArticleReplyExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(replyType)){
+            criteria.andReplyTypeLike("%"+replyType+"%");
+        }
+        if(!StringUtils.isEmpty(replyId)){
+            criteria.andReplyIdEqualTo(replyId);
+        }
+        if(!StringUtils.isEmpty(commentId)){
+            criteria.andCommentIdEqualTo(commentId);
+        }
+        if(!StringUtils.isEmpty(fromUserid)){
+            criteria.andFromUseridEqualTo(fromUserid);
+        }
+        if(!StringUtils.isEmpty(toUserid)){
+            criteria.andToUseridEqualTo(toUserid);
+        }
+        if(!StringUtils.isEmpty(content)){
+            criteria.andContentLike("%" + content + "%");
+        }
+        if(!StringUtils.isEmpty(order)){
+            criteria.example().setOrderByClause(order+" desc");
+        }
+
+        PageHelper.startPage(page, size);
+        return articleReplyMapper.selectByExample2(example);
+    }
+
     public int countSelective(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid,Integer toUserid,Integer page, Integer size, String sort, String order) {
         ArticleReplyExample example = new ArticleReplyExample();
         ArticleReplyExample.Criteria criteria = example.createCriteria();

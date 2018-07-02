@@ -6,7 +6,6 @@ import org.linlinjava.litemall.db.domain.SysBu;
 import org.linlinjava.litemall.db.service.SysBuService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -24,11 +23,11 @@ public class SysBuController {
     @GetMapping("/list")
     public Object list(String name, Integer userId, Integer deptId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                       @RequestParam(value = "limit2", defaultValue = "10") Integer limit2,
                        String sort, @RequestParam(value = "order", defaultValue = "create_date desc")String order){
 
-        List<SysBu> sysBuList = sysBuService.querySelective(name, userId, deptId,page, limit, sort, order);
-        int total = sysBuService.countSeletive(name, userId,deptId,page, limit, sort, order);
+        List<SysBu> sysBuList = sysBuService.querySelective(name, userId, deptId,page, limit2, sort, order);
+        int total = sysBuService.countSeletive(name, userId,deptId,page, limit2, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", sysBuList);
@@ -38,10 +37,10 @@ public class SysBuController {
 
     @GetMapping("/deptId")
     public Object getBuByDeptId(Integer deptId){
-        if(StringUtils.isEmpty(deptId)){
-            return ResponseUtil.fail402();
-        }
-        return ResponseUtil.ok(sysBuService.queryByDeptId(deptId));
+        Map<String, Object> data = new HashMap<>();
+        List<SysBu> sysBuList = sysBuService.queryByDeptId(deptId);
+        data.put("items",sysBuList);
+        return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")
