@@ -23,11 +23,11 @@ public class SysDeptController {
     @GetMapping("/list")
     public Object list(String name, Integer userId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                       @RequestParam(value = "limit2", defaultValue = "10") Integer limit2,
                        String sort, @RequestParam(value = "order", defaultValue = "create_date desc")String order){
 
-        List<SysDept> sysDeptList = sysDeptService.querySelective(name, userId,page, limit, sort, order);
-        int total = sysDeptService.countSeletive(name, userId,page, limit, sort, order);
+        List<SysDept> sysDeptList = sysDeptService.querySelective(name, userId,page, limit2, sort, order);
+        int total = sysDeptService.countSeletive(name, userId,page, limit2, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", sysDeptList);

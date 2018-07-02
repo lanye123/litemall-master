@@ -21,7 +21,9 @@ public class SysTransitionService {
 
     public List<SysTransition> queryByCorpsId(Integer corpsId) {
         SysTransitionExample example = new SysTransitionExample();
-        example.or().andCorpsIdEqualTo(corpsId);
+        if(!StringUtils.isEmpty(corpsId)){
+            example.or().andCorpsIdEqualTo(corpsId);
+        }
         return sysTransitionMapper.selectByExample(example);
     }
 

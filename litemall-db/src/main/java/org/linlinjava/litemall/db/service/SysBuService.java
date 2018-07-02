@@ -21,7 +21,9 @@ public class SysBuService {
 
     public List<SysBu> queryByDeptId(Integer deptId) {
         SysBuExample example = new SysBuExample();
-        example.or().andDeptIdEqualTo(deptId);
+        if(!StringUtils.isEmpty(deptId)){
+            example.or().andDeptIdEqualTo(deptId);
+        }
         return sysBuMapper.selectByExample(example);
     }
 

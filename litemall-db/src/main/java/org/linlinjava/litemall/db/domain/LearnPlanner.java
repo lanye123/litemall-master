@@ -21,6 +21,14 @@ public class LearnPlanner {
 
     private Integer transitionId;
 
+    private String deptName;
+
+    private String buName;
+
+    private String corpsName;
+
+    private String transitionName;
+
     private String codeUrl;
 
     private String imgUrl;
@@ -42,6 +50,38 @@ public class LearnPlanner {
     private Date createDate;
 
     private Integer deleted;
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getBuName() {
+        return buName;
+    }
+
+    public void setBuName(String buName) {
+        this.buName = buName;
+    }
+
+    public String getCorpsName() {
+        return corpsName;
+    }
+
+    public void setCorpsName(String corpsName) {
+        this.corpsName = corpsName;
+    }
+
+    public String getTransitionName() {
+        return transitionName;
+    }
+
+    public void setTransitionName(String transitionName) {
+        this.transitionName = transitionName;
+    }
 
     public Integer getId() {
         return id;

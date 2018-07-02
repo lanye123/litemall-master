@@ -1,6 +1,9 @@
 package org.linlinjava.litemall.admin.web;
 
 import net.sf.json.JSONObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.util.bcrypt.HttpClientUtil;
 import org.linlinjava.litemall.db.domain.LearnPlanner;
 import org.linlinjava.litemall.db.domain.WxConfig;
@@ -10,15 +13,15 @@ import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/sunlands/planner")
@@ -31,6 +34,47 @@ public class LearnPlannerController {
     private String create_codeB_url;
     @Value("${web.upload-path}")
     private String webUploadPath;
+
+    private Log logger = LogFactory.getLog(LearnPlannerController.class);
+
+    @GetMapping("/list")
+    public Object list(@LoginAdmin String telephone,String openid,
+                       Integer deptId,Integer buId,Integer corpsId,Integer transitionId,
+                       @RequestParam(value = "page", defaultValue = "1") Integer page,
+                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                       String sort, String order){
+
+        order = "create_date desc";
+        List<LearnPlanner> userList = learnPlannerService.querySelective2(telephone, openid, deptId,buId,corpsId,transitionId,page, limit, sort, order);
+        int total = learnPlannerService.countSeletive(telephone, openid, deptId,buId,corpsId,transitionId,page, limit, sort, order);
+        Map<String, Object> data = new HashMap<>();
+        data.put("total", total);
+        data.put("items", userList);
+
+        return ResponseUtil.ok(data);
+    }
+
+    @PostMapping("/create")
+    public Object create(@RequestBody LearnPlanner learnPlanner){
+        logger.debug(learnPlanner);
+
+        learnPlannerService.add(learnPlanner);
+        return ResponseUtil.ok(learnPlanner);
+    }
+
+    @PostMapping("/update")
+    public Object update(@RequestBody LearnPlanner learnPlanner){
+        logger.debug(learnPlanner);
+
+        learnPlannerService.update(learnPlanner);
+        return ResponseUtil.ok(learnPlanner);
+    }
+
+    @PostMapping("/delete")
+    public Object delete(Integer id){
+        learnPlannerService.deleteById(id);
+        return ResponseUtil.ok();
+    }
 
     @PostMapping("add")
     public Object add(@RequestBody LearnPlanner planner){

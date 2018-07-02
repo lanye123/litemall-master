@@ -498,6 +498,11 @@ public class LearnPlannerExample {
             return (Criteria) this;
         }
 
+        public Criteria andLDeptIdEqualTo(Integer value) {
+            addCriterion("l.dept_id =", value, "deptId");
+            return (Criteria) this;
+        }
+
         public Criteria andDeptIdNotEqualTo(Integer value) {
             addCriterion("dept_id <>", value, "deptId");
             return (Criteria) this;
@@ -558,6 +563,11 @@ public class LearnPlannerExample {
             return (Criteria) this;
         }
 
+        public Criteria andLBuIdEqualTo(Integer value) {
+            addCriterion("l.bu_id =", value, "buId");
+            return (Criteria) this;
+        }
+
         public Criteria andBuIdNotEqualTo(Integer value) {
             addCriterion("bu_id <>", value, "buId");
             return (Criteria) this;
@@ -615,6 +625,11 @@ public class LearnPlannerExample {
 
         public Criteria andCorpsIdEqualTo(Integer value) {
             addCriterion("corps_id =", value, "corpsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andLCorpsIdEqualTo(Integer value) {
+            addCriterion("l.corps_id =", value, "corpsId");
             return (Criteria) this;
         }
 
@@ -905,6 +920,11 @@ public class LearnPlannerExample {
 
         public Criteria andTelephoneLike(String value) {
             addCriterion("telephone like", value, "telephone");
+            return (Criteria) this;
+        }
+
+        public Criteria andLTelephoneLike(String value) {
+            addCriterion("l.telephone like", value, "telephone");
             return (Criteria) this;
         }
 

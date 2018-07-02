@@ -21,7 +21,9 @@ public class SysCorpsService {
 
     public List<SysCorps> queryByBuId(Integer buId) {
         SysCorpsExample example = new SysCorpsExample();
-        example.or().andBuIdEqualTo(buId);
+        if(!StringUtils.isEmpty(buId)){
+            example.or().andBuIdEqualTo(buId);
+        }
         return sysCorpsMapper.selectByExample(example);
     }
 

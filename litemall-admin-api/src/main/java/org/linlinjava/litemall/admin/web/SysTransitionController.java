@@ -6,7 +6,6 @@ import org.linlinjava.litemall.db.domain.SysTransition;
 import org.linlinjava.litemall.db.service.SysTransitionService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -24,11 +23,11 @@ public class SysTransitionController {
     @GetMapping("/list")
     public Object list(String name, Integer userId, Integer corpsId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                       @RequestParam(value = "limit2", defaultValue = "10") Integer limit2,
                        String sort, @RequestParam(value = "order", defaultValue = "create_date desc")String order){
 
-        List<SysTransition> sysTransitionList = sysTransitionService.querySelective(name, userId, corpsId,page, limit, sort, order);
-        int total = sysTransitionService.countSeletive(name, userId,corpsId,page, limit, sort, order);
+        List<SysTransition> sysTransitionList = sysTransitionService.querySelective(name, userId, corpsId,page, limit2, sort, order);
+        int total = sysTransitionService.countSeletive(name, userId,corpsId,page, limit2, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", sysTransitionList);
@@ -38,10 +37,10 @@ public class SysTransitionController {
 
     @GetMapping("/corpsId")
     public Object getBuByCorpsId(Integer corpsId){
-        if(StringUtils.isEmpty(corpsId)){
-            return ResponseUtil.fail402();
-        }
-        return ResponseUtil.ok(sysTransitionService.queryByCorpsId(corpsId));
+        Map<String, Object> data = new HashMap<>();
+        List<SysTransition> sysTransitionList=sysTransitionService.queryByCorpsId(corpsId);
+        data.put("items",sysTransitionList);
+        return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")

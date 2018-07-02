@@ -23,6 +23,12 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="deleted" jdbcType="INTEGER" property="deleted" />
   </resultMap>
+  <resultMap id="BaseResultMap2" type="org.linlinjava.litemall.db.domain.LearnPlanner" extends="BaseResultMap">
+    <result column="deptName" jdbcType="VARCHAR" property="deptName" />
+    <result column="buName" jdbcType="VARCHAR" property="buName" />
+    <result column="corpsName" jdbcType="VARCHAR" property="corpsName" />
+    <result column="transitionName" jdbcType="VARCHAR" property="transitionName" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -93,6 +99,22 @@
     </if>
     <include refid="Base_Column_List" />
     from learn_planner
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.LearnPlannerExample" resultMap="BaseResultMap2">
+    select
+    l.id, l.user_id, l.openid, l.`name`, l.sex, l.dept_id, l.bu_id, l.corps_id, l.transition_id, l.code_url,
+    l.img_url, l.telephone, l.birthday, l.job, l.graduation, l.graduation_id, l.hobby, l.`status`, l.create_date,
+    l.deleted,s1.`name` deptName,s2.`name` buName,s3.`name` corpsName,s4.`name` transitionName from learn_planner l
+    LEFT JOIN sys_dept s1 on l.dept_id=s1.id
+    LEFT JOIN sys_bu s2 on l.bu_id=s2.id
+    LEFT JOIN sys_corps s3 on l.corps_id = s3.id
+    LEFT JOIN sys_transition s4 ON l.transition_id=s4.id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
