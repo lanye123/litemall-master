@@ -129,7 +129,7 @@ public class LitemallUserService {
         return userMapper.selectByExample(example);
     }
 
-    public List<LitemallUser> queryPlannerSelective(String pid, Integer dept_id, Integer bu_id, Integer corps_id, Integer transition_id, String start_date, String end_date, String mobile, String s, String s1, Integer page, Integer limit, String sort, String order) {
+    public List<LitemallUser> queryPlannerSelective(String pid, Integer dept_id, Integer bu_id, Integer corps_id, Integer transition_id, String start_date, String end_date, String mobile, Integer page, Integer limit, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
         if(!StringUtils.isEmpty(pid)){
@@ -150,17 +150,23 @@ public class LitemallUserService {
         if(!StringUtils.isEmpty(start_date)){
             criteria.andStartDateEqualTo(start_date);
         }
+        if(!StringUtils.isEmpty(mobile)){
+            criteria.andMobileLike("%" + mobile + "%");
+        }
         if(!StringUtils.isEmpty(end_date)){
             criteria.andEndDateEqualTo(end_date);
         }
         return userMapper.listByPlanner(example);
     }
 
-    public int countPlannerSeletive(String pid, Integer dept_id, Integer bu_id, Integer corps_id, Integer transition_id, String start_date, String end_date, String mobile, String s, String s1, Integer page, Integer limit, String sort, String order) {
+    public int countPlannerSeletive(String pid, Integer dept_id, Integer bu_id, Integer corps_id, Integer transition_id, String start_date, String end_date, String mobile, Integer page, Integer limit, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
         if(!StringUtils.isEmpty(pid)){
             criteria.andPidEqualTo(pid);
+        }
+        if(!StringUtils.isEmpty(mobile)){
+            criteria.andMobileLike("%" + mobile + "%");
         }
         if(dept_id!=null){
             criteria.andDeptIdEqualTo(dept_id);
