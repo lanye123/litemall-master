@@ -44,13 +44,90 @@ public class LitemallUser {
 
     private String address;
 
-    private Integer dept_id;
-    private Integer bu_id;
-    private Integer corps_id;
-    private Integer transition_id;
+    private Integer deptId;
+    private Integer buId;
+    private Integer corpsId;
+    private Integer transitionId;
+    private String deptName;
+    private String buName;
+    private String corpsName;
+    private String transitionName;
     private String start_date;
     private String end_date;
     private String account;
+    private Integer intention;
+
+    public Integer getIntention() {
+        return intention;
+    }
+
+    public void setIntention(Integer intention) {
+        this.intention = intention;
+    }
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
+
+    public Integer getBuId() {
+        return buId;
+    }
+
+    public void setBuId(Integer buId) {
+        this.buId = buId;
+    }
+
+    public Integer getCorpsId() {
+        return corpsId;
+    }
+
+    public void setCorpsId(Integer corpsId) {
+        this.corpsId = corpsId;
+    }
+
+    public Integer getTransitionId() {
+        return transitionId;
+    }
+
+    public void setTransitionId(Integer transitionId) {
+        this.transitionId = transitionId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getBuName() {
+        return buName;
+    }
+
+    public void setBuName(String buName) {
+        this.buName = buName;
+    }
+
+    public String getCorpsName() {
+        return corpsName;
+    }
+
+    public void setCorpsName(String corpsName) {
+        this.corpsName = corpsName;
+    }
+
+    public String getTransitionName() {
+        return transitionName;
+    }
+
+    public void setTransitionName(String transitionName) {
+        this.transitionName = transitionName;
+    }
 
     public String getAccount() {
         return account;
@@ -60,37 +137,6 @@ public class LitemallUser {
         this.account = account;
     }
 
-    public Integer getDept_id() {
-        return dept_id;
-    }
-
-    public void setDept_id(Integer dept_id) {
-        this.dept_id = dept_id;
-    }
-
-    public Integer getBu_id() {
-        return bu_id;
-    }
-
-    public void setBu_id(Integer bu_id) {
-        this.bu_id = bu_id;
-    }
-
-    public Integer getCorps_id() {
-        return corps_id;
-    }
-
-    public void setCorps_id(Integer corps_id) {
-        this.corps_id = corps_id;
-    }
-
-    public Integer getTransition_id() {
-        return transition_id;
-    }
-
-    public void setTransition_id(Integer transition_id) {
-        this.transition_id = transition_id;
-    }
 
     public String getStart_date() {
         return start_date;

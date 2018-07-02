@@ -65,4 +65,5 @@ public interface LitemallUserMapper {
     LitemallUser selectOneByExampleSelective(@Param("example") LitemallUserExample example, @Param("selective") LitemallUser.Column ... selective);
     List<LitemallUser> listByPlanner(LitemallUserExample example);
     int countByPlanner(LitemallUserExample example);
+    int tjByCorps();
 }

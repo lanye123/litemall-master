@@ -192,7 +192,10 @@ public class LitemallUserExample {
             addCriterion("account =", value, "account");
             return (Criteria) this;
         }
-
+        public Criteria andIntentionEqualTo(Integer value) {
+            addCriterion("intention =", value, "intention");
+            return (Criteria) this;
+        }
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;
