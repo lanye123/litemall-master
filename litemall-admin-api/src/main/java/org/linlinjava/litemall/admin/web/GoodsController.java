@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,14 @@ public class GoodsController {
     @PostMapping("/create")
     public Object create(@RequestBody LitemallGoods goods){
         logger.info("before goods："+goods);
+        Long date = new Date().getTime();
+        if(goods.getStartDate()!=null && goods.getEndDate()!=null) {
+            if (date <= goods.getEndDate().getTime() && date >= goods.getStartDate().getTime()) {
+                goods.setStatus(0);
+            } else {
+                goods.setStatus(1);
+            }
+        }
         if(goods.getGallery().contains("#")){
             String[] gallery = goods.getGallery().split("#");
             JSONArray galleryArray = new JSONArray();
@@ -88,6 +97,14 @@ public class GoodsController {
     @PostMapping("/update")
     public Object update(@RequestBody LitemallGoods goods){
         logger.info("before  goods："+goods);
+        Long date = new Date().getTime();
+        if(goods.getStartDate()!=null && goods.getEndDate()!=null){
+            if(date<=goods.getEndDate().getTime() && date>=goods.getStartDate().getTime()){
+                goods.setStatus(0);
+            }else{
+                goods.setStatus(1);
+            }
+        }
         if(goods.getGallery().contains("#")){
             String[] gallery = goods.getGallery().split("#");
             JSONArray galleryArray = new JSONArray();
@@ -118,6 +135,26 @@ public class GoodsController {
     public Object delete(@RequestBody LitemallGoods goods){
         goodsService.deleteById(goods.getId());
         return ResponseUtil.ok();
+    }
+
+    @PostMapping("/online")
+    public Object online(@RequestBody LitemallGoods goods){
+        if(goods == null){
+            return ResponseUtil.badArgument();
+        }
+
+        LitemallGoods goodsDb = goodsService.findById(goods.getId());
+        if(goodsDb==null){
+            return ResponseUtil.ok();
+        }
+        if(goodsDb.getState()==0){
+            goodsDb.setState(1);
+            goodsService.updateById(goodsDb);
+        }else if(goodsDb.getState()==1){
+            goodsDb.setState(0);
+            goodsService.updateById(goodsDb);
+        }
+        return ResponseUtil.ok(goodsDb);
     }
 
 }

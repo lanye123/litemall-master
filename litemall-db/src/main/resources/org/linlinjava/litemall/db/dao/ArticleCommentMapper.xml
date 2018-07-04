@@ -23,6 +23,7 @@
     <result column="nickname" jdbcType="VARCHAR" property="nickName" />
     <result column="register_ip" jdbcType="VARCHAR" property="registerIp" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -88,7 +89,7 @@
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleCommentExample" resultMap="BaseResultMap2">
     select
     a.id, a.article_id, a.category_name, a.category_id, a.content, a.from_userid, a.status, a.create_date,
-    b.nickname,b.register_ip,b.mobile
+    b.nickname,b.register_ip,b.mobile,b.account
     from article_comment a LEFT JOIN litemall_user b on a.from_userid = b.id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />

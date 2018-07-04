@@ -121,6 +121,7 @@ public class ArticleService {
         if(!StringUtils.isEmpty(isMy)) {
             criteria.andUserIdEqualTo(isMy);
         }else{
+            criteria.andUserIdIsNull();
             criteria.andStatusEqualTo(1);
         }
         if(!StringUtils.isEmpty(time)) {

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -27,7 +28,7 @@ public class ArticleCommentService {
      * @date 2018-5-7 15:51:12
      * @return
      */
-    public List<ArticleComment> querySelective(Integer article_id,String flag) {
+    public List<ArticleComment> querySelective(Integer article_id,String flag,Integer page, Integer size) {
         ArticleCommentExample example=new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria=example.createCriteria();
         if(article_id!=null)
@@ -35,6 +36,16 @@ public class ArticleCommentService {
         example.setOrderByClause("create_date desc");//按时间倒序排序
         if("0".equals(flag)){
             example.setOrderByClause("create_date desc");//按时间倒序排序
+        }
+        if(page!=null && size!=null){
+            BigDecimal bg1 = new BigDecimal(articleCommentMapper.selectByExample(example).size());
+            BigDecimal bg2 = new BigDecimal(size);
+            double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            Double pageMax = Math.ceil(d3);
+            if(page>pageMax){
+                return null;
+            }
+            PageHelper.startPage(page, size);
         }
         return articleCommentMapper.selectByExample(example);
     }
