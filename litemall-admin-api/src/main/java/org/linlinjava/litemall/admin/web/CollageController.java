@@ -61,6 +61,14 @@ public class CollageController {
     @PostMapping("/update")
     public Object update(@RequestBody CollageDetail collageDetail){
         collageDetailService.update(collageDetail);
+        //拼团成功才更新该团所有成员的memo
+        if(collageDetail.getStatus()==1){
+            List<CollageDetail> collageDetailList = collageDetailService.queryById(collageDetail.getPid());
+            for(CollageDetail collageDetailDb:collageDetailList){
+                collageDetailDb.setMemo(collageDetail.getMemo());
+                collageDetailService.update(collageDetailDb);
+            }
+        }
         return ResponseUtil.ok(collageDetail);
     }
 

@@ -30,6 +30,8 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="integretions" jdbcType="INTEGER" property="integretions" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="type" jdbcType="INTEGER" property="type" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.linlinjava.litemall.db.domain.LitemallGoods">
     <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
@@ -96,7 +98,7 @@
     id, goods_sn, `name`, category_id, brand_id, gallery, keywords, goods_brief, is_on_sale, 
     sort_order, counter_price, is_new, primary_pic_url, list_pic_url, is_hot, goods_unit, 
     retail_price, add_time, deleted, start_date, end_date, integretion, person_num, content, 
-    memo, `status`, create_date, integretions
+    memo, `status`, create_date, integretions, `state`, `type`
   </sql>
   <sql id="Blob_Column_List">
     goods_desc
@@ -195,7 +197,7 @@
       retail_price, add_time, deleted, 
       start_date, end_date, integretion,integretion,
       person_num, content, memo, 
-      `status`, create_date, goods_desc
+      `status`, create_date, goods_desc, `state`, `type`
       )
     values (#{goodsSn,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, 
       #{brandId,jdbcType=INTEGER}, #{gallery,jdbcType=CHAR}, #{keywords,jdbcType=VARCHAR}, 
@@ -205,7 +207,7 @@
       #{retailPrice,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
       #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{integretion,jdbcType=INTEGER}, #{integretions,jdbcType=INTEGER},
       #{personNum,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{goodsDesc,jdbcType=LONGVARCHAR}
+      #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{goodsDesc,jdbcType=LONGVARCHAR}, #{state,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallGoods">
@@ -298,6 +300,12 @@
       <if test="goodsDesc != null">
         goods_desc,
       </if>
+      <if test="state != null">
+        `state`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsSn != null">
@@ -383,6 +391,12 @@
       </if>
       <if test="goodsDesc != null">
         #{goodsDesc,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER}
       </if>
     </trim>
   </insert>
@@ -482,6 +496,12 @@
       <if test="record.goodsDesc != null">
         goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR},
       </if>
+      <if test="record.state != null">
+        `state` = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null">
+        `type` = #{record.type,jdbcType=INTEGER}
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -517,7 +537,9 @@
       memo = #{record.memo,jdbcType=VARCHAR},
       `status` = #{record.status,jdbcType=INTEGER},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
-      goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR}
+      goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR},
+      `state` = #{record.state,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -551,7 +573,9 @@
       content = #{record.content,jdbcType=VARCHAR},
       memo = #{record.memo,jdbcType=VARCHAR},
       `status` = #{record.status,jdbcType=INTEGER},
-      create_date = #{record.createDate,jdbcType=TIMESTAMP}
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      `state` = #{record.state,jdbcType=INTEGER},
+      `type` = #{record.type,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -643,6 +667,12 @@
       <if test="goodsDesc != null">
         goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
       </if>
+      <if test="state != null">
+        `state` = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=INTEGER}
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -675,7 +705,9 @@
       memo = #{memo,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP},
-      goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR}
+      goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
+      `state` = #{state,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.LitemallGoods">
@@ -706,7 +738,9 @@
       content = #{content,jdbcType=VARCHAR},
       memo = #{memo,jdbcType=VARCHAR},
       `status` = #{status,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP}
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      `state` = #{state,jdbcType=INTEGER},
+      `type` = #{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallGoodsExample" resultMap="BaseResultMap">
