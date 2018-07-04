@@ -146,11 +146,9 @@ public class WxOrderController {
                 if(goods == null){
                     continue;
                 }
-
                 orderGoodsVo.put("goodsBrief", goods.getGoodsBrief());
                 orderGoodsVo.put("integretion", goods.getIntegretion());
                 orderGoodsVo.put("price",goods.getCounterPrice());
-                orderGoodsVo.put("type",goods.getType());
                 orderGoodsVoList.add(orderGoodsVo);
             }
             orderVo.put("goodsList", orderGoodsVoList);
@@ -208,7 +206,6 @@ public class WxOrderController {
         Integer goodsId = null;
         for (CollageDetail collageDetail : collageDetailList) {
             if(userId == collageDetail.getUserId()){
-                orderVo.put("memo",collageDetail.getMemo());
                 orderVo.put("sno",collageDetail.getSno());
                 orderVo.put("wincode",collageDetail.getWincode());
                 if(collageDetail.getCreateDate().contains(".0")){
@@ -278,7 +275,6 @@ public class WxOrderController {
             orderGoodsVo.put("integretion", goods.getIntegretion());
             orderGoodsVo.put("price",goods.getCounterPrice());
             orderGoodsVo.put("person",goods.getPersonNum());
-            orderGoodsVo.put("type",goods.getType());
             orderGoodsVoList.add(orderGoodsVo);
         }
 
@@ -944,15 +940,7 @@ public class WxOrderController {
         order.setIntegralPrice(integralPrice);
         order.setOrderPrice(orderTotalPrice);*/
         order.setActualPrice(actualPrice);
-        if(goods.getType()==0){
-            order.setOrder_type(0);
-        }else if(goods.getType()==1){
-            order.setOrder_type(1);//拼团单
-        }else if(goods.getType()==2){
-            order.setOrder_type(2);
-        }else{
-            order.setOrder_type(1);
-        }
+        order.setOrder_type(1);//拼团单
         //拼团流水
         CollageDetail detail=new CollageDetail();
         // 订单商品

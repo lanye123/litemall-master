@@ -156,7 +156,7 @@ public class ArticleNotesController {
      * @date 2018-5-31 14:15:07
      */
     @PostMapping("/code")
-    public void saveCode(Integer article_id,Integer notesId,String name){
+    public Object saveCode(Integer article_id,Integer notesId,String name){
         WxConfig config=wxConfigService.getToken();
         String path=articledetail_url.replace("ARTICLEID",Integer.toString(article_id)).replace("NOTESID",Integer.toString(notesId)).replace("NAME",name);
         ArticleNotes notes=new ArticleNotes();
@@ -206,5 +206,6 @@ public class ArticleNotesController {
                 }
             }
         }
+        return ResponseUtil.ok(notes);
     }
 }

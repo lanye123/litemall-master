@@ -14,7 +14,6 @@
     <result column="wincode" jdbcType="VARCHAR" property="wincode" />
     <result column="pid" jdbcType="INTEGER" property="pid" />
     <result column="flag" jdbcType="INTEGER" property="flag" />
-    <result column="memo" jdbcType="VARCHAR" property="memo" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -76,7 +75,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, goods_id, order_id, user_id, avatar, `status`, create_date, join_date, sno, wincode, 
-    pid, flag, memo
+    pid, flag
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CollageDetailExample" resultMap="BaseResultMap">
     select
@@ -130,11 +129,11 @@
     insert into collage_detail (goods_id, order_id, user_id, 
       avatar, `status`, create_date, 
       join_date, sno, wincode, 
-      pid, flag, memo)
+      pid, flag)
     values (#{goodsId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
       #{avatar,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
       #{joinDate,jdbcType=TIMESTAMP}, #{sno,jdbcType=VARCHAR}, #{wincode,jdbcType=VARCHAR}, 
-      #{pid,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR})
+      #{pid,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.CollageDetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -175,9 +174,6 @@
       <if test="flag != null">
         flag,
       </if>
-      <if test="memo != null">
-        memo,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
@@ -212,9 +208,6 @@
       </if>
       <if test="flag != null">
         #{flag,jdbcType=INTEGER},
-      </if>
-      <if test="memo != null">
-        #{memo,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -269,9 +262,6 @@
       <if test="record.flag != null">
         flag = #{record.flag,jdbcType=INTEGER},
       </if>
-      <if test="record.memo != null">
-        memo = #{record.memo,jdbcType=VARCHAR},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -290,8 +280,7 @@
       sno = #{record.sno,jdbcType=VARCHAR},
       wincode = #{record.wincode,jdbcType=VARCHAR},
       pid = #{record.pid,jdbcType=INTEGER},
-      flag = #{record.flag,jdbcType=INTEGER},
-      memo = #{record.memo,jdbcType=VARCHAR}
+      flag = #{record.flag,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

@@ -32,9 +32,9 @@ public class ArticleCommentController {
      * @return
      */
     @GetMapping("list")
-    public Object list(Integer article_id,String flag,Integer user_id,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "50")Integer size){
+    public Object list(Integer article_id,String flag,Integer user_id){
         //文章评论列表
-        List<ArticleComment> articleCommentList=articleCommentService.querySelective(article_id,flag,page,size);
+        List<ArticleComment> articleCommentList=articleCommentService.querySelective(article_id,flag);
         //文章评论数
         Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleCommentVoList = new ArrayList<>(articleCommentList.size());

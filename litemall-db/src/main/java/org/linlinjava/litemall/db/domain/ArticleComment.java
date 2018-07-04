@@ -28,16 +28,6 @@ public class ArticleComment {
 
     private Integer countPraise;
 
-    private String account;
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
     public Integer getCountPraise() {
         return countPraise;
     }

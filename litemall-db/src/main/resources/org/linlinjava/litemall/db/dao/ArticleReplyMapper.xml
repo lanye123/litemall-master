@@ -26,7 +26,6 @@
     <result column="fromRegisterIp" jdbcType="VARCHAR" property="fromRegisterIp" />
     <result column="fromMobile" jdbcType="VARCHAR" property="fromMobile" />
     <result column="articleId" jdbcType="INTEGER" property="articleId" />
-    <result column="account" jdbcType="VARCHAR" property="account" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -106,8 +105,7 @@
   </select>
   <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.ArticleReplyExample" resultMap="BaseResultMap3">
     select
-    a.*,b.article_id articleId,c.nickname from_nickname,c.register_ip fromRegisterIp,c.mobile fromMobile,c.account
-    from article_reply a
+    a.*,b.article_id articleId,c.nickname from_nickname,c.register_ip fromRegisterIp,c.mobile fromMobile from article_reply a
     LEFT JOIN article_comment b on a.comment_id=b.id
     LEFT JOIN litemall_user c on a.from_userid=c.id
     <if test="_parameter != null">
