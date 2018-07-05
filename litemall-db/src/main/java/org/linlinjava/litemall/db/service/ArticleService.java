@@ -373,7 +373,7 @@ public class ArticleService {
     public void sycArticle(Integer articleId) {
         Article article = this.findById(articleId);
         boolean isUpdate = false;
-        if(article!=null){
+        if(article!=null && article.getCategoryId()!=1){
             JSONArray categoryIdArray = JSON.parseArray(article.getCategoryIds());
             if(categoryIdArray == null){
                 return;
