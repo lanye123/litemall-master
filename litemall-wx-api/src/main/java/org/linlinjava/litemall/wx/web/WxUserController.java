@@ -49,7 +49,7 @@ public class WxUserController {
         if(StringUtils.isEmpty(user.getWeixinOpenid())){
             return ResponseUtil.badArgument();
         }
-        List<LitemallUser> userList = litemallUserService.querySelective("","",user.getWeixinOpenid(),"",null,null,"","");
+        List<LitemallUser> userList = litemallUserService.querySelective("","",user.getWeixinOpenid(),"",null,null,"","add_time desc");
         if(userList!=null && userList.size()>0){
             user.setId(userList.get(0).getId());
             user.setNickname(filterEmoji(user.getNickname()));
