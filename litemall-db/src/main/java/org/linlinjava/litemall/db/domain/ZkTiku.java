@@ -21,6 +21,36 @@ public class ZkTiku {
 
     private Integer deleted;
 
+    private Integer userId;
+
+    private Integer detailId;
+
+    private Integer pid;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getDetailId() {
+        return detailId;
+    }
+
+    public void setDetailId(Integer detailId) {
+        this.detailId = detailId;
+    }
+
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
     public Integer getId() {
         return id;
     }

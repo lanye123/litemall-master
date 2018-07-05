@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,20 +20,23 @@ public class ZkTikuService {
         return zkTikuMapper.selectByPrimaryKey(id);
     }
 
-    public List<ZkTiku> queryByZyId(String zyId) {
+    public List<ZkTiku> queryByZyId(String zyId,Integer userId) {
         ZkTikuExample example = new ZkTikuExample();
+        if(!StringUtils.isEmpty(userId)){
+            example.createCriteria().andUserIdEqualTo(userId);
+        }
         if(StringUtils.isEmpty(zyId)){
-            return zkTikuMapper.selectByExample(example);
+            return zkTikuMapper.selectByExample2(example);
         }
         String[] ids = zyId.split(",");
-        List<Integer> integerList = null;
+        List<Integer> integerList = new ArrayList<>();
         for(String id:ids){
             integerList.add(Integer.valueOf(id));
         }
         if(integerList.size()>0){
-            example.or().andZyIdIn(integerList);
+            example.createCriteria().andZyIdIn(integerList);
         }
-        return zkTikuMapper.selectByExample(example);
+        return zkTikuMapper.selectByExample2(example);
     }
 
     public void add(ZkTiku zkTiku) {

@@ -11,6 +11,10 @@ public class ZkTikuDetail {
 
     private String avatar;
 
+    private Integer pid;
+
+    private Integer flag;
+
     private Integer status;
 
     private Date createDate;
@@ -47,6 +51,22 @@ public class ZkTikuDetail {
         this.avatar = avatar;
     }
 
+    public Integer getPid() {
+        return pid;
+    }
+
+    public void setPid(Integer pid) {
+        this.pid = pid;
+    }
+
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -73,6 +93,8 @@ public class ZkTikuDetail {
         sb.append(", tkId=").append(tkId);
         sb.append(", userId=").append(userId);
         sb.append(", avatar=").append(avatar);
+        sb.append(", pid=").append(pid);
+        sb.append(", flag=").append(flag);
         sb.append(", status=").append(status);
         sb.append(", createDate=").append(createDate);
         sb.append("]");
@@ -95,6 +117,8 @@ public class ZkTikuDetail {
             && (this.getTkId() == null ? other.getTkId() == null : this.getTkId().equals(other.getTkId()))
             && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
             && (this.getAvatar() == null ? other.getAvatar() == null : this.getAvatar().equals(other.getAvatar()))
+            && (this.getPid() == null ? other.getPid() == null : this.getPid().equals(other.getPid()))
+            && (this.getFlag() == null ? other.getFlag() == null : this.getFlag().equals(other.getFlag()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()));
     }
@@ -107,6 +131,8 @@ public class ZkTikuDetail {
         result = prime * result + ((getTkId() == null) ? 0 : getTkId().hashCode());
         result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
         result = prime * result + ((getAvatar() == null) ? 0 : getAvatar().hashCode());
+        result = prime * result + ((getPid() == null) ? 0 : getPid().hashCode());
+        result = prime * result + ((getFlag() == null) ? 0 : getFlag().hashCode());
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
         return result;
@@ -124,6 +150,8 @@ public class ZkTikuDetail {
         tkId("tk_id"),
         userId("user_id"),
         avatar("avatar"),
+        pid("pid"),
+        flag("flag"),
         status("status"),
         createDate("create_date");
 
