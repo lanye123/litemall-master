@@ -16,6 +16,7 @@
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -92,7 +93,7 @@
       This element was generated on Sat Apr 07 10:22:31 CST 2018.
     -->
     id, username, `password`, last_login_ip, last_login_time, update_time, avatar, add_time, 
-    deleted
+    deleted,flag
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallAdminExample" resultMap="BaseResultMap">
     <!--
@@ -189,10 +190,10 @@
     </selectKey>
     insert into litemall_admin (username, `password`, last_login_ip, 
       last_login_time, update_time, avatar, 
-      add_time, deleted)
+      add_time, deleted,flag)
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{lastLoginIp,jdbcType=VARCHAR}, 
       #{lastLoginTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{avatar,jdbcType=VARCHAR}, 
-      #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
+      #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT},#{flag,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallAdmin">
     <!--
@@ -229,6 +230,9 @@
       <if test="deleted != null">
         deleted,
       </if>
+      <if test="flag != null">
+        flag,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -254,6 +258,9 @@
       </if>
       <if test="deleted != null">
         #{deleted,jdbcType=BIT},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -303,6 +310,9 @@
       <if test="record.deleted != null">
         deleted = #{record.deleted,jdbcType=BIT},
       </if>
+      <if test="record.flag != null">
+        flag = #{record.falg,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -323,7 +333,8 @@
       update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       avatar = #{record.avatar,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
-      deleted = #{record.deleted,jdbcType=BIT}
+      deleted = #{record.deleted,jdbcType=BIT},
+    flag=#{record.flag,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -360,6 +371,9 @@
       <if test="deleted != null">
         deleted = #{deleted,jdbcType=BIT},
       </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -377,7 +391,8 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       avatar = #{avatar,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
-      deleted = #{deleted,jdbcType=BIT}
+      deleted = #{deleted,jdbcType=BIT},
+    flag = #{flag,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallAdminExample" resultMap="BaseResultMap">

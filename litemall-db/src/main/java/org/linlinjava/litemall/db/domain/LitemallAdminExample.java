@@ -225,7 +225,10 @@ public class LitemallAdminExample {
             }
             criteria.add(new Criterion(condition, value1, value2));
         }
-
+        public Criteria andFlagEqualTo(Integer value) {
+            addCriterion("flag =", value, "flag");
+            return (Criteria) this;
+        }
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;

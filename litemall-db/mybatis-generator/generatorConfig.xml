@@ -223,7 +223,7 @@
         </table>
         <table tableName="wx_mess">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>-->
+        </table>
         <table tableName="learn_planner">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
@@ -243,6 +243,21 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
             <columnOverride javaType="java.time.LocalDateTime" column="last_login_time"/>
             <columnOverride javaType="java.time.LocalDateTime" column="add_time"/>
+        </table>
+        <table tableName="zk_area">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <table tableName="zk_tiku">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <table tableName="zk_tiku_detail">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>-->
+
+        <table tableName="zk_zhuanye">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
     </context>

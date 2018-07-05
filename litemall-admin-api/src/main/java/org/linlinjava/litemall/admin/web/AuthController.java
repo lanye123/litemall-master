@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/admin/login")
@@ -33,6 +35,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     public Object login(@RequestBody String body){
+        Map<String,Object> data=new HashMap<>();
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
 
@@ -55,8 +58,9 @@ public class AuthController {
         Integer adminId = admin.getId();
         // token
         AdminToken adminToken = AdminTokenManager.generateToken(adminId);
-
-        return ResponseUtil.ok(adminToken.getToken());
+        data.put("token",adminToken.getToken());
+        data.put("flag",admin.getFlag());
+        return ResponseUtil.ok(data);
     }
 
     /*
