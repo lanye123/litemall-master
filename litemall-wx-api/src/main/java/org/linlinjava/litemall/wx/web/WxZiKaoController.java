@@ -83,12 +83,12 @@ public class WxZiKaoController {
     }
 
     /**
-     * @author lanye
-     * @Description 获取自考题库列表
-     * @Date 2018/7/5 10:45
-     * @Param [zyId]
-     * @return java.lang.Object
-     **/
+      * @author lanye
+      * @Description 拼团详情
+      * @Date 2018/7/5 16:35
+      * @Param [tkId, pid]
+      * @return java.lang.Object
+      **/
     @GetMapping("/detailList")
     public Object getDetailList(Integer tkId,Integer pid){
         if(tkId==null){

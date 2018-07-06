@@ -20,9 +20,14 @@ public class ValidateUtils{
       * @return boolean
       **/
     public static boolean validateStr(String str) {
-        String regEx = "[ ✔X_`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
+        String regEx = "[✔X_`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]|\n|\r|\t";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(str);
         return m.find();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(validateStr("just a test"));
+        validateStr("");
     }
 }
