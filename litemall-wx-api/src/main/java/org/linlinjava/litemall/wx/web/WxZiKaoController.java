@@ -66,9 +66,6 @@ public class WxZiKaoController {
       **/
     @GetMapping("/tikuList")
     public Object getTikuList(String zyId,Integer userId){
-        if(zyId==null){
-            return ResponseUtil.badArgumentValue();
-        }
         if(userId==null){
             return ResponseUtil.badArgumentValue();
         }
