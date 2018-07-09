@@ -94,7 +94,7 @@
   </select>
   <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.ZkTikuExample" resultMap="BaseResultMap2">
     select
-    z1.id, z1.title, z1.sub_title, z1.zy_id, z1.content, z1.memo, z1.`status`, z1.create_date, z1.deleted, z2.id detailId, z2.pid
+    z1.id, z1.title, z1.sub_title, z1.zy_id, z1.content, z1.memo, z1.`status`, z1.create_date, z1.deleted, z1.`person`, z2.id detailId, z2.pid
     from zk_tiku z1 LEFT JOIN zk_tiku_detail z2 on z1.id=z2.tk_id and
     <if test="_parameter != null">
       <foreach collection="oredCriteria" item="criteria" separator="or">
