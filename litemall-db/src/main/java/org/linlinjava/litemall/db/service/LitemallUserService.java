@@ -63,6 +63,10 @@ public class LitemallUserService {
         if(!StringUtils.isEmpty(registerIp)){
             criteria.andRegisterIpEqualTo(registerIp);
         }
+        if(!StringUtils.isEmpty(order)){
+            criteria.example().setOrderByClause(order);
+        }
+
         criteria.andDeletedEqualTo(false);
 
         if(page!=null && size!=null){

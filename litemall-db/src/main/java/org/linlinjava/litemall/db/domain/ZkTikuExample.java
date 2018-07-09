@@ -351,6 +351,11 @@ public class ZkTikuExample {
             return (Criteria) this;
         }
 
+        public Criteria andUserIdEqualTo(Integer value) {
+            addCriterion("user_id =", value, "userId");
+            return (Criteria) this;
+        }
+
         public Criteria andZyIdNotEqualTo(Integer value) {
             addCriterion("zy_id <>", value, "zyId");
             return (Criteria) this;

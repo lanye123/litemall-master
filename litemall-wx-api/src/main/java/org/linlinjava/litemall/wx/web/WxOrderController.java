@@ -126,6 +126,7 @@ public class WxOrderController {
         for (LitemallOrder order : orderList) {
             Map<String, Object> orderVo = new HashMap<>();
             orderVo.put("id", order.getId());
+            orderVo.put("orderType", order.getOrder_type());
             orderVo.put("orderSn", order.getOrderSn());
             orderVo.put("actualPrice", order.getActualPrice());
             orderVo.put("orderStatusText", OrderUtil.orderStatusText(order));
@@ -248,6 +249,7 @@ public class WxOrderController {
         orderVo.put("createTime", order.getAddTime());
 
         orderVo.put("id", order.getId());
+        orderVo.put("orderType", order.getOrder_type());
         orderVo.put("orderSn", order.getOrderSn());
         orderVo.put("addTime", LocalDate.now());
         orderVo.put("consignee", order.getConsignee());

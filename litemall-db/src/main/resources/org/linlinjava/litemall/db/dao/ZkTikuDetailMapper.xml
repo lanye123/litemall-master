@@ -6,6 +6,8 @@
     <result column="tk_id" jdbcType="INTEGER" property="tkId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="flag" jdbcType="INTEGER" property="flag" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
@@ -68,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, tk_id, user_id, avatar, `status`, create_date
+    id, tk_id, user_id, avatar, pid, flag, `status`, create_date
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.ZkTikuDetailExample" resultMap="BaseResultMap">
     select
@@ -139,9 +141,11 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into zk_tiku_detail (tk_id, user_id, avatar, 
-      `status`, create_date)
+      pid, flag, `status`, 
+      create_date)
     values (#{tkId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{avatar,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
+      #{pid,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.ZkTikuDetail">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -157,6 +161,12 @@
       </if>
       <if test="avatar != null">
         avatar,
+      </if>
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="flag != null">
+        flag,
       </if>
       <if test="status != null">
         `status`,
@@ -174,6 +184,12 @@
       </if>
       <if test="avatar != null">
         #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        #{flag,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -204,6 +220,12 @@
       <if test="record.avatar != null">
         avatar = #{record.avatar,jdbcType=VARCHAR},
       </if>
+      <if test="record.pid != null">
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.flag != null">
+        flag = #{record.flag,jdbcType=INTEGER},
+      </if>
       <if test="record.status != null">
         `status` = #{record.status,jdbcType=INTEGER},
       </if>
@@ -221,6 +243,8 @@
       tk_id = #{record.tkId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=INTEGER},
       avatar = #{record.avatar,jdbcType=VARCHAR},
+      pid = #{record.pid,jdbcType=INTEGER},
+      flag = #{record.flag,jdbcType=INTEGER},
       `status` = #{record.status,jdbcType=INTEGER},
       create_date = #{record.createDate,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
@@ -239,6 +263,12 @@
       <if test="avatar != null">
         avatar = #{avatar,jdbcType=VARCHAR},
       </if>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="flag != null">
+        flag = #{flag,jdbcType=INTEGER},
+      </if>
       <if test="status != null">
         `status` = #{status,jdbcType=INTEGER},
       </if>
@@ -253,6 +283,8 @@
     set tk_id = #{tkId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
       avatar = #{avatar,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      flag = #{flag,jdbcType=INTEGER},
       `status` = #{status,jdbcType=INTEGER},
       create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
