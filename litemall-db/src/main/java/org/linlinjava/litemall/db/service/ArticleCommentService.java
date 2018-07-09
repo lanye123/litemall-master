@@ -69,7 +69,7 @@ public class ArticleCommentService {
         articleCommentMapper.insertSelective(comment);
     }
 
-    public List<ArticleComment> query(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, Integer page, Integer size, String sort, String order) {
+    public List<ArticleComment> query(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid,String startDate, String endDate, Integer page, Integer size, String sort, String order) {
         ArticleCommentExample example = new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria = example.createCriteria();
 
@@ -88,6 +88,12 @@ public class ArticleCommentService {
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
         }
+        if(!StringUtils.isEmpty(startDate)){
+            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+        }
+        if(!StringUtils.isEmpty(endDate)){
+            criteria.andCreateDateLessThanOrEqualTo(endDate);
+        }
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
         }
@@ -97,7 +103,7 @@ public class ArticleCommentService {
         return articleCommentMapper.selectByExample(example);
     }
 
-    public int count(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,Integer page, Integer size, String sort, String order) {
+    public int count(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,String startDate, String endDate,Integer page, Integer size, String sort, String order) {
         ArticleCommentExample example = new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria = example.createCriteria();
 
@@ -112,6 +118,12 @@ public class ArticleCommentService {
         }
         if(!StringUtils.isEmpty(categoryId)){
             criteria.andCategoryIdEqualTo(categoryId);
+        }
+        if(!StringUtils.isEmpty(startDate)){
+            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+        }
+        if(!StringUtils.isEmpty(endDate)){
+            criteria.andCreateDateLessThanOrEqualTo(endDate);
         }
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");

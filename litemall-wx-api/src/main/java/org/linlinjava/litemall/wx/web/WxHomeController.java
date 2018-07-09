@@ -99,13 +99,13 @@ public class WxHomeController {
     }
 
     @GetMapping("/home")
-    public Object home(String userId) {
+    public Object home(String userId,Integer type) {
         Map<String, Object> data = new HashMap<>();
 
         List<LitemallAd> banner = adService.queryByApid(1);
         data.put("banner", banner);
         //只查询书籍的商品列表
-        List<LitemallGoods> goodsList = goodsService.queryByCategory(1036005, 0,20);
+        List<LitemallGoods> goodsList = goodsService.queryByCategory(1036005, type,0,20);
         for(LitemallGoods goods:goodsList){
             JSONArray gallery = JSONArray.parseArray(goods.getGallery());
             if(gallery==null){

@@ -25,12 +25,13 @@ public class ArticleCommentController {
 
     @GetMapping("/list")
     public Object list(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,
+                       String startDate, String endDate,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
-        List<ArticleComment> articleCommentList = articleCommentService.query(articleId, categoryName,categoryId,content,fromUserid, page, limit, sort, order);
-        int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid, page, limit, sort, order);
+        List<ArticleComment> articleCommentList = articleCommentService.query(articleId, categoryName,categoryId,content,fromUserid,startDate,endDate, page, limit, sort, order);
+        int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid,startDate,endDate, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         for(ArticleComment articleComment:articleCommentList){
