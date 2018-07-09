@@ -30,11 +30,7 @@ public class DashbordController {
     private WxFormidService wxFormidService;
 
     @GetMapping("")
-    public Object info(@LoginAdmin Integer adminId){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-
+    public Object info(){
         int userTotal = userService.count();
         int articleTotal = articleService.countSelective("","",null,null,"","",1,null,null,"","");
         int customArticleTotal = articleService.countSelective("","",null,1,"","",1,null,null,"","");
@@ -44,7 +40,6 @@ public class DashbordController {
         data.put("articleTotal", articleTotal);
         data.put("customArticleTotal", customArticleTotal);
         data.put("formIdTotal", formIdTotal);
-
         return ResponseUtil.ok(data);
     }
 

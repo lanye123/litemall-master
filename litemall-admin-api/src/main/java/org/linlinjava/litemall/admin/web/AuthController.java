@@ -1,7 +1,14 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.admin.dao.AdminToken;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.service.AdminTokenManager;
@@ -42,6 +49,32 @@ public class AuthController {
         if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
             return ResponseUtil.badArgument();
         }
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        try {
+            subject.login(token);
+            data.put("token", subject.getSession().getId());
+            data.put("result", "success");
+            data.put("username",username);
+        }  catch (IncorrectCredentialsException e) {
+            data.put("result", "密码错误");
+        } catch (LockedAccountException e) {
+            data.put("result", "登录失败，该用户已被冻结");
+        } catch (AuthenticationException e) {
+            data.put("result", "该用户不存在");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseUtil.ok(data);
+    }
+/*    @PostMapping("/login")
+    public Object login(@RequestBody String body){
+        String username = JacksonUtil.parseString(body, "username");
+        String password = JacksonUtil.parseString(body, "password");
+
+        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
+            return ResponseUtil.badArgument();
+        }
 
         List<LitemallAdmin> adminList = adminService.findAdmin(username);
         Assert.state(adminList.size() < 2, "同一个用户名存在两个账户");
@@ -58,10 +91,9 @@ public class AuthController {
         Integer adminId = admin.getId();
         // token
         AdminToken adminToken = AdminTokenManager.generateToken(adminId);
-        data.put("token",adminToken.getToken());
-        data.put("flag",admin.getFlag());
-        return ResponseUtil.ok(data);
-    }
+
+        return ResponseUtil.ok(adminToken.getToken());
+    }*/
 
     /*
      *

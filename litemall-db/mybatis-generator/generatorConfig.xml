@@ -254,9 +254,22 @@
 
         <table tableName="zk_tiku_detail">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>-->
+        </table>
 
         <table tableName="zk_zhuanye">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>-->
+
+        <table tableName="sys_bu">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="sys_corps">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="sys_dept">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="sys_transition">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 

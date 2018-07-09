@@ -1,14 +1,22 @@
 package org.linlinjava.litemall.admin.web;
 
+import com.alibaba.fastjson.JSONObject;
+import org.apache.http.HttpResponse;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.service.AdminTokenManager;
 import org.linlinjava.litemall.admin.util.bcrypt.BCryptPasswordEncoder;
+import org.linlinjava.litemall.admin.util.constants.Constants;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
+import org.linlinjava.litemall.db.service.SysRolePermissionService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +27,9 @@ import java.util.Map;
 public class AdminController {
     @Autowired
     private LitemallAdminService adminService;
+
+    @Autowired
+    private SysRolePermissionService sysRolePermissionService;
 
     @GetMapping("/info")
     public Object info(String token){
@@ -118,5 +129,25 @@ public class AdminController {
         }
         adminService.deleteById(anotherAdminId);
         return ResponseUtil.ok();
+    }
+    @PostMapping("getInfo")
+    public Object getInfo() {
+        //从session获取用户信息
+        Session session = SecurityUtils.getSubject().getSession();
+        String username=session.getAttribute("principals").toString();
+        //LitemallAdmin userInfo = (LitemallAdmin) session.getAttribute(Constants.SESSION_USER_INFO);
+        //String username = userInfo.getUsername();
+        List list = sysRolePermissionService.getUserPermission(username);
+        session.setAttribute(Constants.SESSION_USER_PERMISSION, list.get(0));
+        return ResponseUtil.ok(list.get(0));
+    }
+
+    @PostMapping("getUserInfo")
+    public Object getUserInfo(@Valid String username) {
+        //从session获取用户信息
+        Session session = SecurityUtils.getSubject().getSession();
+        List list = sysRolePermissionService.getUserPermission(username);
+        session.setAttribute(Constants.SESSION_USER_PERMISSION, list.get(0));
+        return ResponseUtil.ok(list.get(0));
     }
 }
