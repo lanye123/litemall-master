@@ -199,4 +199,13 @@ public class LitemallUserService {
     public List<LitemallUser> tjCorpsPie(){
         return userMapper.tjByCorps();
     }
+
+    public List<LitemallUser> queryByAccount(String account) {
+        LitemallUserExample example = new LitemallUserExample();
+        LitemallUserExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(account)){
+            criteria.andAccountEqualTo(account);
+        }
+       return userMapper.selectByExample(example);
+    }
 }

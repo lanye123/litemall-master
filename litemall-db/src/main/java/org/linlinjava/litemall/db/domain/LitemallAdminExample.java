@@ -229,6 +229,12 @@ public class LitemallAdminExample {
             addCriterion("flag =", value, "flag");
             return (Criteria) this;
         }
+
+        public Criteria andAppidEqualTo(String value) {
+            addCriterion("appid =", value, "appid");
+            return (Criteria) this;
+        }
+
         public Criteria andIdIsNull() {
             addCriterion("id is null");
             return (Criteria) this;

@@ -12,6 +12,7 @@
   <resultMap id="BaseResultMap2"  type="org.linlinjava.litemall.db.domain.SysRolePermission">
     <id column="userId" property="userId" jdbcType="INTEGER"/>
     <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+    <result column="appid" property="appid" jdbcType="VARCHAR"/>
     <result column="roleId" property="roleId" jdbcType="INTEGER"/>
     <result column="roleName" property="roleName" jdbcType="VARCHAR"/>
     <collection property="menuList" ofType="String">

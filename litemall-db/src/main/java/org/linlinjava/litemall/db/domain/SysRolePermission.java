@@ -29,6 +29,15 @@ public class SysRolePermission {
     private String roleName;
     private String  menuCode;
     private String  permissionCode;
+    private String appid;
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
 
     public Set<String> getMenuList() {
         return menuList;

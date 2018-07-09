@@ -45,12 +45,13 @@ public class AuthController {
         Map<String,Object> data=new HashMap<>();
         String username = JacksonUtil.parseString(body, "username");
         String password = JacksonUtil.parseString(body, "password");
+        boolean rememberMe=JacksonUtil.parseBoolean(body, "rememberMe");
 
         if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
             return ResponseUtil.badArgument();
         }
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password,rememberMe);
         try {
             subject.login(token);
             data.put("token", subject.getSession().getId());

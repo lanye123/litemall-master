@@ -2,9 +2,12 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.LitemallAdminMapper;
+import org.linlinjava.litemall.db.dao.SysUserRoleMapper;
+import org.linlinjava.litemall.db.domain.LearnPlanner;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.domain.LitemallAdmin.Column;
 import org.linlinjava.litemall.db.domain.LitemallAdminExample;
+import org.linlinjava.litemall.db.domain.SysUserRole;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -15,6 +18,8 @@ import java.util.List;
 public class LitemallAdminService {
     @Resource
     private LitemallAdminMapper adminMapper;
+    @Resource
+    private SysUserRoleMapper sysUserRoleMapper;
 
     public List<LitemallAdmin> findAdmin(String username) {
         LitemallAdminExample example = new LitemallAdminExample();
@@ -67,5 +72,32 @@ public class LitemallAdminService {
 
     public LitemallAdmin findById(Integer id) {
         return adminMapper.selectByPrimaryKeySelective(id, result);
+    }
+
+    public void createAdmin(LearnPlanner planner) {
+        String account=planner.getAccount();
+        String appid=planner.getOpenid();
+        LitemallAdminExample example = new LitemallAdminExample();
+        LitemallAdminExample.Criteria criteria = example.createCriteria();
+        if(!StringUtils.isEmpty(appid))
+            criteria.andAppidEqualTo(appid);
+        Long count=adminMapper.countByExample(example);
+        if(count==0){
+            LitemallAdmin admin=new LitemallAdmin();
+            if(!StringUtils.isEmpty(account)){
+                admin.setUsername(account);
+                admin.setPassword("123456");
+                if(!StringUtils.isEmpty(appid))
+                    admin.setAppid(appid);
+                admin.setDeleted(false);
+                this.add(admin);
+
+                //添加用户角色信息
+                SysUserRole role=new SysUserRole();
+                role.setRoleId(2);
+                role.setUserId(admin.getId());
+                sysUserRoleMapper.insert(role);
+            }
+        }
     }
 }

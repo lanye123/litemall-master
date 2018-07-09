@@ -86,6 +86,16 @@ public class LitemallAdmin {
 
     private Integer flag;
 
+    private String appid;
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
     public Integer getFlag() {
         return flag;
     }

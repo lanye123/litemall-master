@@ -17,6 +17,7 @@
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
     <result column="flag" jdbcType="INTEGER" property="flag" />
+    <result column="appid" jdbcType="VARCHAR" property="appid" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <!--
@@ -233,6 +234,9 @@
       <if test="flag != null">
         flag,
       </if>
+      <if test="appid != null">
+        appid,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -261,6 +265,9 @@
       </if>
       <if test="flag != null">
         #{flag,jdbcType=BIT},
+      </if>
+      <if test="appid != null">
+        #{appid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -313,6 +320,9 @@
       <if test="record.flag != null">
         flag = #{record.falg,jdbcType=INTEGER},
       </if>
+      <if test="record.appid != null">
+        flag = #{record.appid,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -334,7 +344,8 @@
       avatar = #{record.avatar,jdbcType=VARCHAR},
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT},
-    flag=#{record.flag,jdbcType=INTEGER}
+    flag=#{record.flag,jdbcType=INTEGER},
+    appid = #{record.appid,jdbcType=VARCHAR},
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -374,6 +385,9 @@
       <if test="flag != null">
         flag = #{flag,jdbcType=INTEGER},
       </if>
+      <if test="appid != null">
+        appid = #{appid,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -392,7 +406,8 @@
       avatar = #{avatar,jdbcType=VARCHAR},
       add_time = #{addTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT},
-    flag = #{flag,jdbcType=INTEGER}
+    flag = #{flag,jdbcType=INTEGER},
+    appid = #{appid,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallAdminExample" resultMap="BaseResultMap">
