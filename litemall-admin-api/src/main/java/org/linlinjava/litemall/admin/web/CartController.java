@@ -31,14 +31,11 @@ public class CartController {
     private LitemallProductService productService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        Integer userId, Integer goodsId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
         List<LitemallCart> cartList = cartService.querySelective(userId, goodsId, page, limit, sort, order);
         int total = cartService.countSelective(userId, goodsId, page, limit, sort, order);
 
@@ -53,19 +50,13 @@ public class CartController {
      * 目前的逻辑不支持管理员创建
      */
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCart cart){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object create( @RequestBody LitemallCart cart){
 
         return ResponseUtil.fail501();
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object read( Integer id){
 
         LitemallCart cart = cartService.findById(id);
         return ResponseUtil.ok(cart);
@@ -75,18 +66,12 @@ public class CartController {
      * 目前的逻辑不支持管理员创建
      */
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCart cart){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object update( @RequestBody LitemallCart cart){
         return ResponseUtil.fail501();
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCart cart){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object delete( @RequestBody LitemallCart cart){
         cartService.deleteById(cart.getId());
         return ResponseUtil.ok();
     }

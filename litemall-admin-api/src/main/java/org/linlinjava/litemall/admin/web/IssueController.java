@@ -22,14 +22,12 @@ public class IssueController {
     private LitemallIssueService issueService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String question,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallIssue> issueList = issueService.querySelective(question, page, limit, sort, order);
         int total = issueService.countSelective(question, page, limit, sort, order);
@@ -41,19 +39,15 @@ public class IssueController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallIssue brand){
+
         issueService.add(brand);
         return ResponseUtil.ok(brand);
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -64,19 +58,15 @@ public class IssueController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallIssue brand){
+
         issueService.updateById(brand);
         return ResponseUtil.ok(brand);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallIssue brand){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallIssue brand){
+
         issueService.deleteById(brand.getId());
         return ResponseUtil.ok();
     }

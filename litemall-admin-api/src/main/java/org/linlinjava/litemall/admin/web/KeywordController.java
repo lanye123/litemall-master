@@ -22,14 +22,12 @@ public class KeywordController {
     private LitemallKeywordService keywordService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String keyword, String url,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallKeyword> brandList = keywordService.querySelective(keyword, url, page, limit, sort, order);
         int total = keywordService.countSelective(keyword, url, page, limit, sort, order);
@@ -41,19 +39,15 @@ public class KeywordController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallKeyword keywords){
+
         keywordService.add(keywords);
         return ResponseUtil.ok(keywords);
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -64,19 +58,15 @@ public class KeywordController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword keywords){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallKeyword keywords){
+
         keywordService.updateById(keywords);
         return ResponseUtil.ok(keywords);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallKeyword brand){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallKeyword brand){
+
         keywordService.deleteById(brand.getId());
         return ResponseUtil.ok();
     }

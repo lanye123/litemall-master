@@ -22,15 +22,11 @@ public class AdController {
     private LitemallAdService adService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String name, String content,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
-
         List<LitemallAd> adList = adService.querySelective(name, content, page, limit, sort, order);
         int total = adService.countSelective(name, content, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -41,19 +37,14 @@ public class AdController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create(@RequestBody LitemallAd ad){
         adService.add(ad);
         return ResponseUtil.ok(ad);
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -64,19 +55,15 @@ public class AdController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallAd ad){
+
         adService.updateById(ad);
         return ResponseUtil.ok(ad);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAd ad){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallAd ad){
+
         adService.deleteById(ad.getId());
         return ResponseUtil.ok();
     }

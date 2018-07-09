@@ -22,14 +22,12 @@ public class GoodsSpecificationController {
     private LitemallGoodsSpecificationService goodsSpecificationService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        Integer goodsId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallGoodsSpecification> goodsSpecificationList = goodsSpecificationService.querySelective(goodsId, page, limit, sort, "add_time desc");
         int total = goodsSpecificationService.countSelective(goodsId, page, limit, sort, order);
@@ -41,19 +39,15 @@ public class GoodsSpecificationController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsSpecification goodsSpecification){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallGoodsSpecification goodsSpecification){
+
         goodsSpecificationService.add(goodsSpecification);
         return ResponseUtil.ok(goodsSpecification);
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -64,28 +58,22 @@ public class GoodsSpecificationController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsSpecification goodsSpecification){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallGoodsSpecification goodsSpecification){
+
         goodsSpecificationService.updateById(goodsSpecification);
         return ResponseUtil.ok(goodsSpecification);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsSpecification goodsSpecification){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallGoodsSpecification goodsSpecification){
+
         goodsSpecificationService.deleteById(goodsSpecification.getId());
         return ResponseUtil.ok();
     }
 
     @GetMapping("/volist")
-    public Object volist(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object volist( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();

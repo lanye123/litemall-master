@@ -99,9 +99,11 @@ public class AuthController {
      *
      */
     @PostMapping("/logout")
-    public Object login(@LoginAdmin Integer adminId){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
+    public Object login(){
+        try {
+            Subject currentUser = SecurityUtils.getSubject();
+            currentUser.logout();
+        } catch (Exception e) {
         }
 
         return ResponseUtil.ok();

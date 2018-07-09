@@ -36,24 +36,21 @@ public class AddressController {
         addressVo.put("cityId", address.getCityId());
         addressVo.put("areaId", address.getAreaId());
         addressVo.put("address", address.getAddress());
-        String province = regionService.findById(address.getProvinceId()).getName();
+        /*String province = regionService.findById(address.getProvinceId()).getName();
         String city = regionService.findById(address.getCityId()).getName();
         String area = regionService.findById(address.getAreaId()).getName();
         addressVo.put("province", province);
         addressVo.put("city", city);
-        addressVo.put("area", area);
+        addressVo.put("area", area);*/
         return addressVo;
     }
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        Integer userId, String name,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
 
         List<LitemallAddress> addressList = addressService.querySelective(userId, name, page, limit, sort, order);
         int total = addressService.countSelective(userId, name, page, limit, sort, order);
@@ -72,10 +69,7 @@ public class AddressController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAddress address){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object create( @RequestBody LitemallAddress address){
 
         addressService.add(address);
 
@@ -84,10 +78,7 @@ public class AddressController {
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer addressId){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object read( Integer addressId){
 
         LitemallAddress address = addressService.findById(addressId);
         Map<String, Object> addressVo = toVo(address);
@@ -95,20 +86,14 @@ public class AddressController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAddress address){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object update( @RequestBody LitemallAddress address){
         addressService.updateById(address);
         Map<String, Object> addressVo = toVo(address);
         return ResponseUtil.ok(addressVo);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAddress address){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object delete( @RequestBody LitemallAddress address){
         addressService.delete(address.getId());
         return ResponseUtil.ok();
     }

@@ -22,14 +22,12 @@ public class HistoryController {
     private LitemallSearchHistoryService searchHistoryService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String userId, String keyword,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallSearchHistory> footprintList = searchHistoryService.querySelective(userId, keyword, page, limit, sort, order);
         int total = searchHistoryService.countSelective(userId, keyword, page, limit, sort, order);
@@ -41,18 +39,13 @@ public class HistoryController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
+    public Object create( @RequestBody LitemallSearchHistory history){
         return ResponseUtil.fail501();
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -63,19 +56,15 @@ public class HistoryController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallSearchHistory history){
+
         searchHistoryService.updateById(history);
         return ResponseUtil.ok();
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallSearchHistory history){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallSearchHistory history){
+
         searchHistoryService.deleteById(history.getId());
         return ResponseUtil.ok();
     }

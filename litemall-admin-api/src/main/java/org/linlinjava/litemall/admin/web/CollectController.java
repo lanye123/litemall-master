@@ -22,14 +22,12 @@ public class CollectController {
     private LitemallCollectService collectService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String userId, String valueId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallCollect> collectList = collectService.querySelective(userId, valueId, page, limit, sort, order);
         int total = collectService.countSelective(userId, valueId, page, limit, sort, order);
@@ -41,18 +39,14 @@ public class CollectController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCollect collect){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallCollect collect){
+
         return ResponseUtil.unsupport();
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -63,19 +57,15 @@ public class CollectController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCollect collect){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallCollect collect){
+
         collectService.updateById(collect);
         return ResponseUtil.ok();
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCollect collect){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallCollect collect){
+
         collectService.deleteById(collect.getId());
         return ResponseUtil.ok();
     }

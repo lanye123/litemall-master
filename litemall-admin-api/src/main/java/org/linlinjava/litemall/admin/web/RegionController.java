@@ -25,7 +25,7 @@ public class RegionController {
     private LitemallRegionService regionService;
 
     @GetMapping("/clist")
-    public Object clist(@LoginAdmin Integer adminId, Integer id) {
+    public Object clist( Integer id) {
         if (id == null) {
             return ResponseUtil.badArgument();
         }
@@ -36,14 +36,12 @@ public class RegionController {
     }
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String name, Integer code,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallRegion> regionList = regionService.querySelective(name, code, page, limit, sort, order);
         int total = regionService.countSelective(name, code, page, limit, sort, order);

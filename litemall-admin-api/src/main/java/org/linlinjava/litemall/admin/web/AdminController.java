@@ -34,9 +34,6 @@ public class AdminController {
     @GetMapping("/info")
     public Object info(String token){
         Integer adminId = AdminTokenManager.getUserId(token);
-        if(adminId == null){
-            return ResponseUtil.badArgumentValue();
-        }
         LitemallAdmin admin = adminService.findById(adminId);
         if(admin == null){
             return ResponseUtil.badArgumentValue();
@@ -55,29 +52,24 @@ public class AdminController {
     }
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String username,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallAdmin> adminList = adminService.querySelective(username, page, limit, sort, order);
         int total = adminService.countSelective(username, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", adminList);
-
         return ResponseUtil.ok(data);
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallAdmin admin){
+
 
         String rawPassword = admin.getPassword();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -89,10 +81,8 @@ public class AdminController {
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -103,10 +93,8 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallAdmin admin){
+
 
         Integer anotherAdminId = admin.getId();
         if(anotherAdminId.intValue() == 1){
@@ -118,10 +106,8 @@ public class AdminController {
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallAdmin admin){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallAdmin admin){
+
 
         Integer anotherAdminId = admin.getId();
         if(anotherAdminId.intValue() == 1){

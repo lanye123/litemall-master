@@ -22,14 +22,12 @@ public class CommentController {
     private LitemallCommentService commentService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String userId, String valueId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallComment> brandList = commentService.querySelective(userId, valueId, page, limit, sort, order);
         int total = commentService.countSelective(userId, valueId, page, limit, sort, order);
@@ -41,19 +39,15 @@ public class CommentController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallComment comment){
+
         commentService.add(comment);
         return ResponseUtil.ok(comment);
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -64,19 +58,15 @@ public class CommentController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallComment comment){
+
         commentService.updateById(comment);
         return ResponseUtil.ok(comment);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallComment comment){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallComment comment){
+
         commentService.deleteById(comment.getId());
         return ResponseUtil.ok();
     }

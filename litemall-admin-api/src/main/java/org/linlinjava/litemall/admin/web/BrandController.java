@@ -22,14 +22,12 @@ public class BrandController {
     private LitemallBrandService brandService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String id, String name,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallBrand> brandList = brandService.querySelective(id, name, page, limit, sort, order);
         int total = brandService.countSelective(id, name, page, limit, sort, order);
@@ -41,19 +39,15 @@ public class BrandController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallBrand brand){
+
         brandService.add(brand);
         return ResponseUtil.ok(brand);
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -64,19 +58,15 @@ public class BrandController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallBrand brand){
+
         brandService.updateById(brand);
         return ResponseUtil.ok(brand);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallBrand brand){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallBrand brand){
+
         brandService.deleteById(brand.getId());
         return ResponseUtil.ok();
     }

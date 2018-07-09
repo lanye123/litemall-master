@@ -23,14 +23,11 @@ public class OrderController {
     private LitemallOrderService orderService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        Integer userId, String orderSn,Integer orderType,Short orderStatus,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
         List<LitemallOrder> orderList = orderService.querySelective(userId, orderSn,orderType,orderStatus, page, limit, sort, order);
         int total = orderService.countSelective(userId, orderSn, orderType,orderStatus, page, limit, sort, order);
 
@@ -45,19 +42,13 @@ public class OrderController {
      * 目前的逻辑不支持管理员创建
      */
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallOrder order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallOrder order){
+
         return ResponseUtil.unsupport();
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
-
+    public Object read( Integer id){
         LitemallOrder order = orderService.findById(id);
         return ResponseUtil.ok(order);
     }
@@ -66,10 +57,8 @@ public class OrderController {
      * 目前仅仅支持管理员设置发货相关的信息
      */
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallOrder order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallOrder order){
+
 
         Integer orderId = order.getId();
         if(orderId == null){
@@ -100,10 +89,8 @@ public class OrderController {
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallOrder order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallOrder order){
+
         return ResponseUtil.unsupport();
     }
 

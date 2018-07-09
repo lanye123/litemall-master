@@ -22,14 +22,12 @@ public class CategoryController {
     private LitemallCategoryService categoryService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String id, String name,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallCategory> collectList = categoryService.querySelective(id, name, page, limit, sort, order);
         int total = categoryService.countSelective(id, name, page, limit, sort, order);
@@ -41,19 +39,15 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallCategory category){
+
         categoryService.add(category);
         return ResponseUtil.ok();
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -64,29 +58,21 @@ public class CategoryController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallCategory category){
+
         categoryService.updateById(category);
         return ResponseUtil.ok();
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallCategory category){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallCategory category){
+
         categoryService.deleteById(category.getId());
         return ResponseUtil.ok();
     }
 
     @GetMapping("/l1")
-    public Object catL1(@LoginAdmin Integer adminId) {
-        if (adminId == null) {
-            return ResponseUtil.unlogin();
-        }
-
+    public Object catL1() {
         // 所有一级分类目录
         List<LitemallCategory> l1CatList = categoryService.queryL1();
         HashMap<Integer, String> data = new HashMap<>(l1CatList.size());

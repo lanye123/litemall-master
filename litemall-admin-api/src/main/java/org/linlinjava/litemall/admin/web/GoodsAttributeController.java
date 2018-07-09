@@ -22,14 +22,12 @@ public class GoodsAttributeController {
     private LitemallGoodsAttributeService goodsAttributeService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        Integer goodsId,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+
 
         List<LitemallGoodsAttribute> goodsAttributeList = goodsAttributeService.querySelective(goodsId, page, limit, sort, order);
         int total = goodsAttributeService.countSelective(goodsId, page, limit, sort, order);
@@ -41,19 +39,15 @@ public class GoodsAttributeController {
     }
 
     @PostMapping("/create")
-    public Object create(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsAttribute goodsAttribute){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object create( @RequestBody LitemallGoodsAttribute goodsAttribute){
+
         goodsAttributeService.add(goodsAttribute);
         return ResponseUtil.ok(goodsAttribute);
     }
 
     @GetMapping("/read")
-    public Object read(@LoginAdmin Integer adminId, Integer id){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object read( Integer id){
+
 
         if(id == null){
             return ResponseUtil.badArgument();
@@ -64,19 +58,15 @@ public class GoodsAttributeController {
     }
 
     @PostMapping("/update")
-    public Object update(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsAttribute goodsAttribute){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object update( @RequestBody LitemallGoodsAttribute goodsAttribute){
+
         goodsAttributeService.updateById(goodsAttribute);
         return ResponseUtil.ok(goodsAttribute);
     }
 
     @PostMapping("/delete")
-    public Object delete(@LoginAdmin Integer adminId, @RequestBody LitemallGoodsAttribute goodsAttribute){
-        if(adminId == null){
-            return ResponseUtil.unlogin();
-        }
+    public Object delete( @RequestBody LitemallGoodsAttribute goodsAttribute){
+
         goodsAttributeService.deleteById(goodsAttribute.getId());
         return ResponseUtil.ok();
     }

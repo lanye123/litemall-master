@@ -24,14 +24,11 @@ public class UserController {
     private LitemallUserService userService;
 
     @GetMapping("/list")
-    public Object list(@LoginAdmin Integer adminId,
+    public Object list(
                        String username, String mobile,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-        if(adminId == null){
-            return ResponseUtil.fail401();
-        }
         List<LitemallUser> userList = userService.querySelective(username, mobile, "","",page, limit, sort, order);
         int total = userService.countSeletive(username, mobile,"", "",page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
@@ -89,17 +86,18 @@ public class UserController {
     }
 
     @GetMapping("/validate")
-    public Object validate(String mobile,String registerIp){
-
-        if(StringUtil.isEmpty(registerIp) || StringUtil.isEmpty(mobile)){
-            return ResponseUtil.ok("001","");
+    public Object validate(String account){
+        Map<String,Object> data=new HashMap<>();
+        if(StringUtil.isEmpty(account)){
+            return ResponseUtil.badArgument();
         }
 
-        List<LitemallUser> userList = userService.querySelective("", mobile,"" ,registerIp,null, null, null, null);
+        List<LitemallUser> userList = null;
+        userList=userService.queryByAccount(account);
         if(userList != null && userList.size()>0){
-            return ResponseUtil.ok(userList.get(0));
+            data.put("data",userList);
         }
-        return ResponseUtil.ok("001","");
+        return ResponseUtil.ok(data);
     }
     @GetMapping("/tjCorpsPie")
     public Object tjCorpsPie(){
