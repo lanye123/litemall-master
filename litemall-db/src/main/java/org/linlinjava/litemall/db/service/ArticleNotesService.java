@@ -25,6 +25,7 @@ public class ArticleNotesService {
         if (artitle_id!=null) {
             criteria.andArtileIdEqualTo(artitle_id);
         }
+        example.setOrderByClause("sort_no");
         return articleNotesMapper.selectByExample(example);
     }
 

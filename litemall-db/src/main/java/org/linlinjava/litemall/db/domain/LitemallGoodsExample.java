@@ -420,6 +420,11 @@ public class LitemallGoodsExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("type =", value, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andBrandIdNotEqualTo(Integer value) {
             addCriterion("brand_id <>", value, "brandId");
             return (Criteria) this;

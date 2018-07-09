@@ -363,7 +363,7 @@ public class WxGoodsController {
 
         // 查找六个相关商品
         int related = 6;
-        List<LitemallGoods> goodsList = goodsService.queryByCategory(cid, 0, related);
+        List<LitemallGoods> goodsList = goodsService.queryByCategory(cid, null,0, related);
         Map<String, Object> data = new HashMap<>();
         data.put("goodsList", goodsList);
         return ResponseUtil.ok(data);
