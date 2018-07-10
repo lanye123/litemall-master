@@ -79,6 +79,9 @@ public class GoodsController {
             goods.setListPicUrl(listPicUrlArray.toJSONString());
             logger.info("after goods："+goods);
         }
+        if(!goods.getPrimaryPicUrl().contains(PREFIX)){
+            goods.setPrimaryPicUrl(PREFIX+goods.getPrimaryPicUrl());
+        }
         goodsService.add(goods);
         return ResponseUtil.ok(goods);
     }
@@ -126,6 +129,9 @@ public class GoodsController {
             }
             goods.setListPicUrl(listPicUrlArray.toJSONString());
             logger.info("after  goods："+goods);
+        }
+        if(!goods.getPrimaryPicUrl().contains(PREFIX)){
+            goods.setPrimaryPicUrl(PREFIX+goods.getPrimaryPicUrl());
         }
         goodsService.updateById(goods);
         return ResponseUtil.ok(goods);
