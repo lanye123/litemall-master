@@ -45,9 +45,10 @@ public class LitemallGoodsService {
 
     public List<LitemallGoods> queryByCategory(Integer catId,Integer type, int offset, int limit) {
         LitemallGoodsExample example = new LitemallGoodsExample();
-        example.or().andCategoryIdEqualTo(catId).andDeletedEqualTo(false);
+        LitemallGoodsExample.Criteria criteria = example.createCriteria();
+        criteria.andCategoryIdEqualTo(catId).andDeletedEqualTo(false);
         if(!StringUtils.isEmpty(type)){
-            example.or().andTypeEqualTo(type);
+            criteria.andTypeEqualTo(type);
         }
         PageHelper.startPage(offset, limit);
         return goodsMapper.selectByExample(example);

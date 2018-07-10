@@ -24,6 +24,7 @@
     <result column="intention" jdbcType="INTEGER" property="intention" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="source" jdbcType="INTEGER" property="source" />
   </resultMap>
   <resultMap id="BaseResultMap2" type="org.linlinjava.litemall.db.domain.LitemallUser">
     <result column="value" jdbcType="INTEGER" property="value" />
@@ -38,6 +39,9 @@
     <result column="bu_name" jdbcType="VARCHAR" property="buName" />
     <result column="corps_name" jdbcType="VARCHAR" property="corpsName" />
     <result column="transition_name" jdbcType="VARCHAR" property="transitionName" />
+    <result column="address2" jdbcType="VARCHAR" property="address2" />
+    <result column="mobile2" jdbcType="VARCHAR" property="mobile2" />
+    <result column="name2" jdbcType="VARCHAR" property="name2" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -100,7 +104,7 @@
   <sql id="Base_Column_List">
     id, username, `password`, gender, birthday, last_login_time, last_login_ip, user_level, 
     nickname, mobile, register_ip, avatar, weixin_openid, `status`, add_time, deleted, 
-    pid, isjoin, issigin, address, account, intention
+    pid, isjoin, issigin, address, account, intention, source
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallUserExample" resultMap="BaseResultMap">
     select
@@ -176,14 +180,14 @@
       register_ip, avatar, weixin_openid, 
       `status`, add_time, deleted, 
       pid, isjoin, issigin, 
-      address,account,intention)
+      address,account,intention, source)
     values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
       #{birthday,jdbcType=DATE}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, 
       #{userLevel,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
       #{registerIp,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{weixinOpenid,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
       #{pid,jdbcType=VARCHAR}, #{isjoin,jdbcType=INTEGER}, #{issigin,jdbcType=INTEGER}, 
-      #{address,jdbcType=VARCHAR},#{account,jdbcType=VARCHAR},#{intention,jdbcType=INTEGER})
+      #{address,jdbcType=VARCHAR},#{account,jdbcType=VARCHAR},#{intention,jdbcType=INTEGER},#{source,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallUser">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -254,6 +258,9 @@
       <if test="intention != null">
         intention,
       </if>
+      <if test="source != null">
+        source,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="username != null">
@@ -317,7 +324,10 @@
         #{account,jdbcType=VARCHAR},
       </if>
       <if test="intention != null">
-        #{intention,jdbcType=VARCHAR},
+        #{intention,jdbcType=INTEGER},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -393,6 +403,12 @@
       <if test="record.account != null">
         address = #{record.account,jdbcType=VARCHAR},
       </if>
+      <if test="record.intention != null">
+        intention = #{record.intention,jdbcType=INTEGER},
+      </if>
+      <if test="record.source != null">
+        source = #{record.source,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -421,7 +437,8 @@
       issigin = #{record.issigin,jdbcType=INTEGER},
       address = #{record.address,jdbcType=VARCHAR},
     account = #{record.account,jdbcType=VARCHAR},
-    intention=#{record.intention,jdbcType=INTEGER}
+    intention=#{record.intention,jdbcType=INTEGER},
+    source=#{record.source,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -492,6 +509,9 @@
       <if test="intention != null">
         intention = #{intention,jdbcType=INTEGER},
       </if>
+      <if test="source != null">
+        source = #{source,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -517,7 +537,8 @@
       issigin = #{issigin,jdbcType=INTEGER},
       address = #{address,jdbcType=VARCHAR},
       account = #{account,jdbcType=VARCHAR},
-      intention = #{intention,jdbcType=INTEGER}
+      intention = #{intention,jdbcType=INTEGER},
+      source = #{source,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallUserExample" resultMap="BaseResultMap">

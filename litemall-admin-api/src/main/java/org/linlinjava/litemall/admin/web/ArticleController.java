@@ -429,13 +429,13 @@ public class ArticleController {
    * @date 2018-5-31 14:15:07
    */
   @PostMapping("/codeCreate")
-  public Object saveCodeSelf(String path,boolean is_hyaline){
+  public Object saveCodeSelf(@RequestBody Map<String,Object> ob){
     String datapath="";
     WxConfig config=wxConfigService.getToken();
     JSONObject object=new JSONObject();
-    object.put("path",path);
+    object.put("path",ob.get("kkk"));
     object.put("width",430);//小程序二维码宽度
-    object.put("is_hyaline",is_hyaline);
+    object.put("is_hyaline",ob.get("is_hyaline"));
     String requestUrl=create_codeA_url.replace("ACCESS_TOKEN",config.getAccessToken());
     InputStream i=HttpClientUtil.doPostInstream(requestUrl,object);
     byte[] data = new byte[1024];

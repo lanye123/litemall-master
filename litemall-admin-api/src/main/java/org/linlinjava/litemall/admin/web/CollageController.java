@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin/collage")
@@ -27,14 +27,23 @@ public class CollageController {
     private LitemallOrderService litemallOrderService;
 
     @GetMapping("/list")
-    public Object list(Integer userId, Integer orderId,Integer goodsId,Integer status,
+    public Object list(Integer userId, Integer orderId, Integer goodsId, Integer status, String startDate, String endDate,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                       String sort, String order){
+                       String sort, String order) throws ParseException {
 
         order = "create_date desc";
-        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(userId, orderId, goodsId,status,page, limit, sort, order);
-        int total = collageDetailService.count(userId, orderId,goodsId,status);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date start = null;
+        Date end = null;
+        if(!StringUtils.isEmpty(startDate)){
+            start = simpleDateFormat.parse(startDate);
+        }
+        if(!StringUtils.isEmpty(endDate)){
+            end = simpleDateFormat.parse(endDate);
+        }
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(userId, orderId, goodsId,status,start,end,page, limit, sort, order);
+        int total = collageDetailService.count(userId, orderId,goodsId,status,start,end);
 
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
@@ -72,6 +81,30 @@ public class CollageController {
         return ResponseUtil.ok(collageDetail);
     }
 
+    @PostMapping("/custom")
+    public Object custom(@RequestBody Map<String,Object> ob){
+        List<CollageDetail> collageDetailList = (List<CollageDetail>) ob.get("coll");
+        if(collageDetailList == null || collageDetailList.size()==0){
+            return ResponseUtil.ok();
+        }
+        String memo = (String) ob.get("memo");
+        if(StringUtils.isEmpty(memo)){
+            return ResponseUtil.ok();
+        }
+        Map<String,Object> map;
+        CollageDetail collageDetailDb;
+        for(Object collageDetail:collageDetailList){
+            map = (LinkedHashMap<String, Object>) collageDetail;
+            collageDetailDb = collageDetailService.findById((Integer) map.get("id"));
+            if(collageDetailDb==null){
+                continue;
+            }
+            collageDetailDb.setMemo(memo);
+            collageDetailService.update(collageDetailDb);
+        }
+        return ResponseUtil.ok(ob);
+    }
+
     @PostMapping("/delete")
     public Object delete(@RequestBody CollageDetail collageDetail){
         if(collageDetail==null){
@@ -96,6 +129,9 @@ public class CollageController {
         }
         List<CollageDetail> collageDetailList = collageDetailService.queryBySelective2(collageDetailV.getPid(), null, collageDetail.getGoodsId(),1,null, null, null, null);
         for(CollageDetail collageDetailDb:collageDetailList){
+            if(collageDetailDb.getId().intValue()==collageDetailV.getId().intValue()){
+                collageDetailDb.setStatus(4);
+            }
             collageDetailDb.setWincode(sno);
             collageDetailService.update(collageDetailDb);
             LitemallOrder order=litemallOrderService.findById(collageDetailDb.getOrderId());
@@ -106,6 +142,15 @@ public class CollageController {
 
         }
         return ResponseUtil.ok();
+    }
+
+    @PostMapping("/second")
+    public Object second(@RequestBody List<CollageDetail> collageDetailList){
+        for(CollageDetail collageDetail:collageDetailList){
+            collageDetail.setStatus(6);
+            collageDetailService.update(collageDetail);
+        }
+        return ResponseUtil.ok(collageDetailList);
     }
 
 }

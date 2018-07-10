@@ -32,8 +32,12 @@ public class WxUserController {
     private String url;
     @Value("${miniprogram.appid}")
     private String appid;
+    @Value("${miniprogram.zkappid}")
+    private String zkappid;
     @Value("${miniprogram.secret}")
     private String secret;
+    @Value("${miniprogram.zksecret}")
+    private String zksecret;
     @Value("${access_token.url}")
     private String token_url;
     @Value("${create_codeA.url}")
@@ -79,6 +83,14 @@ public class WxUserController {
     @GetMapping("/code")
     public Object getUserInfo(String code){
         String requestUrl=url.replace("APPID",appid).replace("CODE",code).replace("SECRET",secret);
+        JSONObject re = HttpClientUtil.doGet(requestUrl);
+        return ResponseUtil.ok(re);
+    }
+
+    //获取微信用户信息
+    @GetMapping("/zkcode")
+    public Object getZkUserInfo(String code){
+        String requestUrl=url.replace("APPID",zkappid).replace("CODE",code).replace("SECRET",zksecret);
         JSONObject re = HttpClientUtil.doGet(requestUrl);
         return ResponseUtil.ok(re);
     }

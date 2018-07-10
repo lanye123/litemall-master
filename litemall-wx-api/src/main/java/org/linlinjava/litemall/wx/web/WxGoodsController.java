@@ -414,7 +414,7 @@ public class WxGoodsController {
         // 商品问题，这里是一些通用问题
         //List<LitemallIssue> issue = goodsIssueService.query();
 
-        int groupCount = collageDetailService.count(null,null,id,null);
+        int groupCount = collageDetailService.count(null,null,id,null,null,null);
 
         List<LitemallAd> adList = litemallAdService.querySelective("","",null,null,"","");
 
@@ -443,7 +443,7 @@ public class WxGoodsController {
         LitemallGoods info = goodsService.findById(id);
 
         Map<String, Object> data = new HashMap<>();
-        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(orderId,userId,id,null,null,null,"","create_date");
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(orderId,userId,id,null,null,null,null,null,"","create_date");
 
         List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
         Map<String, Object> userVo;

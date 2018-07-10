@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -32,7 +33,7 @@ public class CollageDetailService {
       return collageDetailMapper.selectByExample(example);
     }
 
-    public List<CollageDetail>  queryBySelective(Integer orderId,Integer userId,Integer goodsId,Integer status, Integer page, Integer limit, String sort, String order) {
+    public List<CollageDetail>  queryBySelective(Integer userId, Integer orderId, Integer goodsId, Integer status, Date startDate, Date endDate, Integer page, Integer limit, String sort, String order) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -45,6 +46,10 @@ public class CollageDetailService {
             criteria.andStatusEqualTo(status);
         if(!StringUtils.isEmpty(order))
             criteria.example().setOrderByClause(order);
+        if(!StringUtils.isEmpty(startDate))
+            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+        if(!StringUtils.isEmpty(endDate))
+            criteria.andCreateDateLessThanOrEqualTo(endDate);
         if(page!=null && limit!=null){
             PageHelper.startPage(page,limit);
         }
@@ -70,7 +75,7 @@ public class CollageDetailService {
         return collageDetailMapper.selectByExample(example);
     }
 
-    public int count(Integer orderId,Integer userId,Integer goodsId,Integer status) {
+    public int count(Integer userId,Integer orderId,Integer goodsId,Integer status,Date startDate, Date endDate) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -81,6 +86,10 @@ public class CollageDetailService {
             criteria.andGoodsIdEqualTo(goodsId);
         if(!StringUtils.isEmpty(status))
             criteria.andStatusEqualTo(status);
+        if(!StringUtils.isEmpty(startDate))
+            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+        if(!StringUtils.isEmpty(endDate))
+            criteria.andCreateDateLessThanOrEqualTo(endDate);
         return (int)collageDetailMapper.countByExample(example);
     }
 
