@@ -7,9 +7,11 @@ import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.util.bcrypt.HttpClientUtil;
 import org.linlinjava.litemall.db.domain.LearnPlanner;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
+import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.domain.WxConfig;
 import org.linlinjava.litemall.db.service.LearnPlannerService;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
+import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.service.WxConfigService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class LearnPlannerController {
     private WxConfigService wxConfigService;
     @Autowired
     private LitemallAdminService litemallAdminService;
+    @Autowired
+    private LitemallUserService litemallUserService;
     @Value("${create_codeB.url}")
     private String create_codeB_url;
     @Value("${web.upload-path}")
@@ -86,6 +90,11 @@ public class LearnPlannerController {
             return ResponseUtil.ok();
         }
         LearnPlanner learnPlannerDb = learnPlannerService.queryByOpenid(planner.getOpenid());
+        LitemallUser user=litemallUserService.queryByOid(planner.getOpenid());
+        if(user!=null&&StringUtils.isEmpty(user.getPid())){
+          user.setPid(user.getWeixinOpenid());
+          litemallUserService.update(user);
+        }
         if(learnPlannerDb!=null){
             return ResponseUtil.ok(learnPlannerDb);
         }

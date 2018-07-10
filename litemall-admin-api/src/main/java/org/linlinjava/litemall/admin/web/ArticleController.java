@@ -422,6 +422,63 @@ public class ArticleController {
         return ResponseUtil.ok(article);
     }
 
+
+  /**
+   * 自定义生成二维码功能
+   * @author leiqiang
+   * @date 2018-5-31 14:15:07
+   */
+  @PostMapping("/codeCreate")
+  public Object saveCodeSelf(String path,boolean is_hyaline){
+    String datapath="";
+    WxConfig config=wxConfigService.getToken();
+    JSONObject object=new JSONObject();
+    object.put("path",path);
+    object.put("width",430);//小程序二维码宽度
+    object.put("is_hyaline",is_hyaline);
+    String requestUrl=create_codeA_url.replace("ACCESS_TOKEN",config.getAccessToken());
+    InputStream i=HttpClientUtil.doPostInstream(requestUrl,object);
+    byte[] data = new byte[1024];
+    int len = -1;
+    FileOutputStream fileOutputStream = null;
+    try {
+      String temp = "images" + File.separator + "code" + File.separator;
+      // 新的图片文件名 = 获取时间戳+"."图片扩展名
+      String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
+      // 文件路径
+      String filePath = webUploadPath.concat(temp);
+
+      File dest = new File(filePath, newFileName);
+      if (!dest.getParentFile().exists()) {
+        dest.getParentFile().mkdirs();
+      }
+      fileOutputStream = new FileOutputStream(dest);
+      while ((len = i.read(data)) != -1) {
+        fileOutputStream.write(data, 0, len);
+      }
+      // 将反斜杠转换为正斜杠
+      datapath = temp.replaceAll("\\\\", "/") + newFileName;
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (i != null) {
+        try {
+          i.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      if (fileOutputStream != null) {
+        try {
+          fileOutputStream.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return ResponseUtil.ok(datapath);
+  }
+
     /*public static void main(String[] args){
         wxMessService.articleCheck("pages/graphic/main","早上8点早客户CASIO办公室接2个客人到厂里做质检","2018-02-15 12:25:30","2017-05-04 12:30:30","1529055473776",6);
     }*/

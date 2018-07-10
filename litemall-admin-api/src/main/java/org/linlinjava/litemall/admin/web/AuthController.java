@@ -4,15 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.linlinjava.litemall.admin.dao.AdminToken;
 import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.admin.service.AdminTokenManager;
 import org.linlinjava.litemall.admin.util.bcrypt.BCryptPasswordEncoder;
+import org.linlinjava.litemall.admin.util.constants.Constants;
 import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.linlinjava.litemall.db.util.JacksonUtil;
@@ -56,6 +54,12 @@ public class AuthController {
             data.put("token", subject.getSession().getId());
             data.put("result", "success");
             data.put("username",username);
+            List<LitemallAdmin> adminList = adminService.findAdmin(username);
+          if (adminList != null&&adminList.size()>0) {
+            LitemallAdmin user=adminList.get(0);
+            subject.getSession().setAttribute(Constants.SESSION_USER_INFO, user);
+          }
+
         }  catch (IncorrectCredentialsException e) {
             data.put("result", "密码错误");
         } catch (LockedAccountException e) {

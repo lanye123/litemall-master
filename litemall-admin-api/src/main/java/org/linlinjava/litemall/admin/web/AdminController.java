@@ -13,6 +13,8 @@ import org.linlinjava.litemall.db.domain.LitemallAdmin;
 import org.linlinjava.litemall.db.service.LitemallAdminService;
 import org.linlinjava.litemall.db.service.SysRolePermissionService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/admin")
 public class AdminController {
+  private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     @Autowired
     private LitemallAdminService adminService;
 
@@ -120,9 +123,10 @@ public class AdminController {
     public Object getInfo() {
         //从session获取用户信息
         Session session = SecurityUtils.getSubject().getSession();
-        String username=session.getAttribute("principals").toString();
-        //LitemallAdmin userInfo = (LitemallAdmin) session.getAttribute(Constants.SESSION_USER_INFO);
-        //String username = userInfo.getUsername();
+        //String username=session.getAttribute("principals").toString();
+        LitemallAdmin userInfo = (LitemallAdmin) session.getAttribute(Constants.SESSION_USER_INFO);
+        logger.info(userInfo.getUsername());
+        String username = userInfo.getUsername();
         List list = sysRolePermissionService.getUserPermission(username);
         session.setAttribute(Constants.SESSION_USER_PERMISSION, list.get(0));
         return ResponseUtil.ok(list.get(0));
