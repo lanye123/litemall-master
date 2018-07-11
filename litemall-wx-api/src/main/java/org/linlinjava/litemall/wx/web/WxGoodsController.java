@@ -443,7 +443,7 @@ public class WxGoodsController {
         LitemallGoods info = goodsService.findById(id);
 
         Map<String, Object> data = new HashMap<>();
-        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(orderId,userId,id,null,null,null,null,null,"","create_date");
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective(userId,orderId,id,null,null,null,null,null,"","create_date");
 
         List<Map<String, Object>> userVoList = new ArrayList<>(collageDetailList.size());
         Map<String, Object> userVo;

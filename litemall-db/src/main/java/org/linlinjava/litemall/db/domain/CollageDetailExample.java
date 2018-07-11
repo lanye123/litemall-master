@@ -421,6 +421,11 @@ public class CollageDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andNickNameLike(String value) {
+            addCriterion("nickname like", value, "nickname");
+            return (Criteria) this;
+        }
+
         public Criteria andAvatarNotLike(String value) {
             addCriterion("avatar not like", value, "avatar");
             return (Criteria) this;
@@ -458,6 +463,11 @@ public class CollageDetailExample {
 
         public Criteria andStatusEqualTo(Integer value) {
             addCriterion("`status` =", value, "status");
+            return (Criteria) this;
+        }
+
+        public Criteria andCStatusEqualTo(Integer value) {
+            addCriterion("c.`status` =", value, "status");
             return (Criteria) this;
         }
 
@@ -541,6 +551,11 @@ public class CollageDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andCCreateDateGreaterThanOrEqualTo(Date value) {
+            addCriterion("c.create_date >=", value, "createDate");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateDateLessThan(Date value) {
             addCriterion("create_date <", value, "createDate");
             return (Criteria) this;
@@ -548,6 +563,11 @@ public class CollageDetailExample {
 
         public Criteria andCreateDateLessThanOrEqualTo(Date value) {
             addCriterion("create_date <=", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCCreateDateLessThanOrEqualTo(Date value) {
+            addCriterion("c.create_date <=", value, "createDate");
             return (Criteria) this;
         }
 

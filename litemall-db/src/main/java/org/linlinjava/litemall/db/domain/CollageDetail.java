@@ -31,6 +31,16 @@ public class CollageDetail {
 
     //拼团类型
     private Integer type;
+    //昵称
+    private String nickname;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public Integer getType() {
         return type;

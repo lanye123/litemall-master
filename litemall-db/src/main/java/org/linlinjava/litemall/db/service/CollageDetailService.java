@@ -56,7 +56,7 @@ public class CollageDetailService {
         return collageDetailMapper.selectByExample(example);
     }
 
-    public List<CollageDetail> queryBySelective3(Integer userId, Integer orderId, Integer goodsId, Integer status, Date startDate, Date endDate,Integer type, Integer page, Integer limit, String sort, String order) {
+    public List<CollageDetail> queryBySelective3(Integer userId, Integer orderId, Integer goodsId, Integer status, Date startDate, Date endDate,Integer type,String nickname, Integer page, Integer limit, String sort, String order) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -66,15 +66,17 @@ public class CollageDetailService {
         if(!StringUtils.isEmpty(goodsId))
             criteria.andGoodsIdEqualTo(goodsId);
         if(!StringUtils.isEmpty(status))
-            criteria.andStatusEqualTo(status);
+            criteria.andCStatusEqualTo(status);
         if(!StringUtils.isEmpty(type))
             criteria.andTypeEqualTo(type);
+        if(!StringUtils.isEmpty(nickname))
+            criteria.andNickNameLike("%"+nickname+"%");
         if(!StringUtils.isEmpty(order))
             criteria.example().setOrderByClause(order);
         if(!StringUtils.isEmpty(startDate))
-            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+            criteria.andCCreateDateGreaterThanOrEqualTo(startDate);
         if(!StringUtils.isEmpty(endDate))
-            criteria.andCreateDateLessThanOrEqualTo(endDate);
+            criteria.andCCreateDateLessThanOrEqualTo(endDate);
         if(page!=null && limit!=null){
             PageHelper.startPage(page,limit);
         }
@@ -118,7 +120,7 @@ public class CollageDetailService {
         return (int)collageDetailMapper.countByExample(example);
     }
 
-    public int count2(Integer userId,Integer orderId,Integer goodsId,Integer status,Date startDate, Date endDate,Integer type) {
+    public int count2(Integer userId,Integer orderId,Integer goodsId,Integer status,Date startDate, Date endDate,Integer type,String nickname) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -128,13 +130,15 @@ public class CollageDetailService {
         if(!StringUtils.isEmpty(goodsId))
             criteria.andGoodsIdEqualTo(goodsId);
         if(!StringUtils.isEmpty(status))
-            criteria.andStatusEqualTo(status);
+            criteria.andCStatusEqualTo(status);
         if(!StringUtils.isEmpty(type))
             criteria.andTypeEqualTo(type);
+        if(!StringUtils.isEmpty(nickname))
+            criteria.andNickNameLike("%"+nickname+"%");
         if(!StringUtils.isEmpty(startDate))
-            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+            criteria.andCCreateDateGreaterThanOrEqualTo(startDate);
         if(!StringUtils.isEmpty(endDate))
-            criteria.andCreateDateLessThanOrEqualTo(endDate);
+            criteria.andCCreateDateLessThanOrEqualTo(endDate);
         return (int)collageDetailMapper.countByExample2(example);
     }
 
