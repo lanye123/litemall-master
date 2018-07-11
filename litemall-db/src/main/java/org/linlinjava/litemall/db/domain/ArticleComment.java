@@ -30,6 +30,17 @@ public class ArticleComment {
 
     private String account;
 
+    //回复次数
+    private Integer replyCount;
+
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+    }
+
     public String getAccount() {
         return account;
     }

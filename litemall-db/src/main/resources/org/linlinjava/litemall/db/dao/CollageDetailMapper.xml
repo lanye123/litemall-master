@@ -16,6 +16,9 @@
     <result column="flag" jdbcType="INTEGER" property="flag" />
     <result column="memo" jdbcType="VARCHAR" property="memo" />
   </resultMap>
+  <resultMap id="BaseResultMap2" type="org.linlinjava.litemall.db.domain.CollageDetail" extends="BaseResultMap">
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -85,6 +88,17 @@
     </if>
     <include refid="Base_Column_List" />
     from collage_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.CollageDetailExample" resultMap="BaseResultMap2">
+    SELECT c.*,l.type
+    from collage_detail c
+    LEFT JOIN litemall_goods l on c.goods_id=l.id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -220,6 +234,14 @@
   </insert>
   <select id="countByExample" parameterType="org.linlinjava.litemall.db.domain.CollageDetailExample" resultType="java.lang.Long">
     select count(*) from collage_detail
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="countByExample2" parameterType="org.linlinjava.litemall.db.domain.CollageDetailExample" resultType="java.lang.Long">
+    select count(*)
+    from collage_detail c
+    LEFT JOIN litemall_goods l on c.goods_id=l.id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>

@@ -461,6 +461,11 @@ public class CollageDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andTypeEqualTo(Integer value) {
+            addCriterion("l.`type` =", value, "type");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusNotEqualTo(Integer value) {
             addCriterion("`status` <>", value, "status");
             return (Criteria) this;

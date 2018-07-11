@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.ArticleComment;
 import org.linlinjava.litemall.db.service.ArticleCommentService;
+import org.linlinjava.litemall.db.service.ArticleReplyService;
 import org.linlinjava.litemall.db.service.PraiseCommentService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class ArticleCommentController {
     @Autowired
     private ArticleCommentService articleCommentService;
     @Autowired
+    private ArticleReplyService articleReplyService;
+    @Autowired
     private PraiseCommentService praiseCommentService;
 
     @GetMapping("/list")
@@ -29,17 +32,19 @@ public class ArticleCommentController {
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
-
+        Map<String, Object> data = new HashMap<>();
+        long sss = System.currentTimeMillis();
         List<ArticleComment> articleCommentList = articleCommentService.query(articleId, categoryName,categoryId,content,fromUserid,startDate,endDate, page, limit, sort, order);
         int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid,startDate,endDate, page, limit, sort, order);
-        Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         for(ArticleComment articleComment:articleCommentList){
             //统计点赞数量
             articleComment.setCountPraise(praiseCommentService.count(articleComment.getId()));
+            articleComment.setReplyCount(articleReplyService.countReply(articleComment.getId()));
         }
         data.put("items", articleCommentList);
-
+        long ddd = System.currentTimeMillis();
+        data.put("hhh",ddd-sss);
         return ResponseUtil.ok(data);
     }
 

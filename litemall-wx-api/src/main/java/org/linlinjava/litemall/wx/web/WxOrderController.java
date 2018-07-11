@@ -16,7 +16,6 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -208,7 +207,7 @@ public class WxOrderController {
         LitemallUser user;
         Integer goodsId = null;
         for (CollageDetail collageDetail : collageDetailList) {
-            if(userId == collageDetail.getUserId()){
+            if(userId.intValue() == collageDetail.getUserId().intValue()){
                 orderVo.put("memo",collageDetail.getMemo());
                 orderVo.put("sno",collageDetail.getSno());
                 orderVo.put("wincode",collageDetail.getWincode());
@@ -251,7 +250,7 @@ public class WxOrderController {
         orderVo.put("id", order.getId());
         orderVo.put("orderType", order.getOrder_type());
         orderVo.put("orderSn", order.getOrderSn());
-        orderVo.put("addTime", LocalDate.now());
+        orderVo.put("addTime", order.getAddTime());
         orderVo.put("consignee", order.getConsignee());
         orderVo.put("mobile", order.getMobile());
         orderVo.put("address", order.getAddress());
