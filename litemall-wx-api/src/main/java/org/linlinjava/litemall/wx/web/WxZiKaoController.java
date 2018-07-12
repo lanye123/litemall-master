@@ -129,7 +129,9 @@ public class WxZiKaoController {
             return ResponseUtil.badArgument();
         }
         zkTikuDetail.setAvatar(user.getAvatar());
-        zkTikuDetailService.add(zkTikuDetail);
+        if(zkTikuDetailService.countSeletive(zkTikuDetail.getTkId(),zkTikuDetail.getUserId(),zkTikuDetail.getPid(),null,null,null,null,"","")==0){
+            zkTikuDetailService.add(zkTikuDetail);
+        }
         return ResponseUtil.ok(zkTikuDetail);
     }
 }
