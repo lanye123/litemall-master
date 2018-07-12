@@ -153,4 +153,24 @@ public class CollageController {
         return ResponseUtil.ok(collageDetailList);
     }
 
+    @PostMapping("/hasRead")
+    public Object hasRead(@RequestBody Map<String,Object> ob){
+        if(ob.get("id")==null){
+            return ResponseUtil.ok();
+        }
+
+        CollageDetail collageDetail = collageDetailService.findById((Integer) ob.get("id"));
+        if(collageDetail==null){
+            return ResponseUtil.ok();
+        }
+        if(collageDetail.getReadStatus()==0){
+            collageDetail.setReadStatus(1);
+            collageDetailService.update(collageDetail);
+        }else if(collageDetail.getReadStatus()==1){
+            collageDetail.setReadStatus(0);
+            collageDetailService.update(collageDetail);
+        }
+        return ResponseUtil.ok(collageDetail);
+    }
+
 }

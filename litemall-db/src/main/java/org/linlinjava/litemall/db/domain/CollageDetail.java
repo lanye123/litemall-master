@@ -41,6 +41,16 @@ public class CollageDetail {
     private String goodsName;
     //商品编号
     private String goodsSn;
+    //手机号
+    private String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public String getOrderSn() {
         return orderSn;
