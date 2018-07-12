@@ -23,6 +23,7 @@
     <result column="goodsName" jdbcType="VARCHAR" property="goodsName" />
     <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
     <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -101,11 +102,12 @@
     </if>
   </select>
   <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.CollageDetailExample" resultMap="BaseResultMap2">
-    SELECT c.*,l.type,l.name goodsName,u.nickname,o.order_sn,l.goods_sn
+    SELECT c.*,l.type,l.name goodsName,u.nickname,o.order_sn,l.goods_sn,a.mobile
     from collage_detail c
     LEFT JOIN litemall_goods l on c.goods_id=l.id
     LEFT JOIN litemall_user u on c.user_id=u.id
     LEFT JOIN litemall_order o on c.order_id=o.id
+    LEFT JOIN litemall_address a on c.user_id=a.user_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -257,6 +259,7 @@
     LEFT JOIN litemall_goods l on c.goods_id=l.id
     LEFT JOIN litemall_user u on c.user_id=u.id
     LEFT JOIN litemall_order o on c.order_id=o.id
+    LEFT JOIN litemall_address a on c.user_id=a.user_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
