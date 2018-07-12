@@ -110,8 +110,6 @@ public class AdminController {
 
     @PostMapping("/delete")
     public Object delete( @RequestBody LitemallAdmin admin){
-
-
         Integer anotherAdminId = admin.getId();
         if(anotherAdminId.intValue() == 1){
             return ResponseUtil.fail(403, "超级管理员不能删除");
@@ -123,9 +121,7 @@ public class AdminController {
     public Object getInfo() {
         //从session获取用户信息
         Session session = SecurityUtils.getSubject().getSession();
-        //String username=session.getAttribute("principals").toString();
         LitemallAdmin userInfo = (LitemallAdmin) session.getAttribute(Constants.SESSION_USER_INFO);
-        logger.info(userInfo.getUsername());
         String username = userInfo.getUsername();
         List list = sysRolePermissionService.getUserPermission(username);
         session.setAttribute(Constants.SESSION_USER_PERMISSION, list.get(0));

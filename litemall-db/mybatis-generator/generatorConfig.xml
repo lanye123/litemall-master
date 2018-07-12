@@ -258,7 +258,7 @@
 
         <table tableName="zk_zhuanye">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>-->
+        </table>
 
         <table tableName="sys_bu">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
@@ -269,9 +269,19 @@
         <table tableName="sys_dept">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
-        <table tableName="sys_transition">
+        <table tableName="cs_detail">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
+        <table tableName="cs_option">
+          <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+        <table tableName="cs_title">
+        <generatedKey column="id" sqlStatement="MySql" identity="true" />
+      </table>-->
+      <table tableName="cs_test">
+        <generatedKey column="id" sqlStatement="MySql" identity="true" />
+      </table>
+
 
     </context>
 </generatorConfiguration>
