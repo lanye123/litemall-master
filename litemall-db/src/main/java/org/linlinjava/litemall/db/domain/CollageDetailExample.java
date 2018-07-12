@@ -331,6 +331,11 @@ public class CollageDetailExample {
             return (Criteria) this;
         }
 
+        public Criteria andCUserIdEqualTo(Integer value) {
+            addCriterion("c.user_id =", value, "userId");
+            return (Criteria) this;
+        }
+
         public Criteria andUserIdNotEqualTo(Integer value) {
             addCriterion("user_id <>", value, "userId");
             return (Criteria) this;
@@ -423,6 +428,11 @@ public class CollageDetailExample {
 
         public Criteria andNickNameLike(String value) {
             addCriterion("nickname like", value, "nickname");
+            return (Criteria) this;
+        }
+
+        public Criteria andOOrderSnLike(String value) {
+            addCriterion("o.order_sn like", value, "orderSn");
             return (Criteria) this;
         }
 

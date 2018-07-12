@@ -27,12 +27,12 @@ public class CollageController {
     private LitemallOrderService litemallOrderService;
 
     @GetMapping("/list")
-    public Object list(Integer userId, Integer orderId, Integer goodsId, Integer status, String startDate, String endDate,Integer type,String nickname,
+    public Object list(Integer userId, String orderSn, Integer goodsId, Integer status, String startDate, String endDate,Integer type,String nickname,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order) throws ParseException {
 
-        order = "create_date desc";
+        order = "pid desc,create_date desc";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date start = null;
         Date end = null;
@@ -42,8 +42,8 @@ public class CollageController {
         if(!StringUtils.isEmpty(endDate)){
             end = simpleDateFormat.parse(endDate);
         }
-        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective3(userId, orderId, goodsId,status,start,end,type,nickname,page, limit, sort, order);
-        int total = collageDetailService.count2(userId, orderId,goodsId,status,start,end,type,nickname);
+        List<CollageDetail> collageDetailList = collageDetailService.queryBySelective3(userId, orderSn, goodsId,status,start,end,type,nickname,page, limit, sort, order);
+        int total = collageDetailService.count2(userId, orderSn,goodsId,status,start,end,type,nickname);
 
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
