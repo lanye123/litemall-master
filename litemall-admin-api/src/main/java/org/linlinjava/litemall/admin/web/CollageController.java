@@ -153,6 +153,15 @@ public class CollageController {
         return ResponseUtil.ok(collageDetailList);
     }
 
+    @PostMapping("/last")
+    public Object last(@RequestBody List<CollageDetail> collageDetailList){
+        for(CollageDetail collageDetail:collageDetailList){
+            collageDetail.setStatus(5);
+            collageDetailService.update(collageDetail);
+        }
+        return ResponseUtil.ok(collageDetailList);
+    }
+
     @PostMapping("/hasRead")
     public Object hasRead(@RequestBody Map<String,Object> ob){
         if(ob.get("id")==null){
