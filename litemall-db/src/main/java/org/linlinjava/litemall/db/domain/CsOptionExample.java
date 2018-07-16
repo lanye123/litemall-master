@@ -565,6 +565,66 @@ public class CsOptionExample {
             addCriterion("sort_no not between", value1, value2, "sortNo");
             return (Criteria) this;
         }
+
+        public Criteria andAccountIsNull() {
+            addCriterion("account is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIsNotNull() {
+            addCriterion("account is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountEqualTo(Integer value) {
+            addCriterion("account =", value, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountNotEqualTo(Integer value) {
+            addCriterion("account <>", value, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountGreaterThan(Integer value) {
+            addCriterion("account >", value, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountGreaterThanOrEqualTo(Integer value) {
+            addCriterion("account >=", value, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountLessThan(Integer value) {
+            addCriterion("account <", value, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountLessThanOrEqualTo(Integer value) {
+            addCriterion("account <=", value, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountIn(List<Integer> values) {
+            addCriterion("account in", values, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountNotIn(List<Integer> values) {
+            addCriterion("account not in", values, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountBetween(Integer value1, Integer value2) {
+            addCriterion("account between", value1, value2, "account");
+            return (Criteria) this;
+        }
+
+        public Criteria andAccountNotBetween(Integer value1, Integer value2) {
+            addCriterion("account not between", value1, value2, "account");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
