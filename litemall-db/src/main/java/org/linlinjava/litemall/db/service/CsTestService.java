@@ -76,4 +76,8 @@ public class CsTestService {
     public void add(CsTest csTest) {
         csTestMapper.insert(csTest);
     }
+
+  public CsTest cascateDync(Integer id) {
+    return csTestMapper.cascateDync(id);
+  }
 }

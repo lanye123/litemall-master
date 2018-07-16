@@ -48,4 +48,8 @@ public class CsTitleService {
 
     return (int) csTitleMapper.countByExample(example);
   }
+
+  public CsTitle option(Integer pid) {
+    return csTitleMapper.selectByPid(pid);
+  }
 }
