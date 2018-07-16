@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.db.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class CsTest {
     private Integer id;
@@ -24,6 +25,16 @@ public class CsTest {
     private Integer type;
 
     private Integer csCount;
+
+    private List<CsTitle> csTitles;
+
+    public List<CsTitle> getCsTitles() {
+        return csTitles;
+    }
+
+    public void setCsTitles(List<CsTitle> csTitles) {
+        this.csTitles = csTitles;
+    }
 
     public Integer getCsCount() {
         return csCount;
