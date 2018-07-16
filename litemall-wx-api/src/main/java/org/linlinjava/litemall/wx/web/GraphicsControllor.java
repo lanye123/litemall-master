@@ -32,6 +32,9 @@ public class GraphicsControllor {
     private BufferedImage image2;
     private int imageWidth = 1500;  //图片的宽度
     private int imageHeight =2500; //图片的高度
+
+  private int csimageWidth=750;
+  private int csimageHeight=1161;
     @Value("${web.upload-path}")
     private String webUploadPath;
     @Value("${serverurl}")
@@ -397,10 +400,153 @@ public class GraphicsControllor {
         return ResponseUtil.ok(data);
     }
 
+  @GetMapping("csResult")
+  public Object csResult(String imgurl,Integer userId) {
+    Map data = new HashMap();
+      LitemallUser user = litemallUserService.findById(userId);
+      String nickname=user.getNickname();
+      String avatar=user.getAvatar();
+      image = new BufferedImage(csimageWidth, csimageHeight, BufferedImage.TYPE_INT_RGB);
+      //设置图片的背景色
+      Graphics2D main = image.createGraphics();
+      main.fillRect(0, 0, csimageWidth, csimageHeight);
+
+
+      //***********************插入中间广告图
+      Graphics mainPic = image.getGraphics();
+      BufferedImage bimg = null;
+      try {
+        URL url2 = new URL(imgurl);
+        URLConnection con2 = url2.openConnection();
+        //不超时
+        con2.setConnectTimeout(0);
+
+        //不允许缓存
+        con2.setUseCaches(false);
+        con2.setDefaultUseCaches(false);
+        InputStream is2 = con2.getInputStream();
+
+        //先读入内存
+        ByteArrayOutputStream buf2 = new ByteArrayOutputStream(8192);
+        byte[] b2 = new byte[1024];
+        int len2;
+        while ((len2 = is2.read(b2)) != -1) {
+          buf2.write(b2, 0, len2);
+        }
+        //读图像
+        is2 = new ByteArrayInputStream(buf2.toByteArray());
+        bimg = javax.imageio.ImageIO.read(is2);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+      if (bimg != null) {
+        mainPic.drawImage(bimg, 0, 0, csimageWidth, csimageHeight, null);
+        mainPic.dispose();
+      }
+
+      //***********************插入用户头像
+
+        if (StringUtils.isNotEmpty(avatar)) {
+          Graphics mainPic3 = image.getGraphics();
+          BufferedImage bimg3 = null;
+          try {
+            URL url3 = new URL(avatar);
+            URLConnection con3 = url3.openConnection();
+            //不超时
+            con3.setConnectTimeout(0);
+
+            //不允许缓存
+            con3.setUseCaches(false);
+            con3.setDefaultUseCaches(false);
+            InputStream is3 = con3.getInputStream();
+
+            //先读入内存
+            ByteArrayOutputStream buf3 = new ByteArrayOutputStream(8192);
+            byte[] b3 = new byte[1024];
+            int len3;
+            while ((len3 = is3.read(b3)) != -1) {
+              buf3.write(b3, 0, len3);
+            }
+            //读图像
+            is3 = new ByteArrayInputStream(buf3.toByteArray());
+            bimg3 = ImageIO.read(is3);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+
+          if (bimg3 != null) {
+            mainPic3.drawImage(bimg3, 65, csimageHeight - 120, 60, 60, null);
+            mainPic3.dispose();
+          }
+      }
+//      //***********************插入圆圈圈
+//      Graphics mainPic5 = image.getGraphics();
+//      BufferedImage bimg5 = null;
+//      try {
+//        URL url5 = new URL("https://sunlands.ministudy.com/images/toux.png");
+//        URLConnection con5 = url5.openConnection();
+//        //不超时
+//        con5.setConnectTimeout(0);
+//
+//        //不允许缓存
+//        con5.setUseCaches(false);
+//        con5.setDefaultUseCaches(false);
+//        InputStream is5 = con5.getInputStream();
+//
+//        //先读入内存
+//        ByteArrayOutputStream buf5 = new ByteArrayOutputStream(8192);
+//        byte[] b5 = new byte[1024];
+//        int len5;
+//        while ((len5 = is5.read(b5)) != -1) {
+//          buf5.write(b5, 0, len5);
+//        }
+//        //读图像
+//        is5 = new ByteArrayInputStream(buf5.toByteArray());
+//        bimg5 = ImageIO.read(is5);
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//      }
+//
+//      if (bimg5 != null) {
+//        mainPic5.drawImage(bimg5, 50, csimageHeight - 155, 100, 100, null);
+//        mainPic5.dispose();
+//      }
+    Graphics2D tip4 = image.createGraphics();
+    Font tipFont4 = new Font("苹方 常规", Font.PLAIN, 16);
+    //tip4.setColor(new Color(51, 129, 246));
+    tip4.setFont(tipFont4);
+    tip4.drawString("我是"+nickname, 135, csimageHeight - 95);
+
+    Graphics2D tip5 = image.createGraphics();
+    Font tipFont5 = new Font("苹方 常规", Font.PLAIN, 16);
+    //tip4.setColor(new Color(51, 129, 246));
+    tip5.setFont(tipFont5);
+    tip5.drawString("我为萤火虫代言", 135, csimageHeight - 75);
+
+      String temp = "images" + File.separator + "temp" + File.separator;
+      // 新的图片文件名 = 获取时间戳+"."图片扩展名
+      String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
+      // 文件路径
+      String filePath = webUploadPath.concat(temp);
+
+      File dest = new File(filePath, newFileName);
+      if (!dest.getParentFile().exists()) {
+        dest.getParentFile().mkdirs();
+      }
+      createImage(filePath + newFileName);
+      System.out.println(filePath + newFileName);
+      // 将反斜杠转换为正斜杠
+      String dataPath = temp.replaceAll("\\\\", "/") + newFileName;
+      data.put("imgUrl", serverurl + dataPath);
+      data.put("desk_url", filePath + newFileName);
+    return ResponseUtil.ok(data);
+  }
+
     public static void main(String[] args) {
         GraphicsControllor cg = new GraphicsControllor();
         try {
-            cg.graphicsGeneration("2018-06-06", "Evan", "自信和自尊心越低他们啊啊啊阿士大夫撒旦六块腹肌洒落的咖啡机", "https://sunlands.ministudy.com/images/upload/1528265355187.jpg","居里夫人",16,null);
+            cg.csResult("https://sunlands.ministudy.com/images/upload/csresult1.jpg",6);
         } catch (Exception e) {
             e.printStackTrace();
         }

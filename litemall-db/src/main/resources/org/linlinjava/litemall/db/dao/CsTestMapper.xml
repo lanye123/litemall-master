@@ -25,6 +25,13 @@
     </collection>
   </resultMap>
 
+  <resultMap id="BaseResultMap4" extends="BaseResultMap2" type="org.linlinjava.litemall.db.domain.CsTest">
+    <collection property="titleList2" ofType="org.linlinjava.litemall.db.domain.CsTitle"
+                javaType="java.util.ArrayList" select="org.linlinjava.litemall.db.dao.CsTitleMapper.selectByTestId2"
+                column="id">
+    </collection>
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -103,6 +110,13 @@
   </select>
 
   <select id="cascate" parameterType="java.lang.Integer" resultMap="BaseResultMap3">
+    select
+    <include refid="Base_Column_List" />
+    from v_cs_test
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="cascateDync" parameterType="java.lang.Integer" resultMap="BaseResultMap4">
     select
     <include refid="Base_Column_List" />
     from v_cs_test

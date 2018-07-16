@@ -18,6 +18,7 @@
     </collection>
   </resultMap>
 
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -86,6 +87,21 @@
     from cs_title
     where test_id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from cs_title
+    where id = #{pid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTestId2" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+    select
+    <include refid="Base_Column_List" />
+    from cs_title
+    where test_id = #{id,jdbcType=INTEGER} and status=1
+  </select>
+
 
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CsTitleExample" resultMap="BaseResultMap">
     select

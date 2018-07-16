@@ -63,4 +63,6 @@ public interface CsTitleMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     CsTitle selectOneByExampleSelective(@Param("example") CsTitleExample example, @Param("selective") CsTitle.Column ... selective);
+
+  CsTitle selectByPid(Integer pid);
 }

@@ -63,4 +63,6 @@ public interface CsDetailMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     CsDetail selectOneByExampleSelective(@Param("example") CsDetailExample example, @Param("selective") CsDetail.Column ... selective);
+
+  Integer sumAccount(Integer testId, Integer userId);
 }

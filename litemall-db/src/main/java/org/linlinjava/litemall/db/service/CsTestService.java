@@ -30,4 +30,8 @@ public class CsTestService {
   public CsTest cascate(Integer id) {
     return csTestMapper.cascate(id);
   }
+
+  public CsTest cascateDync(Integer id) {
+    return csTestMapper.cascateDync(id);
+  }
 }

@@ -65,4 +65,6 @@ public interface CsTestMapper {
     CsTest selectOneByExampleSelective(@Param("example") CsTestExample example, @Param("selective") CsTest.Column ... selective);
 
   CsTest cascate(Integer id);
+
+  CsTest cascateDync(Integer id);
 }

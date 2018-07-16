@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.db.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class CsTitle {
     private Integer id;
@@ -17,7 +18,17 @@ public class CsTitle {
 
     private Integer status;
 
-    public Integer getId() {
+  private List<CsOption> optionList;
+
+  public List<CsOption> getOptionList() {
+    return optionList;
+  }
+
+  public void setOptionList(List<CsOption> optionList) {
+    this.optionList = optionList;
+  }
+
+  public Integer getId() {
         return id;
     }
 

@@ -63,4 +63,6 @@ public interface CsResultMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     CsResult selectOneByExampleSelective(@Param("example") CsResultExample example, @Param("selective") CsResult.Column ... selective);
+
+  CsResult getPicUrl(Integer testId, Integer account);
 }
