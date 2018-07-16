@@ -15,6 +15,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 趣味测试接口
+ * leiq
+ * 2018-7-16 11:07:37
+ */
+
 @RestController
 @RequestMapping("/wx/cstest")
 public class CsTestController {
@@ -26,25 +32,29 @@ public class CsTestController {
   private CsTitleService csTitleService;
   @Autowired
   private CsOptionService csOptionService;
+  //普通类型测试列表
   @GetMapping("list")
   public List<CsTest> list(Integer isHot){
     Map<String,Object> data=new HashMap<>();
     List<CsTest> testList=csTestService.list(isHot);
     return testList;
   }
+
+  //根据测试题ID返回对应记录
   @GetMapping("read")
   public CsTest read(Integer id){
     return csTestService.read(id);
   }
 
+  //根据测试题ID级联返回测试题目及选项信息
   @GetMapping("option")
   public CsTest option(Integer id){
     return csTestService.cascate(id);
   }
 
+  //添加详情流水记录
   @PostMapping("addDetail")
   public void addDetail(@RequestBody CsDetail detail){
     csDetailService.addDetail(detail);
-
   }
 }
