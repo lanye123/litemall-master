@@ -40,6 +40,7 @@ public class WxZiKaoController {
         Map<String, Object> data = new HashMap<>();
         List<LitemallAd> banner = adService.queryByApid(2);
         List<ZkArea> zkAreaList = zkAreaService.queryAll();
+
         data.put("banner", banner);
         data.put("zkAreaList", zkAreaList);
         return ResponseUtil.ok(data);

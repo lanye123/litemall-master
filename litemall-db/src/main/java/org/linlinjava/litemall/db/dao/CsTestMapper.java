@@ -63,6 +63,4 @@ public interface CsTestMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     CsTest selectOneByExampleSelective(@Param("example") CsTestExample example, @Param("selective") CsTest.Column ... selective);
-
-  CsTest cascate(Integer id);
 }

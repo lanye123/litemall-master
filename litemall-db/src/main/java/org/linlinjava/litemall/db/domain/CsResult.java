@@ -2,26 +2,22 @@ package org.linlinjava.litemall.db.domain;
 
 import java.util.Date;
 
-public class CsTest {
+public class CsResult {
     private Integer id;
+
+    private Integer min;
+
+    private Integer max;
+
+    private String picUrl;
+
+    private String deleted;
+
+    private Date createDate;
 
     private String title;
 
     private String subTitle;
-
-    private String picUrl;
-
-    private Integer isHot;
-
-    private Integer categoryId;
-
-    private Date createDate;
-
-    private Integer sortNo;
-
-    private Integer deleted;
-
-    private Integer type;
 
     public Integer getId() {
         return id;
@@ -29,6 +25,46 @@ public class CsTest {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getMin() {
+        return min;
+    }
+
+    public void setMin(Integer min) {
+        this.min = min;
+    }
+
+    public Integer getMax() {
+        return max;
+    }
+
+    public void setMax(Integer max) {
+        this.max = max;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    public String getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public String getTitle() {
@@ -47,62 +83,6 @@ public class CsTest {
         this.subTitle = subTitle;
     }
 
-    public String getPicUrl() {
-        return picUrl;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl;
-    }
-
-    public Integer getIsHot() {
-        return isHot;
-    }
-
-    public void setIsHot(Integer isHot) {
-        this.isHot = isHot;
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Integer getSortNo() {
-        return sortNo;
-    }
-
-    public void setSortNo(Integer sortNo) {
-        this.sortNo = sortNo;
-    }
-
-    public Integer getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -110,15 +90,13 @@ public class CsTest {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
+        sb.append(", min=").append(min);
+        sb.append(", max=").append(max);
+        sb.append(", picUrl=").append(picUrl);
+        sb.append(", deleted=").append(deleted);
+        sb.append(", createDate=").append(createDate);
         sb.append(", title=").append(title);
         sb.append(", subTitle=").append(subTitle);
-        sb.append(", picUrl=").append(picUrl);
-        sb.append(", isHot=").append(isHot);
-        sb.append(", categoryId=").append(categoryId);
-        sb.append(", createDate=").append(createDate);
-        sb.append(", sortNo=").append(sortNo);
-        sb.append(", deleted=").append(deleted);
-        sb.append(", type=").append(type);
         sb.append("]");
         return sb.toString();
     }
@@ -134,17 +112,15 @@ public class CsTest {
         if (getClass() != that.getClass()) {
             return false;
         }
-        CsTest other = (CsTest) that;
+        CsResult other = (CsResult) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
-            && (this.getSubTitle() == null ? other.getSubTitle() == null : this.getSubTitle().equals(other.getSubTitle()))
+            && (this.getMin() == null ? other.getMin() == null : this.getMin().equals(other.getMin()))
+            && (this.getMax() == null ? other.getMax() == null : this.getMax().equals(other.getMax()))
             && (this.getPicUrl() == null ? other.getPicUrl() == null : this.getPicUrl().equals(other.getPicUrl()))
-            && (this.getIsHot() == null ? other.getIsHot() == null : this.getIsHot().equals(other.getIsHot()))
-            && (this.getCategoryId() == null ? other.getCategoryId() == null : this.getCategoryId().equals(other.getCategoryId()))
-            && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()))
-            && (this.getSortNo() == null ? other.getSortNo() == null : this.getSortNo().equals(other.getSortNo()))
             && (this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals(other.getDeleted()))
-            && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()));
+            && (this.getCreateDate() == null ? other.getCreateDate() == null : this.getCreateDate().equals(other.getCreateDate()))
+            && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
+            && (this.getSubTitle() == null ? other.getSubTitle() == null : this.getSubTitle().equals(other.getSubTitle()));
     }
 
     @Override
@@ -152,40 +128,36 @@ public class CsTest {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getMin() == null) ? 0 : getMin().hashCode());
+        result = prime * result + ((getMax() == null) ? 0 : getMax().hashCode());
+        result = prime * result + ((getPicUrl() == null) ? 0 : getPicUrl().hashCode());
+        result = prime * result + ((getDeleted() == null) ? 0 : getDeleted().hashCode());
+        result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         result = prime * result + ((getSubTitle() == null) ? 0 : getSubTitle().hashCode());
-        result = prime * result + ((getPicUrl() == null) ? 0 : getPicUrl().hashCode());
-        result = prime * result + ((getIsHot() == null) ? 0 : getIsHot().hashCode());
-        result = prime * result + ((getCategoryId() == null) ? 0 : getCategoryId().hashCode());
-        result = prime * result + ((getCreateDate() == null) ? 0 : getCreateDate().hashCode());
-        result = prime * result + ((getSortNo() == null) ? 0 : getSortNo().hashCode());
-        result = prime * result + ((getDeleted() == null) ? 0 : getDeleted().hashCode());
-        result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
         return result;
     }
 
     /**
      * This enum was generated by MyBatis Generator.
-     * This enum corresponds to the database table cs_test
+     * This enum corresponds to the database table cs_result
      *
      * @mbg.generated
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     public enum Column {
         id("id"),
-        title("title"),
-        subTitle("sub_title"),
+        min("min"),
+        max("max"),
         picUrl("pic_url"),
-        isHot("is_hot"),
-        categoryId("category_id"),
-        createDate("create_date"),
-        sortNo("sort_no"),
         deleted("deleted"),
-        type("type");
+        createDate("create_date"),
+        title("title"),
+        subTitle("sub_title");
 
         /**
          * This field was generated by MyBatis Generator.
-         * This field corresponds to the database table cs_test
+         * This field corresponds to the database table cs_result
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -194,7 +166,7 @@ public class CsTest {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table cs_test
+         * This method corresponds to the database table cs_result
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -205,7 +177,7 @@ public class CsTest {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table cs_test
+         * This method corresponds to the database table cs_result
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -216,7 +188,7 @@ public class CsTest {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table cs_test
+         * This method corresponds to the database table cs_result
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -227,7 +199,7 @@ public class CsTest {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table cs_test
+         * This method corresponds to the database table cs_result
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin
@@ -238,7 +210,7 @@ public class CsTest {
 
         /**
          * This method was generated by MyBatis Generator.
-         * This method corresponds to the database table cs_test
+         * This method corresponds to the database table cs_result
          *
          * @mbg.generated
          * @project https://github.com/itfsw/mybatis-generator-plugin

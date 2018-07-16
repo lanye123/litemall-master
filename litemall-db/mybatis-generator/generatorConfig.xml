@@ -268,7 +268,7 @@
         </table>
         <table tableName="sys_dept">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>
+        </table>-->
         <table tableName="cs_detail">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
@@ -277,8 +277,11 @@
         </table>
         <table tableName="cs_title">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
-      </table>-->
+      </table>
       <table tableName="cs_test">
+        <generatedKey column="id" sqlStatement="MySql" identity="true" />
+      </table>
+      <table tableName="cs_result">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
       </table>
 

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.linlinjava.litemall.db.dao.CsOptionMapper">
-  <resultMap id="BaseResultMap" type="org.linlinjava.litemall.db.domain.CsOption">
+<mapper namespace="org.linlinjava.litemall.db.dao.CsResultMapper">
+  <resultMap id="BaseResultMap" type="org.linlinjava.litemall.db.domain.CsResult">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="test_id" jdbcType="INTEGER" property="testId" />
-    <result column="title_id" jdbcType="INTEGER" property="titleId" />
-    <result column="option_name" jdbcType="VARCHAR" property="optionName" />
+    <result column="min" jdbcType="INTEGER" property="min" />
+    <result column="max" jdbcType="INTEGER" property="max" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+    <result column="deleted" jdbcType="VARCHAR" property="deleted" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="deleted" jdbcType="INTEGER" property="deleted" />
-    <result column="sort_no" jdbcType="INTEGER" property="sortNo" />
-    <result column="account" jdbcType="INTEGER" property="account" />
-    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,23 +70,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, test_id, title_id, option_name, create_date, deleted, sort_no, account, pid
+    id, `min`, `max`, pic_url, deleted, create_date, title, sub_title
   </sql>
-
-  <select id="selectByTitleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from cs_option
-    where title_id = #{id,jdbcType=INTEGER}
-  </select>
-
-  <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CsOptionExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CsResultExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from cs_option
+    from cs_result
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -108,7 +99,7 @@
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
-    from cs_option
+    from cs_result
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -117,9 +108,9 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
-    from cs_option
+    from cs_result
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectByPrimaryKeySelective" parameterType="map" resultMap="BaseResultMap">
@@ -132,123 +123,114 @@
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
-    from cs_option
+    from cs_result
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from cs_option
+    delete from cs_result
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="org.linlinjava.litemall.db.domain.CsOptionExample">
-    delete from cs_option
+  <delete id="deleteByExample" parameterType="org.linlinjava.litemall.db.domain.CsResultExample">
+    delete from cs_result
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="org.linlinjava.litemall.db.domain.CsOption">
+  <insert id="insert" parameterType="org.linlinjava.litemall.db.domain.CsResult">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into cs_option (test_id, title_id, option_name,
-      create_date, deleted, sort_no,
-      account, pid)
-    values (#{testId,jdbcType=INTEGER}, #{titleId,jdbcType=INTEGER}, #{optionName,jdbcType=VARCHAR},
-      #{createDate,jdbcType=TIMESTAMP}, #{deleted,jdbcType=INTEGER}, #{sortNo,jdbcType=INTEGER},
-      #{account,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER})
+    insert into cs_result (`min`, `max`, pic_url, 
+      deleted, create_date, title, 
+      sub_title)
+    values (#{min,jdbcType=INTEGER}, #{max,jdbcType=INTEGER}, #{picUrl,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, 
+      #{subTitle,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.CsOption">
+  <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.CsResult">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into cs_option
+    insert into cs_result
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="testId != null">
-        test_id,
+      <if test="min != null">
+        `min`,
       </if>
-      <if test="titleId != null">
-        title_id,
+      <if test="max != null">
+        `max`,
       </if>
-      <if test="optionName != null">
-        option_name,
-      </if>
-      <if test="createDate != null">
-        create_date,
+      <if test="picUrl != null">
+        pic_url,
       </if>
       <if test="deleted != null">
         deleted,
       </if>
-      <if test="sortNo != null">
-        sort_no,
+      <if test="createDate != null">
+        create_date,
       </if>
-      <if test="account != null">
-        account,
+      <if test="title != null">
+        title,
       </if>
-      <if test="pid != null">
-        pid,
+      <if test="subTitle != null">
+        sub_title,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="testId != null">
-        #{testId,jdbcType=INTEGER},
+      <if test="min != null">
+        #{min,jdbcType=INTEGER},
       </if>
-      <if test="titleId != null">
-        #{titleId,jdbcType=INTEGER},
+      <if test="max != null">
+        #{max,jdbcType=INTEGER},
       </if>
-      <if test="optionName != null">
-        #{optionName,jdbcType=VARCHAR},
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=VARCHAR},
       </if>
       <if test="createDate != null">
         #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="deleted != null">
-        #{deleted,jdbcType=INTEGER},
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
       </if>
-      <if test="sortNo != null">
-        #{sortNo,jdbcType=INTEGER},
-      </if>
-      <if test="account != null">
-        #{account,jdbcType=INTEGER},
-      </if>
-      <if test="pid != null">
-        #{pid,jdbcType=INTEGER},
+      <if test="subTitle != null">
+        #{subTitle,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="org.linlinjava.litemall.db.domain.CsOptionExample" resultType="java.lang.Long">
-    select count(*) from cs_option
+  <select id="countByExample" parameterType="org.linlinjava.litemall.db.domain.CsResultExample" resultType="java.lang.Long">
+    select count(*) from cs_result
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update cs_option
+    update cs_result
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.testId != null">
-        test_id = #{record.testId,jdbcType=INTEGER},
+      <if test="record.min != null">
+        `min` = #{record.min,jdbcType=INTEGER},
       </if>
-      <if test="record.titleId != null">
-        title_id = #{record.titleId,jdbcType=INTEGER},
+      <if test="record.max != null">
+        `max` = #{record.max,jdbcType=INTEGER},
       </if>
-      <if test="record.optionName != null">
-        option_name = #{record.optionName,jdbcType=VARCHAR},
+      <if test="record.picUrl != null">
+        pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deleted != null">
+        deleted = #{record.deleted,jdbcType=VARCHAR},
       </if>
       <if test="record.createDate != null">
         create_date = #{record.createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.deleted != null">
-        deleted = #{record.deleted,jdbcType=INTEGER},
+      <if test="record.title != null">
+        title = #{record.title,jdbcType=VARCHAR},
       </if>
-      <if test="record.sortNo != null">
-        sort_no = #{record.sortNo,jdbcType=INTEGER},
-      </if>
-      <if test="record.account != null">
-        account = #{record.account,jdbcType=INTEGER},
-      </if>
-      <if test="record.pid != null">
-        pid = #{record.pid,jdbcType=INTEGER},
+      <if test="record.subTitle != null">
+        sub_title = #{record.subTitle,jdbcType=VARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
@@ -256,63 +238,58 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update cs_option
+    update cs_result
     set id = #{record.id,jdbcType=INTEGER},
-      test_id = #{record.testId,jdbcType=INTEGER},
-      title_id = #{record.titleId,jdbcType=INTEGER},
-      option_name = #{record.optionName,jdbcType=VARCHAR},
+      `min` = #{record.min,jdbcType=INTEGER},
+      `max` = #{record.max,jdbcType=INTEGER},
+      pic_url = #{record.picUrl,jdbcType=VARCHAR},
+      deleted = #{record.deleted,jdbcType=VARCHAR},
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
-      deleted = #{record.deleted,jdbcType=INTEGER},
-      sort_no = #{record.sortNo,jdbcType=INTEGER},
-      account = #{record.account,jdbcType=INTEGER},
-      pid = #{record.pid,jdbcType=INTEGER}
+      title = #{record.title,jdbcType=VARCHAR},
+      sub_title = #{record.subTitle,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="org.linlinjava.litemall.db.domain.CsOption">
-    update cs_option
+  <update id="updateByPrimaryKeySelective" parameterType="org.linlinjava.litemall.db.domain.CsResult">
+    update cs_result
     <set>
-      <if test="testId != null">
-        test_id = #{testId,jdbcType=INTEGER},
+      <if test="min != null">
+        `min` = #{min,jdbcType=INTEGER},
       </if>
-      <if test="titleId != null">
-        title_id = #{titleId,jdbcType=INTEGER},
+      <if test="max != null">
+        `max` = #{max,jdbcType=INTEGER},
       </if>
-      <if test="optionName != null">
-        option_name = #{optionName,jdbcType=VARCHAR},
+      <if test="picUrl != null">
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        deleted = #{deleted,jdbcType=VARCHAR},
       </if>
       <if test="createDate != null">
         create_date = #{createDate,jdbcType=TIMESTAMP},
       </if>
-      <if test="deleted != null">
-        deleted = #{deleted,jdbcType=INTEGER},
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
       </if>
-      <if test="sortNo != null">
-        sort_no = #{sortNo,jdbcType=INTEGER},
-      </if>
-      <if test="account != null">
-        account = #{account,jdbcType=INTEGER},
-      </if>
-      <if test="pid != null">
-        pid = #{pid,jdbcType=INTEGER},
+      <if test="subTitle != null">
+        sub_title = #{subTitle,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.CsOption">
-    update cs_option
-    set test_id = #{testId,jdbcType=INTEGER},
-      title_id = #{titleId,jdbcType=INTEGER},
-      option_name = #{optionName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.CsResult">
+    update cs_result
+    set `min` = #{min,jdbcType=INTEGER},
+      `max` = #{max,jdbcType=INTEGER},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      deleted = #{deleted,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
-      deleted = #{deleted,jdbcType=INTEGER},
-      sort_no = #{sortNo,jdbcType=INTEGER},
-      account = #{account,jdbcType=INTEGER},
-      pid = #{pid,jdbcType=INTEGER}
+      title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.CsOptionExample" resultMap="BaseResultMap">
+  <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.CsResultExample" resultMap="BaseResultMap">
     <!--
       WARNING - @mbg.generated
       This element is automatically generated by MyBatis Generator, do not modify.
@@ -320,7 +297,7 @@
     -->
     select
     <include refid="Base_Column_List" />
-    from cs_option
+    from cs_result
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -339,7 +316,7 @@
     <foreach collection="selective" item="column" separator=",">
       ${column.value}
     </foreach>
-    from cs_option
+    from cs_result
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
