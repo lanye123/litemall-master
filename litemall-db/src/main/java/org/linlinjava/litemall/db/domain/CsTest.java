@@ -23,6 +23,16 @@ public class CsTest {
 
     private Integer type;
 
+    private Integer csCount;
+
+    public Integer getCsCount() {
+        return csCount;
+    }
+
+    public void setCsCount(Integer csCount) {
+        this.csCount = csCount;
+    }
+
     public Integer getId() {
         return id;
     }
