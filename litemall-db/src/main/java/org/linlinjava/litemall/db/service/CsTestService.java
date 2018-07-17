@@ -53,7 +53,7 @@ public class CsTestService {
     if(page!=null && size!=null){
       PageHelper.startPage(page, size);
     }
-    return csTestMapper.selectByExample(example);
+    return csTestMapper.selectByExample2(example);
   }
 
   public int countSelective(String title, Integer type, Integer categoryId) {

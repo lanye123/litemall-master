@@ -33,6 +33,13 @@
     </collection>
   </resultMap>
 
+  <resultMap id="BaseResultMap5" extends="BaseResultMap2" type="org.linlinjava.litemall.db.domain.CsTest">
+    <collection property="titleList" ofType="org.linlinjava.litemall.db.domain.CsTitle"
+                javaType="java.util.ArrayList" select="org.linlinjava.litemall.db.dao.CsTitleMapper.selectByTestId3"
+                column="id">
+    </collection>
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -96,6 +103,21 @@
     `type`,csCount,testNum
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CsTestExample" resultMap="BaseResultMap2">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_cs_test
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.CsTestExample" resultMap="BaseResultMap5">
     select
     <if test="distinct">
       distinct
