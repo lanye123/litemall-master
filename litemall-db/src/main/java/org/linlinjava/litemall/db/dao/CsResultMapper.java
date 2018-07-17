@@ -64,5 +64,5 @@ public interface CsResultMapper {
      */
     CsResult selectOneByExampleSelective(@Param("example") CsResultExample example, @Param("selective") CsResult.Column ... selective);
 
-  CsResult getPicUrl(Integer testId, Integer account);
+    CsResult getPicUrl(@Param("testId") Integer testId, @Param("account") Integer account);
 }

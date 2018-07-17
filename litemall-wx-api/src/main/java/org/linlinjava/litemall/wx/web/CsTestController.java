@@ -230,7 +230,7 @@ public class CsTestController {
     String dataPath = temp.replaceAll("\\\\", "/") + newFileName;
     data.put("imgUrl", serverurl + dataPath);
     data.put("desk_url", filePath + newFileName);
-    return ResponseUtil.ok();
+    return ResponseUtil.ok(data);
   }
 
   public void createImage(String fileLocation) {
