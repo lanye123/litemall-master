@@ -54,6 +54,7 @@ public class ZkAreaService {
 
     public List<ZkArea> queryAll() {
         ZkAreaExample example=new ZkAreaExample();
+        example.or().andDeletedEqualTo(0);
         example.setOrderByClause("status");
         return zkAreaMapper.selectByExample(example);
     }

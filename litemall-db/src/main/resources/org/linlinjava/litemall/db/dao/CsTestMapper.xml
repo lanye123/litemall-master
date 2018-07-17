@@ -16,6 +16,7 @@
 
   <resultMap id="BaseResultMap2" extends="BaseResultMap" type="org.linlinjava.litemall.db.domain.CsTest">
     <result column="csCount" jdbcType="INTEGER" property="csCount" />
+    <result column="testNum" jdbcType="INTEGER" property="testNum" />
   </resultMap>
 
   <resultMap id="BaseResultMap3" extends="BaseResultMap2" type="org.linlinjava.litemall.db.domain.CsTest">
@@ -92,7 +93,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, title, sub_title, pic_url, is_hot, category_id, create_date, sort_no, deleted,
-    `type`,csCount
+    `type`,csCount,testNum
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CsTestExample" resultMap="BaseResultMap2">
     select

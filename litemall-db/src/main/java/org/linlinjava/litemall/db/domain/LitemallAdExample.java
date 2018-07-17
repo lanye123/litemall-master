@@ -236,6 +236,11 @@ public class LitemallAdExample {
             return (Criteria) this;
         }
 
+      public Criteria andFlagEqualTo(Integer value) {
+        addCriterion("flag =", value, "flag");
+        return (Criteria) this;
+      }
+
         public Criteria andIdEqualTo(Integer value) {
             addCriterion("id =", value, "id");
             return (Criteria) this;

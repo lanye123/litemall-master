@@ -64,5 +64,5 @@ public interface CsDetailMapper {
      */
     CsDetail selectOneByExampleSelective(@Param("example") CsDetailExample example, @Param("selective") CsDetail.Column ... selective);
 
-  Integer sumAccount(Integer testId, Integer userId);
+    Integer sumAccount(@Param("testId") Integer testId,@Param("userId") Integer userId);
 }

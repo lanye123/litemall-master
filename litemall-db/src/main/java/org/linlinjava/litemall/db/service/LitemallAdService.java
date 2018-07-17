@@ -17,7 +17,7 @@ public class LitemallAdService {
 
     public List<LitemallAd> queryByApid(Integer i) {
         LitemallAdExample example = new LitemallAdExample();
-        example.or().andPositionEqualTo(i).andDeletedEqualTo(false);
+        example.or().andFlagEqualTo(i).andDeletedEqualTo(false);
         return adMapper.selectByExample(example);
     }
 
@@ -31,7 +31,7 @@ public class LitemallAdService {
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
         }
-        criteria.andDeletedEqualTo(false);
+        //criteria.andDeletedEqualTo(false);
 
         if(page!=null && limit!=null){
             PageHelper.startPage(page, limit);

@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.db.service;
 
 import com.sun.scenario.effect.impl.prism.PrImage;
+import org.apache.ibatis.annotations.Param;
 import org.linlinjava.litemall.db.dao.CsDetailMapper;
 import org.linlinjava.litemall.db.domain.CsDetail;
 import org.linlinjava.litemall.db.domain.CsDetailExample;

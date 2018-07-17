@@ -26,9 +26,19 @@ public class CsTest {
 
     private Integer csCount;
 
+    private Integer testNum;
+
     private List<CsTitle> titleList;
 
     private List<CsTitle> titleList2;
+
+  public Integer getTestNum() {
+    return testNum;
+  }
+
+  public void setTestNum(Integer testNum) {
+    this.testNum = testNum;
+  }
 
   public Integer getCsCount() {
     return csCount;
