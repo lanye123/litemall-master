@@ -88,6 +88,13 @@
     where test_id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByTestId3" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cs_title
+    where test_id = #{id,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPid" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
     select
     <include refid="Base_Column_List" />

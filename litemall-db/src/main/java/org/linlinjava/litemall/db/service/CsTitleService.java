@@ -52,4 +52,8 @@ public class CsTitleService {
   public CsTitle option(Integer pid) {
     return csTitleMapper.selectByPid(pid);
   }
+
+  public void add(CsTitle csTitle) {
+    csTitleMapper.insert(csTitle);
+  }
 }

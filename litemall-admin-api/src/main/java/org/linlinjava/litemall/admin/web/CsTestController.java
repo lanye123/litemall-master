@@ -10,9 +10,7 @@ import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/admin/sunlands/cstest")
@@ -57,9 +55,32 @@ public class CsTestController {
     }
 
     @PostMapping("/createCsTest")
-    public Object create(@RequestBody CsTest csTest){
-
-        csTestService.add(csTest);
+    public Object create(@RequestBody LinkedHashMap csTest){
+        if(csTest.get("title")==null){
+            return ResponseUtil.badArgument();
+        }
+        if(csTest.get("topics")==null){
+            return ResponseUtil.badArgument();
+        }
+        CsTest test = new CsTest();
+        test.setTitle((String) csTest.get("title"));
+        test.setSubTitle((String) csTest.get("subTitle"));
+        test.setSortNo(Integer.valueOf((String) csTest.get("sortNo")));
+        test.setType(Integer.valueOf((String) csTest.get("type")));
+        test.setIsHot(Integer.valueOf((String) csTest.get("isHot")));
+        test.setPicUrl((String) csTest.get("picUrl"));
+        csTestService.add(test);
+        List titles = (ArrayList) csTest.get("topics");
+        CsTitle csTitleDb = new CsTitle();
+        LinkedHashMap title;
+        for(Object csTitle:titles){
+            title = (LinkedHashMap) csTitle;
+            csTitleDb.setSortNo(Integer.valueOf((String) title.get("no")));
+            csTitleDb.setTitle((String) title.get("value"));
+            csTitleDb.setStatus(Integer.valueOf((String) title.get("status")));
+            csTitleDb.setTestId(test.getId());
+            csTitleService.add(csTitleDb);
+        }
         return ResponseUtil.ok(csTest);
     }
 
