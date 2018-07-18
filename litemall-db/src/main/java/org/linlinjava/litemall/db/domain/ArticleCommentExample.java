@@ -210,6 +210,11 @@ public class ArticleCommentExample {
             return (Criteria) this;
         }
 
+        public Criteria andAArticleIdEqualTo(Integer value) {
+            addCriterion("a.article_id =", value, "articleId");
+            return (Criteria) this;
+        }
+
         public Criteria andArticleIdNotEqualTo(Integer value) {
             addCriterion("article_id <>", value, "articleId");
             return (Criteria) this;

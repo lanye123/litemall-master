@@ -430,6 +430,11 @@ public class ArticleReplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andAContentLike(String value) {
+            addCriterion("a.content like", value, "content");
+            return (Criteria) this;
+        }
+
         public Criteria andContentNotLike(String value) {
             addCriterion("content not like", value, "content");
             return (Criteria) this;
