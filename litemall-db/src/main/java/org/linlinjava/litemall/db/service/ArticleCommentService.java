@@ -89,10 +89,10 @@ public class ArticleCommentService {
             criteria.andContentLike("%" + content + "%");
         }
         if(!StringUtils.isEmpty(startDate)){
-            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+            criteria.andACreateDateGreaterThanOrEqualTo(startDate);
         }
         if(!StringUtils.isEmpty(endDate)){
-            criteria.andCreateDateLessThanOrEqualTo(endDate);
+            criteria.andACreateDateLessThanOrEqualTo(endDate);
         }
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);

@@ -665,6 +665,11 @@ public class ArticleReplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andACreateDateGreaterThanOrEqualTo(String value) {
+            addCriterion("a.create_date >=", value, "createDate");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateDateLessThan(String value) {
             addCriterion("create_date <", value, "createDate");
             return (Criteria) this;
@@ -672,6 +677,11 @@ public class ArticleReplyExample {
 
         public Criteria andCreateDateLessThanOrEqualTo(String value) {
             addCriterion("create_date <=", value, "createDate");
+            return (Criteria) this;
+        }
+
+        public Criteria andACreateDateLessThanOrEqualTo(String value) {
+            addCriterion("a.create_date <=", value, "createDate");
             return (Criteria) this;
         }
 

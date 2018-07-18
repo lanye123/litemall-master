@@ -32,7 +32,17 @@ public class CsTest {
 
     private List<CsTitle> titleList2;
 
-  public Integer getTestNum() {
+    private List<CsTitle> topics;
+
+    public List<CsTitle> getTopics() {
+        return topics;
+    }
+
+    public void setTopics(List<CsTitle> topics) {
+        this.topics = topics;
+    }
+
+    public Integer getTestNum() {
     return testNum;
   }
 
