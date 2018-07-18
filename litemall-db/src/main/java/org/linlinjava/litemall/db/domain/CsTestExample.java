@@ -211,6 +211,11 @@ public class CsTestExample {
             return (Criteria) this;
         }
 
+      public Criteria andUserIdEqualTo(Integer value) {
+        addCriterion("userId =", value, "userId");
+        return (Criteria) this;
+      }
+
         public Criteria andTitleNotEqualTo(String value) {
             addCriterion("title <>", value, "title");
             return (Criteria) this;

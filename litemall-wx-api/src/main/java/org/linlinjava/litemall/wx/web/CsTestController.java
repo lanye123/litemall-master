@@ -43,6 +43,8 @@ public class CsTestController {
   private CsResultService csResultService;
   @Autowired
   private LitemallUserService litemallUserService;
+  @Autowired
+  private IntegretionDetailService integretionDetailService;
 
   private BufferedImage image;
   private int csimageWidth=750;
@@ -230,6 +232,17 @@ public class CsTestController {
     String dataPath = temp.replaceAll("\\\\", "/") + newFileName;
     data.put("imgUrl", serverurl + dataPath);
     data.put("desk_url", filePath + newFileName);
+    //首次测试加10积分
+    Integer integretionCount=0;
+    integretionCount=integretionDetailService.queryByTest(testId,userId);
+    if(integretionCount==0){
+      IntegretionDetail detail=new IntegretionDetail();
+      detail.setType((byte) 22);
+      detail.setUserId(String.valueOf(userId));
+      detail.setIntegretionId(String.valueOf(testId));
+      detail.setAmount(10);//趣味测试完成后获得10积分
+      integretionDetailService.add(detail);
+    }
     return ResponseUtil.ok(data);
   }
 

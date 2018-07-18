@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.CsTestMapper;
 import org.linlinjava.litemall.db.domain.CsTest;
 import org.linlinjava.litemall.db.domain.CsTestExample;
+import org.linlinjava.litemall.db.domain.Integretion;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 

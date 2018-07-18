@@ -28,9 +28,19 @@ public class CsTest {
 
     private Integer testNum;
 
+    private Integer userId;
+
     private List<CsTitle> titleList;
 
     private List<CsTitle> titleList2;
+
+  public Integer getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Integer userId) {
+    this.userId = userId;
+  }
 
   public Integer getTestNum() {
     return testNum;

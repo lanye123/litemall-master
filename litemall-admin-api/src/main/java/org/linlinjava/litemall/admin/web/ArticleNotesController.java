@@ -61,6 +61,8 @@ public class ArticleNotesController {
     private String articledetail_url;
     @Value("${web.upload-path}")
     private String webUploadPath;
+    @Value("${main.url}")
+    private String mainUrl;
 
     @GetMapping("/list")
     public Object list(String artileName, String name,String no,String content,Integer artileId,Integer sortNo,Integer status,
@@ -207,4 +209,64 @@ public class ArticleNotesController {
             }
         }
     }
+
+  /**
+   * 文章详情模块二维码图片生成及保存
+   * @author leiqiang
+   * @date 2018-5-31 14:15:07
+   */
+  @PostMapping("/codeb")
+  public void saveCodeB(Integer article_id,Integer notesId,String name){
+    WxConfig config=wxConfigService.getToken();
+    String params="article_id=ARTICLEID&notesId=NOTESID&name=NAME&index=0";
+    String scene=params.replace("ARTICLEID",Integer.toString(article_id)).replace("NOTESID",Integer.toString(notesId)).replace("NAME",name);
+    ArticleNotes notes=new ArticleNotes();
+    JSONObject object=new JSONObject();
+    object.put("path",mainUrl);
+    object.put("scene",scene);
+    object.put("width",430);//小程序二维码宽度
+    String requestUrl=create_codeB_url.replace("ACCESS_TOKEN",config.getAccessToken());
+    InputStream i=HttpClientUtil.doPostInstream(requestUrl,object);
+    byte[] data = new byte[1024];
+    int len = -1;
+    FileOutputStream fileOutputStream = null;
+    try {
+      String temp = "images" + File.separator + "code" + File.separator;
+      // 新的图片文件名 = 获取时间戳+"."图片扩展名
+      String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
+      // 文件路径
+      String filePath = webUploadPath.concat(temp);
+
+      File dest = new File(filePath, newFileName);
+      if (!dest.getParentFile().exists()) {
+        dest.getParentFile().mkdirs();
+      }
+      fileOutputStream = new FileOutputStream(dest);
+      while ((len = i.read(data)) != -1) {
+        fileOutputStream.write(data, 0, len);
+      }
+      // 将反斜杠转换为正斜杠
+      String datapath = temp.replaceAll("\\\\", "/") + newFileName;
+      notes.setId(notesId);
+      notes.setCode_url(datapath);
+      articleNotesService.update(notes);
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (i != null) {
+        try {
+          i.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+      if (fileOutputStream != null) {
+        try {
+          fileOutputStream.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
 }

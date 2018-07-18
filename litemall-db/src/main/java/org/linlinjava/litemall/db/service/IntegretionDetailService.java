@@ -73,4 +73,10 @@ public class IntegretionDetailService {
         logger.info(integretionDetailMapper.countByExample(example));
         return integretionDetailMapper.countByExample(example);
     }
+
+  public Integer queryByTest(Integer testId, Integer userId) {
+    IntegretionDetailExample example=new IntegretionDetailExample();
+    example.or().andIntegretionIdEqualTo(String.valueOf(testId)).andUserIdEqualTo(String.valueOf(userId)).andTypeEqualTo((byte) 22);//趣味测试
+    return (int)integretionDetailMapper.countByExample(example);
+  }
 }
