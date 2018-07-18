@@ -281,7 +281,7 @@
       <table tableName="cs_test">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
       </table>-->
-      <table tableName="cs_result">
+      <table tableName="cs_jieguo">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
       </table>
 
