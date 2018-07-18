@@ -61,4 +61,16 @@ public class CsOptionService {
     }
     csOptionMapper.deleteByPrimaryKey(id);
   }
+
+    public void add(CsOption csOption) {
+        csOptionMapper.insert(csOption);
+    }
+
+    public CsOption findById(Integer id) {
+        return csOptionMapper.selectByPrimaryKey(id);
+    }
+
+    public void update(CsOption csOption) {
+        csOptionMapper.updateByPrimaryKeySelective(csOption);
+    }
 }

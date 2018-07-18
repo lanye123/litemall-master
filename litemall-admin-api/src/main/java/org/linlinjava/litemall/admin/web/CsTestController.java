@@ -81,21 +81,34 @@ public class CsTestController {
         CsTest test = new CsTest();
         test.setTitle((String) csTest.get("title"));
         test.setSubTitle((String) csTest.get("subTitle"));
-        test.setSortNo(Integer.valueOf((String) csTest.get("sortNo")));
-        test.setType(Integer.valueOf((String) csTest.get("type")));
-        test.setIsHot(Integer.valueOf((String) csTest.get("isHot")));
+        test.setSortNo((Integer) csTest.get("sortNo"));
+        test.setType((Integer) csTest.get("type"));
+        test.setIsHot((Integer) csTest.get("isHot"));
         test.setPicUrl((String) csTest.get("picUrl"));
         csTestService.add(test);
         List titles = (ArrayList) csTest.get("topics");
+        List options ;
         CsTitle csTitleDb = new CsTitle();
+        csTitleDb.setTestId(test.getId());
+        CsOption csOptionDb = new CsOption();
+        csOptionDb.setTestId(test.getId());
         LinkedHashMap title;
+        LinkedHashMap option;
         for(Object csTitle:titles){
             title = (LinkedHashMap) csTitle;
-            csTitleDb.setSortNo(Integer.valueOf((String) title.get("no")));
-            csTitleDb.setTitle((String) title.get("value"));
-            csTitleDb.setStatus(Integer.valueOf((String) title.get("status")));
-            csTitleDb.setTestId(test.getId());
+            csTitleDb.setSortNo((Integer) title.get("sortNo"));
+            csTitleDb.setTitle((String) title.get("title"));
+            csTitleDb.setStatus((Integer) title.get("status"));
             csTitleService.add(csTitleDb);
+            options = (ArrayList) title.get("optionList");
+            csOptionDb.setTitleId(csTitleDb.getId());
+            for (Object csOption : options) {
+                option = (LinkedHashMap) csOption;
+                csOptionDb.setSortNo((Integer) option.get("sortNo"));
+                csOptionDb.setOptionName((String) option.get("optionName"));
+                csOptionDb.setAccount((Integer) option.get("account"));
+                csOptionService.add(csOptionDb);
+            }
         }
         return ResponseUtil.ok(csTest);
     }
@@ -105,7 +118,7 @@ public class CsTestController {
         if(csTest.get("id")==null){
             return ResponseUtil.badArgument();
         }
-            CsTest test = csTestService.findById((Integer) csTest.get("id"));
+        CsTest test = csTestService.findById((Integer) csTest.get("id"));
         if(test==null){
             return ResponseUtil.badArgument();
         }
@@ -117,30 +130,71 @@ public class CsTestController {
         }
         test.setTitle((String) csTest.get("title"));
         test.setSubTitle((String) csTest.get("subTitle"));
-        test.setSortNo(Integer.valueOf((String) csTest.get("sortNo")));
-        test.setType(Integer.valueOf((String) csTest.get("type")));
-        test.setIsHot(Integer.valueOf((String) csTest.get("isHot")));
+        test.setSortNo((Integer) csTest.get("sortNo"));
+        test.setType((Integer) csTest.get("type"));
+        test.setIsHot((Integer) csTest.get("isHot"));
         test.setPicUrl((String) csTest.get("picUrl"));
         csTestService.update(test);
         List titles = (ArrayList) csTest.get("topics");
+        List options;
         CsTitle csTitleDb;
+        CsOption csOptionDb = null;
         LinkedHashMap title;
+        LinkedHashMap option;
         for(Object csTitle:titles){
             title = (LinkedHashMap) csTitle;
             csTitleDb = csTitleService.findById((Integer)title.get("id"));
             if(csTitleDb==null){
-                csTitleDb.setSortNo(Integer.valueOf((String) title.get("no")));
-                csTitleDb.setTitle((String) title.get("value"));
-                csTitleDb.setStatus(Integer.valueOf((String) title.get("status")));
-                csTitleDb.setTestId(test.getId());
-                csTitleService.add(csTitleDb);
-            }else{
+                //题目不存在创建
                 csTitleDb = new CsTitle();
-                csTitleDb.setSortNo(Integer.valueOf((String) title.get("no")));
-                csTitleDb.setTitle((String) title.get("value"));
-                csTitleDb.setStatus(Integer.valueOf((String) title.get("status")));
                 csTitleDb.setTestId(test.getId());
+                csTitleDb.setSortNo((Integer) title.get("sortNo"));
+                csTitleDb.setTitle((String) title.get("title"));
+                csTitleDb.setStatus((Integer) title.get("status"));
+                csTitleService.add(csTitleDb);
+                options = (ArrayList) title.get("optionList");
+                for (Object csOption : options) {
+                    option = (LinkedHashMap) csOption;
+                    csOptionDb = new CsOption();
+                    csOptionDb.setTitleId(csTitleDb.getId());
+                    csOptionDb.setTestId(test.getId());
+                    csOptionDb.setSortNo((Integer) option.get("sortNo"));
+                    csOptionDb.setOptionName((String) option.get("optionName"));
+                    csOptionDb.setAccount((Integer) option.get("account"));
+                    csOptionDb.setPid((Integer) option.get("pid"));
+                    csOptionService.add(csOptionDb);
+                }
+            }else{
+                //题目存在更新
+                csTitleDb.setSortNo((Integer) title.get("sortNo"));
+                csTitleDb.setTitle((String) title.get("title"));
+                csTitleDb.setStatus((Integer) title.get("status"));
                 csTitleService.update(csTitleDb);
+                options = (ArrayList) title.get("optionList");
+                for (Object csOption : options) {
+                    option = (LinkedHashMap) csOption;
+                    csOptionDb = csOptionService.findById((Integer)option.get("id"));
+                    if(csTitleDb==null){
+                        //选项不存在创建
+                        csOptionDb = new CsOption();
+                        csOptionDb.setTitleId(csTitleDb.getId());
+                        csOptionDb.setTestId(test.getId());
+                        csOptionDb.setSortNo((Integer) option.get("sortNo"));
+                        csOptionDb.setOptionName((String) option.get("optionName"));
+                        csOptionDb.setAccount((Integer) option.get("account"));
+                        csOptionDb.setPid((Integer) option.get("pid"));
+                        csOptionService.add(csOptionDb);
+                    }else{
+                        //选项存在更新
+                        csOptionDb.setTitleId(csTitleDb.getId());
+                        csOptionDb.setTestId(test.getId());
+                        csOptionDb.setSortNo((Integer) option.get("sortNo"));
+                        csOptionDb.setOptionName((String) option.get("optionName"));
+                        csOptionDb.setAccount((Integer) option.get("account"));
+                        csOptionDb.setPid((Integer) option.get("pid"));
+                        csOptionService.update(csOptionDb);
+                    }
+                }
             }
         }
         return ResponseUtil.ok(csTest);
