@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.CsTestMapper;
 import org.linlinjava.litemall.db.domain.CsTest;
 import org.linlinjava.litemall.db.domain.CsTestExample;
-import org.linlinjava.litemall.db.domain.Integretion;
+import org.linlinjava.litemall.db.domain.CsTitle;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -15,6 +15,8 @@ import java.util.List;
 public class CsTestService {
   @Resource
   private CsTestMapper csTestMapper;
+  @Resource
+  private CsTitleService csTitleService;
 
   public List<CsTest> list(Integer isHot) {
     CsTestExample example=new CsTestExample();
@@ -80,5 +82,24 @@ public class CsTestService {
 
   public CsTest cascateDync(Integer id) {
     return csTestMapper.cascateDync(id);
+  }
+
+  public CsTest findById(Integer id) {
+    return csTestMapper.selectByPrimaryKey(id);
+  }
+
+  public void update(CsTest csTest) {
+    csTestMapper.updateByPrimaryKeySelective(csTest);
+  }
+
+  public void deleteById(Integer id) {
+    if(StringUtils.isEmpty(id)){
+      return;
+    }
+    List<CsTitle> csTitleList = csTitleService.querySelective("",id,null,null,"","");
+    for(CsTitle csTitle:csTitleList){
+      csTitleService.deleteById(csTitle.getId());
+    }
+    csTestMapper.deleteByPrimaryKey(id);
   }
 }

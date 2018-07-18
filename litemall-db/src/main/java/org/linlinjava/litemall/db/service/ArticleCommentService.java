@@ -77,7 +77,7 @@ public class ArticleCommentService {
             criteria.andFromUseridEqualTo(fromUserid);
         }
         if(!StringUtils.isEmpty(articleId)){
-            criteria.andArticleIdEqualTo(articleId);
+            criteria.andAArticleIdEqualTo(articleId);
         }
         if(!StringUtils.isEmpty(categoryName)){
             criteria.andCategoryNameEqualTo(categoryName);
@@ -89,10 +89,10 @@ public class ArticleCommentService {
             criteria.andContentLike("%" + content + "%");
         }
         if(!StringUtils.isEmpty(startDate)){
-            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+            criteria.andACreateDateGreaterThanOrEqualTo(startDate);
         }
         if(!StringUtils.isEmpty(endDate)){
-            criteria.andCreateDateLessThanOrEqualTo(endDate);
+            criteria.andACreateDateLessThanOrEqualTo(endDate);
         }
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);

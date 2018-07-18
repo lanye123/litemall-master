@@ -34,7 +34,7 @@
   </resultMap>
 
   <resultMap id="BaseResultMap5" extends="BaseResultMap2" type="org.linlinjava.litemall.db.domain.CsTest">
-    <collection property="titleList" ofType="org.linlinjava.litemall.db.domain.CsTitle"
+    <collection property="topics" ofType="org.linlinjava.litemall.db.domain.CsTitle"
                 javaType="java.util.ArrayList" select="org.linlinjava.litemall.db.dao.CsTitleMapper.selectByTestId3"
                 column="id">
     </collection>

@@ -33,6 +33,17 @@ public class ArticleComment {
     //回复次数
     private Integer replyCount;
 
+    //书籍名称
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Integer getReplyCount() {
         return replyCount;
     }

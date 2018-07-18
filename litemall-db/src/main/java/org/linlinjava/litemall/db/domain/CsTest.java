@@ -28,21 +28,21 @@ public class CsTest {
 
     private Integer testNum;
 
-    private Integer userId;
-
     private List<CsTitle> titleList;
 
     private List<CsTitle> titleList2;
 
-  public Integer getUserId() {
-    return userId;
-  }
+    private List<CsTitle> topics;
 
-  public void setUserId(Integer userId) {
-    this.userId = userId;
-  }
+    public List<CsTitle> getTopics() {
+        return topics;
+    }
 
-  public Integer getTestNum() {
+    public void setTopics(List<CsTitle> topics) {
+        this.topics = topics;
+    }
+
+    public Integer getTestNum() {
     return testNum;
   }
 
