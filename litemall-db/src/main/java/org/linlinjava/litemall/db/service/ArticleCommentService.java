@@ -77,7 +77,7 @@ public class ArticleCommentService {
             criteria.andFromUseridEqualTo(fromUserid);
         }
         if(!StringUtils.isEmpty(articleId)){
-            criteria.andArticleIdEqualTo(articleId);
+            criteria.andAArticleIdEqualTo(articleId);
         }
         if(!StringUtils.isEmpty(categoryName)){
             criteria.andCategoryNameEqualTo(categoryName);

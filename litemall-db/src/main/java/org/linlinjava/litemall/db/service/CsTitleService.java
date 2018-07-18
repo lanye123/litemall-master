@@ -2,6 +2,7 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.CsTitleMapper;
+import org.linlinjava.litemall.db.domain.CsOption;
 import org.linlinjava.litemall.db.domain.CsTitle;
 import org.linlinjava.litemall.db.domain.CsTitleExample;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import java.util.List;
 public class CsTitleService {
   @Resource
   private CsTitleMapper csTitleMapper;
+  @Resource
+  private CsOptionService csOptionService;
 
   public List<CsTitle> querySelective(String title, Integer testId, Integer page, Integer size, String sort, String order) {
     CsTitleExample example = new CsTitleExample();
@@ -55,5 +58,24 @@ public class CsTitleService {
 
   public void add(CsTitle csTitle) {
     csTitleMapper.insert(csTitle);
+  }
+
+  public CsTitle findById(Integer id) {
+    return csTitleMapper.selectByPrimaryKey(id);
+  }
+
+  public void update(CsTitle csTitle) {
+    csTitleMapper.updateByPrimaryKeySelective(csTitle);
+  }
+
+  public void deleteById(Integer id) {
+    if(StringUtils.isEmpty(id)){
+      return;
+    }
+    List<CsOption> csOptionList = csOptionService.querySelective("",null,id,null,null,"","");
+    for(CsOption csOption:csOptionList){
+      csOptionService.deleteById(csOption.getId());
+    }
+    csTitleMapper.deleteByPrimaryKey(id);
   }
 }

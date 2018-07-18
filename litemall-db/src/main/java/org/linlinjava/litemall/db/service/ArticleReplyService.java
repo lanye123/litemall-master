@@ -65,7 +65,7 @@ public class ArticleReplyService {
             criteria.andToUseridEqualTo(toUserid);
         }
         if(!StringUtils.isEmpty(content)){
-            criteria.andContentLike("%" + content + "%");
+            criteria.andAContentLike("%" + content + "%");
         }
         if(!StringUtils.isEmpty(startDate)){
             criteria.andACreateDateGreaterThanOrEqualTo(startDate);
