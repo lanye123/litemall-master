@@ -39,6 +39,10 @@
                 javaType="java.util.ArrayList" select="org.linlinjava.litemall.db.dao.CsTitleMapper.selectByTestId3"
                 column="id">
     </collection>
+    <collection property="resultList" ofType="org.linlinjava.litemall.db.domain.CsTitle"
+                javaType="java.util.ArrayList" select="org.linlinjava.litemall.db.dao.CsResultMapper.selectByTestId"
+                column="id">
+    </collection>
   </resultMap>
 
   <sql id="Example_Where_Clause">

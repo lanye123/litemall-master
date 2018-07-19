@@ -1,14 +1,13 @@
 package org.linlinjava.litemall.admin.web;
 
 import org.linlinjava.litemall.db.domain.CsOption;
+import org.linlinjava.litemall.db.domain.CsResult;
 import org.linlinjava.litemall.db.domain.CsTest;
 import org.linlinjava.litemall.db.domain.CsTitle;
-import org.linlinjava.litemall.db.service.CsDetailService;
-import org.linlinjava.litemall.db.service.CsOptionService;
-import org.linlinjava.litemall.db.service.CsTestService;
-import org.linlinjava.litemall.db.service.CsTitleService;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -24,6 +23,8 @@ public class CsTestController {
     private CsTitleService csTitleService;
     @Autowired
     private CsOptionService csOptionService;
+    @Autowired
+    private CsResultService csResultService;
 
     @GetMapping("/testList")
     public Object testList(String title, Integer type,
@@ -201,20 +202,75 @@ public class CsTestController {
     }
 
     @PostMapping("/deleteCsTitle")
-    public Object deleteCsTitle(Integer id){
-        csTitleService.deleteById(id);
+    public Object deleteCsTitle(@RequestBody CsTitle csTitle){
+        if(StringUtils.isEmpty(csTitle)){
+            return ResponseUtil.badArgument();
+        }
+        csTitleService.deleteById(csTitle.getId());
         return ResponseUtil.ok();
     }
 
     @PostMapping("/deleteCsTest")
-    public Object deleteCsTest(Integer id){
-        csTestService.deleteById(id);
+    public Object deleteCsTest(@RequestBody CsTest csTest){
+        if(StringUtils.isEmpty(csTest)){
+            return ResponseUtil.badArgument();
+        }
+        csTestService.deleteById(csTest.getId());
         return ResponseUtil.ok();
     }
 
     @PostMapping("/deleteCsOption")
-    public Object deleteCsOption(Integer id){
-        csOptionService.deleteById(id);
+    public Object deleteCsOption(@RequestBody CsOption csOption){
+        if(StringUtils.isEmpty(csOption)){
+            return ResponseUtil.badArgument();
+        }
+        csOptionService.deleteById(csOption.getId());
+        return ResponseUtil.ok();
+    }
+
+    @PostMapping("/createCsResult")
+    public Object createCsResult(@RequestBody LinkedHashMap linkedHashMap){
+        if(linkedHashMap.get("resultList")==null){
+            return ResponseUtil.badArgument();
+        }
+        if(linkedHashMap.get("testId")==null){
+            return ResponseUtil.badArgument();
+        }
+        CsResult csResultDb = null;
+        List results = (ArrayList) linkedHashMap.get("resultList");
+        Integer testId = (Integer) linkedHashMap.get("testId");
+        LinkedHashMap csResult;
+        for (Object result : results) {
+            csResult = (LinkedHashMap) result;
+            csResultDb = csResultService.findById((Integer)csResult.get("id"));
+            if(csResultDb==null){
+                csResultDb = new CsResult();
+                csResultDb.setTitle((String) csResult.get("title"));
+                csResultDb.setSubTitle((String) csResult.get("subTitle"));
+                csResultDb.setMin((Integer) csResult.get("min"));
+                csResultDb.setMax((Integer) csResult.get("max"));
+                csResultDb.setTestId(testId);
+                csResultDb.setPicUrl((String) csResult.get("picUrl"));
+                csResultService.add(csResultDb);
+            }else{
+                csResultDb.setTitle((String) csResult.get("title"));
+                csResultDb.setSubTitle((String) csResult.get("subTitle"));
+                csResultDb.setMin((Integer) csResult.get("min"));
+                csResultDb.setMax((Integer) csResult.get("max"));
+                csResultDb.setTestId(testId);
+                csResultDb.setPicUrl((String) csResult.get("picUrl"));
+                csResultService.update(csResultDb);
+            }
+        }
+        return ResponseUtil.ok(linkedHashMap);
+    }
+
+    @PostMapping("/deleteCsResult")
+    public Object deleteCsResult(@RequestBody CsResult csResult){
+        if(StringUtils.isEmpty(csResult)){
+            return ResponseUtil.badArgument();
+        }
+        csResultService.deleteById(csResult.getId());
         return ResponseUtil.ok();
     }
 

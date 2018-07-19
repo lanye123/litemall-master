@@ -34,6 +34,16 @@ public class CsTest {
 
     private List<CsTitle> topics;
 
+    private List<CsResult> resultList;
+
+    public List<CsResult> getResultList() {
+        return resultList;
+    }
+
+    public void setResultList(List<CsResult> resultList) {
+        this.resultList = resultList;
+    }
+
     public List<CsTitle> getTopics() {
         return topics;
     }

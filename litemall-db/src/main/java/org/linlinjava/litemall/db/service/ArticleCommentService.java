@@ -32,7 +32,7 @@ public class ArticleCommentService {
         ArticleCommentExample example=new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria=example.createCriteria();
         if(article_id!=null)
-            criteria.andArticleIdEqualTo(article_id);
+            criteria.andAArticleIdEqualTo(article_id);
         example.setOrderByClause("create_date desc");//按时间倒序排序
         if("0".equals(flag)){
             example.setOrderByClause("create_date desc");//按时间倒序排序

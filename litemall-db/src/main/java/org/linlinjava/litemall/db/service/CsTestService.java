@@ -2,6 +2,7 @@ package org.linlinjava.litemall.db.service;
 
 import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.CsTestMapper;
+import org.linlinjava.litemall.db.domain.CsResult;
 import org.linlinjava.litemall.db.domain.CsTest;
 import org.linlinjava.litemall.db.domain.CsTestExample;
 import org.linlinjava.litemall.db.domain.CsTitle;
@@ -17,6 +18,8 @@ public class CsTestService {
   private CsTestMapper csTestMapper;
   @Resource
   private CsTitleService csTitleService;
+  @Resource
+  private CsResultService csResultService;
 
   public List<CsTest> list(Integer isHot) {
     CsTestExample example=new CsTestExample();
@@ -99,6 +102,10 @@ public class CsTestService {
     List<CsTitle> csTitleList = csTitleService.querySelective("",id,null,null,"","");
     for(CsTitle csTitle:csTitleList){
       csTitleService.deleteById(csTitle.getId());
+    }
+    List<CsResult> csResultList = csResultService.querySelective("",id,null,null,"","");
+    for(CsResult csResult:csResultList){
+      csResultService.deleteById(csResult.getId());
     }
     csTestMapper.deleteByPrimaryKey(id);
   }

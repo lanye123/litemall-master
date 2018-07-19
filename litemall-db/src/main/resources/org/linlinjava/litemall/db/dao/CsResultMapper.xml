@@ -73,6 +73,12 @@
   <sql id="Base_Column_List">
     id, `min`, `max`, pic_url, deleted, create_date, title, sub_title, test_id
   </sql>
+  <select id="selectByTestId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cs_result
+    where test_id = #{id,jdbcType=INTEGER}
+  </select>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CsResultExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
