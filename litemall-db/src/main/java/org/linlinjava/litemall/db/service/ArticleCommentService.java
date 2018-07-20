@@ -51,6 +51,35 @@ public class ArticleCommentService {
     }
 
     /**
+      * @author lanye
+      * @Description 我的评论专属接口
+      * @Date 2018/7/20 10:03
+      * @Param [article_id, flag, page, size]
+      * @return java.util.List<org.linlinjava.litemall.db.domain.ArticleComment>
+      **/
+    public List<ArticleComment> myquery(Integer userId,String flag,Integer page, Integer size) {
+        ArticleCommentExample example=new ArticleCommentExample();
+        ArticleCommentExample.Criteria criteria=example.createCriteria();
+        if(userId!=null)
+            criteria.andFromUseridEqualTo(userId);
+        example.setOrderByClause("create_date desc");//按时间倒序排序
+        if("0".equals(flag)){
+            example.setOrderByClause("create_date desc");//按时间倒序排序
+        }
+        if(page!=null && size!=null){
+            BigDecimal bg1 = new BigDecimal(articleCommentMapper.selectByExample(example).size());
+            BigDecimal bg2 = new BigDecimal(size);
+            double d3 = bg1.divide(bg2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            Double pageMax = Math.ceil(d3);
+            if(page>pageMax){
+                return null;
+            }
+            PageHelper.startPage(page, size);
+        }
+        return articleCommentMapper.selectByExample(example);
+    }
+
+    /**
      * leiqiang
      * 文章评论数量
      * 2018-5-7 16:21:03

@@ -25,6 +25,7 @@
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="account" jdbcType="VARCHAR" property="account" />
     <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="photo_url" jdbcType="VARCHAR" property="photoUrl" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -90,7 +91,7 @@
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleCommentExample" resultMap="BaseResultMap2">
     select
     a.id, a.article_id, a.category_name, a.category_id, a.content, a.from_userid, a.status, a.create_date,
-    b.nickname,b.register_ip,b.mobile,b.account,c.title
+    b.nickname,b.register_ip,b.mobile,b.account,c.title,c.photo_url
     from article_comment a
     LEFT JOIN litemall_user b on a.from_userid = b.id
     LEFT JOIN article c on a.article_id = c.article_id

@@ -35,6 +35,16 @@ public class ArticleComment {
 
     //书籍名称
     private String title;
+    //书籍图片
+    private String photoUrl;
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
 
     public String getTitle() {
         return title;

@@ -78,6 +78,60 @@ public class ArticleCommentController {
         return ResponseUtil.ok(articleCommentVoList);
     }
 
+    /**
+      * @author lanye
+      * @Description 我的评论
+      * @Date 2018/7/20 10:01
+      * @Param [ flag, user_id, page, size]
+      * @return java.lang.Object
+      **/
+    @GetMapping("mylist")
+    public Object mylist(String flag,Integer user_id,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "20")Integer size){
+        //文章评论列表
+        List<ArticleComment> articleCommentList=articleCommentService.myquery(user_id,flag,page,size);
+        List<Map<String, Object>> articleCommentVoList = new ArrayList<>(articleCommentList.size());
+        for (ArticleComment comment:articleCommentList){
+            //统计文章回复数量
+            Integer countReply=articleReplyService.countReply(comment.getId());
+            //统计点赞数量
+            Integer countPraise=praiseCommentService.count(comment.getId());
+            Map<String, Object> articleCommentVo = new HashMap<>();
+            articleCommentVo.put("id",comment.getId());
+            articleCommentVo.put("articleId",comment.getArticleId());
+            articleCommentVo.put("comment",comment.getContent());
+            articleCommentVo.put("title",comment.getTitle());
+            articleCommentVo.put("photoUrl",comment.getPhotoUrl());
+            articleCommentVo.put("fromUserid",comment.getFromUserid());
+            articleCommentVo.put("status",comment.getStatus());
+            if(comment.getCreateDate().contains(".0")){
+                comment.setCreateDate(comment.getCreateDate().substring(0,comment.getCreateDate().length()-2));
+            }
+            articleCommentVo.put("createDate",comment.getCreateDate());
+            articleCommentVo.put("countReply",countReply);
+            LitemallUser user=litemallUserService.queryById(comment.getFromUserid());
+            if(user!=null){
+                articleCommentVo.put("nickname",user.getNickname());
+                articleCommentVo.put("avatar",user.getAvatar());
+            }
+            articleCommentVo.put("countPraise",countPraise);
+            articleCommentVo.put("praiseStatus",praiseCommentService.countComment(comment.getId(),user_id,null,null));
+            if(user_id==null){
+                articleCommentVo.put("praiseStatus",0);
+            }
+            articleCommentVoList.add(articleCommentVo);
+        }
+        if("1".equals(flag)){
+            Collections.sort(articleCommentVoList, (s1, s2) ->{
+                if(s1 == null)
+                    return -1;
+                if(s2 == null)
+                    return 1;
+                return (int)s2.get("countPraise") - (int)s1.get("countPraise");
+            });
+        }
+        return ResponseUtil.ok(articleCommentVoList);
+    }
+
     @PostMapping("create")
     public Object create(@RequestBody ArticleComment comment,Integer from_userid){
         if(from_userid!=null)

@@ -77,7 +77,18 @@ public class ArticleController {
     */
     @GetMapping("list")
     private Object list(String categoryIds,String flag,Integer userId){
-        List<Article> articleList=articleService.querySelective2(categoryIds,flag);
+        LitemallUser user = litemallUserService.findById(userId);
+        if(user==null){
+            return ResponseUtil.badArgumentValue();
+        }
+        Integer lock;
+        if(user.getAccount()==null){
+            lock = 0;
+        }else {
+            //规划师
+            lock = 1;
+        }
+        List<Article> articleList=articleService.querySelective2(categoryIds,flag,lock);
         articleService.sortDesc(articleList);
         if(!StringUtils.isEmpty(flag)&&flag.equals("date2")) {
             articleService.sortAsc(articleList);
@@ -165,9 +176,20 @@ public class ArticleController {
       **/
     @GetMapping("recommendedList")
     private Object recommendedList(Integer userId){
+        LitemallUser user = litemallUserService.findById(userId);
+        if(user==null){
+            return ResponseUtil.badArgumentValue();
+        }
+        Integer lock;
+        if(user.getAccount()==null){
+            lock = 0;
+        }else {
+            //规划师
+            lock = 1;
+        }
         Map<String,Object> data = new HashMap<>();
         Map<String, Object> dataItem;
-        List<Article> articleList = articleService.recommendedList();
+        List<Article> articleList = articleService.recommendedList(lock);
 
         List<Map<String,Object>> returnArticles = new ArrayList<>();
         int allCount;

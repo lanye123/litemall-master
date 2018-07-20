@@ -901,6 +901,11 @@ public class ArticleExample {
             return (Criteria) this;
         }
 
+        public Criteria andIsLookEqualTo(Integer value) {
+            addCriterion("is_look =", value, "isLook");
+            return (Criteria) this;
+        }
+
         public Criteria andIsViewNotEqualTo(Integer value) {
             addCriterion("is_view <>", value, "isView");
             return (Criteria) this;

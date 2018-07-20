@@ -53,6 +53,16 @@ public class Article {
 
     private String anliDate;
 
+    private Integer isLook;
+
+    public Integer getIsLook() {
+        return isLook;
+    }
+
+    public void setIsLook(Integer isLook) {
+        this.isLook = isLook;
+    }
+
     public String getAnliDate() {
         return anliDate;
     }
@@ -289,6 +299,7 @@ public class Article {
         sb.append(", shareCount=").append(shareCount);
         sb.append(", codeUrl=").append(codeUrl);
         sb.append(", anliDate=").append(anliDate);
+        sb.append(", is_look=").append(isLook);
         sb.append("]");
         return sb.toString();
     }
@@ -371,7 +382,8 @@ public class Article {
         userId("user_id"),
         shareCount("share_count"),
         codeUrl("code_url"),
-        anliDate("anli_date");
+        anliDate("anli_date"),
+        isLook("is_look");
 
 
         /**

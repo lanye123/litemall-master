@@ -59,9 +59,12 @@ public class ArticleService {
       * @Param []
       * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
       **/
-    public List<Article> recommendedList() {
+    public List<Article> recommendedList(Integer lock) {
         ArticleExample example=new ArticleExample();
         ArticleExample.Criteria criteria=example.createCriteria();
+        if(lock == 0){
+            criteria.andIsLookEqualTo(0);
+        }
         criteria.andIsViewEqualTo(1);
         criteria.andStatusEqualTo(1);
         example.setOrderByClause("anli_date desc");
@@ -75,11 +78,15 @@ public class ArticleService {
       * @Param [categoryIds, flag]
       * @return java.util.List<org.linlinjava.litemall.db.domain.Article>
       **/
-    public List<Article> querySelective2(String categoryIds,String flag) {
+    public List<Article> querySelective2(String categoryIds,String flag,Integer lock) {
         Article article = new Article();
         List<Article> articleListReturn = new ArrayList<>();
         String[] caIds = categoryIds.split(",");
         article.setStatus(1);
+        //lock 1表示规划师 0表示用户
+        if(lock == 0){
+           article.setIsLook(0);
+        }
         //人气排序
         if(!StringUtils.isEmpty(flag)&&flag.equals("reader")) {
             article.setTitle("reader desc");

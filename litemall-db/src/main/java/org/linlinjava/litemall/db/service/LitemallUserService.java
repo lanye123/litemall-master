@@ -21,6 +21,9 @@ public class LitemallUserService {
     private IntegretionDetailService integretionDetailService;
 
     public LitemallUser findById(Integer userId) {
+        if(userId==null){
+            return null;
+        }
         return userMapper.selectByPrimaryKey(userId);
     }
 
