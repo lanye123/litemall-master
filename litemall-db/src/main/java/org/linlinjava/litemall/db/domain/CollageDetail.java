@@ -43,6 +43,16 @@ public class CollageDetail {
     private String goodsSn;
     //手机号
     private String mobile;
+    //263
+    private String account;
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
 
     public String getMobile() {
         return mobile;

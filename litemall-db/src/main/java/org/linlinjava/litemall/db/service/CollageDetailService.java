@@ -56,7 +56,7 @@ public class CollageDetailService {
         return collageDetailMapper.selectByExample(example);
     }
 
-    public List<CollageDetail> queryBySelective3(Integer userId, String orderSn, Integer goodsId, Integer status, Date startDate, Date endDate,Integer type,String nickname, Integer page, Integer limit, String sort, String order) {
+    public List<CollageDetail> queryBySelective3(Integer userId, String orderSn, Integer goodsId, Integer status, Date startDate, Date endDate,Integer type,String nickname,Integer type2, Integer page, Integer limit, String sort, String order) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -77,6 +77,14 @@ public class CollageDetailService {
             criteria.andCCreateDateGreaterThanOrEqualTo(startDate);
         if(!StringUtils.isEmpty(endDate))
             criteria.andCCreateDateLessThanOrEqualTo(endDate);
+        if(!StringUtils.isEmpty(type2)){
+            if(type2==0){
+                criteria.andAccountIsNotNull();
+            }else if(type2 == 1){
+                criteria.andAccountIsNull();
+            }
+        }
+
         if(page!=null && limit!=null){
             PageHelper.startPage(page,limit);
         }
@@ -120,7 +128,7 @@ public class CollageDetailService {
         return (int)collageDetailMapper.countByExample(example);
     }
 
-    public int count2(Integer userId,String orderSn,Integer goodsId,Integer status,Date startDate, Date endDate,Integer type,String nickname) {
+    public int count2(Integer userId,String orderSn,Integer goodsId,Integer status,Date startDate, Date endDate,Integer type,String nickname,Integer type2) {
         CollageDetailExample example=new CollageDetailExample();
         CollageDetailExample.Criteria criteria=example.createCriteria();
         if(!StringUtils.isEmpty(userId))
@@ -139,6 +147,13 @@ public class CollageDetailService {
             criteria.andCCreateDateGreaterThanOrEqualTo(startDate);
         if(!StringUtils.isEmpty(endDate))
             criteria.andCCreateDateLessThanOrEqualTo(endDate);
+        if(!StringUtils.isEmpty(type2)){
+            if(type2 == 1){
+                criteria.andAccountIsNull();
+            }else if(type2 == 0){
+                criteria.andAccountIsNotNull();
+            }
+        }
         return (int)collageDetailMapper.countByExample2(example);
     }
 

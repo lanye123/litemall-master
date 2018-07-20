@@ -24,6 +24,7 @@
     <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
     <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -102,7 +103,7 @@
     </if>
   </select>
   <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.CollageDetailExample" resultMap="BaseResultMap2">
-    SELECT c.*,l.type,l.name goodsName,u.nickname,o.order_sn,l.goods_sn,a.mobile
+    SELECT c.*,l.type,l.name goodsName,u.nickname,o.order_sn,l.goods_sn,a.mobile,u.account
     from collage_detail c
     LEFT JOIN litemall_goods l on c.goods_id=l.id
     LEFT JOIN litemall_user u on c.user_id=u.id
