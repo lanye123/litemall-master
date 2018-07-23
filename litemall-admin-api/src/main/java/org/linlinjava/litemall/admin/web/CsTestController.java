@@ -240,9 +240,13 @@ public class CsTestController {
         List results = (ArrayList) linkedHashMap.get("resultList");
         Integer testId = (Integer) linkedHashMap.get("testId");
         LinkedHashMap csResult;
+        Integer id = null;
         for (Object result : results) {
             csResult = (LinkedHashMap) result;
-            csResultDb = csResultService.findById((Integer)csResult.get("id"));
+            if(StringUtils.isEmpty(csResult.get("id"))){
+                id = null;
+            }
+            csResultDb = csResultService.findById(id);
             if(csResultDb==null){
                 csResultDb = new CsResult();
                 csResultDb.setTitle((String) csResult.get("title"));
