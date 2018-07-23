@@ -425,6 +425,11 @@ public class LitemallGoodsExample {
             return (Criteria) this;
         }
 
+        public Criteria andStateEqualTo(Integer value) {
+            addCriterion("state =", value, "state");
+            return (Criteria) this;
+        }
+
         public Criteria andBrandIdNotEqualTo(Integer value) {
             addCriterion("brand_id <>", value, "brandId");
             return (Criteria) this;
