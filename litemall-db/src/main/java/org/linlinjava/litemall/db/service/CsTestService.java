@@ -88,6 +88,9 @@ public class CsTestService {
   }
 
   public CsTest findById(Integer id) {
+    if(id==null){
+      return null;
+    }
     return csTestMapper.selectByPrimaryKey(id);
   }
 

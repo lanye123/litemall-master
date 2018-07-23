@@ -280,6 +280,27 @@ public class CsTestController {
         return ResponseUtil.ok();
     }
 
+    @PostMapping("/online")
+    public Object online(@RequestBody CsTest csTest){
+        Map data=new HashMap();
+        if(csTest == null){
+            return ResponseUtil.badArgument();
+        }
+
+        CsTest csTestDb = csTestService.findById(csTest.getId());
+        if(csTestDb==null){
+            return ResponseUtil.ok();
+        }
+        if(csTestDb.getDeleted()==0){
+            csTestDb.setDeleted(1);
+            csTestService.update(csTestDb);
+        }else if(csTestDb.getDeleted()==1){
+            csTestDb.setDeleted(0);
+            csTestService.update(csTestDb);
+        }
+        return ResponseUtil.ok(data);
+    }
+
     //
     //    }
     //        return ResponseUtil.ok(data);

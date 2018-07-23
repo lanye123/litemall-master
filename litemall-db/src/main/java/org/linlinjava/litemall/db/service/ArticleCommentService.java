@@ -28,11 +28,14 @@ public class ArticleCommentService {
      * @date 2018-5-7 15:51:12
      * @return
      */
-    public List<ArticleComment> querySelective(Integer article_id,String flag,Integer page, Integer size) {
+    public List<ArticleComment> querySelective(Integer article_id,String flag,Integer lock,Integer page, Integer size) {
         ArticleCommentExample example=new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria=example.createCriteria();
         if(article_id!=null)
             criteria.andAArticleIdEqualTo(article_id);
+        if(lock == 0){
+            criteria.andBAccountIsNull();
+        }
         example.setOrderByClause("create_date desc");//按时间倒序排序
         if("0".equals(flag)){
             example.setOrderByClause("create_date desc");//按时间倒序排序
@@ -90,7 +93,7 @@ public class ArticleCommentService {
         ArticleCommentExample example=new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria=example.createCriteria();
         if(article_id!=null)
-            criteria.andArticleIdEqualTo(article_id);
+            criteria.andAArticleIdEqualTo(article_id);
         return articleCommentMapper.countByExample(example);
     }
 
