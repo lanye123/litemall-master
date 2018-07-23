@@ -12,6 +12,7 @@
     <result column="sort_no" jdbcType="INTEGER" property="sortNo" />
     <result column="deleted" jdbcType="INTEGER" property="deleted" />
     <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="info" jdbcType="INTEGER" property="info" />
   </resultMap>
 
   <resultMap id="BaseResultMap2" extends="BaseResultMap" type="org.linlinjava.litemall.db.domain.CsTest">
@@ -105,7 +106,7 @@
   </sql>
   <sql id="Base_Column_List">
     id, title, sub_title, pic_url, is_hot, category_id, create_date, sort_no, deleted,
-    `type`,csCount,testNum
+    `type`,csCount,testNum,info
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.CsTestExample" resultMap="BaseResultMap2">
     select
@@ -209,11 +210,11 @@
     </selectKey>
     insert into cs_test (title, sub_title, pic_url,
       is_hot, category_id, create_date,
-      sort_no, deleted, `type`
+      sort_no, deleted, `type`,info
       )
     values (#{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR},
       #{isHot,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP},
-      #{sortNo,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}
+      #{sortNo,jdbcType=INTEGER}, #{deleted,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},#{info,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.CsTest">
@@ -249,6 +250,9 @@
       <if test="type != null">
         `type`,
       </if>
+      <if test="info != null">
+        `info`,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="title != null">
@@ -277,6 +281,9 @@
       </if>
       <if test="type != null">
         #{type,jdbcType=INTEGER},
+      </if>
+      <if test="info != null">
+        #{info,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -319,6 +326,9 @@
       <if test="record.type != null">
         `type` = #{record.type,jdbcType=INTEGER},
       </if>
+      <if test="record.info != null">
+        pic_url = #{record.info,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -335,7 +345,8 @@
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       sort_no = #{record.sortNo,jdbcType=INTEGER},
       deleted = #{record.deleted,jdbcType=INTEGER},
-      `type` = #{record.type,jdbcType=INTEGER}
+      `type` = #{record.type,jdbcType=INTEGER},
+      info = #{record.info,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -370,6 +381,9 @@
       <if test="type != null">
         `type` = #{type,jdbcType=INTEGER},
       </if>
+      <if test="info != null">
+        info = #{info,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -383,7 +397,8 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       sort_no = #{sortNo,jdbcType=INTEGER},
       deleted = #{deleted,jdbcType=INTEGER},
-      `type` = #{type,jdbcType=INTEGER}
+      `type` = #{type,jdbcType=INTEGER},
+      info = #{info,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.CsTestExample" resultMap="BaseResultMap">
