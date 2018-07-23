@@ -124,6 +124,9 @@ public class CsTestController {
   @GetMapping("check")
   public Object check(Integer testId,Integer userId){
     Map data = new HashMap();
+    CsTest test=csTestService.findById(testId);
+    if(test!=null&&StringUtils.isNotEmpty(test.getInfo()))
+      data.put("info",test.getInfo());
    CsJieguo jg=csJieguoService.queryById(testId,userId);
    if(jg!=null){
      data.put("checked",1);
@@ -143,6 +146,9 @@ public class CsTestController {
   @GetMapping("look")
   public Object look(Integer testId,Integer userId){
     Map data = new HashMap();
+    CsTest test=csTestService.findById(testId);
+    if(test!=null&&StringUtils.isNotEmpty(test.getInfo()))
+      data.put("info",test.getInfo());
     Integer account=0;
     account=csDetailService.sumAccount(testId,userId);//统计该用户该项测试最终得分情况
     if(account!=0){
