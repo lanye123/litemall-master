@@ -82,7 +82,7 @@ public class ArticleController {
             return ResponseUtil.badArgumentValue();
         }
         Integer lock;
-        if(user.getAccount()==null){
+        if(StringUtils.isEmpty(user.getAccount())){
             lock = 0;
         }else {
             //规划师
@@ -181,7 +181,7 @@ public class ArticleController {
             return ResponseUtil.badArgumentValue();
         }
         Integer lock;
-        if(user.getAccount()==null){
+        if(StringUtils.isEmpty(user.getAccount())){
             lock = 0;
         }else {
             //规划师

@@ -86,6 +86,7 @@ public class CsTestController {
         test.setType((Integer) csTest.get("type"));
         test.setIsHot((Integer) csTest.get("isHot"));
         test.setPicUrl((String) csTest.get("picUrl"));
+        test.setInfo((String) csTest.get("info"));
         csTestService.add(test);
         List titles = (ArrayList) csTest.get("topics");
         List options ;
@@ -135,6 +136,7 @@ public class CsTestController {
         test.setType((Integer) csTest.get("type"));
         test.setIsHot((Integer) csTest.get("isHot"));
         test.setPicUrl((String) csTest.get("picUrl"));
+        test.setInfo((String) csTest.get("info"));
         csTestService.update(test);
         List titles = (ArrayList) csTest.get("topics");
         List options;

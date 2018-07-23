@@ -435,6 +435,11 @@ public class ArticleCommentExample {
             return (Criteria) this;
         }
 
+        public Criteria andBNickNameLike(String value) {
+            addCriterion("b.nickname like", value, "nickname");
+            return (Criteria) this;
+        }
+
         public Criteria andContentNotLike(String value) {
             addCriterion("content not like", value, "content");
             return (Criteria) this;

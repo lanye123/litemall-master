@@ -430,6 +430,11 @@ public class ArticleReplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andCNickNameLike(String value) {
+            addCriterion("c.nickname like", value, "nickname");
+            return (Criteria) this;
+        }
+
         public Criteria andAContentLike(String value) {
             addCriterion("a.content like", value, "content");
             return (Criteria) this;

@@ -45,7 +45,7 @@ public class ArticleReplyService {
         return articleReplyMapper.selectByExample(example);
     }
 
-    public List<ArticleReply> querySelective2(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid, Integer toUserid,String startDate, String endDate, Integer page, Integer size, String sort, String order) {
+    public List<ArticleReply> querySelective2(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid, Integer toUserid,String startDate, String endDate,String nickName, Integer page, Integer size, String sort, String order) {
         ArticleReplyExample example = new ArticleReplyExample();
         ArticleReplyExample.Criteria criteria = example.createCriteria();
 
@@ -67,6 +67,9 @@ public class ArticleReplyService {
         if(!StringUtils.isEmpty(content)){
             criteria.andAContentLike("%" + content + "%");
         }
+        if(!StringUtils.isEmpty(nickName)){
+            criteria.andCNickNameLike("%" + nickName + "%");
+        }
         if(!StringUtils.isEmpty(startDate)){
             criteria.andACreateDateGreaterThanOrEqualTo(startDate);
         }
@@ -81,7 +84,7 @@ public class ArticleReplyService {
         return articleReplyMapper.selectByExample2(example);
     }
 
-    public int countSelective(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid,Integer toUserid,String startDate, String endDate,Integer page, Integer size, String sort, String order) {
+    public int countSelective(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid,Integer toUserid,String startDate, String endDate,String nickName,Integer page, Integer size, String sort, String order) {
         ArticleReplyExample example = new ArticleReplyExample();
         ArticleReplyExample.Criteria criteria = example.createCriteria();
 
@@ -101,13 +104,16 @@ public class ArticleReplyService {
             criteria.andToUseridEqualTo(toUserid);
         }
         if(!StringUtils.isEmpty(startDate)){
-            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+            criteria.andACreateDateGreaterThanOrEqualTo(startDate);
         }
         if(!StringUtils.isEmpty(endDate)){
-            criteria.andCreateDateLessThanOrEqualTo(endDate);
+            criteria.andACreateDateLessThanOrEqualTo(endDate);
         }
         if(!StringUtils.isEmpty(content)){
-            criteria.andContentLike("%" + content + "%");
+            criteria.andAContentLike("%" + content + "%");
+        }
+        if(!StringUtils.isEmpty(nickName)){
+            criteria.andCNickNameLike("%" + nickName + "%");
         }
 
         return (int) articleReplyMapper.countByExample(example);

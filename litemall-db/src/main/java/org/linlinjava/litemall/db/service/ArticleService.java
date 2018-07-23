@@ -352,7 +352,7 @@ public class ArticleService {
     public void deleteById(Integer articleId) {
         articleMapper.deleteByPrimaryKey(articleId);
         //删除书籍评论及评论通知
-        List<ArticleComment> articleCommentList = articleCommentService.query(articleId,null,null,null,null,null,null,null,null,null,null);
+        List<ArticleComment> articleCommentList = articleCommentService.query(articleId,null,null,null,null,null,null, "", null,null,null,null);
         for(ArticleComment articleComment:articleCommentList){
             articleCommentService.deleteById(articleComment.getId());
         }

@@ -89,6 +89,9 @@ public class ArticleCommentController {
     public Object mylist(String flag,Integer user_id,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "20")Integer size){
         //文章评论列表
         List<ArticleComment> articleCommentList=articleCommentService.myquery(user_id,flag,page,size);
+        if(articleCommentList == null || articleCommentList.size()==0){
+            return ResponseUtil.ok();
+        }
         List<Map<String, Object>> articleCommentVoList = new ArrayList<>(articleCommentList.size());
         for (ArticleComment comment:articleCommentList){
             //统计文章回复数量

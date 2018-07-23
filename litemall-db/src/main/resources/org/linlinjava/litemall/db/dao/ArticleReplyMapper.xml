@@ -239,7 +239,10 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="org.linlinjava.litemall.db.domain.ArticleReplyExample" resultType="java.lang.Long">
-    select count(*) from article_reply
+    select count(*) from article_reply a
+    LEFT JOIN article_comment b on a.comment_id=b.id
+    LEFT JOIN litemall_user c on a.from_userid=c.id
+    LEFT JOIN article d on b.article_id = d.article_id
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>

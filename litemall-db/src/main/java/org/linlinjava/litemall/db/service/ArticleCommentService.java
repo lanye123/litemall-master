@@ -98,7 +98,7 @@ public class ArticleCommentService {
         articleCommentMapper.insertSelective(comment);
     }
 
-    public List<ArticleComment> query(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid,String startDate, String endDate, Integer page, Integer size, String sort, String order) {
+    public List<ArticleComment> query(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, String startDate, String endDate, String nickName, Integer page, Integer size, String sort, String order) {
         ArticleCommentExample example = new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria = example.createCriteria();
 
@@ -123,6 +123,9 @@ public class ArticleCommentService {
         if(!StringUtils.isEmpty(endDate)){
             criteria.andACreateDateLessThanOrEqualTo(endDate);
         }
+        if(!StringUtils.isEmpty(nickName)){
+            criteria.andBNickNameLike("%" + nickName + "%");
+        }
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
         }
@@ -132,7 +135,7 @@ public class ArticleCommentService {
         return articleCommentMapper.selectByExample(example);
     }
 
-    public int count(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,String startDate, String endDate,Integer page, Integer size, String sort, String order) {
+    public int count(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, String startDate, String endDate, String nickName, Integer page, Integer size, String sort, String order) {
         ArticleCommentExample example = new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria = example.createCriteria();
 
@@ -140,7 +143,7 @@ public class ArticleCommentService {
             criteria.andFromUseridEqualTo(fromUserid);
         }
         if(!StringUtils.isEmpty(articleId)){
-            criteria.andArticleIdEqualTo(articleId);
+            criteria.andAArticleIdEqualTo(articleId);
         }
         if(!StringUtils.isEmpty(categoryName)){
             criteria.andCategoryNameEqualTo(categoryName);
@@ -149,10 +152,13 @@ public class ArticleCommentService {
             criteria.andCategoryIdEqualTo(categoryId);
         }
         if(!StringUtils.isEmpty(startDate)){
-            criteria.andCreateDateGreaterThanOrEqualTo(startDate);
+            criteria.andACreateDateGreaterThanOrEqualTo(startDate);
         }
         if(!StringUtils.isEmpty(endDate)){
-            criteria.andCreateDateLessThanOrEqualTo(endDate);
+            criteria.andACreateDateLessThanOrEqualTo(endDate);
+        }
+        if(!StringUtils.isEmpty(nickName)){
+            criteria.andBNickNameLike("%" + nickName + "%");
         }
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
