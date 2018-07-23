@@ -28,6 +28,8 @@ public class CsTest {
 
     private Integer testNum;
 
+    private String info;
+
     private List<CsTitle> titleList;
 
     private List<CsTitle> titleList2;
@@ -36,7 +38,15 @@ public class CsTest {
 
     private List<CsResult> resultList;
 
-    public List<CsResult> getResultList() {
+  public String getInfo() {
+    return info;
+  }
+
+  public void setInfo(String info) {
+    this.info = info;
+  }
+
+  public List<CsResult> getResultList() {
         return resultList;
     }
 
