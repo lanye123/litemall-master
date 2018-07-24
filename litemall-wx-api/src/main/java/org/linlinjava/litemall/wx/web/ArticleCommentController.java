@@ -150,6 +150,16 @@ public class ArticleCommentController {
         return ResponseUtil.ok(articleCommentVoList);
     }
 
+    @PostMapping("delete")
+    public Object delete(Integer id,Integer userId){
+        LitemallUser userDb = litemallUserService.findById(userId);
+        if(userDb==null){
+            return ResponseUtil.badArgumentValue();
+        }
+        articleCommentService.deleteById(id);
+        return ResponseUtil.ok();
+    }
+
     @PostMapping("create")
     public Object create(@RequestBody ArticleComment comment,Integer from_userid){
         if(from_userid!=null)
