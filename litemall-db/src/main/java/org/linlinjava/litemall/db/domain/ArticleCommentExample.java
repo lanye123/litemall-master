@@ -206,7 +206,7 @@ public class ArticleCommentExample {
         }
 
         public Criteria andArticleIdEqualTo(Integer value) {
-            addCriterion("article_id =", value, "articleId");
+            addCriterion("a.article_id =", value, "articleId");
             return (Criteria) this;
         }
 
@@ -262,6 +262,11 @@ public class ArticleCommentExample {
 
         public Criteria andCategoryNameIsNull() {
             addCriterion("category_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBAccountIsNull() {
+            addCriterion("b.account is null");
             return (Criteria) this;
         }
 

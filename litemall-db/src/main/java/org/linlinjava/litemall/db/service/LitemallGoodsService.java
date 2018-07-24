@@ -50,6 +50,7 @@ public class LitemallGoodsService {
         if(!StringUtils.isEmpty(type)){
             criteria.andTypeEqualTo(type);
         }
+        criteria.andStateEqualTo(0);
         example.setOrderByClause("sort_no");
         PageHelper.startPage(offset, limit);
         return goodsMapper.selectByExample(example);

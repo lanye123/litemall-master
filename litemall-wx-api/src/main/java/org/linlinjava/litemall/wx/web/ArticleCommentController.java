@@ -9,6 +9,7 @@ import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.service.PraiseCommentService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -33,8 +34,22 @@ public class ArticleCommentController {
      */
     @GetMapping("list")
     public Object list(Integer article_id,String flag,Integer user_id,@RequestParam(value = "page", defaultValue = "1")Integer page, @RequestParam(value = "size", defaultValue = "50")Integer size){
+        LitemallUser userDb = litemallUserService.findById(user_id);
+        if(userDb==null){
+            return ResponseUtil.badArgumentValue();
+        }
+        Integer lock;
+        if(StringUtils.isEmpty(userDb.getAccount())){
+            lock = 0;
+        }else {
+            //规划师
+            lock = 1;
+        }
         //文章评论列表
-        List<ArticleComment> articleCommentList=articleCommentService.querySelective(article_id,flag,page,size);
+        List<ArticleComment> articleCommentList=articleCommentService.querySelective(article_id,flag,lock,page,size);
+        if(articleCommentList == null || articleCommentList.size()==0){
+            return ResponseUtil.ok();
+        }
         //文章评论数
         Long comentCount=articleCommentService.countSelective(article_id);
         List<Map<String, Object>> articleCommentVoList = new ArrayList<>(articleCommentList.size());

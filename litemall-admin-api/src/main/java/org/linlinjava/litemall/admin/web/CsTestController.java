@@ -177,7 +177,7 @@ public class CsTestController {
                 for (Object csOption : options) {
                     option = (LinkedHashMap) csOption;
                     csOptionDb = csOptionService.findById((Integer)option.get("id"));
-                    if(csTitleDb==null){
+                    if(csOptionDb==null){
                         //选项不存在创建
                         csOptionDb = new CsOption();
                         csOptionDb.setTitleId(csTitleDb.getId());
@@ -247,6 +247,8 @@ public class CsTestController {
             csResult = (LinkedHashMap) result;
             if(StringUtils.isEmpty(csResult.get("id"))){
                 id = null;
+            }else{
+                id = (Integer) csResult.get("id");
             }
             csResultDb = csResultService.findById(id);
             if(csResultDb==null){
@@ -278,6 +280,27 @@ public class CsTestController {
         }
         csResultService.deleteById(csResult.getId());
         return ResponseUtil.ok();
+    }
+
+    @PostMapping("/online")
+    public Object online(@RequestBody CsTest csTest){
+        Map data=new HashMap();
+        if(csTest == null){
+            return ResponseUtil.badArgument();
+        }
+
+        CsTest csTestDb = csTestService.findById(csTest.getId());
+        if(csTestDb==null){
+            return ResponseUtil.ok();
+        }
+        if(csTestDb.getDeleted()==0){
+            csTestDb.setDeleted(1);
+            csTestService.update(csTestDb);
+        }else if(csTestDb.getDeleted()==1){
+            csTestDb.setDeleted(0);
+            csTestService.update(csTestDb);
+        }
+        return ResponseUtil.ok(data);
     }
 
     //
