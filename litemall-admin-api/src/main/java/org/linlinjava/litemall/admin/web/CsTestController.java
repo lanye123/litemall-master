@@ -177,7 +177,7 @@ public class CsTestController {
                 for (Object csOption : options) {
                     option = (LinkedHashMap) csOption;
                     csOptionDb = csOptionService.findById((Integer)option.get("id"));
-                    if(csTitleDb==null){
+                    if(csOptionDb==null){
                         //选项不存在创建
                         csOptionDb = new CsOption();
                         csOptionDb.setTitleId(csTitleDb.getId());
@@ -247,6 +247,8 @@ public class CsTestController {
             csResult = (LinkedHashMap) result;
             if(StringUtils.isEmpty(csResult.get("id"))){
                 id = null;
+            }else{
+                id = (Integer) csResult.get("id");
             }
             csResultDb = csResultService.findById(id);
             if(csResultDb==null){
