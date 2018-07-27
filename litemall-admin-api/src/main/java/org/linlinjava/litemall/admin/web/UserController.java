@@ -3,7 +3,6 @@ package org.linlinjava.litemall.admin.web;
 import com.github.pagehelper.util.StringUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.litemall.admin.annotation.LoginAdmin;
 import org.linlinjava.litemall.db.domain.LitemallUser;
 import org.linlinjava.litemall.db.service.LitemallUserService;
 import org.linlinjava.litemall.db.util.ResponseUtil;
@@ -29,6 +28,7 @@ public class UserController {
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
+        order = "add_time desc";
         List<LitemallUser> userList = userService.querySelective(username, mobile, "","",page, limit, sort, order);
         int total = userService.countSeletive(username, mobile,"", "",page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
