@@ -119,7 +119,7 @@
     select
     <include refid="Base_Column_List" />
     from cs_result
-    where <![CDATA[test_id=#{testId,jdbcType=INTEGER} and #{account,jdbcType=INTEGER}>min and #{account,jdbcType=INTEGER}<=max]]>
+    where <![CDATA[test_id=#{testId,jdbcType=INTEGER} and #{account,jdbcType=INTEGER}>=min and #{account,jdbcType=INTEGER}<=max]]>
   </select>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
