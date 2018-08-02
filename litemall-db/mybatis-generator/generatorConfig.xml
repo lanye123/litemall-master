@@ -281,10 +281,12 @@
       <table tableName="cs_test">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
       </table>-->
-      <table tableName="sys_config">
+      <table tableName="wx_templete">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
       </table>
-
+        <table tableName="wx_templete_send">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
 
     </context>
 </generatorConfiguration>
