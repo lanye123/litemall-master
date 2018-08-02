@@ -1,19 +1,25 @@
 package org.linlinjava.litemall.admin.web;
 
-import net.sf.json.JSONObject;
+import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSONObject;
 import org.linlinjava.litemall.db.domain.WxConfig;
 import org.linlinjava.litemall.db.domain.WxGzhUser;
+import org.linlinjava.litemall.db.domain.WxTempleteSend;
 import org.linlinjava.litemall.db.service.WxConfigService;
 import org.linlinjava.litemall.db.service.WxGzhUserService;
 import org.linlinjava.litemall.db.service.WxTempleteSendService;
 import org.linlinjava.litemall.db.service.WxTempleteService;
+import org.linlinjava.litemall.db.util.CharUtil;
+import org.linlinjava.litemall.db.util.HttpClientUtil;
 import org.linlinjava.litemall.db.util.JacksonUtil;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName WxGzhController
@@ -35,6 +41,8 @@ public class WxGzhController {
     private WxGzhUserService wxGzhUserService;
     @Value("${templete.url}")
     private String templeteurl;
+    @Value("${miniprogram.appid}")
+    private String miniprogram_appid;//小程序appid作跳转用
 
     @ModelAttribute
     public WxConfig getConfig(){
@@ -53,22 +61,49 @@ public class WxGzhController {
         wxTempleteService.getTempleteList(getConfig().getAccessToken());
         return ResponseUtil.ok();
     }
-
+    /**
+     * @Author leiqiang
+     * @Description //TODO 选择模板填写模板内容后提交保存至后台
+     * @Date   2018/8/2 15:38
+     * @Param  [body]
+     * @return java.lang.Object
+     **/
     @PostMapping("sendMess")
-    public JSONObject sendMess(@RequestBody String body){
+    public Object sendMess(@RequestBody String body){
         String templete_id = JacksonUtil.parseString(body, "templete_id");
+        String first_str = JacksonUtil.parseString(body, "first");
+        String keyword1_str = JacksonUtil.parseString(body, "keyword1");
+        String keyword2_str = JacksonUtil.parseString(body, "keyword2");
+        String keyword3_str = JacksonUtil.parseString(body, "keyword3");
+        String keyword4_str = JacksonUtil.parseString(body, "keyword4");
+        String keyword5_str = JacksonUtil.parseString(body, "keyword5");
+        String remark_str = JacksonUtil.parseString(body, "remark");
 
-        String first = JacksonUtil.parseString(body, "first");
-        String keyword1 = JacksonUtil.parseString(body, "keyword1");
-        String keyword2 = JacksonUtil.parseString(body, "keyword2");
-        String keyword3 = JacksonUtil.parseString(body, "keyword3");
-        String keyword4 = JacksonUtil.parseString(body, "keyword4");
-        String keyword5 = JacksonUtil.parseString(body, "keyword5");
-        String remark = JacksonUtil.parseString(body, "remark");
-        JSONObject data=null;
-        //List<WxGzhUser> userList=wxGzhUserService.list();
-        //return wxTempleteSendService.createBatch(data);
-        return null;
+        String url=JacksonUtil.parseString(body, "url");//跳转链接
+        String pagepath=JacksonUtil.parseString(body, "pagepath");//小程序链接
+
+        String radomid=CharUtil.getRandomString(12);
+        List<WxGzhUser> userList=wxGzhUserService.querySelective("","",null,null,null,"id asc");
+        if(userList!=null&&userList.size()>0){
+            for (WxGzhUser user:userList){
+                JSONObject data=new JSONObject();
+                data.put("touser",user.getOpenid());
+                data.put("template_id",templete_id);
+                if(!StringUtils.isEmpty(url))
+                    data.put("url",url);
+                if(!StringUtils.isEmpty(pagepath))
+                data.put("pagepath",pagepath);
+                data.put("first",first_str);
+                data.put("keyword1",keyword1_str);
+                data.put("keyword2",keyword2_str);
+                data.put("keyword3",keyword3_str);
+                data.put("keyword4",keyword4_str);
+                data.put("keyword5",keyword5_str);
+                data.put("remark",remark_str);
+                wxTempleteSendService.createBatch(data,radomid);
+          }
+        }
+        return ResponseUtil.ok();
     }
 
 

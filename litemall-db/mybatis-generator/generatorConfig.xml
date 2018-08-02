@@ -280,11 +280,11 @@
       </table>
       <table tableName="cs_test">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
-      </table>-->
+      </table>
       <table tableName="wx_templete">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
-      </table>
-        <table tableName="wx_templete_send">
+      </table>-->
+        <table tableName="wx_gzh_user">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 
