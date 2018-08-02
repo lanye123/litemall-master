@@ -3,6 +3,7 @@ package org.linlinjava.litemall.db.service;
 import com.sun.scenario.effect.impl.prism.PrImage;
 import org.linlinjava.litemall.db.dao.WxTempleteMapper;
 import org.linlinjava.litemall.db.domain.WxTemplete;
+import org.linlinjava.litemall.db.domain.WxTempleteExample;
 import org.linlinjava.litemall.db.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,10 @@ public class WxTempleteService {
     public JSONObject sendMess(String accessToken,JSONObject data) {
         String request_url=sendtemleteurl.replace("ACCESS_TOKEN",accessToken);
         return HttpClientUtil.doPost(request_url,data);
+    }
+
+    public List<com.alibaba.fastjson.JSONObject> queryList() {
+
+        return wxTempleteMapper.queryList();
     }
 }

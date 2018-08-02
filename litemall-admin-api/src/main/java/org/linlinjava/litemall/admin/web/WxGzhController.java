@@ -2,13 +2,8 @@ package org.linlinjava.litemall.admin.web;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
-import org.linlinjava.litemall.db.domain.WxConfig;
-import org.linlinjava.litemall.db.domain.WxGzhUser;
-import org.linlinjava.litemall.db.domain.WxTempleteSend;
-import org.linlinjava.litemall.db.service.WxConfigService;
-import org.linlinjava.litemall.db.service.WxGzhUserService;
-import org.linlinjava.litemall.db.service.WxTempleteSendService;
-import org.linlinjava.litemall.db.service.WxTempleteService;
+import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.CharUtil;
 import org.linlinjava.litemall.db.util.HttpClientUtil;
 import org.linlinjava.litemall.db.util.JacksonUtil;
@@ -39,6 +34,8 @@ public class WxGzhController {
     private WxConfigService wxConfigService;
     @Autowired
     private WxGzhUserService wxGzhUserService;
+    @Autowired
+    private WxTempleteSendStatusService wxTempleteSendStatusService;
     @Value("${templete.url}")
     private String templeteurl;
     @Value("${miniprogram.appid}")
@@ -61,6 +58,11 @@ public class WxGzhController {
         wxTempleteService.getTempleteList(getConfig().getAccessToken());
         return ResponseUtil.ok();
     }
+
+    @GetMapping("templeteList")
+    public List<JSONObject> templeteList(){
+        return wxTempleteService.queryList();
+    }
     /**
      * @Author leiqiang
      * @Description //TODO 选择模板填写模板内容后提交保存至后台
@@ -81,8 +83,10 @@ public class WxGzhController {
 
         String url=JacksonUtil.parseString(body, "url");//跳转链接
         String pagepath=JacksonUtil.parseString(body, "pagepath");//小程序链接
-
-        String radomid=CharUtil.getRandomString(12);
+        WxTempleteSendStatus sendStatus=new WxTempleteSendStatus();
+        sendStatus.setTempleteId(templete_id);
+        sendStatus.setTitle(first_str);
+        wxTempleteSendStatusService.create(sendStatus);
         List<WxGzhUser> userList=wxGzhUserService.querySelective("","",null,null,null,"id asc");
         if(userList!=null&&userList.size()>0){
             for (WxGzhUser user:userList){
@@ -100,7 +104,7 @@ public class WxGzhController {
                 data.put("keyword4",keyword4_str);
                 data.put("keyword5",keyword5_str);
                 data.put("remark",remark_str);
-                wxTempleteSendService.createBatch(data,radomid);
+                wxTempleteSendService.createBatch(data,sendStatus.getId());
           }
         }
         return ResponseUtil.ok();

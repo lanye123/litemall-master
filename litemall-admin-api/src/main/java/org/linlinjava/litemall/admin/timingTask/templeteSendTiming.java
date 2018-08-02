@@ -102,4 +102,9 @@ public class templeteSendTiming {
 
         }
     }
+
+    @Scheduled(fixedRate = 20000)//通过@Scheduled声明该方法是计划任务，使用fixedRate属性每隔固定时间20秒执行一次
+    public void updateStatus() {
+
+    }
 }

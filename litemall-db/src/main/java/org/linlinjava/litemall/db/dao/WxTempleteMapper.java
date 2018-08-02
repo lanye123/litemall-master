@@ -1,6 +1,8 @@
 package org.linlinjava.litemall.db.dao;
 
 import java.util.List;
+
+import com.alibaba.fastjson.JSONObject;
 import org.apache.ibatis.annotations.Param;
 import org.linlinjava.litemall.db.domain.WxTemplete;
 import org.linlinjava.litemall.db.domain.WxTempleteExample;
@@ -63,4 +65,6 @@ public interface WxTempleteMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     WxTemplete selectOneByExampleSelective(@Param("example") WxTempleteExample example, @Param("selective") WxTemplete.Column ... selective);
+
+    List<JSONObject> queryList();
 }
