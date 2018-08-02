@@ -1,9 +1,14 @@
 package org.linlinjava.litemall.db.service;
 
+import com.github.pagehelper.PageHelper;
 import org.linlinjava.litemall.db.dao.WxGzhUserMapper;
+import org.linlinjava.litemall.db.domain.WxGzhUser;
+import org.linlinjava.litemall.db.domain.WxGzhUserExample;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * ClassName WxGzhUserService
@@ -18,6 +23,26 @@ public class WxGzhUserService {
     private WxGzhUserMapper wxGzhUserMapper;
 
     //获取用户列表最后一个openid,id倒序排列取第一个
+    public List<WxGzhUser> querySelective(String openid, String nickname, Integer page, Integer size, String sort, String order) {
+        WxGzhUserExample example = new WxGzhUserExample();
+        WxGzhUserExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(nickname)){
+            criteria.andNicknameLike("%" + nickname + "%");
+        }
+        if(!StringUtils.isEmpty(openid)){
+            criteria.andOpenidEqualTo(openid);
+        }
+        if(!StringUtils.isEmpty(order)){
+            criteria.example().setOrderByClause(order);
+        }
+
+        if(page!=null && size!=null){
+            PageHelper.startPage(page, size);
+        }
+        return wxGzhUserMapper.selectByExample(example);
+    }
+
 
     //获取已关注用户列表
 }
