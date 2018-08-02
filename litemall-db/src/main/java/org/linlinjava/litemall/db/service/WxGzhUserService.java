@@ -43,6 +43,27 @@ public class WxGzhUserService {
         return wxGzhUserMapper.selectByExample(example);
     }
 
+    public int countSeletive(String openid, String nickname) {
+        WxGzhUserExample example = new WxGzhUserExample();
+        WxGzhUserExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(nickname)){
+            criteria.andNicknameLike("%" + nickname + "%");
+        }
+        if(!StringUtils.isEmpty(openid)){
+            criteria.andOpenidEqualTo(openid);
+        }
+
+        return (int) wxGzhUserMapper.countByExample(example);
+    }
+
+    public void add(WxGzhUser user) {
+        wxGzhUserMapper.insertSelective(user);
+    }
+
+    public void update(WxGzhUser user) {
+        wxGzhUserMapper.updateByPrimaryKeySelective(user);
+    }
 
     //获取已关注用户列表
 }
