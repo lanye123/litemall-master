@@ -23,7 +23,7 @@ public class WxGzhUser {
 
     private String headimgurl;
 
-    private Date subscribeTime;
+    private Long subscribeTime;
 
     private String unionid;
 
@@ -125,11 +125,11 @@ public class WxGzhUser {
         this.headimgurl = headimgurl;
     }
 
-    public Date getSubscribeTime() {
+    public Long getSubscribeTime() {
         return subscribeTime;
     }
 
-    public void setSubscribeTime(Date subscribeTime) {
+    public void setSubscribeTime(Long subscribeTime) {
         this.subscribeTime = subscribeTime;
     }
 

@@ -816,52 +816,52 @@ public class WxGzhUserExample {
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeEqualTo(Date value) {
+        public Criteria andSubscribeTimeEqualTo(Long value) {
             addCriterion("subscribe_time =", value, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeNotEqualTo(Date value) {
+        public Criteria andSubscribeTimeNotEqualTo(Long value) {
             addCriterion("subscribe_time <>", value, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeGreaterThan(Date value) {
+        public Criteria andSubscribeTimeGreaterThan(Long value) {
             addCriterion("subscribe_time >", value, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andSubscribeTimeGreaterThanOrEqualTo(Long value) {
             addCriterion("subscribe_time >=", value, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeLessThan(Date value) {
+        public Criteria andSubscribeTimeLessThan(Long value) {
             addCriterion("subscribe_time <", value, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeLessThanOrEqualTo(Date value) {
+        public Criteria andSubscribeTimeLessThanOrEqualTo(Long value) {
             addCriterion("subscribe_time <=", value, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeIn(List<Date> values) {
+        public Criteria andSubscribeTimeIn(List<Long> values) {
             addCriterion("subscribe_time in", values, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeNotIn(List<Date> values) {
+        public Criteria andSubscribeTimeNotIn(List<Long> values) {
             addCriterion("subscribe_time not in", values, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeBetween(Date value1, Date value2) {
+        public Criteria andSubscribeTimeBetween(Long value1, Long value2) {
             addCriterion("subscribe_time between", value1, value2, "subscribeTime");
             return (Criteria) this;
         }
 
-        public Criteria andSubscribeTimeNotBetween(Date value1, Date value2) {
+        public Criteria andSubscribeTimeNotBetween(Long value1, Long value2) {
             addCriterion("subscribe_time not between", value1, value2, "subscribeTime");
             return (Criteria) this;
         }

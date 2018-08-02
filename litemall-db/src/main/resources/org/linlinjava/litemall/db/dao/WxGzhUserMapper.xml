@@ -12,7 +12,7 @@
     <result column="country" jdbcType="VARCHAR" property="country" />
     <result column="language" jdbcType="VARCHAR" property="language" />
     <result column="headimgurl" jdbcType="VARCHAR" property="headimgurl" />
-    <result column="subscribe_time" jdbcType="TIMESTAMP" property="subscribeTime" />
+    <result column="subscribe_time" jdbcType="BIGINT" property="subscribeTime" />
     <result column="unionid" jdbcType="VARCHAR" property="unionid" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="groupid" jdbcType="INTEGER" property="groupid" />
@@ -165,7 +165,7 @@
     values (#{subscribe,jdbcType=TINYINT}, #{openid,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
       #{sex,jdbcType=INTEGER}, #{city,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
       #{country,jdbcType=VARCHAR}, #{language,jdbcType=VARCHAR}, #{headimgurl,jdbcType=VARCHAR}, 
-      #{subscribeTime,jdbcType=TIMESTAMP}, #{unionid,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{subscribeTime,jdbcType=BIGINT}, #{unionid,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
       #{groupid,jdbcType=INTEGER}, #{tagidList,jdbcType=CHAR}, #{subscribeScene,jdbcType=VARCHAR}, 
       #{qrScene,jdbcType=INTEGER}, #{qrSceneStr,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{deleted,jdbcType=INTEGER}, #{demo,jdbcType=VARCHAR})
@@ -266,7 +266,7 @@
         #{headimgurl,jdbcType=VARCHAR},
       </if>
       <if test="subscribeTime != null">
-        #{subscribeTime,jdbcType=TIMESTAMP},
+        #{subscribeTime,jdbcType=BIGINT},
       </if>
       <if test="unionid != null">
         #{unionid,jdbcType=VARCHAR},
@@ -340,7 +340,7 @@
         headimgurl = #{record.headimgurl,jdbcType=VARCHAR},
       </if>
       <if test="record.subscribeTime != null">
-        subscribe_time = #{record.subscribeTime,jdbcType=TIMESTAMP},
+        subscribe_time = #{record.subscribeTime,jdbcType=BIGINT},
       </if>
       <if test="record.unionid != null">
         unionid = #{record.unionid,jdbcType=VARCHAR},
@@ -389,7 +389,7 @@
       country = #{record.country,jdbcType=VARCHAR},
       `language` = #{record.language,jdbcType=VARCHAR},
       headimgurl = #{record.headimgurl,jdbcType=VARCHAR},
-      subscribe_time = #{record.subscribeTime,jdbcType=TIMESTAMP},
+      subscribe_time = #{record.subscribeTime,jdbcType=BIGINT},
       unionid = #{record.unionid,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
       groupid = #{record.groupid,jdbcType=INTEGER},
@@ -435,7 +435,7 @@
         headimgurl = #{headimgurl,jdbcType=VARCHAR},
       </if>
       <if test="subscribeTime != null">
-        subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
+        subscribe_time = #{subscribeTime,jdbcType=BIGINT},
       </if>
       <if test="unionid != null">
         unionid = #{unionid,jdbcType=VARCHAR},
@@ -481,7 +481,7 @@
       country = #{country,jdbcType=VARCHAR},
       `language` = #{language,jdbcType=VARCHAR},
       headimgurl = #{headimgurl,jdbcType=VARCHAR},
-      subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
+      subscribe_time = #{subscribeTime,jdbcType=BIGINT},
       unionid = #{unionid,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       groupid = #{groupid,jdbcType=INTEGER},
