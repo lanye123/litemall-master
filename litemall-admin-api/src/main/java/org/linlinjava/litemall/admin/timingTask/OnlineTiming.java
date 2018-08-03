@@ -70,7 +70,7 @@ public class OnlineTiming {
         getUserList();
     }
 
-    @Scheduled(cron = "0 0 20 * * ?")
+    @Scheduled(cron = "0 47 10 * * ?")
     public void getUserList2(){
         getUserList();
     }

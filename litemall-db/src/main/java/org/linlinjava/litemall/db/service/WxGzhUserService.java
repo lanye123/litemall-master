@@ -65,5 +65,12 @@ public class WxGzhUserService {
         wxGzhUserMapper.updateByPrimaryKeySelective(user);
     }
 
+    public WxGzhUser findById(Integer id) {
+        if(id==null){
+            return null;
+        }
+        return wxGzhUserMapper.selectByPrimaryKey(id);
+    }
+
     //获取已关注用户列表
 }

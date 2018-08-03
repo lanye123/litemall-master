@@ -2,19 +2,18 @@ package org.linlinjava.litemall.admin.web;
 
 import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
-import org.linlinjava.litemall.db.domain.*;
+import org.linlinjava.litemall.db.domain.WxConfig;
+import org.linlinjava.litemall.db.domain.WxGzhUser;
+import org.linlinjava.litemall.db.domain.WxTempleteSend;
+import org.linlinjava.litemall.db.domain.WxTempleteSendStatus;
 import org.linlinjava.litemall.db.service.*;
-import org.linlinjava.litemall.db.util.CharUtil;
-import org.linlinjava.litemall.db.util.HttpClientUtil;
 import org.linlinjava.litemall.db.util.JacksonUtil;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ClassName WxGzhController
@@ -171,6 +170,14 @@ public class WxGzhController {
                 wxTempleteSendService.update(temp);
             }
         }
+    }
+
+    @GetMapping("/view")
+    public Object list(Integer id){
+
+        WxGzhUser user = wxGzhUserService.findById(id);
+
+        return ResponseUtil.ok(user);
     }
 
 }
