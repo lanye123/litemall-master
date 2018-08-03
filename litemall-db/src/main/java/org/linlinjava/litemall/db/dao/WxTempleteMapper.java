@@ -67,4 +67,6 @@ public interface WxTempleteMapper {
     WxTemplete selectOneByExampleSelective(@Param("example") WxTempleteExample example, @Param("selective") WxTemplete.Column ... selective);
 
     List<JSONObject> queryList();
+
+    void deleteAll();
 }

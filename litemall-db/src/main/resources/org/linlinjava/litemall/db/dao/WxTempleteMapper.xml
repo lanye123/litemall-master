@@ -363,4 +363,8 @@
       select template_id as templete_id,title from wx_templete where deleted=0
   </select>
 
+  <delete id="deleteAll">
+    TRUNCATE table wx_templete
+  </delete>
+
 </mapper>
