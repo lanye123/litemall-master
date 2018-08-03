@@ -266,73 +266,73 @@ public class WxTempleteExample {
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdIsNull() {
-            addCriterion("template_id is null");
+        public Criteria andTempleteIdIsNull() {
+            addCriterion("templete_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdIsNotNull() {
-            addCriterion("template_id is not null");
+        public Criteria andTempleteIdIsNotNull() {
+            addCriterion("templete_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdEqualTo(String value) {
-            addCriterion("template_id =", value, "templateId");
+        public Criteria andTempleteIdEqualTo(String value) {
+            addCriterion("templete_id =", value, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdNotEqualTo(String value) {
-            addCriterion("template_id <>", value, "templateId");
+        public Criteria andTempleteIdNotEqualTo(String value) {
+            addCriterion("templete_id <>", value, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdGreaterThan(String value) {
-            addCriterion("template_id >", value, "templateId");
+        public Criteria andTempleteIdGreaterThan(String value) {
+            addCriterion("templete_id >", value, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdGreaterThanOrEqualTo(String value) {
-            addCriterion("template_id >=", value, "templateId");
+        public Criteria andTempleteIdGreaterThanOrEqualTo(String value) {
+            addCriterion("templete_id >=", value, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdLessThan(String value) {
-            addCriterion("template_id <", value, "templateId");
+        public Criteria andTempleteIdLessThan(String value) {
+            addCriterion("templete_id <", value, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdLessThanOrEqualTo(String value) {
-            addCriterion("template_id <=", value, "templateId");
+        public Criteria andTempleteIdLessThanOrEqualTo(String value) {
+            addCriterion("templete_id <=", value, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdLike(String value) {
-            addCriterion("template_id like", value, "templateId");
+        public Criteria andTempleteIdLike(String value) {
+            addCriterion("templete_id like", value, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdNotLike(String value) {
-            addCriterion("template_id not like", value, "templateId");
+        public Criteria andTempleteIdNotLike(String value) {
+            addCriterion("templete_id not like", value, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdIn(List<String> values) {
-            addCriterion("template_id in", values, "templateId");
+        public Criteria andTempleteIdIn(List<String> values) {
+            addCriterion("templete_id in", values, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdNotIn(List<String> values) {
-            addCriterion("template_id not in", values, "templateId");
+        public Criteria andTempleteIdNotIn(List<String> values) {
+            addCriterion("templete_id not in", values, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdBetween(String value1, String value2) {
-            addCriterion("template_id between", value1, value2, "templateId");
+        public Criteria andTempleteIdBetween(String value1, String value2) {
+            addCriterion("templete_id between", value1, value2, "templeteId");
             return (Criteria) this;
         }
 
-        public Criteria andTemplateIdNotBetween(String value1, String value2) {
-            addCriterion("template_id not between", value1, value2, "templateId");
+        public Criteria andTempleteIdNotBetween(String value1, String value2) {
+            addCriterion("templete_id not between", value1, value2, "templeteId");
             return (Criteria) this;
         }
 

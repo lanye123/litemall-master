@@ -65,43 +65,43 @@ public class templeteSendTiming {
 
                 String url=JacksonUtil.parseString(body, "url");//跳转链接
                 String pagepath=JacksonUtil.parseString(body, "pagepath");//小程序链接
-                JSONObject data=new JSONObject();
-                JSONObject object=new JSONObject();
+                net.sf.json.JSONObject data=new net.sf.json.JSONObject();
+                net.sf.json.JSONObject object=new net.sf.json.JSONObject();
                 object.put("touser",touser);
                 object.put("template_id",templete_id);
                 if(!StringUtils.isEmpty(url))
                     object.put("url",url);
                 if(!StringUtils.isEmpty(pagepath)){
                     //小程序跳转
-                    JSONObject miniprogram=new JSONObject();
+                    net.sf.json.JSONObject miniprogram=new net.sf.json.JSONObject();
                     miniprogram.put("appid",miniprogram_appid);
                     miniprogram.put("pagepath",pagepath);
                     object.put("miniprogram",miniprogram);
                 }
-                JSONObject first=new JSONObject();
+                net.sf.json.JSONObject first=new net.sf.json.JSONObject();
                 first.put("value",first_str);
                 object.put("first",first);
-                JSONObject keyword1=new JSONObject();
+                net.sf.json.JSONObject keyword1=new net.sf.json.JSONObject();
                 keyword1.put("value",keyword1_str);
                 data.put("keyword1",keyword1);
-                JSONObject keyword2=new JSONObject();
+                net.sf.json.JSONObject keyword2=new net.sf.json.JSONObject();
                 keyword2.put("value",keyword2_str);
                 data.put("keyword2",keyword2);
-                JSONObject keyword3=new JSONObject();
+                net.sf.json.JSONObject keyword3=new net.sf.json.JSONObject();
                 keyword3.put("value",keyword3_str);
                 data.put("keyword3",keyword3);
-                JSONObject keyword4=new JSONObject();
+                net.sf.json.JSONObject keyword4=new net.sf.json.JSONObject();
                 keyword4.put("value",keyword4_str);
                 data.put("keyword4",keyword4);
-                JSONObject keyword5=new JSONObject();
+                net.sf.json.JSONObject keyword5=new net.sf.json.JSONObject();
                 keyword5.put("value",keyword5_str);
                 data.put("keyword5",keyword5);
-                JSONObject remark=new JSONObject();
+                net.sf.json.JSONObject remark=new net.sf.json.JSONObject();
                 keyword5.put("value",remark_str);
                 data.put("remark",remark);
                 object.put("data",data);
-                JSONObject result=wxTempleteService.sendMess(config.getAccessToken(),object);
-                System.out.println(result.get("errcode")+","+result.get("errmsg"));
+                net.sf.json.JSONObject result=wxTempleteService.sendMess(config.getAccessToken(),object);
+                System.out.println("###########模板消息发送状态:"+result.get("errcode")+","+result.get("errmsg"));
                 //发送完成后更新status为1
                 if(Integer.valueOf(result.getString("errcode"))==0){
                     temp.setStatus(1);

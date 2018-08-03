@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="org.linlinjava.litemall.db.domain.WxTemplete">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="type" jdbcType="VARCHAR" property="type" />
-    <result column="template_id" jdbcType="VARCHAR" property="templateId" />
+    <result column="templete_id" jdbcType="VARCHAR" property="templeteId" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="primary_industry" jdbcType="VARCHAR" property="primaryIndustry" />
     <result column="deputy_industry" jdbcType="VARCHAR" property="deputyIndustry" />
@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, `type`, template_id, title, primary_industry, deputy_industry, content, example, 
+    id, `type`, templete_id, title, primary_industry, deputy_industry, content, example, 
     create_date, deleted
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.WxTempleteExample" resultMap="BaseResultMap">
@@ -143,11 +143,11 @@
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into wx_templete (`type`, template_id, title, 
+    insert into wx_templete (`type`, templete_id, title, 
       primary_industry, deputy_industry, content, 
       example, create_date, deleted
       )
-    values (#{type,jdbcType=VARCHAR}, #{templateId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+    values (#{type,jdbcType=VARCHAR}, #{templeteId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
       #{primaryIndustry,jdbcType=VARCHAR}, #{deputyIndustry,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
       #{example,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{deleted,jdbcType=INTEGER}
       )
@@ -161,8 +161,8 @@
       <if test="type != null">
         `type`,
       </if>
-      <if test="templateId != null">
-        template_id,
+      <if test="templeteId != null">
+        templete_id,
       </if>
       <if test="title != null">
         title,
@@ -190,8 +190,8 @@
       <if test="type != null">
         #{type,jdbcType=VARCHAR},
       </if>
-      <if test="templateId != null">
-        #{templateId,jdbcType=VARCHAR},
+      <if test="templeteId != null">
+        #{templeteId,jdbcType=VARCHAR},
       </if>
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
@@ -231,8 +231,8 @@
       <if test="record.type != null">
         `type` = #{record.type,jdbcType=VARCHAR},
       </if>
-      <if test="record.templateId != null">
-        template_id = #{record.templateId,jdbcType=VARCHAR},
+      <if test="record.templeteId != null">
+        templete_id = #{record.templeteId,jdbcType=VARCHAR},
       </if>
       <if test="record.title != null">
         title = #{record.title,jdbcType=VARCHAR},
@@ -264,7 +264,7 @@
     update wx_templete
     set id = #{record.id,jdbcType=INTEGER},
       `type` = #{record.type,jdbcType=VARCHAR},
-      template_id = #{record.templateId,jdbcType=VARCHAR},
+      templete_id = #{record.templeteId,jdbcType=VARCHAR},
       title = #{record.title,jdbcType=VARCHAR},
       primary_industry = #{record.primaryIndustry,jdbcType=VARCHAR},
       deputy_industry = #{record.deputyIndustry,jdbcType=VARCHAR},
@@ -282,8 +282,8 @@
       <if test="type != null">
         `type` = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="templateId != null">
-        template_id = #{templateId,jdbcType=VARCHAR},
+      <if test="templeteId != null">
+        templete_id = #{templeteId,jdbcType=VARCHAR},
       </if>
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
@@ -312,7 +312,7 @@
   <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.WxTemplete">
     update wx_templete
     set `type` = #{type,jdbcType=VARCHAR},
-      template_id = #{templateId,jdbcType=VARCHAR},
+      templete_id = #{templeteId,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       primary_industry = #{primaryIndustry,jdbcType=VARCHAR},
       deputy_industry = #{deputyIndustry,jdbcType=VARCHAR},
@@ -366,5 +366,4 @@
   <delete id="deleteAll">
     TRUNCATE table wx_templete
   </delete>
-
 </mapper>

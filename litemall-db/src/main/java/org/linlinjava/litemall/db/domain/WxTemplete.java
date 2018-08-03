@@ -7,7 +7,7 @@ public class WxTemplete {
 
     private String type;
 
-    private String templateId;
+    private String templeteId;
 
     private String title;
 
@@ -39,12 +39,12 @@ public class WxTemplete {
         this.type = type;
     }
 
-    public String getTemplateId() {
-        return templateId;
+    public String getTempleteId() {
+        return templeteId;
     }
 
-    public void setTemplateId(String templateId) {
-        this.templateId = templateId;
+    public void setTempleteId(String templeteId) {
+        this.templeteId = templeteId;
     }
 
     public String getTitle() {
@@ -111,7 +111,7 @@ public class WxTemplete {
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
         sb.append(", type=").append(type);
-        sb.append(", templateId=").append(templateId);
+        sb.append(", templeteId=").append(templeteId);
         sb.append(", title=").append(title);
         sb.append(", primaryIndustry=").append(primaryIndustry);
         sb.append(", deputyIndustry=").append(deputyIndustry);
@@ -137,7 +137,7 @@ public class WxTemplete {
         WxTemplete other = (WxTemplete) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
             && (this.getType() == null ? other.getType() == null : this.getType().equals(other.getType()))
-            && (this.getTemplateId() == null ? other.getTemplateId() == null : this.getTemplateId().equals(other.getTemplateId()))
+            && (this.getTempleteId() == null ? other.getTempleteId() == null : this.getTempleteId().equals(other.getTempleteId()))
             && (this.getTitle() == null ? other.getTitle() == null : this.getTitle().equals(other.getTitle()))
             && (this.getPrimaryIndustry() == null ? other.getPrimaryIndustry() == null : this.getPrimaryIndustry().equals(other.getPrimaryIndustry()))
             && (this.getDeputyIndustry() == null ? other.getDeputyIndustry() == null : this.getDeputyIndustry().equals(other.getDeputyIndustry()))
@@ -153,7 +153,7 @@ public class WxTemplete {
         int result = 1;
         result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
         result = prime * result + ((getType() == null) ? 0 : getType().hashCode());
-        result = prime * result + ((getTemplateId() == null) ? 0 : getTemplateId().hashCode());
+        result = prime * result + ((getTempleteId() == null) ? 0 : getTempleteId().hashCode());
         result = prime * result + ((getTitle() == null) ? 0 : getTitle().hashCode());
         result = prime * result + ((getPrimaryIndustry() == null) ? 0 : getPrimaryIndustry().hashCode());
         result = prime * result + ((getDeputyIndustry() == null) ? 0 : getDeputyIndustry().hashCode());
@@ -174,7 +174,7 @@ public class WxTemplete {
     public enum Column {
         id("id"),
         type("type"),
-        templateId("template_id"),
+        templeteId("templete_id"),
         title("title"),
         primaryIndustry("primary_industry"),
         deputyIndustry("deputy_industry"),

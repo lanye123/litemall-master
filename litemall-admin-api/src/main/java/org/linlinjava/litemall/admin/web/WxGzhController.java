@@ -91,7 +91,7 @@ public class WxGzhController {
             for (WxGzhUser user:userList){
                 JSONObject data=new JSONObject();
                 data.put("touser",user.getOpenid());
-                data.put("template_id",templete_id);
+                data.put("templete_id",templete_id);
                 if(!StringUtils.isEmpty(url))
                     data.put("url",url);
                 if(!StringUtils.isEmpty(pagepath))
@@ -163,7 +163,7 @@ public class WxGzhController {
             data.put("remark",remark);
             object.put("data",data);
             net.sf.json.JSONObject result=wxTempleteService.sendMess(config.getAccessToken(),object);
-            System.out.println(result.get("errcode")+","+result.get("errmsg"));
+            System.out.println("###########模板消息发送状态:"+result.get("errcode")+","+result.get("errmsg"));
             //发送完成后更新status为1
             if(Integer.valueOf(result.getString("errcode"))==0){
                 temp.setStatus(1);
