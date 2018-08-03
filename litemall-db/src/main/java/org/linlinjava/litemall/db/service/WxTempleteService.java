@@ -41,7 +41,7 @@ public class WxTempleteService {
                 // 遍历 jsonarray 数组，把每一个对象转成 json 对象
                 JSONObject job = json.getJSONObject(i);
                 WxTemplete templete = new WxTemplete();
-                templete.setTemplateId(job.getString("template_id"));
+                templete.setTempleteId(job.getString("template_id"));
                 templete.setContent(job.getString("content"));
                 templete.setDeputyIndustry(job.getString("deputy_industry"));
                 templete.setTitle(job.getString("title"));
