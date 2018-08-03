@@ -278,4 +278,19 @@
     </if>
     limit 1
   </select>
+
+  <select id="queryByList" parameterType="org.linlinjava.litemall.db.domain.WxTempleteSendStatusExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from v_templete_send_status
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

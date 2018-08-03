@@ -63,4 +63,6 @@ public interface WxTempleteSendStatusMapper {
      * @project https://github.com/itfsw/mybatis-generator-plugin
      */
     WxTempleteSendStatus selectOneByExampleSelective(@Param("example") WxTempleteSendStatusExample example, @Param("selective") WxTempleteSendStatus.Column ... selective);
+
+    List<WxTempleteSendStatus> queryByList(WxTempleteSendStatusExample example);
 }

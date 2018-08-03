@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.admin.timingTask;
 
 import com.alibaba.druid.util.StringUtils;
+import com.github.pagehelper.util.StringUtil;
 import net.sf.json.JSONObject;
 import org.linlinjava.litemall.db.domain.WxConfig;
 import org.linlinjava.litemall.db.domain.WxTempleteSend;
@@ -81,24 +82,36 @@ public class templeteSendTiming {
                 net.sf.json.JSONObject first=new net.sf.json.JSONObject();
                 first.put("value",first_str);
                 object.put("first",first);
-                net.sf.json.JSONObject keyword1=new net.sf.json.JSONObject();
-                keyword1.put("value",keyword1_str);
-                data.put("keyword1",keyword1);
-                net.sf.json.JSONObject keyword2=new net.sf.json.JSONObject();
-                keyword2.put("value",keyword2_str);
-                data.put("keyword2",keyword2);
-                net.sf.json.JSONObject keyword3=new net.sf.json.JSONObject();
-                keyword3.put("value",keyword3_str);
-                data.put("keyword3",keyword3);
-                net.sf.json.JSONObject keyword4=new net.sf.json.JSONObject();
-                keyword4.put("value",keyword4_str);
-                data.put("keyword4",keyword4);
-                net.sf.json.JSONObject keyword5=new net.sf.json.JSONObject();
-                keyword5.put("value",keyword5_str);
-                data.put("keyword5",keyword5);
-                net.sf.json.JSONObject remark=new net.sf.json.JSONObject();
-                keyword5.put("value",remark_str);
-                data.put("remark",remark);
+                if(StringUtil.isNotEmpty(keyword1_str)){
+                    net.sf.json.JSONObject keyword1=new net.sf.json.JSONObject();
+                    keyword1.put("value",keyword1_str);
+                    data.put("keyword1",keyword1);
+                }
+                if(StringUtil.isNotEmpty(keyword2_str)) {
+                    net.sf.json.JSONObject keyword2 = new net.sf.json.JSONObject();
+                    keyword2.put("value", keyword2_str);
+                    data.put("keyword2", keyword2);
+                }
+                if(StringUtil.isNotEmpty(keyword3_str)) {
+                    net.sf.json.JSONObject keyword3 = new net.sf.json.JSONObject();
+                    keyword3.put("value", keyword3_str);
+                    data.put("keyword3", keyword3);
+                }
+                if(StringUtil.isNotEmpty(keyword4_str)) {
+                    net.sf.json.JSONObject keyword4 = new net.sf.json.JSONObject();
+                    keyword4.put("value", keyword4_str);
+                    data.put("keyword4", keyword4);
+                }
+                if(StringUtil.isNotEmpty(keyword5_str)) {
+                    net.sf.json.JSONObject keyword5 = new net.sf.json.JSONObject();
+                    keyword5.put("value", keyword5_str);
+                    data.put("keyword5", keyword5);
+                }
+                if(StringUtil.isNotEmpty(remark_str)) {
+                    net.sf.json.JSONObject remark = new net.sf.json.JSONObject();
+                    remark.put("value", remark_str);
+                    data.put("remark", remark);
+                }
                 object.put("data",data);
                 net.sf.json.JSONObject result=wxTempleteService.sendMess(config.getAccessToken(),object);
                 System.out.println("###########模板消息发送状态:"+result.get("errcode")+","+result.get("errmsg"));

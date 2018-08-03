@@ -1,6 +1,7 @@
 package org.linlinjava.litemall.admin.web;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.linlinjava.litemall.db.domain.WxConfig;
 import org.linlinjava.litemall.db.domain.WxGzhUser;
@@ -110,7 +111,7 @@ public class WxGzhController {
         }
         return ResponseUtil.ok();
     }
-
+    //模板消息发送测试接口，未使用
     @PostMapping("send")
     public void send(){
         WxConfig config=wxConfigService.getGzhToken();
@@ -173,7 +174,7 @@ public class WxGzhController {
             }
         }
     }
-
+    //粉丝管理列表接口
     @GetMapping("/list")
     public Object list(
             String openid, String nickname,
@@ -190,6 +191,7 @@ public class WxGzhController {
         return ResponseUtil.ok(data);
     }
 
+    //用户管理用户详情接口
     @GetMapping("/view")
     public Object list(Integer id){
 
@@ -197,5 +199,92 @@ public class WxGzhController {
 
         return ResponseUtil.ok(user);
     }
+    //模板消息发送状态列表
+    @GetMapping("/listTempleteStatus")
+    public Object listTempleteStatus(
+            String templete_id, String title,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+            String sort, String order){
 
+        List<WxTempleteSendStatus> userList = wxTempleteSendStatusService.querySelective(templete_id, title, page,limit, sort, "create_date desc");
+        int total = wxTempleteSendStatusService.countSeletive(templete_id, title);
+        Map<String, Object> data = new HashMap<>();
+        data.put("total", total);
+        data.put("items", userList);
+        return ResponseUtil.ok(data);
+    }
+
+    //模板消息发送状态详情
+    @GetMapping("/readTempleteStatus")
+    public JSONObject readTempleteStatus(@RequestParam Integer id){
+        JSONObject data=null;
+        List<WxTempleteSend> sendList=wxTempleteSendService.queryByFlag(String.valueOf(id));
+        if(sendList.size()>0){
+            WxTempleteSend send=sendList.get(0);
+            data=JSONObject.parseObject(send.getContent());
+        }
+        return data;
+    }
+
+    //模板消息发送百分比占比统计图接口
+    @GetMapping("rate")
+    public Object rate(@RequestParam Integer id){
+        Map data=new HashMap();
+        Integer sumAmount=0;//总数
+        Integer finishAmount=0;//已完成发送数量
+        Integer waitAmount=0;//待发送数量
+        Integer failAmount=0;//发送失败数量
+
+        sumAmount=wxTempleteSendService.countByFlag(String.valueOf(id),null);
+        finishAmount=wxTempleteSendService.countByFlag(String.valueOf(id),1);
+        waitAmount=wxTempleteSendService.countByFlag(String.valueOf(id),0);
+        data.put("sumAmount",sumAmount);
+        data.put("finishAmount",finishAmount);
+        data.put("waitAmount",waitAmount);
+        data.put("failAmount",failAmount);
+        return data;
+    }
+
+    //粉丝管理界面勾选粉丝后发送模板消息接口
+    @PostMapping("sendTempleteMess")
+    public Object sendTempleteMess(@RequestBody String body){
+        String templete_id = JacksonUtil.parseString(body, "templete_id");
+        String first_str = JacksonUtil.parseString(body, "first");
+        String keyword1_str = JacksonUtil.parseString(body, "keyword1");
+        String keyword2_str = JacksonUtil.parseString(body, "keyword2");
+        String keyword3_str = JacksonUtil.parseString(body, "keyword3");
+        String keyword4_str = JacksonUtil.parseString(body, "keyword4");
+        String keyword5_str = JacksonUtil.parseString(body, "keyword5");
+        String remark_str = JacksonUtil.parseString(body, "remark");
+        String url=JacksonUtil.parseString(body, "url");//跳转链接
+        String pagepath=JacksonUtil.parseString(body, "pagepath");//小程序链接
+        String userlist=JacksonUtil.parseString(body, "userIds");
+        WxTempleteSendStatus sendStatus=new WxTempleteSendStatus();
+        sendStatus.setTempleteId(templete_id);
+        sendStatus.setTitle(first_str);
+        wxTempleteSendStatusService.create(sendStatus);
+        List<WxGzhUser> userList=wxGzhUserService.querySelective("","",null,null,null,"id asc");
+        if(!StringUtils.isEmpty(userlist)){
+            JSONArray userlist2=JSONArray.parseArray(userlist);
+            for (int i = 0; i <userlist2.size() ; i++) {
+                JSONObject data=new JSONObject();
+                data.put("touser",userlist2.get(i));
+                data.put("templete_id",templete_id);
+                if(!StringUtils.isEmpty(url))
+                    data.put("url",url);
+                if(!StringUtils.isEmpty(pagepath))
+                    data.put("pagepath",pagepath);
+                data.put("first",first_str);
+                data.put("keyword1",keyword1_str);
+                data.put("keyword2",keyword2_str);
+                data.put("keyword3",keyword3_str);
+                data.put("keyword4",keyword4_str);
+                data.put("keyword5",keyword5_str);
+                data.put("remark",remark_str);
+                wxTempleteSendService.createBatch(data,sendStatus.getId());
+            }
+        }
+        return ResponseUtil.ok();
+    }
 }

@@ -43,4 +43,22 @@ public class WxTempleteSendService {
     public void update(WxTempleteSend temp) {
         wxTempleteSendMapper.updateByPrimaryKey(temp);
     }
+
+    public List<WxTempleteSend> queryByFlag(String s) {
+        WxTempleteSendExample example=new WxTempleteSendExample();
+        WxTempleteSendExample.Criteria criteria=example.createCriteria();
+        if(StringUtils.isNotEmpty(s))
+        criteria.andFlagEqualTo(s);
+        return wxTempleteSendMapper.selectByExample(example);
+    }
+
+    public int countByFlag(String s,Integer status) {
+        WxTempleteSendExample example=new WxTempleteSendExample();
+        WxTempleteSendExample.Criteria criteria=example.createCriteria();
+        if(StringUtils.isNotEmpty(s))
+            criteria.andFlagEqualTo(s);
+        if(status!=null)
+            criteria.andStatusEqualTo(status);
+        return (int) wxTempleteSendMapper.countByExample(example);
+    }
 }
