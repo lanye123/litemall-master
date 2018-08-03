@@ -115,6 +115,7 @@ public class templeteSendTiming {
                 object.put("data",data);
                 net.sf.json.JSONObject result=wxTempleteService.sendMess(config.getAccessToken(),object);
                 System.out.println("###########模板消息发送状态:"+result.get("errcode")+","+result.get("errmsg"));
+                System.out.println(result.get("errcode"));
                 //发送完成后更新status为1
                 if(Integer.valueOf(result.getString("errcode"))==0){
                     temp.setStatus(1);

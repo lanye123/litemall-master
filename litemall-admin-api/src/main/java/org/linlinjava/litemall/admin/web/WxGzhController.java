@@ -264,7 +264,6 @@ public class WxGzhController {
         sendStatus.setTempleteId(templete_id);
         sendStatus.setTitle(first_str);
         wxTempleteSendStatusService.create(sendStatus);
-        List<WxGzhUser> userList=wxGzhUserService.querySelective("","",null,null,null,"id asc");
         if(!StringUtils.isEmpty(userlist)){
             JSONArray userlist2=JSONArray.parseArray(userlist);
             for (int i = 0; i <userlist2.size() ; i++) {

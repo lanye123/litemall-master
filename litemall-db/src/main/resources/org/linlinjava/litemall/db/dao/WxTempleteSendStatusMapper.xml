@@ -8,6 +8,14 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
+
+  <resultMap id="BaseResultMap2" extends="BaseResultMap" type="org.linlinjava.litemall.db.domain.WxTempleteSendStatus">
+    <result column="sumAmount" jdbcType="INTEGER" property="sumAmount" />
+    <result column="finishAmount" jdbcType="INTEGER" property="finishAmount" />
+    <result column="waitAmount" jdbcType="INTEGER" property="waitAmount" />
+    <result column="failAmount" jdbcType="INTEGER" property="failAmount" />
+    <result column="content" jdbcType="CHAR" property="content" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -68,6 +76,10 @@
   </sql>
   <sql id="Base_Column_List">
     id, templete_id, title, create_date, `status`
+  </sql>
+
+  <sql id="Base_Column_List2">
+    id, templete_id, title, create_date, `status`,finishAmount,waitAmount,failAmount,sumAmount,content
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.WxTempleteSendStatusExample" resultMap="BaseResultMap">
     select
@@ -279,12 +291,12 @@
     limit 1
   </select>
 
-  <select id="queryByList" parameterType="org.linlinjava.litemall.db.domain.WxTempleteSendStatusExample" resultMap="BaseResultMap">
+  <select id="queryByList" parameterType="org.linlinjava.litemall.db.domain.WxTempleteSendStatusExample" resultMap="BaseResultMap2">
     select
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Base_Column_List2" />
     from v_templete_send_status
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />

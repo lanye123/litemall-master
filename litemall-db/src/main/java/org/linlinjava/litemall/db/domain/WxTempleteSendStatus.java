@@ -13,6 +13,56 @@ public class WxTempleteSendStatus {
 
     private Integer status;
 
+    private Integer sumAmount;
+
+    private Integer finishAmount;
+
+    private Integer waitAmount;
+
+    private Integer failAmount;
+
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getSumAmount() {
+        return sumAmount;
+    }
+
+    public void setSumAmount(Integer sumAmount) {
+        this.sumAmount = sumAmount;
+    }
+
+    public Integer getFinishAmount() {
+        return finishAmount;
+    }
+
+    public void setFinishAmount(Integer finishAmount) {
+        this.finishAmount = finishAmount;
+    }
+
+    public Integer getWaitAmount() {
+        return waitAmount;
+    }
+
+    public void setWaitAmount(Integer waitAmount) {
+        this.waitAmount = waitAmount;
+    }
+
+    public Integer getFailAmount() {
+        return failAmount;
+    }
+
+    public void setFailAmount(Integer failAmount) {
+        this.failAmount = failAmount;
+    }
+
     public Integer getId() {
         return id;
     }
