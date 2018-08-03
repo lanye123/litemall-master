@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName WxGzhController
@@ -170,6 +172,22 @@ public class WxGzhController {
                 wxTempleteSendService.update(temp);
             }
         }
+    }
+
+    @GetMapping("/list")
+    public Object list(
+            String openid, String nickname,
+            @RequestParam(value = "page", defaultValue = "1") Integer page,
+            @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+            String sort, String order){
+
+        List<WxGzhUser> userList = wxGzhUserService.querySelective(openid, nickname, page,limit, sort, order);
+        int total = wxGzhUserService.countSeletive(openid, nickname);
+        Map<String, Object> data = new HashMap<>();
+        data.put("total", total);
+        data.put("items", userList);
+
+        return ResponseUtil.ok(data);
     }
 
     @GetMapping("/view")
