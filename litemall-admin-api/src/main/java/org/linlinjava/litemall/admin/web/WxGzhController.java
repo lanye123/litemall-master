@@ -62,8 +62,10 @@ public class WxGzhController {
     }
 
     @GetMapping("templeteList")
-    public List<JSONObject> templeteList(){
-        return wxTempleteService.queryList();
+    public Object templeteList(){
+        List<JSONObject> list=wxTempleteService.queryList();
+        return ResponseUtil.ok(list);
+
     }
     /**
      * @Author leiqiang
