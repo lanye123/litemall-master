@@ -92,7 +92,7 @@ public class WxGzhController {
             for (WxGzhUser user:userList){
                 JSONObject data=new JSONObject();
                 data.put("touser",user.getOpenid());
-                data.put("template_id",templete_id);
+                data.put("templete_id",templete_id);
                 if(!StringUtils.isEmpty(url))
                     data.put("url",url);
                 if(!StringUtils.isEmpty(pagepath))
