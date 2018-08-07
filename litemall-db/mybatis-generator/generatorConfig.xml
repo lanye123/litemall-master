@@ -284,7 +284,11 @@
       <table tableName="wx_templete">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
       </table>-->
-        <table tableName="wx_templete">
+        <table tableName="help_order">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+
+        <table tableName="help_detail">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 

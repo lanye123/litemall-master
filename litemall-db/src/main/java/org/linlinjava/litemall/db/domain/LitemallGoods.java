@@ -28,6 +28,8 @@ public class LitemallGoods {
 
     private Boolean isNew;
 
+    private String actPicUrl;
+
     private String primaryPicUrl;
 
     private String listPicUrl;
@@ -69,6 +71,14 @@ public class LitemallGoods {
     private Integer type;
 
     private Integer sortNo;
+
+    public String getActPicUrl() {
+        return actPicUrl;
+    }
+
+    public void setActPicUrl(String actPicUrl) {
+        this.actPicUrl = actPicUrl;
+    }
 
     public Integer getSortNo() {
         return sortNo;

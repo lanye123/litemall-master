@@ -22,6 +22,16 @@ public class LitemallGoodsSpecification {
 
     private BigDecimal price;
 
+    private Integer fakeNumber;
+
+    public Integer getFakeNumber() {
+        return fakeNumber;
+    }
+
+    public void setFakeNumber(Integer fakeNumber) {
+        this.fakeNumber = fakeNumber;
+    }
+
     public Integer getId() {
         return id;
     }

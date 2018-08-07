@@ -82,6 +82,16 @@ public class LitemallGoodsSpecificationService {
         return ids;
     }
 
+    public LitemallGoodsSpecification findByGoodsId(Integer goodsId) {
+        LitemallGoodsSpecification specification=new LitemallGoodsSpecification();
+        List<LitemallGoodsSpecification> goodsSpecificationList=queryByGid(goodsId);
+        if (goodsSpecificationList.size()>0)
+            specification=goodsSpecificationList.get(0);
+        else
+            return specification;
+        return specification;
+    }
+
     private class VO {
         private String name;
         private List<LitemallGoodsSpecification> valueList;

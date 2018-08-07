@@ -11,6 +11,7 @@
     <result column="deleted" jdbcType="BIT" property="deleted" />
     <result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
     <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="fake_number" jdbcType="INTEGER" property="fakeNumber" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, goods_id, `value`, pic_url, specification, add_time, deleted, goods_number, price
+    id, goods_id, `value`, pic_url, specification, add_time, deleted, goods_number, price,fake_number
   </sql>
   <select id="selectByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallGoodsSpecificationExample" resultMap="BaseResultMap">
     select
@@ -143,10 +144,10 @@
     </selectKey>
     insert into litemall_goods_specification (goods_id, `value`, pic_url, 
       specification, add_time, deleted, 
-      goods_number, price)
+      goods_number, price,fake_number)
     values (#{goodsId,jdbcType=INTEGER}, #{value,jdbcType=VARCHAR}, #{picUrl,jdbcType=VARCHAR}, 
       #{specification,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
-      #{goodsNumber,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL})
+      #{goodsNumber,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL},#{fakeNumber,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallGoodsSpecification">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -178,6 +179,9 @@
       <if test="price != null">
         price,
       </if>
+      <if test="fakeNumber != null">
+        fake_number
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsId != null">
@@ -203,6 +207,9 @@
       </if>
       <if test="price != null">
         #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="fakeNumber != null">
+        #{fake_number,jdbcType=INTEGER}
       </if>
     </trim>
   </insert>
@@ -242,6 +249,9 @@
       <if test="record.price != null">
         price = #{record.price,jdbcType=DECIMAL},
       </if>
+      <if test="record.fakeNumber != null">
+        fake_number = #{record.fakeNumber,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -257,7 +267,8 @@
       add_time = #{record.addTime,jdbcType=TIMESTAMP},
       deleted = #{record.deleted,jdbcType=BIT},
       goods_number = #{record.goodsNumber,jdbcType=INTEGER},
-      price = #{record.price,jdbcType=DECIMAL}
+      price = #{record.price,jdbcType=DECIMAL},
+    fake_number = #{record.fakeNumber,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -289,6 +300,9 @@
       <if test="price != null">
         price = #{price,jdbcType=DECIMAL},
       </if>
+      <if test="fakeNumber != null">
+        fake_number = #{fakeNumber,jdbcType=INTEGER},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -301,7 +315,8 @@
       add_time = #{addTime,jdbcType=TIMESTAMP},
       deleted = #{deleted,jdbcType=BIT},
       goods_number = #{goodsNumber,jdbcType=INTEGER},
-      price = #{price,jdbcType=DECIMAL}
+      price = #{price,jdbcType=DECIMAL},
+      fake_number = #{fakeNumber,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallGoodsSpecificationExample" resultMap="BaseResultMap">
