@@ -24,13 +24,13 @@ public class UserController {
 
     @GetMapping("/list")
     public Object list(
-                       String username, String mobile,
+                       String username, String mobile,Integer type,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
         order = "add_time desc";
-        List<LitemallUser> userList = userService.querySelective(username, mobile, "","",page, limit, sort, order);
-        int total = userService.countSeletive(username, mobile,"", "",page, limit, sort, order);
+        List<LitemallUser> userList = userService.querySelective(username, mobile, "","",type,page, limit, sort, order);
+        int total = userService.countSeletive(username, mobile,"", "",type,page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", userList);
@@ -61,7 +61,7 @@ public class UserController {
             return ResponseUtil.fail402();
         }
 
-        int total = userService.countSeletive(username, "","" ,"",null, null, null, null);
+        int total = userService.countSeletive(username, "","" ,"",null,null, null, null, null);
         if(total == 0){
             return ResponseUtil.ok("不存在");
         }

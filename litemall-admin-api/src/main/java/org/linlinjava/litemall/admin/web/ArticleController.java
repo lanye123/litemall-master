@@ -326,7 +326,7 @@ public class ArticleController {
         if(notesTemps==null || notesTemps.size()==0){
             return ResponseUtil.ok(article);
         }
-        List<LitemallUser> userList = litemallUserService.querySelective("","","","",null,null,null,"");
+        List<LitemallUser> userList = litemallUserService.querySelective("","","","",null,null,null,null,"");
         NotesTemp notesTemp = notesTemps.get(0);
         Notes notes;
         Notes notesDb;
