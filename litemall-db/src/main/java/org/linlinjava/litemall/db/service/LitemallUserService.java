@@ -34,7 +34,7 @@ public class LitemallUserService {
     }
 
     public void add(LitemallUser user) {
-        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),"",null,null,"","")>0){
+        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),"",null,null,null,"","")>0){
             return;
         }
         userMapper.insertSelective(user);
@@ -50,7 +50,7 @@ public class LitemallUserService {
         userMapper.updateByPrimaryKeySelective(user);
     }
 
-    public List<LitemallUser> querySelective(String username, String mobile, String weixinOpenid, String registerIp, Integer page, Integer size, String sort, String order) {
+    public List<LitemallUser> querySelective(String username, String mobile, String weixinOpenid, String registerIp,Integer type, Integer page, Integer size, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
 
@@ -69,6 +69,13 @@ public class LitemallUserService {
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
         }
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andAccountIsNull();
+            }
+        }
 
         criteria.andDeletedEqualTo(false);
 
@@ -78,7 +85,7 @@ public class LitemallUserService {
         return userMapper.selectByExample(example);
     }
 
-    public int countSeletive(String username, String mobile, String weixinOpenid, String registerIp, Integer page, Integer size, String sort, String order) {
+    public int countSeletive(String username, String mobile, String weixinOpenid, String registerIp, Integer type ,Integer page, Integer size, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
 
@@ -93,6 +100,13 @@ public class LitemallUserService {
         }
         if(!StringUtils.isEmpty(registerIp)){
             criteria.andRegisterIpEqualTo(registerIp);
+        }
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andAccountIsNull();
+            }
         }
         criteria.andDeletedEqualTo(false);
 
