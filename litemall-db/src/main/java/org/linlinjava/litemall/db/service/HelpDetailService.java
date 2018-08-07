@@ -1,13 +1,11 @@
 package org.linlinjava.litemall.db.service;
 
 import org.linlinjava.litemall.db.dao.HelpDetailMapper;
-import org.linlinjava.litemall.db.dao.HelpOrderMapper;
-import org.linlinjava.litemall.db.domain.HelpDetail;
 import org.linlinjava.litemall.db.domain.HelpDetailExample;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * ClassName HelpDetailService
@@ -21,22 +19,14 @@ public class HelpDetailService {
     @Resource
     private HelpDetailMapper helpDetailMapper;
 
-    public void create(HelpDetail detail) {
-        helpDetailMapper.insertSelective(detail);
-    }
+    public int countByGoodsId(Integer goodsId) {
+        HelpDetailExample example = new HelpDetailExample();
+        HelpDetailExample.Criteria criteria = example.createCriteria();
 
-    public List<HelpDetail> list(Integer orderId) {
-        HelpDetailExample example=new HelpDetailExample();
-        HelpDetailExample.Criteria criteria=example.createCriteria();
-        criteria.andOrderIdEqualTo(orderId);
-        example.setOrderByClause("create_date asc");
-       return helpDetailMapper.selectByExample(example);
-    }
+        if(!StringUtils.isEmpty(goodsId)){
+            criteria.andGoodsIdEqualTo(goodsId);
+        }
 
-    public HelpDetail validate(Integer userId, Integer orderId) {
-        HelpDetailExample example=new HelpDetailExample();
-        HelpDetailExample.Criteria criteria=example.createCriteria();
-        criteria.andOrderIdEqualTo(orderId).andUserIdEqualTo(userId);
-        return helpDetailMapper.selectOneByExample(example);
+        return (int)helpDetailMapper.countByExample(example);
     }
 }

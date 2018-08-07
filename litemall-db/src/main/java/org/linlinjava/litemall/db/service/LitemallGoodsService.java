@@ -56,6 +56,18 @@ public class LitemallGoodsService {
         return goodsMapper.selectByExample(example);
     }
 
+    public List<LitemallGoods> helpList(Integer catId, Integer userId) {
+        LitemallGoods goods = new LitemallGoods();
+        goods.setCategoryId(catId);
+        if(!StringUtils.isEmpty(userId)){
+            goods.setUserId(userId);
+        }
+        goods.setOrderByClause("sort_no");
+        goods.setType(3);
+        goods.setState(0);
+        return goodsMapper.selectByExample2(goods);
+    }
+
     public int countByCategory(Integer catId, Integer page, Integer size) {
         LitemallGoodsExample example = new LitemallGoodsExample();
         example.or().andCategoryIdEqualTo(catId).andDeletedEqualTo(false);

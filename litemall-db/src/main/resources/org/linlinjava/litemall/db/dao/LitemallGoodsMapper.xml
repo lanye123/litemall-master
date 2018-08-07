@@ -38,6 +38,9 @@
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.linlinjava.litemall.db.domain.LitemallGoods">
     <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
   </resultMap>
+  <resultMap extends="BaseResultMap" id="BaseResultMap2" type="org.linlinjava.litemall.db.domain.LitemallGoods">
+    <result column="orderStatus" jdbcType="INTEGER" property="orderStatus" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -134,6 +137,23 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+  </select>
+  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.LitemallGoods" resultMap="BaseResultMap2">
+    select
+      a.id, a.goods_sn, a.`name`, a.category_id, a.brand_id, a.gallery, a.keywords, a.goods_brief, a.is_on_sale,
+      a.sort_order, a.counter_price, a.is_new, a.primary_pic_url, a.list_pic_url, a.is_hot, a.goods_unit,
+      a.retail_price, a.add_time, a.deleted, a.start_date, a.end_date, a.integretion, a.person_num, a.content,
+      a.memo, a.`status`, a.create_date, a.integretions, a.`state`, a.`type`, a.`sort_no`,a.act_pic_url,
+      b.status orderStatus
+    from litemall_goods a
+    left join help_order b on a.id = b.goods_id and b.user_id = ${userId}
+      where 1=1
+      <if test="categoryId != null">
+          and a.category_id=${categoryId}
+      </if>
+      <if test="type != null">
+          and a.type = ${type}
+      </if>
   </select>
   <select id="selectByExampleSelective" parameterType="map" resultMap="BaseResultMap">
     <!--
@@ -312,7 +332,7 @@
         `sort_no`,
       </if>
       <if test="actPicUrl != null">
-        `act_pic_url`,
+          act_pic_url,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -520,7 +540,7 @@
         `sort_no` = #{record.sortNo,jdbcType=INTEGER},
       </if>
       <if test="record.actPicUrl != null">
-        act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR},
+          act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
       </if>
     </set>
     <if test="_parameter != null">
@@ -560,7 +580,8 @@
       goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR},
       `state` = #{record.state,jdbcType=INTEGER},
       `type` = #{record.type,jdbcType=INTEGER},
-      `sort_no` = #{record.sortNo,jdbcType=INTEGER}
+      `sort_no` = #{record.sortNo,jdbcType=INTEGER},
+      act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -598,7 +619,7 @@
       `state` = #{record.state,jdbcType=INTEGER},
       `type` = #{record.type,jdbcType=INTEGER},
       `sort_no` = #{record.sortNo,jdbcType=INTEGER},
-    act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
+      act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -700,7 +721,7 @@
         `sort_no` = #{sortNo,jdbcType=INTEGER},
       </if>
       <if test="actPicUrl != null">
-        act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
+          act_pic_url = #{actPicUrl,jdbcType=VARCHAR}
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -738,7 +759,7 @@
       `state` = #{state,jdbcType=INTEGER},
       `type` = #{type,jdbcType=INTEGER},
       `sort_no` = #{sortNo,jdbcType=INTEGER},
-      act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
+       act_pic_url = #{actPicUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.LitemallGoods">
@@ -773,7 +794,7 @@
       `state` = #{state,jdbcType=INTEGER},
       `type` = #{type,jdbcType=INTEGER},
       `sort_no` = #{sortNo,jdbcType=INTEGER},
-      act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
+       act_pic_url = #{actPicUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallGoodsExample" resultMap="BaseResultMap">
