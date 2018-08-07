@@ -39,6 +39,7 @@ public class HelpController {
         List<Map<String, Object>> goodsVoList = new ArrayList<>(goodsList.size());
         for (LitemallGoods goods : goodsList) {
             Map<String,Object> goodsVo = new HashMap<>();
+            goodsVo.put("id",goods.getId());
             goodsVo.put("actPicUrl",goods.getActPicUrl());
             goodsVo.put("memo",goods.getMemo());
             goodsVo.put("name",goods.getName());
