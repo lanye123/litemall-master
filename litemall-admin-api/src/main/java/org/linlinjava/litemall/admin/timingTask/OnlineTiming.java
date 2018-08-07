@@ -70,14 +70,14 @@ public class OnlineTiming {
         getUserList();
     }
 
-    @Scheduled(cron = "0 47 10 * * ?")
+    @Scheduled(cron = "0 0 20 * * ?")
     public void getUserList2(){
         getUserList();
     }
 
     public void getUserList(){
         long begin = System.currentTimeMillis();
-        log.debug("每天零点三十执行定时同步用户信息");
+        log.debug("执行定时同步用户信息");
         log.info("定时同步用户信息开始-------"+new Date());
         try {
             WxConfig config = wxConfigService.getGzhToken();
@@ -102,6 +102,7 @@ public class OnlineTiming {
                 jsonObject = HttpClientUtil.doGet(infoUrl);
                 infoUrl = infoUrl.replace(openid,"OPENID");
                 log.info("获取第"+i+"条用户信息结果-------"+jsonObject);
+                user = new WxGzhUser();
                 user.setSubscribe(((Integer) jsonObject.get("subscribe")).byteValue());
                 user.setOpenid((String) jsonObject.get("openid"));
                 user.setNickname((String) jsonObject.get("nickname"));
