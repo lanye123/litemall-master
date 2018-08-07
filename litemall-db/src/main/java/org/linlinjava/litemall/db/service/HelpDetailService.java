@@ -1,8 +1,9 @@
 package org.linlinjava.litemall.db.service;
 
 import org.linlinjava.litemall.db.dao.HelpDetailMapper;
-import org.linlinjava.litemall.db.dao.HelpOrderMapper;
+import org.linlinjava.litemall.db.domain.HelpDetailExample;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -17,4 +18,15 @@ import javax.annotation.Resource;
 public class HelpDetailService {
     @Resource
     private HelpDetailMapper helpDetailMapper;
+
+    public int countByGoodsId(Integer goodsId) {
+        HelpDetailExample example = new HelpDetailExample();
+        HelpDetailExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(goodsId)){
+            criteria.andGoodsIdEqualTo(goodsId);
+        }
+
+        return (int)helpDetailMapper.countByExample(example);
+    }
 }

@@ -33,9 +33,13 @@
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="sort_no" jdbcType="INTEGER" property="sortNo" />
+    <result column="act_pic_url" jdbcType="VARCHAR" property="actPicUrl" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.linlinjava.litemall.db.domain.LitemallGoods">
     <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="BaseResultMap2" type="org.linlinjava.litemall.db.domain.LitemallGoods">
+    <result column="orderStatus" jdbcType="INTEGER" property="orderStatus" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -99,7 +103,7 @@
     id, goods_sn, `name`, category_id, brand_id, gallery, keywords, goods_brief, is_on_sale, 
     sort_order, counter_price, is_new, primary_pic_url, list_pic_url, is_hot, goods_unit, 
     retail_price, add_time, deleted, start_date, end_date, integretion, person_num, content, 
-    memo, `status`, create_date, integretions, `state`, `type`, `sort_no`
+    memo, `status`, create_date, integretions, `state`, `type`, `sort_no`,act_pic_url
   </sql>
   <sql id="Blob_Column_List">
     goods_desc
@@ -133,6 +137,23 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+  </select>
+  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.LitemallGoods" resultMap="BaseResultMap2">
+    select
+      a.id, a.goods_sn, a.`name`, a.category_id, a.brand_id, a.gallery, a.keywords, a.goods_brief, a.is_on_sale,
+      a.sort_order, a.counter_price, a.is_new, a.primary_pic_url, a.list_pic_url, a.is_hot, a.goods_unit,
+      a.retail_price, a.add_time, a.deleted, a.start_date, a.end_date, a.integretion, a.person_num, a.content,
+      a.memo, a.`status`, a.create_date, a.integretions, a.`state`, a.`type`, a.`sort_no`,a.act_pic_url,
+      b.status orderStatus
+    from litemall_goods a
+    left join help_order b on a.id = b.goods_id and b.user_id = ${userId}
+      where 1=1
+      <if test="categoryId != null">
+          and a.category_id=${categoryId}
+      </if>
+      <if test="type != null">
+          and a.type = ${type}
+      </if>
   </select>
   <select id="selectByExampleSelective" parameterType="map" resultMap="BaseResultMap">
     <!--
@@ -198,7 +219,7 @@
       retail_price, add_time, deleted, 
       start_date, end_date, integretion,integretion,
       person_num, content, memo, 
-      `status`, create_date, goods_desc, `state`, `type`, `sort_no`
+      `status`, create_date, goods_desc, `state`, `type`, `sort_no`,act_pic_url
       )
     values (#{goodsSn,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, 
       #{brandId,jdbcType=INTEGER}, #{gallery,jdbcType=CHAR}, #{keywords,jdbcType=VARCHAR}, 
@@ -208,7 +229,7 @@
       #{retailPrice,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, 
       #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, #{integretion,jdbcType=INTEGER}, #{integretions,jdbcType=INTEGER},
       #{personNum,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{goodsDesc,jdbcType=LONGVARCHAR}, #{state,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{sortNo,jdbcType=INTEGER}
+      #{status,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{goodsDesc,jdbcType=LONGVARCHAR}, #{state,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{sortNo,jdbcType=INTEGER},#{actPicUrl,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="org.linlinjava.litemall.db.domain.LitemallGoods">
@@ -310,6 +331,9 @@
       <if test="sortNo != null">
         `sort_no`,
       </if>
+      <if test="actPicUrl != null">
+          act_pic_url,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="goodsSn != null">
@@ -403,7 +427,10 @@
         #{type,jdbcType=INTEGER},
       </if>
       <if test="sortNo != null">
-        #{sortNo,jdbcType=INTEGER}
+        #{sortNo,jdbcType=INTEGER},
+      </if>
+      <if test="actPicUrl != null">
+        #{actPicUrl,jdbcType=VARCHAR}
       </if>
     </trim>
   </insert>
@@ -510,7 +537,10 @@
         `type` = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.sortNo != null">
-        `sort_no` = #{record.sortNo,jdbcType=INTEGER}
+        `sort_no` = #{record.sortNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.actPicUrl != null">
+          act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
       </if>
     </set>
     <if test="_parameter != null">
@@ -550,7 +580,8 @@
       goods_desc = #{record.goodsDesc,jdbcType=LONGVARCHAR},
       `state` = #{record.state,jdbcType=INTEGER},
       `type` = #{record.type,jdbcType=INTEGER},
-      `sort_no` = #{record.sortNo,jdbcType=INTEGER}
+      `sort_no` = #{record.sortNo,jdbcType=INTEGER},
+      act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -587,7 +618,8 @@
       create_date = #{record.createDate,jdbcType=TIMESTAMP},
       `state` = #{record.state,jdbcType=INTEGER},
       `type` = #{record.type,jdbcType=INTEGER},
-      `sort_no` = #{record.sortNo,jdbcType=INTEGER}
+      `sort_no` = #{record.sortNo,jdbcType=INTEGER},
+      act_pic_url = #{record.actPicUrl,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -686,7 +718,10 @@
         `type` = #{type,jdbcType=INTEGER},
       </if>
       <if test="sortNo != null">
-        `sort_no` = #{sortNo,jdbcType=INTEGER}
+        `sort_no` = #{sortNo,jdbcType=INTEGER},
+      </if>
+      <if test="actPicUrl != null">
+          act_pic_url = #{actPicUrl,jdbcType=VARCHAR}
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -723,7 +758,8 @@
       goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
       `state` = #{state,jdbcType=INTEGER},
       `type` = #{type,jdbcType=INTEGER},
-      `sort_no` = #{sortNo,jdbcType=INTEGER}
+      `sort_no` = #{sortNo,jdbcType=INTEGER},
+       act_pic_url = #{actPicUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="org.linlinjava.litemall.db.domain.LitemallGoods">
@@ -757,7 +793,8 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       `state` = #{state,jdbcType=INTEGER},
       `type` = #{type,jdbcType=INTEGER},
-      `sort_no` = #{sortNo,jdbcType=INTEGER}
+      `sort_no` = #{sortNo,jdbcType=INTEGER},
+       act_pic_url = #{actPicUrl,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectOneByExample" parameterType="org.linlinjava.litemall.db.domain.LitemallGoodsExample" resultMap="BaseResultMap">
