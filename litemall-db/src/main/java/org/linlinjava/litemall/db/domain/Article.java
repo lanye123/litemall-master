@@ -194,7 +194,7 @@ public class Article {
     }
 
     public String getCreateDate() {
-        return createDate;
+        return createDate.substring(0,10);
     }
 
     public void setCreateDate(String createDate) {
@@ -258,7 +258,7 @@ public class Article {
     }
 
     public String getUpdateDate() {
-        return updateDate;
+        return updateDate.substring(0,10);
     }
 
     public void setUpdateDate(String updateDate) {

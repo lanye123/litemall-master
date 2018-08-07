@@ -422,7 +422,6 @@ public class ArticleController {
         return ResponseUtil.ok(article);
     }
 
-
   /**
    * 自定义生成二维码功能
    * @author leiqiang

@@ -272,8 +272,8 @@ public class GraphicsControllor {
         //设置字体
         Font tipFont3 = new Font("苹方 常规", Font.PLAIN, 48);
         tip3.setFont(tipFont3);
-        tip3.drawString("我是", 300, 2230);
-        tip3.drawString("我为萤火虫代言", 300, 2310);
+        //tip3.drawString("", 300, 2230);
+        tip3.drawString("一本书，一视界", 300, 2310);
         tip3.drawString(date, 605, 1140);
         System.out.println(author.length());
         int authorLength=author.length();
@@ -380,7 +380,7 @@ public class GraphicsControllor {
         Font tipFont4 = new Font("苹方 常规", Font.PLAIN, 48);
         tip4.setColor(new Color(51,129,246));
         tip4.setFont(tipFont4);
-        tip4.drawString(nickname, 400, 2230);
+        tip4.drawString(nickname, 300, 2230);
         String temp = "images" + File.separator + "temp" + File.separator;
         // 新的图片文件名 = 获取时间戳+"."图片扩展名
         String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
@@ -400,6 +400,7 @@ public class GraphicsControllor {
         return ResponseUtil.ok(data);
     }
 
+  //该方法已废弃
   @GetMapping("csResult")
   public Object csResult(String imgurl,Integer userId) {
     Map data = new HashMap();
@@ -516,13 +517,13 @@ public class GraphicsControllor {
     Font tipFont4 = new Font("苹方 常规", Font.PLAIN, 16);
     //tip4.setColor(new Color(51, 129, 246));
     tip4.setFont(tipFont4);
-    tip4.drawString("我是"+nickname, 135, csimageHeight - 95);
+    tip4.drawString(nickname, 135, csimageHeight - 95);
 
     Graphics2D tip5 = image.createGraphics();
     Font tipFont5 = new Font("苹方 常规", Font.PLAIN, 16);
     //tip4.setColor(new Color(51, 129, 246));
     tip5.setFont(tipFont5);
-    tip5.drawString("我为萤火虫代言", 135, csimageHeight - 75);
+    tip5.drawString("一本书，一视界", 135, csimageHeight - 75);
 
       String temp = "images" + File.separator + "temp" + File.separator;
       // 新的图片文件名 = 获取时间戳+"."图片扩展名
@@ -775,8 +776,8 @@ public class GraphicsControllor {
         //设置字体
         Font tipFont3 = new Font("苹方 常规", Font.PLAIN, 48);
         tip3.setFont(tipFont3);
-        tip3.drawString("我是", 300, 2230);
-        tip3.drawString("我为萤火虫代言", 300, 2310);
+        //tip3.drawString("我是", 300, 2230);
+        tip3.drawString("一本书，一视界", 300, 2310);
         tip3.drawString(date, 605, 1140);
         System.out.println(author.length());
         int authorLength=author.length();

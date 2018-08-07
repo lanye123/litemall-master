@@ -236,13 +236,13 @@ public class CsTestController {
       Font tipFont4 = new Font("苹方 常规", Font.PLAIN, 16);
       //tip4.setColor(new Color(51, 129, 246));
       tip4.setFont(tipFont4);
-      tip4.drawString("我是"+nickname, 135, csimageHeight - 95);
+      tip4.drawString(nickname, 135, csimageHeight - 95);
 
       Graphics2D tip5 = image.createGraphics();
       Font tipFont5 = new Font("苹方 常规", Font.PLAIN, 16);
       //tip4.setColor(new Color(51, 129, 246));
       tip5.setFont(tipFont5);
-      tip5.drawString("我为萤火虫代言", 135, csimageHeight - 75);
+      tip5.drawString("一本书，一视界", 135, csimageHeight - 75);
 
       String temp = "images" + File.separator + "temp" + File.separator;
       // 新的图片文件名 = 获取时间戳+"."图片扩展名
