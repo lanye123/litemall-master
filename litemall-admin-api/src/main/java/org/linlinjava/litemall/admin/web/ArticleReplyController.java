@@ -22,13 +22,13 @@ public class ArticleReplyController {
 
     @GetMapping("/list")
     public Object list(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid,Integer toUserid,
-                       String startDate, String endDate,String nickName,
+                       String startDate, String endDate,String nickName,Integer type,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
 
-        List<ArticleReply> articleReplyList = articleReplyService.querySelective2(commentId, replyId,replyType,content,fromUserid, toUserid,startDate,endDate,nickName,page, limit, sort, order);
-        int total = articleReplyService.countSelective(commentId, replyId,replyType,content,fromUserid, toUserid,startDate,endDate,nickName, page, limit, sort, order);
+        List<ArticleReply> articleReplyList = articleReplyService.querySelective2(commentId, replyId,replyType,content,fromUserid, toUserid,startDate,endDate,nickName,type,page, limit, sort, order);
+        int total = articleReplyService.countSelective(commentId, replyId,replyType,content,fromUserid, toUserid,startDate,endDate,nickName,type, page, limit, sort, order);
         Map<String, Object> data = new HashMap<>();
         data.put("total", total);
         data.put("items", articleReplyList);

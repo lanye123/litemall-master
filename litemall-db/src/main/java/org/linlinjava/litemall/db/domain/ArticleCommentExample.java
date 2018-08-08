@@ -265,11 +265,6 @@ public class ArticleCommentExample {
             return (Criteria) this;
         }
 
-        public Criteria andBAccountIsNull() {
-            addCriterion("b.account is null");
-            return (Criteria) this;
-        }
-
         public Criteria andCategoryNameIsNotNull() {
             addCriterion("category_name is not null");
             return (Criteria) this;
@@ -397,6 +392,16 @@ public class ArticleCommentExample {
 
         public Criteria andContentIsNull() {
             addCriterion("content is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBAccountIsNull() {
+            addCriterion("b.account is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBAccountIsNotNull() {
+            addCriterion("b.account is not null");
             return (Criteria) this;
         }
 
