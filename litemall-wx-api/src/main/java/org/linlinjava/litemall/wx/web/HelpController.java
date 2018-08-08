@@ -116,11 +116,12 @@ public class HelpController {
             data.put("goodsNumber",specification.getGoodsNumber());
         }
         List<HelpDetail> detailList=helpDetailService.list(orderId);
-        Map map=new HashMap();
-        for (HelpDetail detail:detailList){
-            map.put("avatar",detail.getAvatar());
+        data.put("requiredNum",goods.getPersonNum()-detailList.size());
+        ArrayList array=new ArrayList();
+        for (HelpDetail hd2:detailList){
+            array.add(hd2.getAvatar());
         }
-        data.put("list",map);
+        data.put("list",array);
         //返回detail详情
         return ResponseUtil.ok(data);
     }
@@ -173,9 +174,7 @@ public class HelpController {
         data.put("requiredNum",goods.getPersonNum()-detailList.size());
         ArrayList array=new ArrayList();
         for (HelpDetail hd2:detailList){
-            JSONObject object=new JSONObject();
-            object.put("avatar",hd2.getAvatar());
-            array.add(object);
+            array.add(hd2.getAvatar());
         }
         data.put("list",array);
         return ResponseUtil.ok(data);
@@ -205,9 +204,7 @@ public class HelpController {
         data.put("requiredNum",goods.getPersonNum()-detailList.size());
         ArrayList array=new ArrayList();
         for (HelpDetail hd2:detailList){
-            JSONObject object=new JSONObject();
-            object.put("avatar",hd2.getAvatar());
-            array.add(object);
+            array.add(hd2.getAvatar());
         }
         data.put("list",array);
         return ResponseUtil.ok(data);
