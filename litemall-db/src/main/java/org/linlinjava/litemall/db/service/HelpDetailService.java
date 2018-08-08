@@ -1,11 +1,13 @@
 package org.linlinjava.litemall.db.service;
 
 import org.linlinjava.litemall.db.dao.HelpDetailMapper;
+import org.linlinjava.litemall.db.domain.HelpDetail;
 import org.linlinjava.litemall.db.domain.HelpDetailExample;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * ClassName HelpDetailService
@@ -28,5 +30,24 @@ public class HelpDetailService {
         }
 
         return (int)helpDetailMapper.countByExample(example);
+    }
+
+    public void create(HelpDetail detail) {
+        helpDetailMapper.insertSelective(detail);
+    }
+
+    public List<HelpDetail> list(Integer orderId) {
+        HelpDetailExample example=new HelpDetailExample();
+        HelpDetailExample.Criteria criteria=example.createCriteria();
+        criteria.andOrderIdEqualTo(orderId);
+        example.setOrderByClause("create_date asc");
+        return helpDetailMapper.selectByExample(example);
+    }
+
+    public HelpDetail validate(Integer userId, Integer orderId) {
+        HelpDetailExample example=new HelpDetailExample();
+        HelpDetailExample.Criteria criteria=example.createCriteria();
+        criteria.andOrderIdEqualTo(orderId).andUserIdEqualTo(userId);
+        return helpDetailMapper.selectOneByExample(example);
     }
 }

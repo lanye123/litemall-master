@@ -1,5 +1,7 @@
 package org.linlinjava.litemall.db.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Article {
     private Integer articleId;
 
@@ -194,7 +196,12 @@ public class Article {
     }
 
     public String getCreateDate() {
-        return createDate.substring(0,10);
+        String date="";
+        if(StringUtils.isNotEmpty(createDate))
+            date= createDate.substring(0,10);
+        else
+            date=createDate;
+        return date;
     }
 
     public void setCreateDate(String createDate) {
@@ -258,7 +265,7 @@ public class Article {
     }
 
     public String getUpdateDate() {
-        return updateDate.substring(0,10);
+        return updateDate;
     }
 
     public void setUpdateDate(String updateDate) {
