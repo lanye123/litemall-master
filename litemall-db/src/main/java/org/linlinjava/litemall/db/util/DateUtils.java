@@ -57,6 +57,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static final SimpleDateFormat formatTimestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat SHORTDATEFORMAT = new SimpleDateFormat("yyyyMMdd");
     public static final SimpleDateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final SimpleDateFormat SHORT_DATE_FORMAT_CHINESE = new SimpleDateFormat("yyyy年MM月dd日");
     public static final SimpleDateFormat LONG_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat LONG_DATE_FORMAT_SSS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     public static final SimpleDateFormat HMS_FORMAT = new SimpleDateFormat("HH:mm:ss");
@@ -193,6 +194,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String getReqDate(Date date) {
         return SHORT_DATE_FORMAT.format(date);
+    }
+
+    public static String getReqDateChinese(Date date) {
+        return SHORT_DATE_FORMAT_CHINESE.format(date);
     }
 
     /**

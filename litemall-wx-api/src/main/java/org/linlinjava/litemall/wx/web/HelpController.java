@@ -5,10 +5,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
 import org.linlinjava.litemall.db.service.*;
+import org.linlinjava.litemall.db.util.DateUtils;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -80,6 +82,9 @@ public class HelpController {
      **/
     @PostMapping("addOrder")
     public Object addOrder(@RequestBody HelpOrder order){
+        Integer status=null;
+        Date endDate=null;
+        Integer goosNum=null;
         Map data=new HashMap();
         Integer userId=order.getUserId();
         Integer goodsId=order.getGoodsId();
@@ -117,14 +122,17 @@ public class HelpController {
             data.put("picUrl",goods.getActPicUrl());
             data.put("goodsName",goods.getName());
             data.put("memo",goods.getMemo());
-            data.put("endDate",goods.getEndDate());
+            data.put("endDate",DateUtils.getReqDateChinese(goods.getEndDate()));
             data.put("personNum",goods.getPersonNum());
             data.put("price",goods.getCounterPrice());
+
+            endDate=goods.getEndDate();
         }
         LitemallGoodsSpecification specification=specificationService.findByGoodsId(goodsId);
         if(specification!=null){
             data.put("fakeNumber",specification.getFakeNumber());
             data.put("goodsNumber",specification.getGoodsNumber());
+            goosNum=specification.getGoodsNumber()+specification.getFakeNumber();
         }
         List<HelpDetail> detailList=helpDetailService.list(orderId);
         data.put("requiredNum",goods.getPersonNum()-detailList.size());
@@ -133,8 +141,23 @@ public class HelpController {
             array.add(hd2.getAvatar());
         }
         data.put("list",array);
+
+
+        if(goosNum==0||compare_date(endDate,new Date())<0)
+            data.put("status",2);//活动已结束
+        else if(goods.getPersonNum()-detailList.size()==0)
+            data.put("status",1);//助力成功
+        else
+            data.put("status",0);//进行中
         //返回detail详情
         return ResponseUtil.ok(data);
+    }
+
+    public int compare_date(Date date1, Date date2) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String sd1=df.format(date1);
+        String sd2=df.format(date2);
+        return sd1.compareTo(sd2);
     }
 
     /**
@@ -146,6 +169,9 @@ public class HelpController {
      **/
     @PostMapping("addDetail")
     public Object addDetail(@RequestBody HelpDetail helpDetail){
+        Integer status=null;
+        Date endDate=null;
+        Integer goosNum=null;
         Map data=new HashMap();
         Integer userId=helpDetail.getUserId();
         Integer orderId=helpDetail.getOrderId();
@@ -153,8 +179,10 @@ public class HelpController {
         LitemallGoods goods=goodsService.findById(order.getGoodsId());
         LitemallUser user=litemallUserService.findById(userId);
         //创建从表记录
-        HelpDetail hd=helpDetailService.validate(userId,orderId);
-        if(hd==null){
+        HelpDetail hd=helpDetailService.validate(userId,goods.getId());
+        Integer amount=helpDetailService.countByOrderId(orderId);
+        //助力人数小于助力要求人数且该用户未针对该商品进行过助力
+        if(amount<goods.getPersonNum()&&hd==null){
             HelpDetail detail=new HelpDetail();
             detail.setUserId(userId);
             detail.setGoodsId(order.getGoodsId());
@@ -162,7 +190,7 @@ public class HelpController {
             detail.setOrderId(orderId);
             detail.setAvatar(user.getAvatar());
             detail.setPid(orderId);
-            detail.setPid(0);//助力团员
+            detail.setFlag(0);//助力团员
             helpDetailService.create(detail);
         }
 
@@ -172,14 +200,16 @@ public class HelpController {
             data.put("picUrl",goods.getActPicUrl());
             data.put("goodsName",goods.getName());
             data.put("memo",goods.getMemo());
-            data.put("endDate",goods.getEndDate());
+            data.put("endDate",DateUtils.getReqDateChinese(goods.getEndDate()));
             data.put("personNum",goods.getPersonNum());
             data.put("price",goods.getCounterPrice());
+            endDate=goods.getEndDate();
         }
         LitemallGoodsSpecification specification=specificationService.findByGoodsId(order.getGoodsId());
         if(specification!=null){
             data.put("fakeNumber",specification.getFakeNumber());
             data.put("goodsNumber",specification.getGoodsNumber());
+            goosNum=specification.getGoodsNumber()+specification.getFakeNumber();
         }
         List<HelpDetail> detailList=helpDetailService.list(orderId);
         data.put("requiredNum",goods.getPersonNum()-detailList.size());
@@ -188,11 +218,21 @@ public class HelpController {
             array.add(hd2.getAvatar());
         }
         data.put("list",array);
+        if(goosNum==0||compare_date(endDate,new Date())<0)
+            data.put("status",2);//活动已结束
+        else if(goods.getPersonNum()-detailList.size()==0)
+            data.put("status",1);//助力成功
+        else
+            data.put("status",0);//进行中
+        //返回detail详情
         return ResponseUtil.ok(data);
     }
 
     @GetMapping("helpList")
     public Object helpList(@RequestParam Integer orderId){
+        Integer status=null;
+        Date endDate=null;
+        Integer goosNum=null;
         Map data=new HashMap();
         HelpOrder order=helpOrderService.load(orderId);
         LitemallGoods goods=goodsService.findById(order.getGoodsId());
@@ -202,14 +242,16 @@ public class HelpController {
             data.put("picUrl",goods.getActPicUrl());
             data.put("goodsName",goods.getName());
             data.put("memo",goods.getMemo());
-            data.put("endDate",goods.getEndDate());
+            data.put("endDate",DateUtils.getReqDateChinese(goods.getEndDate()));
             data.put("personNum",goods.getPersonNum());
             data.put("price",goods.getCounterPrice());
+            endDate=goods.getEndDate();
         }
         LitemallGoodsSpecification specification=specificationService.findByGoodsId(order.getGoodsId());
         if(specification!=null){
             data.put("fakeNumber",specification.getFakeNumber());
             data.put("goodsNumber",specification.getGoodsNumber());
+            goosNum=specification.getGoodsNumber()+specification.getFakeNumber();
         }
         List<HelpDetail> detailList=helpDetailService.list(orderId);
         data.put("requiredNum",goods.getPersonNum()-detailList.size());
@@ -218,6 +260,13 @@ public class HelpController {
             array.add(hd2.getAvatar());
         }
         data.put("list",array);
+        if(goosNum==0||compare_date(endDate,new Date())<0)
+            data.put("status",2);//活动已结束
+        else if(goods.getPersonNum()-detailList.size()==0)
+            data.put("status",1);//助力成功
+        else
+            data.put("status",0);//进行中
+        //返回detail详情
         return ResponseUtil.ok(data);
     }
 

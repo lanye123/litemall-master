@@ -44,10 +44,20 @@ public class HelpDetailService {
         return helpDetailMapper.selectByExample(example);
     }
 
-    public HelpDetail validate(Integer userId, Integer orderId) {
+    public HelpDetail validate(Integer userId, Integer goodsId) {
         HelpDetailExample example=new HelpDetailExample();
         HelpDetailExample.Criteria criteria=example.createCriteria();
-        criteria.andOrderIdEqualTo(orderId).andUserIdEqualTo(userId);
+        criteria.andUserIdEqualTo(userId).andGoodsIdEqualTo(goodsId);
         return helpDetailMapper.selectOneByExample(example);
+    }
+
+    public Integer countByOrderId(Integer orderId) {
+        HelpDetailExample example = new HelpDetailExample();
+        HelpDetailExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(orderId)){
+            criteria.andOrderIdEqualTo(orderId);
+        }
+        return (int)helpDetailMapper.countByExample(example);
     }
 }
