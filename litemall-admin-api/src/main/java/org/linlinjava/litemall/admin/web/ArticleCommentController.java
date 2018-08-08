@@ -28,14 +28,14 @@ public class ArticleCommentController {
 
     @GetMapping("/list")
     public Object list(Integer articleId, String categoryName,Integer categoryId,String content,Integer fromUserid,
-                       String startDate, String endDate,String nickName,
+                       String startDate, String endDate,String nickName,Integer type,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
                        @RequestParam(value = "limit", defaultValue = "10") Integer limit,
                        String sort, String order){
         Map<String, Object> data = new HashMap<>();
         long sss = System.currentTimeMillis();
-        List<ArticleComment> articleCommentList = articleCommentService.query(articleId, categoryName,categoryId,content,fromUserid,startDate,endDate,nickName, page, limit, sort, order);
-        int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid,startDate,endDate,nickName, page, limit, sort, order);
+        List<ArticleComment> articleCommentList = articleCommentService.query(articleId, categoryName,categoryId,content,fromUserid,startDate,endDate,nickName,type, page, limit, sort, order);
+        int total = articleCommentService.count(articleId, categoryName,categoryId,content,fromUserid,startDate,endDate,nickName,type, page, limit, sort, order);
         data.put("total", total);
         for(ArticleComment articleComment:articleCommentList){
             //统计点赞数量

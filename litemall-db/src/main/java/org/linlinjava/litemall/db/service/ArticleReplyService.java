@@ -45,7 +45,7 @@ public class ArticleReplyService {
         return articleReplyMapper.selectByExample(example);
     }
 
-    public List<ArticleReply> querySelective2(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid, Integer toUserid,String startDate, String endDate,String nickName, Integer page, Integer size, String sort, String order) {
+    public List<ArticleReply> querySelective2(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid, Integer toUserid,String startDate, String endDate,String nickName,Integer type, Integer page, Integer size, String sort, String order) {
         ArticleReplyExample example = new ArticleReplyExample();
         ArticleReplyExample.Criteria criteria = example.createCriteria();
 
@@ -79,12 +79,19 @@ public class ArticleReplyService {
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order+" desc");
         }
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andCAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andCAccountIsNull();
+            }
+        }
 
         PageHelper.startPage(page, size);
         return articleReplyMapper.selectByExample2(example);
     }
 
-    public int countSelective(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid,Integer toUserid,String startDate, String endDate,String nickName,Integer page, Integer size, String sort, String order) {
+    public int countSelective(Integer commentId, Integer replyId, String replyType, String content, Integer fromUserid,Integer toUserid,String startDate, String endDate,String nickName,Integer type,Integer page, Integer size, String sort, String order) {
         ArticleReplyExample example = new ArticleReplyExample();
         ArticleReplyExample.Criteria criteria = example.createCriteria();
 
@@ -114,6 +121,13 @@ public class ArticleReplyService {
         }
         if(!StringUtils.isEmpty(nickName)){
             criteria.andCNickNameLike("%" + nickName + "%");
+        }
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andCAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andCAccountIsNull();
+            }
         }
 
         return (int) articleReplyMapper.countByExample(example);

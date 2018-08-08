@@ -27,6 +27,8 @@ public class HelpController {
     private LitemallGoodsSpecificationService specificationService;
     @Autowired
     private LitemallUserService litemallUserService;
+    @Autowired
+    private SysConfigService sysConfigService;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @GetMapping("/list")
@@ -57,6 +59,8 @@ public class HelpController {
         LitemallGoods goods = goodsService.findById(id);
         data.put("count",helpDetailService.countByGoodsId(id));
         data.put("goods", goods);
+        data.put("weixinhaoConfig",sysConfigService.queryByCode("guanfangweixinhao"));
+        data.put("erweimaConfig",sysConfigService.queryByCode("yinghuochongerweima"));
         return ResponseUtil.ok(data);
     }
 

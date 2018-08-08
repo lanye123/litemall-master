@@ -101,7 +101,7 @@ public class ArticleCommentService {
         articleCommentMapper.insertSelective(comment);
     }
 
-    public List<ArticleComment> query(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, String startDate, String endDate, String nickName, Integer page, Integer size, String sort, String order) {
+    public List<ArticleComment> query(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, String startDate, String endDate, String nickName,Integer type, Integer page, Integer size, String sort, String order) {
         ArticleCommentExample example = new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria = example.createCriteria();
 
@@ -132,13 +132,20 @@ public class ArticleCommentService {
         if(!StringUtils.isEmpty(order)){
             criteria.example().setOrderByClause(order);
         }
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andBAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andBAccountIsNull();
+            }
+        }
         if(page!=null&&size!=null){
             PageHelper.startPage(page, size);
         }
         return articleCommentMapper.selectByExample(example);
     }
 
-    public int count(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, String startDate, String endDate, String nickName, Integer page, Integer size, String sort, String order) {
+    public int count(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, String startDate, String endDate, String nickName,Integer type, Integer page, Integer size, String sort, String order) {
         ArticleCommentExample example = new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria = example.createCriteria();
 
@@ -165,6 +172,13 @@ public class ArticleCommentService {
         }
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
+        }
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andBAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andBAccountIsNull();
+            }
         }
 
         return (int) articleCommentMapper.countByExample(example);

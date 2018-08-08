@@ -590,6 +590,16 @@ public class ArticleReplyExample {
             return (Criteria) this;
         }
 
+        public Criteria andCAccountIsNull() {
+            addCriterion("c.account is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCAccountIsNotNull() {
+            addCriterion("c.account is not null");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNotNull() {
             addCriterion("`status` is not null");
             return (Criteria) this;
