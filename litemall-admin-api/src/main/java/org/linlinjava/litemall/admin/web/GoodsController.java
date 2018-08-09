@@ -82,6 +82,12 @@ public class GoodsController {
         if(!goods.getPrimaryPicUrl().contains(PREFIX)){
             goods.setPrimaryPicUrl(PREFIX+goods.getPrimaryPicUrl());
         }
+        if(!goods.getActPicUrl().contains(PREFIX)){
+            goods.setActPicUrl(PREFIX+goods.getActPicUrl());
+        }
+        if(!goods.getPosterPicUrl().contains(PREFIX)){
+            goods.setPosterPicUrl(PREFIX+goods.getPosterPicUrl());
+        }
         goodsService.add(goods);
         return ResponseUtil.ok(goods);
     }
@@ -132,6 +138,12 @@ public class GoodsController {
         }
         if(!goods.getPrimaryPicUrl().contains(PREFIX)){
             goods.setPrimaryPicUrl(PREFIX+goods.getPrimaryPicUrl());
+        }
+        if(!goods.getActPicUrl().contains(PREFIX)){
+            goods.setActPicUrl(PREFIX+goods.getActPicUrl());
+        }
+        if(!goods.getPosterPicUrl().contains(PREFIX)){
+            goods.setPosterPicUrl(PREFIX+goods.getPosterPicUrl());
         }
         goodsService.updateById(goods);
         return ResponseUtil.ok(goods);
