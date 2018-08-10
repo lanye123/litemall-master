@@ -168,6 +168,10 @@ public class LitemallUserExample {
                 addCriterion("dept_id =", value, "dept_id");
             return (Criteria) this;
         }
+        public Criteria andIsOrderEqualTo(Boolean value) {
+            addCriterion("is_order =", value, "is_order");
+            return (Criteria) this;
+        }
         public Criteria andBuIdEqualTo(Integer value) {
             addCriterion("bu_id =", value, "bu_id");
             return (Criteria) this;

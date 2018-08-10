@@ -136,4 +136,10 @@ public class WxUserController {
         litemallUserService.update(user);
         return ResponseUtil.ok(user);
     }
+
+    @GetMapping("getOpenid")
+    public Object getOpenid(@RequestParam Integer userId){
+        LitemallUser user=litemallUserService.findById(userId);
+        return ResponseUtil.ok(user.getWeixinOpenid());
+    }
 }

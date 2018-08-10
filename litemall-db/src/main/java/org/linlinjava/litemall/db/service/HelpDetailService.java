@@ -44,10 +44,10 @@ public class HelpDetailService {
         return helpDetailMapper.selectByExample(example);
     }
 
-    public HelpDetail validate(Integer userId, Integer goodsId) {
+    public HelpDetail validate(Integer userId, Integer goodsId,Integer orderId) {
         HelpDetailExample example=new HelpDetailExample();
         HelpDetailExample.Criteria criteria=example.createCriteria();
-        criteria.andUserIdEqualTo(userId).andGoodsIdEqualTo(goodsId);
+        criteria.andUserIdEqualTo(userId).andGoodsIdEqualTo(goodsId).andOrderIdEqualTo(orderId);
         return helpDetailMapper.selectOneByExample(example);
     }
 

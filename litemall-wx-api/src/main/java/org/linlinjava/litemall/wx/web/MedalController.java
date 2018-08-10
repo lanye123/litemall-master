@@ -37,6 +37,8 @@ public class MedalController {
     private ArticleCollectionService articleCollectionService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private WxMenuService wxMenuService;
 
     /**
      *@Author:lanye
@@ -99,6 +101,12 @@ public class MedalController {
                 data.put("dkStatus",0);
         }else
             data.put("dkStatus",0);
+
+        //获取"我的"模块中菜单信息by leiq 2018-8-10 10:45:54
+        List<WxMenu> menuList=wxMenuService.list();
+        if(menuList.size()>0)
+        data.put("menuList",menuList);
+
         return ResponseUtil.ok(data);
     }
 

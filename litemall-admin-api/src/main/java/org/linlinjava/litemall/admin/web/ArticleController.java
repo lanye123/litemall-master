@@ -202,7 +202,7 @@ public class ArticleController {
             if(a.getUserId()!=null){
                 url=article_url.replace("ARTICLEID",Integer.toString(article.getArticleId()));
                 LitemallUser user=litemallUserService.findById(a.getUserId());
-                if(StringUtils.isNotEmpty(user.getWeixinOpenid())){
+                if(StringUtils.isNotEmpty(user.getWeixinOpenid())&&user.getIsOrder().equals(false)){
                     List<WxFormid> list=wxFormidService.queryByStatus(user.getWeixinOpenid());
                     if(list.size()>0){
                         WxFormid form=list.get(0);

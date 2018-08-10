@@ -98,6 +98,9 @@ public class ArticleController {
             articleService.sortReader(articleList);
         }
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
+        Map<String, Object> data = new HashMap<>();
+        data.put("isOrder",user.getIsOrder());
+        articleVoList.add(data);
         if(articleList!=null && articleList.size()>0){
             for(Article article : articleList){
                 if(article==null){

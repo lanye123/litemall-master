@@ -62,10 +62,20 @@ public class LitemallUser {
 
     private Integer source;
 
+    private Boolean isOrder;
+
     //收货地址信息
     private String mobile2;
     private String name2;
     private String address2;
+
+    public Boolean getIsOrder() {
+        return isOrder;
+    }
+
+    public void setIsOrder(Boolean order) {
+        isOrder = order;
+    }
 
     public String getMobile2() {
         return mobile2;

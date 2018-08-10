@@ -283,12 +283,12 @@
       </table>
       <table tableName="wx_templete">
         <generatedKey column="id" sqlStatement="MySql" identity="true" />
-      </table>-->
+      </table>
         <table tableName="help_order">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
-        </table>
+        </table>-->
 
-        <table tableName="help_detail">
+        <table tableName="wx_menu">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
         </table>
 

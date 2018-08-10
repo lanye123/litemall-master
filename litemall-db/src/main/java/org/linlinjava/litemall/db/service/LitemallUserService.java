@@ -147,6 +147,8 @@ public class LitemallUserService {
 
     public List<LitemallUser> queryAll() {
         LitemallUserExample example=new LitemallUserExample();
+        LitemallUserExample.Criteria criteria=example.createCriteria();
+        criteria.andIsOrderEqualTo(false);
         return userMapper.selectByExample(example);
     }
 

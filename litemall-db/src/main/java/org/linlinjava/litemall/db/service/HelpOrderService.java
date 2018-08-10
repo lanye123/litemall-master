@@ -39,4 +39,8 @@ public class HelpOrderService {
     public HelpOrder load(Integer orderId) {
         return helpOrderMapper.selectByPrimaryKey(orderId);
     }
+
+    public void update(HelpOrder order) {
+        helpOrderMapper.updateByPrimaryKey(order);
+    }
 }
