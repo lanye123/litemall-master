@@ -79,13 +79,13 @@ public class GoodsController {
             goods.setListPicUrl(listPicUrlArray.toJSONString());
             logger.info("after goods："+goods);
         }
-        if(!goods.getPrimaryPicUrl().contains(PREFIX)){
+        if(!StringUtils.isEmpty(goods.getPrimaryPicUrl())&&!goods.getPrimaryPicUrl().contains(PREFIX)){
             goods.setPrimaryPicUrl(PREFIX+goods.getPrimaryPicUrl());
         }
-        if(!goods.getActPicUrl().contains(PREFIX)){
+        if(!StringUtils.isEmpty(goods.getActPicUrl())&&!goods.getActPicUrl().contains(PREFIX)){
             goods.setActPicUrl(PREFIX+goods.getActPicUrl());
         }
-        if(!goods.getPosterPicUrl().contains(PREFIX)){
+        if(!StringUtils.isEmpty(goods.getPosterPicUrl())&&!goods.getPosterPicUrl().contains(PREFIX)){
             goods.setPosterPicUrl(PREFIX+goods.getPosterPicUrl());
         }
         goodsService.add(goods);
@@ -136,13 +136,13 @@ public class GoodsController {
             goods.setListPicUrl(listPicUrlArray.toJSONString());
             logger.info("after  goods："+goods);
         }
-        if(!goods.getPrimaryPicUrl().contains(PREFIX)){
+        if(!StringUtils.isEmpty(goods.getPrimaryPicUrl())&&!goods.getPrimaryPicUrl().contains(PREFIX)){
             goods.setPrimaryPicUrl(PREFIX+goods.getPrimaryPicUrl());
         }
-        if(!goods.getActPicUrl().contains(PREFIX)){
+        if(!StringUtils.isEmpty(goods.getActPicUrl())&&!goods.getActPicUrl().contains(PREFIX)){
             goods.setActPicUrl(PREFIX+goods.getActPicUrl());
         }
-        if(!goods.getPosterPicUrl().contains(PREFIX)){
+        if(!StringUtils.isEmpty(goods.getPosterPicUrl())&&!goods.getPosterPicUrl().contains(PREFIX)){
             goods.setPosterPicUrl(PREFIX+goods.getPosterPicUrl());
         }
         goodsService.updateById(goods);
