@@ -26,17 +26,39 @@ public class ArticleComment {
 
     private String mobile;
 
-    private Integer countPraise;
+    private Integer countPraise = 0;
 
     private String account;
 
     //回复次数
-    private Integer replyCount;
+    private Integer replyCount = 0;
 
     //书籍名称
     private String title;
     //书籍图片
     private String photoUrl;
+
+    //评论次数
+    private Integer commentCount = 0;
+
+    //悦读会积分
+    private Integer integral = 0;
+
+    public Integer getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(Integer integral) {
+        this.integral = integral;
+    }
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
 
     public String getPhotoUrl() {
         return photoUrl;

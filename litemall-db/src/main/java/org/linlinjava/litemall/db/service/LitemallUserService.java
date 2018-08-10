@@ -34,7 +34,7 @@ public class LitemallUserService {
     }
 
     public void add(LitemallUser user) {
-        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),"",null,null,null,"","")>0){
+        if(litemallUserService.countSeletive("","",user.getWeixinOpenid(),"",null,"",null,null,"","")>0){
             return;
         }
         userMapper.insertSelective(user);
@@ -50,12 +50,15 @@ public class LitemallUserService {
         userMapper.updateByPrimaryKeySelective(user);
     }
 
-    public List<LitemallUser> querySelective(String username, String mobile, String weixinOpenid, String registerIp,Integer type, Integer page, Integer size, String sort, String order) {
+    public List<LitemallUser> querySelective(String username, String mobile, String weixinOpenid, String registerIp,Integer type, String nickname,Integer page, Integer size, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
 
         if(!StringUtils.isEmpty(username)){
             criteria.andUsernameLike("%" + username + "%");
+        }
+        if(!StringUtils.isEmpty(nickname)){
+            criteria.andNicknameLike("%" + nickname + "%");
         }
         if(!StringUtils.isEmpty(mobile)){
             criteria.andMobileEqualTo(mobile);
@@ -85,12 +88,15 @@ public class LitemallUserService {
         return userMapper.selectByExample(example);
     }
 
-    public int countSeletive(String username, String mobile, String weixinOpenid, String registerIp, Integer type ,Integer page, Integer size, String sort, String order) {
+    public int countSeletive(String username, String mobile, String weixinOpenid, String registerIp, Integer type ,String nickname,Integer page, Integer size, String sort, String order) {
         LitemallUserExample example = new LitemallUserExample();
         LitemallUserExample.Criteria criteria = example.createCriteria();
 
         if(!StringUtils.isEmpty(username)){
             criteria.andUsernameLike("%" + username + "%");
+        }
+        if(!StringUtils.isEmpty(nickname)){
+            criteria.andNicknameLike("%" + nickname + "%");
         }
         if(!StringUtils.isEmpty(mobile)){
             criteria.andMobileEqualTo(mobile);

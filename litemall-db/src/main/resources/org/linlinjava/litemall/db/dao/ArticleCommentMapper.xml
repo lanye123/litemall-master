@@ -27,6 +27,14 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="photo_url" jdbcType="VARCHAR" property="photoUrl" />
   </resultMap>
+  <resultMap id="BaseResultMap3" type="org.linlinjava.litemall.db.domain.ArticleComment">
+    <result column="commentCount" jdbcType="INTEGER" property="commentCount" />
+    <result column="from_userid" jdbcType="INTEGER" property="fromUserid" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickName" />
+    <result column="register_ip" jdbcType="VARCHAR" property="registerIp" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -101,6 +109,36 @@
     <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
+  </select>
+  <select id="selectByExample2" parameterType="org.linlinjava.litemall.db.domain.ArticleCommentExample" resultMap="BaseResultMap2">
+    select
+    a.id, a.article_id, a.category_name, a.category_id, a.content, a.from_userid, a.status, a.create_date,
+    b.nickname,b.register_ip,b.mobile,b.account,c.title,c.photo_url
+    from article_comment a
+    LEFT JOIN litemall_user b on a.from_userid = b.id
+    LEFT JOIN article c on a.article_id = c.article_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="groupByClause != null">
+      group by ${groupByClause}
+    </if>
+  </select>
+  <select id="selectByExample3" parameterType="org.linlinjava.litemall.db.domain.ArticleCommentExample" resultMap="BaseResultMap3">
+    select count(1) commentCount,a.from_userid,b.account,b.nickname,b.register_ip,b.mobile
+    from article_comment a
+    LEFT JOIN litemall_user b on a.from_userid = b.id
+    LEFT JOIN article c on a.article_id = c.article_id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+      group by from_userid
   </select>
   <select id="selectByExampleSelective" parameterType="map" resultMap="BaseResultMap">
     <!--
