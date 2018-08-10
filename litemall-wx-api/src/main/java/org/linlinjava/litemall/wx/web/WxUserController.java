@@ -53,7 +53,7 @@ public class WxUserController {
         if(StringUtils.isEmpty(user.getWeixinOpenid())){
             return ResponseUtil.badArgument();
         }
-        List<LitemallUser> userList = litemallUserService.querySelective("","",user.getWeixinOpenid(),"",null,null,null,"","add_time desc");
+        List<LitemallUser> userList = litemallUserService.querySelective("","",user.getWeixinOpenid(),"",null,"",null,null,"","add_time desc");
         if(userList!=null && userList.size()>0){
             user.setId(userList.get(0).getId());
             user.setNickname(filterEmoji(user.getNickname()));
@@ -111,7 +111,7 @@ public class WxUserController {
       **/
     @GetMapping("/user")
     public Object getUser(Integer userId,String openId){
-        List<LitemallUser> userList = litemallUserService.querySelective("","",openId,"",null,null,null,"","");
+        List<LitemallUser> userList = litemallUserService.querySelective("","",openId,"",null,"",null,null,"","");
         if(userList==null || userList.size()<=0){
             return  ResponseUtil.fail(500,"该openId不存在");
         }else {

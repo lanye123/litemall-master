@@ -164,6 +164,23 @@ public class ArticleCommentController {
     public Object create(@RequestBody ArticleComment comment,Integer from_userid){
         if(from_userid!=null)
             comment.setFromUserid(from_userid);
+        LitemallUser user = litemallUserService.findById(comment.getFromUserid());
+        if(user==null){
+            return ResponseUtil.badArgument();
+        }
+        if(!StringUtils.isEmpty(user.getAccount())){
+            Set<String> set = new HashSet<>();
+            List<ArticleComment> articleCommentList = articleCommentService.myquery(comment.getFromUserid(),"",null,null);
+            for(ArticleComment articleComment:articleCommentList){
+                set.add(articleComment.getContent());
+            }
+            int old = set.size();
+            set.add(comment.getContent());
+            int ne = set.size();
+            if(old==ne&&comment.getContent().length()>50){
+                return ResponseUtil.fail(101,"该内容已经回复过了，换个内容吧");
+            }
+        }
         articleCommentService.add(comment);
         return ResponseUtil.ok();
     }

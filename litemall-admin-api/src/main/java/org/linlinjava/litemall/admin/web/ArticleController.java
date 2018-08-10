@@ -67,7 +67,7 @@ public class ArticleController {
     @GetMapping("/list")
     public Object list(String title,String author,Integer articleId,Integer categoryId,String flag,Integer status,
                        @RequestParam(value = "page", defaultValue = "1") Integer page,
-                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                       @RequestParam(value = "limit2", defaultValue = "10") Integer limit,
                        String sort, String order){
 
         List<Article> articleList = articleService.queryBySelective(title,author,articleId,categoryId,flag,"",status, page, limit, sort, order);
@@ -326,7 +326,7 @@ public class ArticleController {
         if(notesTemps==null || notesTemps.size()==0){
             return ResponseUtil.ok(article);
         }
-        List<LitemallUser> userList = litemallUserService.querySelective("","","","",null,null,null,null,"");
+        List<LitemallUser> userList = litemallUserService.querySelective("","","","",null,"",null,null,null,"");
         NotesTemp notesTemp = notesTemps.get(0);
         Notes notes;
         Notes notesDb;

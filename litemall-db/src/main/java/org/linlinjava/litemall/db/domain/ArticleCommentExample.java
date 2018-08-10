@@ -6,12 +6,22 @@ import java.util.List;
 public class ArticleCommentExample {
     protected String orderByClause;
 
+    protected String groupByClause;
+
     protected boolean distinct;
 
     protected List<Criteria> oredCriteria;
 
     public ArticleCommentExample() {
         oredCriteria = new ArrayList<Criteria>();
+    }
+
+    public String getGroupByClause() {
+        return groupByClause;
+    }
+
+    public void setGroupByClause(String groupByClause) {
+        this.groupByClause = groupByClause;
     }
 
     public void setOrderByClause(String orderByClause) {
@@ -442,6 +452,11 @@ public class ArticleCommentExample {
 
         public Criteria andContentLike(String value) {
             addCriterion("content like", value, "content");
+            return (Criteria) this;
+        }
+
+        public Criteria andContentCharLength() {
+            addCriterion("CHAR_LENGTH(content)>50");
             return (Criteria) this;
         }
 

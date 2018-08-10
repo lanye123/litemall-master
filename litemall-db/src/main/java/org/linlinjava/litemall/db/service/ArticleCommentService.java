@@ -145,6 +145,80 @@ public class ArticleCommentService {
         return articleCommentMapper.selectByExample(example);
     }
 
+    public List<ArticleComment> list(Integer articleId, String startDate, String endDate,Integer type,List<Integer> values, Integer page, Integer size, String group, String order) {
+        ArticleCommentExample example = new ArticleCommentExample();
+        ArticleCommentExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andAArticleIdEqualTo(articleId);
+        }
+        if(values!=null&&values.size()>0){
+            criteria.andFromUseridIn(values);
+        }
+        if(!StringUtils.isEmpty(startDate)){
+            criteria.andACreateDateGreaterThanOrEqualTo(startDate);
+        }
+        if(!StringUtils.isEmpty(endDate)){
+            criteria.andACreateDateLessThanOrEqualTo(endDate);
+        }
+        criteria.andContentCharLength();
+        if(!StringUtils.isEmpty(order)){
+            criteria.example().setOrderByClause(order);
+        }
+        if(!StringUtils.isEmpty(group)){
+            criteria.example().setGroupByClause(group);
+        }
+        criteria.andFromUseridIsNotNull();
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andBAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andBAccountIsNull();
+            }
+        }
+        if(page!=null&&size!=null){
+            PageHelper.startPage(page, size);
+        }
+        return articleCommentMapper.selectByExample2(example);
+    }
+
+    public List<ArticleComment> list2(Integer articleId, String startDate, String endDate,Integer type,List<Integer> values, Integer page, Integer size, String group, String order) {
+        ArticleCommentExample example = new ArticleCommentExample();
+        ArticleCommentExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andAArticleIdEqualTo(articleId);
+        }
+        if(values!=null&&values.size()>0){
+            criteria.andFromUseridIn(values);
+        }
+        if(!StringUtils.isEmpty(startDate)){
+            criteria.andACreateDateGreaterThanOrEqualTo(startDate);
+        }
+        if(!StringUtils.isEmpty(endDate)){
+            criteria.andACreateDateLessThanOrEqualTo(endDate);
+        }
+        criteria.andContentCharLength();
+        if(!StringUtils.isEmpty(order)){
+            criteria.example().setOrderByClause(order);
+        }
+        if(!StringUtils.isEmpty(group)){
+            criteria.example().setGroupByClause(group);
+        }
+        criteria.andFromUseridIsNotNull();
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andBAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andBAccountIsNull();
+            }
+        }
+        if(page!=null&&size!=null){
+            PageHelper.startPage(page, size);
+        }
+        return articleCommentMapper.selectByExample3(example);
+    }
+
     public int count(Integer articleId, String categoryName, Integer categoryId, String content, Integer fromUserid, String startDate, String endDate, String nickName,Integer type, Integer page, Integer size, String sort, String order) {
         ArticleCommentExample example = new ArticleCommentExample();
         ArticleCommentExample.Criteria criteria = example.createCriteria();
@@ -172,6 +246,34 @@ public class ArticleCommentService {
         }
         if(!StringUtils.isEmpty(content)){
             criteria.andContentLike("%" + content + "%");
+        }
+        if(!StringUtils.isEmpty(type)){
+            if(type==0){
+                criteria.andBAccountIsNotNull();
+            }else if(type == 1){
+                criteria.andBAccountIsNull();
+            }
+        }
+
+        return (int) articleCommentMapper.countByExample(example);
+    }
+
+    public int count2(Integer articleId,String startDate, String endDate, Integer type, Integer page, Integer size, String group, String order) {
+        ArticleCommentExample example = new ArticleCommentExample();
+        ArticleCommentExample.Criteria criteria = example.createCriteria();
+
+        if(!StringUtils.isEmpty(articleId)){
+            criteria.andAArticleIdEqualTo(articleId);
+        }
+        if(!StringUtils.isEmpty(startDate)){
+            criteria.andACreateDateGreaterThanOrEqualTo(startDate);
+        }
+        if(!StringUtils.isEmpty(endDate)){
+            criteria.andACreateDateLessThanOrEqualTo(endDate);
+        }
+        criteria.andContentCharLength();
+        if(!StringUtils.isEmpty(group)){
+            criteria.example().setGroupByClause(group);
         }
         if(!StringUtils.isEmpty(type)){
             if(type==0){
