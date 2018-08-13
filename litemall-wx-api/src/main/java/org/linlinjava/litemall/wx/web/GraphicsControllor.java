@@ -5,10 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.linlinjava.litemall.db.domain.*;
-import org.linlinjava.litemall.db.service.HelpOrderService;
-import org.linlinjava.litemall.db.service.LitemallGoodsService;
-import org.linlinjava.litemall.db.service.LitemallUserService;
-import org.linlinjava.litemall.db.service.WxConfigService;
+import org.linlinjava.litemall.db.service.*;
 import org.linlinjava.litemall.db.util.ResponseUtil;
 import org.linlinjava.litemall.wx.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/wx/graphics")
 public class GraphicsControllor {
-    @Resource
+    @Autowired
     private LitemallUserService litemallUserService;
     @Autowired
     private LitemallGoodsService litemallGoodsService;
@@ -39,6 +36,8 @@ public class GraphicsControllor {
     private HelpOrderService helpOrderService;
     @Autowired
     private WxConfigService wxConfigService;
+    @Autowired
+    private HbPhotoHisService hbPhotoHisService;
     private final Log logger = LogFactory.getLog(GraphicsControllor.class);
     private BufferedImage image;
     private BufferedImage image2;
@@ -562,9 +561,13 @@ public class GraphicsControllor {
 
     @GetMapping("helpPhoto")
     public Object helpPhoto(Integer orderId,Integer userId,Integer flag) {
+        Map data = new HashMap();
+        String photoUrl=hbPhotoHisService.load(userId,orderId);
+        if(StringUtils.isNotEmpty(photoUrl)){
+            data.put("imgUrl",photoUrl);
+        }else{
         String codeUrl=this.generatorCodeUrl(orderId,userId,flag);
         //String codeUrl="http://10.248.63.150/images/code/1528189722585.jpg";
-        Map data = new HashMap();
         HelpOrder order=helpOrderService.load(orderId);
         LitemallGoods goods=litemallGoodsService.findById(order.getGoodsId());
         if(StringUtils.isNotEmpty(goods.getGoodsBrief()))
@@ -749,6 +752,13 @@ public class GraphicsControllor {
         String dataPath = temp.replaceAll("\\\\", "/") + newFileName;
         data.put("imgUrl", serverurl + dataPath);
         data.put("desk_url", filePath + newFileName);
+        HbPhotoHis his=new HbPhotoHis();
+        his.setUserId(userId);
+        his.setImgUrl(serverurl + dataPath);
+        his.setOrderId(orderId);
+        his.setType(2);//海报类型1抽奖单0拼团单2助力单
+        hbPhotoHisService.create(his);
+        }
         return ResponseUtil.ok(data);
     }
 
@@ -1793,174 +1803,191 @@ public class GraphicsControllor {
         return datapath;
     }
 
-
+/**
+ * @Author leiqiang
+ * @Description //TODO 积分商城拼团单海报生成
+ * @Date   2018/8/13 10:33
+ * @Param  [goodsId, number, productId, userId, flag, orderId, type]
+ * @return java.lang.Object
+ **/
     @GetMapping("jfdPhoto")
-    public Object jfdPhoto(Integer goodsId,Integer pid,Integer number,Integer productId,Integer userId,Integer flag) {
-        String codeUrl=this.jfdPhotoCodeUrl(userId,goodsId,flag,pid,number,productId);
-        //String codeUrl="http://10.248.63.150/images/code/1528189722585.jpg";
+    public Object jfdPhoto(Integer goodsId,Integer number,Integer productId,Integer userId,Integer flag,Integer orderId,Integer type) {
         Map data = new HashMap();
-        LitemallGoods goods=litemallGoodsService.findById(goodsId);
-        if(StringUtils.isNotEmpty(goods.getGoodsBrief()))
-            data.put("content",goods.getGoodsBrief());
-        String imgurl=goods.getPosterPicUrl();
-        LitemallUser user = litemallUserService.findById(userId);
-        String nickname=user.getNickname();
-        String avatar=user.getAvatar();
-        image = new BufferedImage(csimageWidth, csimageHeight, BufferedImage.TYPE_INT_RGB);
-        //设置图片的背景色
-        Graphics2D main = image.createGraphics();
-        main.fillRect(0, 0, csimageWidth, csimageHeight);
+        String photoUrl=hbPhotoHisService.load(userId,orderId);
+        if(StringUtils.isNotEmpty(photoUrl)){
+            data.put("imgUrl",photoUrl);
+        }else {
+            String codeUrl = this.jfdPhotoCodeUrl(userId, goodsId, flag, number, productId);
+            //String codeUrl="http://10.248.63.150/images/code/1528189722585.jpg";
+            LitemallGoods goods = litemallGoodsService.findById(goodsId);
+            if (StringUtils.isNotEmpty(goods.getGoodsBrief()))
+                data.put("content", goods.getGoodsBrief());
+            String imgurl = goods.getPosterPicUrl();
+            LitemallUser user = litemallUserService.findById(userId);
+            String nickname = user.getNickname();
+            String avatar = user.getAvatar();
+            image = new BufferedImage(csimageWidth, csimageHeight, BufferedImage.TYPE_INT_RGB);
+            //设置图片的背景色
+            Graphics2D main = image.createGraphics();
+            main.fillRect(0, 0, csimageWidth, csimageHeight);
 
 
-        //***********************插入中间广告图
-        Graphics mainPic = image.getGraphics();
-        BufferedImage bimg = null;
-        try {
-            URL url2 = new URL(imgurl);
-            URLConnection con2 = url2.openConnection();
-            //不超时
-            con2.setConnectTimeout(0);
-
-            //不允许缓存
-            con2.setUseCaches(false);
-            con2.setDefaultUseCaches(false);
-            InputStream is2 = con2.getInputStream();
-
-            //先读入内存
-            ByteArrayOutputStream buf2 = new ByteArrayOutputStream(8192);
-            byte[] b2 = new byte[1024];
-            int len2;
-            while ((len2 = is2.read(b2)) != -1) {
-                buf2.write(b2, 0, len2);
-            }
-            //读图像
-            is2 = new ByteArrayInputStream(buf2.toByteArray());
-            bimg = javax.imageio.ImageIO.read(is2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (bimg != null) {
-            mainPic.drawImage(bimg, 0, 0, csimageWidth, csimageHeight, null);
-            mainPic.dispose();
-        }
-
-        //***********************插入用户头像
-
-        if (StringUtils.isNotEmpty(avatar)) {
-            Graphics mainPic3 = image.getGraphics();
-            BufferedImage bimg3 = null;
+            //***********************插入中间广告图
+            Graphics mainPic = image.getGraphics();
+            BufferedImage bimg = null;
             try {
-                URL url3 = new URL(avatar);
-                URLConnection con3 = url3.openConnection();
+                URL url2 = new URL(imgurl);
+                URLConnection con2 = url2.openConnection();
                 //不超时
-                con3.setConnectTimeout(0);
+                con2.setConnectTimeout(0);
 
                 //不允许缓存
-                con3.setUseCaches(false);
-                con3.setDefaultUseCaches(false);
-                InputStream is3 = con3.getInputStream();
+                con2.setUseCaches(false);
+                con2.setDefaultUseCaches(false);
+                InputStream is2 = con2.getInputStream();
 
                 //先读入内存
-                ByteArrayOutputStream buf3 = new ByteArrayOutputStream(8192);
-                byte[] b3 = new byte[1024];
-                int len3;
-                while ((len3 = is3.read(b3)) != -1) {
-                    buf3.write(b3, 0, len3);
+                ByteArrayOutputStream buf2 = new ByteArrayOutputStream(8192);
+                byte[] b2 = new byte[1024];
+                int len2;
+                while ((len2 = is2.read(b2)) != -1) {
+                    buf2.write(b2, 0, len2);
                 }
                 //读图像
-                is3 = new ByteArrayInputStream(buf3.toByteArray());
-                bimg3 = ImageIO.read(is3);
+                is2 = new ByteArrayInputStream(buf2.toByteArray());
+                bimg = javax.imageio.ImageIO.read(is2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            if (bimg3 != null) {
-                mainPic3.drawImage(bimg3, 65, csimageHeight - 120, 60, 60, null);
-                mainPic3.dispose();
+            if (bimg != null) {
+                mainPic.drawImage(bimg, 0, 0, csimageWidth, csimageHeight, null);
+                mainPic.dispose();
             }
-        }
-        Graphics2D tip4 = image.createGraphics();
-        Font tipFont4 = new Font("苹方 常规", Font.PLAIN, 22);
-        tip4.setColor(Color.black);
-        tip4.setFont(tipFont4);
-        tip4.drawString("我是", 135, csimageHeight - 95);
 
-        Graphics2D tip6 = image.createGraphics();
-        Font tipFont6 = new Font("苹方 常规", Font.PLAIN, 22);
-        tip6.setColor(Color.red);
-        tip6.setFont(tipFont6);
-        tip6.drawString(nickname, 178, csimageHeight - 95);
+            //***********************插入用户头像
 
+            if (StringUtils.isNotEmpty(avatar)) {
+                Graphics mainPic3 = image.getGraphics();
+                BufferedImage bimg3 = null;
+                try {
+                    URL url3 = new URL(avatar);
+                    URLConnection con3 = url3.openConnection();
+                    //不超时
+                    con3.setConnectTimeout(0);
 
-        Graphics2D tip5 = image.createGraphics();
-        Font tipFont5 = new Font("苹方 常规", Font.PLAIN, 22);
-        tip5.setColor(Color.black);
-        tip5.setFont(tipFont5);
-        tip5.drawString("朋友帮我砍个价吧", 135, csimageHeight - 65);
+                    //不允许缓存
+                    con3.setUseCaches(false);
+                    con3.setDefaultUseCaches(false);
+                    InputStream is3 = con3.getInputStream();
 
-        if (StringUtils.isNotEmpty(codeUrl)) {
-            Graphics mainPic6 = image.getGraphics();
-            BufferedImage bimg6 = null;
-            try {
-                URL url6 = new URL(codeUrl);
-                URLConnection con6 = url6.openConnection();
-                //不超时
-                con6.setConnectTimeout(0);
-
-                //不允许缓存
-                con6.setUseCaches(false);
-                con6.setDefaultUseCaches(false);
-                InputStream is6 = con6.getInputStream();
-
-                //先读入内存
-                ByteArrayOutputStream buf6 = new ByteArrayOutputStream(8192);
-                byte[] b6 = new byte[1024];
-                int len6;
-                while ((len6 = is6.read(b6)) != -1) {
-                    buf6.write(b6, 0, len6);
+                    //先读入内存
+                    ByteArrayOutputStream buf3 = new ByteArrayOutputStream(8192);
+                    byte[] b3 = new byte[1024];
+                    int len3;
+                    while ((len3 = is3.read(b3)) != -1) {
+                        buf3.write(b3, 0, len3);
+                    }
+                    //读图像
+                    is3 = new ByteArrayInputStream(buf3.toByteArray());
+                    bimg3 = ImageIO.read(is3);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                //读图像
-                is6 = new ByteArrayInputStream(buf6.toByteArray());
-                bimg6 = ImageIO.read(is6);
-            } catch (Exception e) {
-                e.printStackTrace();
+
+                if (bimg3 != null) {
+                    mainPic3.drawImage(bimg3, 65, csimageHeight - 120, 60, 60, null);
+                    mainPic3.dispose();
+                }
+            }
+            Graphics2D tip4 = image.createGraphics();
+            Font tipFont4 = new Font("苹方 常规", Font.PLAIN, 22);
+            tip4.setColor(Color.black);
+            tip4.setFont(tipFont4);
+            tip4.drawString("我是", 135, csimageHeight - 95);
+
+            Graphics2D tip6 = image.createGraphics();
+            Font tipFont6 = new Font("苹方 常规", Font.PLAIN, 22);
+            tip6.setColor(Color.red);
+            tip6.setFont(tipFont6);
+            tip6.drawString(nickname, 178, csimageHeight - 95);
+
+
+            Graphics2D tip5 = image.createGraphics();
+            Font tipFont5 = new Font("苹方 常规", Font.PLAIN, 22);
+            tip5.setColor(Color.black);
+            tip5.setFont(tipFont5);
+            tip5.drawString("朋友帮我砍个价吧", 135, csimageHeight - 65);
+
+            if (StringUtils.isNotEmpty(codeUrl)) {
+                Graphics mainPic6 = image.getGraphics();
+                BufferedImage bimg6 = null;
+                try {
+                    URL url6 = new URL(codeUrl);
+                    URLConnection con6 = url6.openConnection();
+                    //不超时
+                    con6.setConnectTimeout(0);
+
+                    //不允许缓存
+                    con6.setUseCaches(false);
+                    con6.setDefaultUseCaches(false);
+                    InputStream is6 = con6.getInputStream();
+
+                    //先读入内存
+                    ByteArrayOutputStream buf6 = new ByteArrayOutputStream(8192);
+                    byte[] b6 = new byte[1024];
+                    int len6;
+                    while ((len6 = is6.read(b6)) != -1) {
+                        buf6.write(b6, 0, len6);
+                    }
+                    //读图像
+                    is6 = new ByteArrayInputStream(buf6.toByteArray());
+                    bimg6 = ImageIO.read(is6);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (bimg6 != null) {
+                    mainPic6.drawImage(bimg6, 565, helpimageHeight - 200, 150, 150, null);
+                    mainPic6.dispose();
+                }
             }
 
-            if (bimg6 != null) {
-                mainPic6.drawImage(bimg6, 565, helpimageHeight - 200, 150, 150, null);
-                mainPic6.dispose();
+
+            String temp = "images" + File.separator + "temp" + File.separator;
+            // 新的图片文件名 = 获取时间戳+"."图片扩展名
+            String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
+            // 文件路径
+            String filePath = webUploadPath.concat(temp);
+
+            File dest = new File(filePath, newFileName);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
             }
+            createImage(filePath + newFileName);
+            System.out.println(filePath + newFileName);
+            // 将反斜杠转换为正斜杠
+            String dataPath = temp.replaceAll("\\\\", "/") + newFileName;
+            data.put("imgUrl", serverurl + dataPath);
+            data.put("desk_url", filePath + newFileName);
+            HbPhotoHis his=new HbPhotoHis();
+            his.setUserId(userId);
+            his.setImgUrl(serverurl + dataPath);
+            his.setOrderId(orderId);
+            his.setType(type);//海报类型1抽奖单0拼团单2助力单
+            hbPhotoHisService.create(his);
         }
-
-
-        String temp = "images" + File.separator + "temp" + File.separator;
-        // 新的图片文件名 = 获取时间戳+"."图片扩展名
-        String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
-        // 文件路径
-        String filePath = webUploadPath.concat(temp);
-
-        File dest = new File(filePath, newFileName);
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        }
-        createImage(filePath + newFileName);
-        System.out.println(filePath + newFileName);
-        // 将反斜杠转换为正斜杠
-        String dataPath = temp.replaceAll("\\\\", "/") + newFileName;
-        data.put("imgUrl", serverurl + dataPath);
-        data.put("desk_url", filePath + newFileName);
         return ResponseUtil.ok(data);
     }
 
-    private String jfdPhotoCodeUrl(Integer userId, Integer goodsId, Integer flag, Integer pid, Integer number, Integer productId) {
+    private String jfdPhotoCodeUrl(Integer userId, Integer goodsId, Integer flag,Integer number, Integer productId) {
         String scene="";
         String datapath="";
         LitemallUser user=litemallUserService.findById(userId);
         if(user!=null&&StringUtils.isNotEmpty(user.getPid())){
-            scene=userId+"#"+goodsId+"#"+flag+"#"+number+"#"+productId;
+            scene=userId+"#"+goodsId+"#"+number+"#"+productId+"#"+flag;
         }else{
-            scene="#"+goodsId+"#"+flag+"#"+number+"#"+productId;
+            scene="#"+goodsId+"#"+number+"#"+productId+"#"+flag;
         }
         WxConfig config=wxConfigService.getToken();
         JSONObject object=new JSONObject();
