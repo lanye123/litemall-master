@@ -571,7 +571,7 @@ public class GraphicsControllor {
         HelpOrder order=helpOrderService.load(orderId);
         LitemallGoods goods=litemallGoodsService.findById(order.getGoodsId());
         if(StringUtils.isNotEmpty(goods.getGoodsBrief()))
-        data.put("content",goods.getGoodsBrief());
+        data.put("content",goods.getContent());
         String imgurl=goods.getPosterPicUrl();
         LitemallUser user = litemallUserService.findById(userId);
         String nickname=user.getNickname();
