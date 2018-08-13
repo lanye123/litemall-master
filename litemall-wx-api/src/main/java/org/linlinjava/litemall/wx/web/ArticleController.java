@@ -77,10 +77,12 @@ public class ArticleController {
     */
     @GetMapping("list")
     private Object list(String categoryIds,String flag,Integer userId){
+        Map<String, Object> data = new HashMap<>();
         LitemallUser user = litemallUserService.findById(userId);
         if(user==null){
             return ResponseUtil.badArgumentValue();
         }
+        data.put("isOrder",user.getIsOrder());
         Integer lock;
         if(StringUtils.isEmpty(user.getAccount())){
             lock = 0;
@@ -98,9 +100,9 @@ public class ArticleController {
             articleService.sortReader(articleList);
         }
         List<Map<String, Object>> articleVoList = new ArrayList<>(articleList.size());
-        Map<String, Object> data = new HashMap<>();
-        data.put("isOrder",user.getIsOrder());
-        articleVoList.add(data);
+        //Map<String, Object> data = new HashMap<>();
+        //data.put("isOrder",user.getIsOrder());
+        //articleVoList.add(data);
         if(articleList!=null && articleList.size()>0){
             for(Article article : articleList){
                 if(article==null){
@@ -167,7 +169,8 @@ public class ArticleController {
                 articleVoList.add(articleVo);
             }
         }
-        return ResponseUtil.ok(articleVoList);
+        data.put("articleVoList",articleVoList);
+        return ResponseUtil.ok(data);
     }
 
     /**

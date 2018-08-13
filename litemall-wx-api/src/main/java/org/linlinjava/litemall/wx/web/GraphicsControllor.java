@@ -1954,7 +1954,7 @@ public class GraphicsControllor {
             }
 
 
-            String temp = "images" + File.separator + "temp" + File.separator;
+            String temp = "images" + File.separator + "code" + File.separator;
             // 新的图片文件名 = 获取时间戳+"."图片扩展名
             String newFileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
             // 文件路径
