@@ -1985,10 +1985,11 @@ public class GraphicsControllor {
         String datapath="";
         LitemallUser user=litemallUserService.findById(userId);
         if(user!=null&&StringUtils.isNotEmpty(user.getPid())){
-            scene=userId+"#"+goodsId+"#"+number+"#"+productId+"#"+flag;
+            scene="1"+"="+userId+"2"+"="+goodsId+"3"+"="+number+"4"+"="+productId+"5"+"="+flag;
         }else{
-            scene="#"+goodsId+"#"+number+"#"+productId+"#"+flag;
+            scene="2"+"="+goodsId+"3"+"="+number+"4"+"="+productId+"5"+"="+flag;
         }
+        System.out.println(scene);
         WxConfig config=wxConfigService.getToken();
         JSONObject object=new JSONObject();
         object.put("page","pages/GroupOrder/main");
