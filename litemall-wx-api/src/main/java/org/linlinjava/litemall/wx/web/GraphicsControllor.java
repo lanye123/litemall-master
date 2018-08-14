@@ -1751,9 +1751,9 @@ public class GraphicsControllor {
         String datapath="";
         LitemallUser user=litemallUserService.findById(userId);
         if(user!=null&&StringUtils.isNotEmpty(user.getPid())){
-            scene=userId+"#"+orderId+"#"+flag;
+            scene="userId="+userId+"orderId="+orderId+"flag="+flag;
         }else{
-            scene="#"+orderId+"#"+flag;
+            scene="orderId="+orderId+"flag="+flag;
         }
         WxConfig config=wxConfigService.getToken();
         JSONObject object=new JSONObject();
