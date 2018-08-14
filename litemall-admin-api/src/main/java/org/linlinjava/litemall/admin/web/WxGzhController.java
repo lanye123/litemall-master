@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -176,6 +177,51 @@ public class WxGzhController {
             }
         }
     }
+
+    @PostMapping("fansSend")
+    public Object fansSend(@RequestBody LinkedHashMap obBody){
+        String openIds = (String) obBody.get("openIds");
+        if (openIds==null || openIds.length()==0){
+            return ResponseUtil.ok();
+        }
+        String[] ids = openIds.split(",");
+        LinkedHashMap body = (LinkedHashMap) obBody.get("body");
+        String templete_id = (String) body.get("templeteId");
+        String first_str = (String) body.get("first");
+        String keyword1_str = (String) body.get("keyword1");
+        String keyword2_str = (String) body.get("keyword2");
+        String keyword3_str = (String) body.get("keyword3");
+        String keyword4_str = (String) body.get("keyword4");
+        String keyword5_str = (String) body.get("keyword5");
+        String remark_str = (String) body.get("remark");
+        String url= (String) body.get("url");//跳转链接
+        String pagepath= (String) body.get("pagepath");//小程序链接
+        WxTempleteSendStatus sendStatus=new WxTempleteSendStatus();
+        sendStatus.setTempleteId(templete_id);
+        sendStatus.setTitle(first_str);
+        wxTempleteSendStatusService.create(sendStatus);
+        for (String id:ids){
+            JSONObject data=new JSONObject();
+            data.put("touser",id);
+            data.put("templete_id",templete_id);
+            if(!StringUtils.isEmpty(url)) {
+                data.put("url",url);
+            }
+            if(!StringUtils.isEmpty(pagepath)) {
+                data.put("pagepath",pagepath);
+            }
+            data.put("first",first_str);
+            data.put("keyword1",keyword1_str);
+            data.put("keyword2",keyword2_str);
+            data.put("keyword3",keyword3_str);
+            data.put("keyword4",keyword4_str);
+            data.put("keyword5",keyword5_str);
+            data.put("remark",remark_str);
+            wxTempleteSendService.createBatch(data,sendStatus.getId());
+        }
+        return ResponseUtil.ok();
+    }
+
     //粉丝管理列表接口
     @GetMapping("/list")
     public Object list(

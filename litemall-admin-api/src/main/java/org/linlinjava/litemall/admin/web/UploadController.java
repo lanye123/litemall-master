@@ -136,6 +136,43 @@ public class UploadController {
                 map.put("tempPath",temp);
                 map.put("fileName",fileName);
                 map.put("extensionName",extensionName);
+                map.put("filePath",filePath);
+                map.put("newFileName",newFileName);
+                map.put("data",data);
+                ResponseUtil.ok(map);
+            } catch (IOException e) {
+                ResponseUtil.fail(0, "上传失败");
+            }
+        }
+        return ResponseUtil.ok(map);
+    }
+
+    @PostMapping(value = "/videoUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object videoUpload(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> map = new HashMap<>();
+        if (!file.isEmpty()) {
+            try {
+                String temp = "videos" + File.separator + "upload" + File.separator;
+                // 获取图片的文件名
+                String fileName = file.getOriginalFilename();
+                // 获取图片的扩展名
+                String extensionName = StringUtils.substringAfter(fileName, ".");
+                // 新的图片文件名 = 获取时间戳+"."图片扩展名
+                String newFileName = String.valueOf(System.currentTimeMillis()) + "." + extensionName;
+                // 文件路径
+                String filePath = webUploadPath.concat(temp);
+
+                File dest = new File(filePath, newFileName);
+                if (!dest.getParentFile().exists()) {
+                    dest.getParentFile().mkdirs();
+                }
+                // 上传到指定目录
+                file.transferTo(dest);
+                // 将反斜杠转换为正斜杠
+                String data = temp.replaceAll("\\\\", "/") + newFileName;
+                map.put("tempPath",temp);
+                map.put("fileName",fileName);
+                map.put("extensionName",extensionName);
                 map.put("newFileName",newFileName);
                 map.put("filePath",filePath);
                 map.put("data",data);
