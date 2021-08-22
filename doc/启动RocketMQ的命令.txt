@@ -1,0 +1,10 @@
+
+启动NameServer
+[root@node1 ~]# nohup sh mqnamesrv &> /dev/null &
+
+启动Broker：
+[root@node1 ~]# nohup mqbroker -n node1:9876 -c /opt/rocketmq/conf/2m-2s-sync/broker-a.properties &> /dev/null &
+[root@node2 ~]# nohup mqbroker -n node1:9876 -c /opt/rocketmq/conf/2m-2s-sync/broker-a-s.properties &> /dev/null &
+[root@node3 ~]# nohup mqbroker -n node1:9876 -c /opt/rocketmq/conf/2m-2s-sync/broker-b.properties &> /dev/null &
+[root@node4 ~]# nohup mqbroker -n node1:9876 -c /opt/rocketmq/conf/2m-2s-sync/broker-b-s.properties &> /dev/null &
+
